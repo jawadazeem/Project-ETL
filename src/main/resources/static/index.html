@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Billing Processor Dashboard</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="icon" href="/favicon.png" />
+
+    <style>
+        body {
+            padding: 30px;
+            font-family: "Montserrat", sans-serif;
+            background-color: #f5f6fa;
+        }
+
+        h1 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            font-weight: 600;
+            background-color: #ffffff;
+            border-bottom: 1px solid #eee;
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Modern buttons */
+        .btn-modern {
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .btn-modern:hover {
+            background: rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        pre {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+<h1>US Senate Telecom Billing Dashboard</h1>
+
+<nav class="navbar navbar-light bg-white shadow-sm mb-4" style="border-radius: 10px;">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1" style="font-weight:600;">Billing Portal</span>
+    </div>
+</nav>
+
+<!-- Summary -->
+<div class="card mb-4">
+    <div class="card-header">Summary</div>
+    <div class="card-body">
+        <button class="btn-modern mb-3" onclick="loadSummary()">Load Summary</button>
+        <pre id="summaryOutput">Click the button to load summary...</pre>
+    </div>
+</div>
+
+<!-- All Records -->
+<div class="card mb-4">
+    <div class="card-header">All Records</div>
+    <div class="card-body">
+        <button class="btn-modern mb-3" onclick="loadRecords()">Load Records</button>
+        <div class="table-container">
+            <table class="table" id="recordsTable">
+                <thead>
+                <tr>
+                    <th>Phone</th>
+                    <th>State</th>
+                    <th>Charge</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Filter by State -->
+<div class="card mb-4">
+    <div class="card-header">Filter by State</div>
+    <div class="card-body">
+        <input class="form-control w-25 mb-3" id="stateInput" placeholder="Example: VA" />
+        <button class="btn-modern" onclick="loadByState()">Search</button>
+        <pre id="stateOutput"></pre>
+    </div>
+</div>
+
+<!-- Top N -->
+<div class="card mb-4">
+    <div class="card-header">Top N Highest Charges</div>
+    <div class="card-body">
+        <input class="form-control w-25 mb-3" id="topInput" placeholder="Example: 5" />
+        <button class="btn-modern" onclick="loadTopN()">Load</button>
+        <pre id="topOutput"></pre>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="app-footer mt-5">
+    <div class="container text-center py-3">
+        <span class="footer-title">Billing Portal</span>
+        <span class="footer-separator">•</span>
+        <span class="footer-sub">Application by Jawad Azeem</span>
+    </div>
+</footer>
+
+<style>
+    .app-footer {
+        border-top: 1px solid #e3e3e3;
+        margin-top: 60px;
+        padding-top: 15px;
+        color: #555;
+        background-color: #fafafa;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .footer-title {
+        font-weight: 600;
+    }
+
+    .footer-sub {
+        opacity: 0.8;
+    }
+
+    .footer-separator {
+        margin: 0 8px;
+        opacity: 0.5;
+    }
+</style>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    async function loadSummary() {
+        const res = await fetch('/summary');
+        const data = await res.json();
+        document.getElementById('summaryOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function loadRecords() {
+        const res = await fetch('/records');
+        const data = await res.json();
+
+        const tbody = document.querySelector('#recordsTable tbody');
+        tbody.innerHTML = '';
+
+        data.forEach(record => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${record.phone()}</td>
+                <td>${record.state()}</td>
+                <td>$${record.charge().toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    async function loadByState() {
+        const state = document.getElementById('stateInput').value.trim();
+        if (!state) return;
+
+        const res = await fetch('/records/state/' + state);
+        const data = await res.json();
+
+        document.getElementById('stateOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function loadTopN() {
+        const n = document.getElementById('topInput').value.trim();
+        if (!n) return;
+
+        const res = await fetch('/top/' + n);
+        const data = await res.json();
+
+        document.getElementById('topOutput').textContent = JSON.stringify(data, null, 2);
+    }
+</script>
+</body>
+</html>

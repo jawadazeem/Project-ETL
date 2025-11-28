@@ -9,7 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+/**
+ * Service component that orchestrates the billing ETL workflow.
+ * <p>
+ * This class:
+ * <ul>
+ *   <li>Uses {@link BillParser} to load and cache billing records from the CSV source.</li>
+ *   <li>Provides access to all parsed {@link BillingRecord} objects.</li>
+ *   <li>Builds a {@link BillingSummary} with aggregated analytics using {@link SummaryBuilder}.</li>
+ * </ul>
+ * Data is loaded lazily on first access and then reused for subsequent calls.
+ */
+
+@Service
 public class BillingService {
     private final BillParser parser;
     private boolean isLoaded = false;
@@ -23,6 +35,7 @@ public class BillingService {
         isLoaded = true;
     }
 
+    // Ensure data is loaded before any operation (lazy loading)
     private void ensureLoaded() {
         if (!isLoaded) {
             loadData();

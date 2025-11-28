@@ -37,5 +37,4 @@ public class BillingController {
         return service.getAllRecords().stream().sorted((a, b) -> Double.compare(b.totalCharge(), a.totalCharge())).limit(n).toList();
     }
 
-
 }

@@ -39,6 +39,7 @@ public class SummaryBuilder {
         summary.setTotalCharges(calculateTotalCharges());
         summary.setHighestChargeRecord(findHighestChargeRecord());
         summary.setChargesByState(calculateChargesByState());
+        summary.setAverageCharge(averageCharge());
 
         return summary;
     }
@@ -67,6 +68,13 @@ public class SummaryBuilder {
         }
 
         return currHighestChargeRecord;
+    }
+
+    private double averageCharge() {
+        if (records.isEmpty()) {
+            return 0.0;
+        }
+        return Math.round((calculateTotalCharges() / records.size())*100)/100.0;
     }
 
     private Map<String, Double> calculateChargesByState() {

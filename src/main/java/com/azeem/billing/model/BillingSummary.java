@@ -6,8 +6,7 @@ import java.util.Map;
 /**
  * Represents the aggregated billing analytics produced by the ETL pipeline.
  *
- * <p>This class serves as the data model (output schema) for summary results that
- * will be serialized into JSON. It contains high-level metrics derived from a
+ * <p>This class serves as the data model (output schema) It contains high-level metrics derived from a
  * collection of {@link BillingRecord} objects, including:
  *
  * <ul>
@@ -18,8 +17,7 @@ import java.util.Map;
  * </ul>
  *
  * <p>This class contains no business logic. It is a simple container intended to be
- * constructed and populated by the analytics layer (SummaryBuilder) and then
- * serialized by the serialization layer (JsonSerializer).
+ * constructed and populated by the analytics layer (SummaryBuilder)
  */
 
 public class BillingSummary {
@@ -27,12 +25,14 @@ public class BillingSummary {
     private int totalRecords;
     private double totalCharges;
     private BillingRecord highestChargeRecord;
+    private double averageCharge;
     private Map<String, Double> chargesByState;
 
     public BillingSummary() {
         this.totalRecords = 0;
         this.totalCharges = 0.0;
         this.highestChargeRecord = null;
+        this.averageCharge = 0;
         this.chargesByState = new HashMap<>();
     }
 
@@ -58,6 +58,14 @@ public class BillingSummary {
 
     public void setHighestChargeRecord(BillingRecord highestChargeRecord) {
         this.highestChargeRecord = highestChargeRecord;
+    }
+
+    public double getAverageCharge() {
+        return averageCharge;
+    }
+
+    public void setAverageCharge(double averageCharge) {
+        this.averageCharge = averageCharge;
     }
 
     public Map<String, Double> getChargesByState() {

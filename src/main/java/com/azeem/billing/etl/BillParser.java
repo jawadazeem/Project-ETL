@@ -1,6 +1,7 @@
 package com.azeem.billing.etl;
 
 import com.azeem.billing.model.BillingRecord;
+import com.azeem.billing.util.CsvReader;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import java.util.List;
  * </p>
  */
 
-public class BillParser {
+public class BillParser extends CsvReader {
 
     private final String filePath;
     private final List<BillingRecord> records;
