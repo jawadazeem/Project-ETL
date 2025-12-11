@@ -3,11 +3,21 @@ package com.azeem.billing.controller;
 import com.azeem.billing.model.BillingRecord;
 import com.azeem.billing.model.BillingSummary;
 import com.azeem.billing.service.BillingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+/**
+ * REST controller exposing endpoints for billing data retrieval and summary generation.
+ * <p>
+ * Endpoints:
+ * <ul>
+ *   <li>GET /records - Retrieve all billing records.</li>
+ *   <li>GET /summary - Get aggregated billing summary.</li>
+ *   <li>GET /records/state/{state} - Get billing records filtered by state.</li>
+ *   <li>GET /top/{n} - Get top N billing records by total charge.</li>
+ * </ul>
+ */
 
 @RestController
 public class BillingController {

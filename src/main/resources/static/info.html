@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>About the Billing Dashboard</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap (same as dashboard) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="icon" href="/favicon.png" />
+
+    <style>
+        body {
+            padding: 30px;
+            font-family: "Montserrat", sans-serif;
+            background-color: #f5f6fa;
+        }
+
+        h1 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .btn-close-modern {
+            background: rgba(0,0,0,0.05);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: 0.25s ease;
+        }
+
+        .btn-close-modern:hover {
+            background: rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .footer-text {
+            text-align: center;
+            opacity: 0.7;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<h1>About This Billing Dashboard</h1>
+
+<div class="info-card">
+    <div class="section-title">Overview</div>
+    <p>
+        This dashboard is a demonstration project for exploring how telecom billing data
+        can be displayed, summarized, and analyzed in a clean, modern interface. It shows
+        how records can be loaded, filtered, and ranked, and how overall charge patterns
+        can be highlighted for insight.
+    </p>
+</div>
+
+<div class="info-card">
+    <div class="section-title">What You Can Do Here</div>
+    <ul>
+        <li>Load a real-time summary of all billing data</li>
+        <li>Browse individual telecom records in a sortable table</li>
+        <li>Filter records by state for targeted review</li>
+        <li>View the highest-charging accounts with Top-N queries</li>
+        <li>Explore charge patterns and data usage across all senators</li>
+    </ul>
+</div>
+
+<div class="info-card">
+    <div class="section-title">Data Fields Tracked</div>
+    <ul>
+        <li>Minutes used</li>
+        <li>Data consumption (GB)</li>
+        <li>SMS count</li>
+        <li>Total computed charge</li>
+        <li>Account, state, and billing period details</li>
+    </ul>
+</div>
+
+<!--
+<div class="info-card">
+    <div class="section-title">Purpose</div>
+    <p>
+        The goal is to give analysts and auditors a simple, fast way to explore telecom usage,
+        reveal unusual billing patterns, and support oversight with precise charge breakdowns.
+    </p>
+</div>
+-->
+
+<button class="btn-close-modern" onclick="window.close()">Close</button>
+
+<div class="footer-text">
+    US Senate Telecom Billing • Dashboard by Jawad Azeem
+</div>
+</body>
+</html>

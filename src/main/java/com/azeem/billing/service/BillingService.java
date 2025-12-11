@@ -4,7 +4,6 @@ import com.azeem.billing.etl.BillParser;
 import com.azeem.billing.etl.SummaryBuilder;
 import com.azeem.billing.model.BillingRecord;
 import com.azeem.billing.model.BillingSummary;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

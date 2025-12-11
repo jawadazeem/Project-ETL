@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
     }
 
     // Handle generic exceptions
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+    @ExceptionHandler(BillingException.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(BillingException ex) {
         logger.error("Unhandled exception", ex);
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),

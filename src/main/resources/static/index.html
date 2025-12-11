@@ -63,6 +63,17 @@
             border-radius: 8px;
             border: 1px solid #eee;
         }
+
+        /* Info button on footer */
+        .btn-info {
+            font-family: 'Courier New', sans-serif, monospace;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
     </style>
 </head>
 
@@ -130,6 +141,8 @@
         <span class="footer-title">Billing Portal</span>
         <span class="footer-separator">•</span>
         <span class="footer-sub">Application by Jawad Azeem</span>
+        <span class="footer-separator">•</span>
+        <button class="btn-info" onclick="openInfo()"><b>i</b></button>
     </div>
 </footer>
 
@@ -205,6 +218,15 @@
 
         document.getElementById('topOutput').textContent = JSON.stringify(data, null, 2);
     }
+
+    function openInfo() {
+        window.open(
+            "/info.html",
+            "infoPopup",
+            "width=600,height=650,resizable=yes,scrollbars=yes"
+        );
+    }
+
 </script>
 </body>
 </html>

@@ -1,9 +1,11 @@
 package com.azeem.billing.etl;
 
 import com.azeem.billing.model.BillingRecord;
-import com.azeem.billing.util.CsvReader;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ import java.util.List;
  * </p>
  */
 
-public class BillParser extends CsvReader {
+public class BillParser {
 
     private final String filePath;
     private final List<BillingRecord> records;
@@ -59,71 +61,27 @@ public class BillParser extends CsvReader {
         return records;
     }
 
-    /**
-     * Reads the CSV file and loads model.BillingRecord objects
-     * into the internal records list.
-     */
     public void load() {
-        // TODO: Implement more robust CSV parsing needed, accounting for quoted fields with commas, etc.
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            reader.readLine(); // Skip header line
-            while ((line = reader.readLine()) != null) {
-                String accountName = "";
-                String senatorId = "";
-                String state = "";
-                String phoneNumber = "";
-                String billingPeriod = "";
-                int minutesUsed = 0;
-                double dataGbUsed = 0.0;
-                int smsCount = 0;
-                double totalCharge = 0.0;
+        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
 
-                StringBuilder currToken = new StringBuilder();
+            csvReader.readNext(); // Skip header row
+            String[] tokens;
 
-                int tokenNum = 0;
-                for (int i = 0; i < line.length(); i++) {
-                    char c = line.charAt(i);
-                    if (c != ',') {
-                        currToken.append(c);
-                    } else {
-                        String token = currToken.toString();
-                        switch (tokenNum) {
-                            case 0:
-                                accountName = currToken.toString();
-                                break;
-                            case 1:
-                                senatorId = currToken.toString();
-                                break;
-                            case 2:
-                                state = currToken.toString();
-                                break;
-                            case 3:
-                                phoneNumber = currToken.toString();
-                                break;
-                            case 4:
-                                billingPeriod = currToken.toString();
-                                break;
-                            case 5:
-                                String minutesUsedStr = currToken.toString();
-                                minutesUsed = Integer.parseInt(minutesUsedStr);
-                                break;
-                            case 6:
-                                String dataGbUsedStr = currToken.toString();
-                                dataGbUsed = Double.parseDouble(dataGbUsedStr);
-                                break;
-                            case 7:
-                                String smsCountStr = currToken.toString();
-                                smsCount = Integer.parseInt(smsCountStr);
-                                break;
-                        }
-                        currToken.setLength(0);
-                        tokenNum++;
-                    }
-                }
-                totalCharge = Double.parseDouble(currToken.toString());
+            while ((tokens = csvReader.readNext()) != null) {
 
-                BillingRecord currentRecord = new BillingRecord(
+                // Expect the exact 9 fields BillingRecord uses
+                String accountName = tokens[0];
+                String senatorId = tokens[1];
+                String state = tokens[2];
+                String phoneNumber = tokens[3];
+                String billingPeriod = tokens[4];
+
+                int minutesUsed = Integer.parseInt(tokens[5]);
+                double dataGbUsed = Double.parseDouble(tokens[6]);
+                int smsCount = Integer.parseInt(tokens[7]);
+                double totalCharge = Double.parseDouble(tokens[8]);
+
+                BillingRecord record = new BillingRecord(
                         accountName,
                         senatorId,
                         state,
@@ -134,12 +92,15 @@ public class BillParser extends CsvReader {
                         smsCount,
                         totalCharge
                 );
-                records.add(currentRecord);
+
+                records.add(record);
             }
-        } catch (IOException e) {
-            System.err.println("An error occurred while reading the file: " + e.getMessage());
+
+        } catch (IOException | CsvValidationException e) {
+            System.err.println("Failed to read CSV file: " + e.getMessage());
         }
     }
+
 
     @Override
     public String toString() {
