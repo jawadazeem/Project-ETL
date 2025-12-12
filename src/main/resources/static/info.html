@@ -86,25 +86,34 @@
 </div>
 
 <div class="info-card">
-    <div class="section-title">Data Fields Tracked</div>
+    <div class="section-title">Technologies Used</div>
     <ul>
-        <li>Minutes used</li>
-        <li>Data consumption (GB)</li>
-        <li>SMS count</li>
-        <li>Total computed charge</li>
-        <li>Account, state, and billing period details</li>
+        <li><strong>Java 17</strong> – Core language used to implement the ETL pipeline, service layer, model layer, and backend logic.</li>
+
+        <li><strong>Spring Boot</strong> – Framework for building the REST API, handling dependency injection, managing application lifecycle, and structuring the project using standard enterprise patterns.</li>
+
+        <li><strong>Spring Web (Spring MVC)</strong> – Exposes REST endpoints, handles HTTP routing, request/response serialization, and controller logic.</li>
+
+        <li><strong>SLF4J + Logback</strong> – Logging for observability, error tracking, and debugging across ETL, service, and controller layers.</li>
+
+        <li><strong>JUnit 5</strong> – Unit testing framework for validating ETL logic, service behavior, and controller endpoints.</li>
+
+        <li><strong>Mockito</strong> – Mocking framework used to simulate service dependencies in controller tests and isolate components under test.</li>
+
+        <li><strong>MockMvc</strong> – Spring MVC test framework used to send simulated HTTP requests and validate controller responses without running a full server.</li>
+
+        <li><strong>OpenCSV</strong> – Library for parsing CSV input files as part of the ETL (Extract, Transform, Load) process.</li>
+
+        <li><strong>AWS Elastic Beanstalk</strong> – Platform used to deploy and host the live Spring Boot application in a scalable and managed environment.</li>
+
+        <li><strong>AWS S3</strong> – Used for CSV uploads via pre-signed URLs, allowing users to securely upload billing files directly to cloud storage.</li>
+
+        <li><strong>Maven</strong> – Build and dependency management tool used to manage libraries, run tests, and package the application.</li>
+
+        <li><strong>HTML5 + Bootstrap</strong> – Frontend UI for viewing analytics, summaries, and interactive filtering of billing records.</li>
     </ul>
 </div>
 
-<!--
-<div class="info-card">
-    <div class="section-title">Purpose</div>
-    <p>
-        The goal is to give analysts and auditors a simple, fast way to explore telecom usage,
-        reveal unusual billing patterns, and support oversight with precise charge breakdowns.
-    </p>
-</div>
--->
 
 <button class="btn-close-modern" onclick="window.close()">Close</button>
 

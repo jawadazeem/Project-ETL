@@ -12,7 +12,11 @@
 	<artifactId>billing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>senate-telecom-billing-processor</name>
-	<description>Demo project for Spring Boot</description>
+	<description>
+        This dashboard is a demonstration project for exploring how telecom billing data
+        can be displayed, summarized, and analyzed in a clean, modern interface. It shows how records
+        can be loaded, filtered, and ranked, and how overall charge patterns can be highlighted for insight.
+    </description>
 	<url/>
 	<licenses>
 		<license/>
@@ -69,6 +73,12 @@
             <version>5.9</version>
         </dependency>
 
+        <!-- JPA
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        -->
     </dependencies>
 
 	<build>

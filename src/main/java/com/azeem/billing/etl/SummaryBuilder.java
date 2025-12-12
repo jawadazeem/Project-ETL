@@ -2,6 +2,8 @@ package com.azeem.billing.etl;
 
 import com.azeem.billing.model.BillingRecord;
 import com.azeem.billing.model.BillingSummary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,8 @@ import java.util.Map;
 
 
 public class SummaryBuilder {
+    private static final Logger log = LoggerFactory.getLogger(SummaryBuilder.class);
+
     private final List<BillingRecord> records;
 
     public SummaryBuilder(List<BillingRecord> records) {
@@ -41,6 +45,7 @@ public class SummaryBuilder {
         summary.setChargesByState(calculateChargesByState());
         summary.setAverageCharge(averageCharge());
 
+        log.info("The summary has been built successfully with {} records.", summary.getTotalRecords());
         return summary;
     }
 

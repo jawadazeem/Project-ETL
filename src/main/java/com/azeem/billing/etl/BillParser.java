@@ -3,6 +3,8 @@ package com.azeem.billing.etl;
 import com.azeem.billing.model.BillingRecord;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -45,9 +47,11 @@ import java.util.List;
  */
 
 public class BillParser {
+    private static final Logger log = LoggerFactory.getLogger(BillParser.class);
 
     private final String filePath;
     private final List<BillingRecord> records;
+    private boolean loaded = false;
 
     public BillParser(String filePath) {
         this.filePath = filePath;
@@ -61,9 +65,18 @@ public class BillParser {
         return records;
     }
 
-    public void load() {
-        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
+    // Loads and parses the CSV file into BillingRecord objects. Synchronized to prevent concurrent loads.
+    public synchronized void load() {
+        if (loaded) {
+            log.debug("BillParser.load() called again, but already loaded. Skipping.");
+            return;
+        }
 
+        records.clear();
+
+        log.info("Loading CSV from {} (existing records: {})", filePath, records.size());
+
+        try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {
             csvReader.readNext(); // Skip header row
             String[] tokens;
 
@@ -97,8 +110,10 @@ public class BillParser {
             }
 
         } catch (IOException | CsvValidationException e) {
-            System.err.println("Failed to read CSV file: " + e.getMessage());
+            log.error("Error loading CSV file", e);
         }
+
+        log.info("Successfully loaded from CSV. {} records were parsed.", records.size());
     }
 
 

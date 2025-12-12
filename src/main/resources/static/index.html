@@ -78,7 +78,7 @@
 </head>
 
 <body>
-<h1>US Senate Telecom Billing Dashboard</h1>
+<h1>Billing Intelligence Platform</h1>
 
 <nav class="navbar navbar-light bg-white shadow-sm mb-4" style="border-radius: 10px;">
     <div class="container-fluid">
@@ -90,8 +90,36 @@
 <div class="card mb-4">
     <div class="card-header">Summary</div>
     <div class="card-body">
-        <button class="btn-modern mb-3" onclick="loadSummary()">Load Summary</button>
-        <pre id="summaryOutput">Click the button to load summary...</pre>
+        <div id="summaryStats" class="row g-3" style="display:none;">
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h6>Total Records</h6>
+                    <div id="statRecords" class="fs-4 fw-bold"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h6>Total Charges</h6>
+                    <div id="statTotal" class="fs-4 fw-bold"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h6>Average Charge</h6>
+                    <div id="statAvg" class="fs-4 fw-bold"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card p-3 text-center">
+                    <h6>Highest Charge</h6>
+                    <div id="statHigh" class="fs-5 fw-bold"></div>
+                    <small id="statHighName" class="text-muted"></small>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -99,7 +127,6 @@
 <div class="card mb-4">
     <div class="card-header">All Records</div>
     <div class="card-body">
-        <button class="btn-modern mb-3" onclick="loadRecords()">Load Records</button>
         <div class="table-container">
             <table class="table" id="recordsTable">
                 <thead>
@@ -121,7 +148,18 @@
     <div class="card-body">
         <input class="form-control w-25 mb-3" id="stateInput" placeholder="Example: VA" />
         <button class="btn-modern" onclick="loadByState()">Search</button>
-        <pre id="stateOutput"></pre>
+        <div class="table-container">
+            <table class="table" id="stateTable">
+                <thead>
+                <tr>
+                    <th>Phone</th>
+                    <th>State</th>
+                    <th>Charge</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -131,7 +169,16 @@
     <div class="card-body">
         <input class="form-control w-25 mb-3" id="topInput" placeholder="Example: 5" />
         <button class="btn-modern" onclick="loadTopN()">Load</button>
-        <pre id="topOutput"></pre>
+        <table class="table" id="topOutput">
+            <thead>
+            <tr>
+                <th>Phone</th>
+                <th>State</th>
+                <th>Charge</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 </div>
 
@@ -177,9 +224,20 @@
 <script>
     async function loadSummary() {
         const res = await fetch('/summary');
-        const data = await res.json();
-        document.getElementById('summaryOutput').textContent = JSON.stringify(data, null, 2);
+        const s = await res.json();
+
+        // Fill stat cards
+        document.getElementById("statRecords").textContent = s.totalRecords;
+        document.getElementById("statTotal").textContent = `$${s.totalCharges.toFixed(2)}`;
+        document.getElementById("statAvg").textContent = `$${s.averageCharge.toFixed(2)}`;
+
+        const hi = s.highestChargeRecord;
+        document.getElementById("statHigh").textContent = `$${hi.totalCharge.toFixed(2)}`;
+        document.getElementById("statHighName").textContent = hi.accountName;
+
+        document.getElementById("summaryStats").style.display = "flex";
     }
+
 
     async function loadRecords() {
         const res = await fetch('/records');
@@ -191,9 +249,9 @@
         data.forEach(record => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${record.phone()}</td>
-                <td>${record.state()}</td>
-                <td>$${record.charge().toFixed(2)}</td>
+                <td>${record.phoneNumber}</td>
+                <td>${record.state}</td>
+                <td>$${record.totalCharge.toFixed(2)}</td>
             `;
             tbody.appendChild(row);
         });
@@ -206,7 +264,18 @@
         const res = await fetch('/records/state/' + state);
         const data = await res.json();
 
-        document.getElementById('stateOutput').textContent = JSON.stringify(data, null, 2);
+        const tbody = document.querySelector('#stateTable tbody');
+        tbody.innerHTML = '';
+
+        data.forEach(record => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${record.phoneNumber}</td>
+                <td>${record.state}</td>
+                <td>$${record.totalCharge.toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+        });
     }
 
     async function loadTopN() {
@@ -216,9 +285,21 @@
         const res = await fetch('/top/' + n);
         const data = await res.json();
 
-        document.getElementById('topOutput').textContent = JSON.stringify(data, null, 2);
+        const tbody = document.querySelector('#topOutput tbody');
+        tbody.innerHTML = '';
+
+        data.forEach(record => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${record.phoneNumber}</td>
+                <td>${record.state}</td>
+                <td>$${record.totalCharge.toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+        });
     }
 
+    // Open info popup
     function openInfo() {
         window.open(
             "/info.html",
@@ -227,6 +308,12 @@
         );
     }
 
+
+    // To load summary and records on page load
+    window.addEventListener("DOMContentLoaded", () => {
+        loadSummary();
+        loadRecords();
+    });
 </script>
 </body>
 </html>
