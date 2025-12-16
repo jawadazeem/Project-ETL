@@ -65,7 +65,7 @@ class BillingControllerTest {
         mockMvc.perform(get("/records"))
                 .andExpect(status().isOk()) // HTTP status must be ok
                 .andExpect(jsonPath("$[0].accountName").value("Account1"))
-                .andExpect(jsonPath("$[0].state").value("CA"))
+                .andExpect(jsonPath("$[0].department").value("CA"))
                 .andExpect(jsonPath("$.length()").value(1));
     }
 
@@ -80,12 +80,12 @@ class BillingControllerTest {
                         150, 1.5, 30, 10.0)
         );
 
-        when(service.getRecordsByState("VA")).thenReturn(fakeRecords.subList(1,2));
+        when(service.getRecordsByDepartment("VA")).thenReturn(fakeRecords.subList(1,2));
 
-        // call GET /records/state/VA
-        mockMvc.perform(get ("/records/state/VA"))
+        // call GET /records/department/VA
+        mockMvc.perform(get ("/records/department/VA"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].accountName").value("Account2"))
-                .andExpect(jsonPath("$[0].state").value("VA"));
+                .andExpect(jsonPath("$[0].department").value("VA"));
     }
 }

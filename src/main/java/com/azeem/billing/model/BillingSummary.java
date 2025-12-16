@@ -13,7 +13,7 @@ import java.util.Map;
  *     <li>Total number of billing records processed</li>
  *     <li>Total accumulated charges across all records</li>
  *     <li>The record with the highest individual total charge</li>
- *     <li>Aggregated charges grouped by state</li>
+ *     <li>Aggregated charges grouped by department</li>
  * </ul>
  *
  * <p>This class contains no business logic. It is a simple container intended to be

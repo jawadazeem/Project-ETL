@@ -1,68 +1,87 @@
 package com.azeem.billing.service;
 
-import com.azeem.billing.etl.BillParser;
+import com.azeem.billing.entity.BillingRecordEntity;
 import com.azeem.billing.etl.SummaryBuilder;
+import com.azeem.billing.mapper.BillingRecordMapper;
 import com.azeem.billing.model.BillingRecord;
 import com.azeem.billing.model.BillingSummary;
+import com.azeem.billing.repository.BillingRecordRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
- * Service component that orchestrates the billing ETL workflow.
+ * Stateless service providing read-only billing operations.
+ *
  * <p>
- * This class:
+ * Responsibilities:
  * <ul>
- *   <li>Uses {@link BillParser} to load and cache billing records from the CSV source.</li>
- *   <li>Provides access to all parsed {@link BillingRecord} objects.</li>
- *   <li>Builds a {@link BillingSummary} with aggregated analytics using {@link SummaryBuilder}.</li>
+ *   <li>Query billing data from the database</li>
+ *   <li>Map entities to domain models</li>
+ *   <li>Generate billing summaries</li>
  * </ul>
- * Data is loaded lazily on first access and then reused for subsequent calls.
+ *
+ * <p>
+ * This service assumes billing data has already been ingested and persisted.
+ * All state lives in the database, making the service safe for concurrent use.
+ * </p>
  */
 
 @Service
 public class BillingService {
     private static final Logger log = LoggerFactory.getLogger(BillingService.class);
 
-    private final BillParser parser;
-    private boolean isLoaded = false;
+    private final BillingRecordRepository repository;
+    private final BillingRecordMapper mapper = new BillingRecordMapper();
 
-    public BillingService(BillParser parser) {
-        this.parser = parser;
+    public BillingService(BillingRecordRepository repository) {
+        this.repository = repository;
     }
 
-    public void loadData() {
-        parser.load();
-        isLoaded = true;
-        log.info("Billing data loaded successfully with {} records.", parser.getRecords().size());
+    public List<String> getAvailableBillingPeriods() {
+        return repository.findAllBillingPeriods(); // No mapper for object of BillingPeriod type
     }
 
-    // Ensure data is loaded before any operation (lazy loading)
-    private void ensureLoaded() {
-        if (!isLoaded) {
-            loadData();
-        }
+    public List<BillingRecord> getRecordsByPeriod(String billingPeriod) {
+        return repository.findByBillingPeriod(billingPeriod).stream()
+                .map(mapper::mapToDomain)
+                .toList();
     }
 
     public List<BillingRecord> getAllRecords() {
-        ensureLoaded();
-        log.info("Retrieved all billing records, count: {}.", parser.getRecords().size());
-        return parser.getRecords();
+        List<BillingRecord> records = repository.findAll().stream()
+                .map(mapper::mapToDomain)
+                .toList();
+        log.info("Retrieved all billing records, count: {}.", records.size());
+        return records;
     }
 
-    public List<BillingRecord> getRecordsByState(String state) {
-        return getAllRecords().stream().filter(r -> r.state().equalsIgnoreCase(state)).toList();
+    public List<BillingRecord> getRecordsByDepartment(String department) {
+        List<BillingRecord> records = getAllRecords().stream()
+                .filter(r -> r.department()
+                        .equalsIgnoreCase(department)).toList();
+        log.info("Retrieved {}'s records, count: {}.", department, records.size());
+        return records;
     }
 
     public List<BillingRecord> getTopNRecords(int n) {
-        return getAllRecords().stream().sorted((a, b) -> Double.compare(b.totalCharge(), a.totalCharge())).limit(n).toList();
+        List<BillingRecord> records = getAllRecords().stream()
+                .sorted((a, b) ->
+                        Double.compare(b.totalCharge(), a.totalCharge())).limit(n).toList();
+        log.info("Retrieved top {} records, count: {}.", n, records.size());
+        return records;
+    }
+
+    public BillingSummary generateSummaryForPeriod(String billingPeriod) {
+        List<BillingRecord> records = getRecordsByPeriod(billingPeriod);
+        return new SummaryBuilder(records).build();
     }
 
     public BillingSummary generateSummary() {
-        ensureLoaded();
-        List<BillingRecord> records = parser.getRecords();
+        List<BillingRecord> records = getAllRecords();
         SummaryBuilder builder = new SummaryBuilder(records);
         log.info("A billing summary is being generated for {} records.", records.size());
         return builder.build();

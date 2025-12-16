@@ -1,9 +1,10 @@
-# Senate Telecom Billing Processor (v1.0.1)
+# Telecom Billing Processor (v2)
 
-This is version 1.01 of the Senate Telecom Billing Processor project.  
+### Author: Jawad Azeem
+This is version 2 of the Senate Telecom Billing Processor project.  
 It is a Spring Boot application that performs a full ETL (Extract, Transform, Load) workflow on telecom billing data stored in CSV format.
 It reads the data, processes it into structured records, computes various analytics, and exposes the results via REST API endpoints.
-A live version of the API is hosted on AWS Elastic Beanstalk.
+A live version of the API is hosted on AWS.
 
 ## Functionality
 - Reads billing data from a CSV file using a custom parser
@@ -18,15 +19,21 @@ A live version of the API is hosted on AWS Elastic Beanstalk.
 ## How to Run
 - Access the Live API at:
    - http://senate-telecom-billing-api-env.eba-wbb6t53w.us-east-1.elasticbeanstalk.com/
+   - https://telecom.jawadazeem.com
 
 ## Technologies Used
-- Java 17+
+- Java 21
 - Spring Boot (Web)
+- Docker
 - Maven
-- JUnit 5
-- Mockito
-- OpenCSV
-- Custom ETL processing
+- JUnit 5 & Mockito
+- PostgreSQL
+- AWS (RDS, Elastic Beanstalk, S3)
+
+## Architecture
+- ETL ingestion service
+- Stateless service layer
+- Repository-based persistence
 
 ## Notes
 This is an early version of the project. 
@@ -34,7 +41,6 @@ Future versions will add:
 - CSV upload endpoint
 - additional analytics
 - AI integration for anomaly detection
-- Containerization with Docker
 - Kubernetes deployment
 
-Version: **v1.0.1**
+Version: **v2** (Dec 2025)

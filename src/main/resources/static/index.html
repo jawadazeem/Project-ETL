@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Billing Processor Dashboard</title>
 
     <!-- Google Font -->
@@ -10,7 +10,7 @@
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
-    <link rel="icon" href="/favicon.png" />
+    <link rel="icon" href="/favicon.png"/>
 
     <style>
         body {
@@ -83,12 +83,13 @@
 <nav class="navbar navbar-light bg-white shadow-sm mb-4" style="border-radius: 10px;">
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1" style="font-weight:600;">Billing Portal</span>
+        <select id="periodSelect" class="form-select w-auto" onchange="changePeriod()"></select>
     </div>
 </nav>
 
 <!-- Summary -->
 <div class="card mb-4">
-    <div class="card-header">Summary</div>
+    <div class="card-header">Latest Period's Summary</div>
     <div class="card-body">
         <div id="summaryStats" class="row g-3" style="display:none;">
             <div class="col-md-3">
@@ -132,7 +133,7 @@
                 <thead>
                 <tr>
                     <th>Phone</th>
-                    <th>State</th>
+                    <th>Department</th>
                     <th>Charge</th>
                 </tr>
                 </thead>
@@ -142,18 +143,18 @@
     </div>
 </div>
 
-<!-- Filter by State -->
+<!-- Filter by Department -->
 <div class="card mb-4">
-    <div class="card-header">Filter by State</div>
+    <div class="card-header">Filter by Department</div>
     <div class="card-body">
-        <input class="form-control w-25 mb-3" id="stateInput" placeholder="Example: VA" />
-        <button class="btn-modern" onclick="loadByState()">Search</button>
+        <select class="form-select w-25 mb-3" id="departmentSelect"></select>
+        <button class="btn-modern" onclick="loadByDepartment()">Search</button>
         <div class="table-container">
-            <table class="table" id="stateTable">
+            <table class="table" id="departmentTable">
                 <thead>
                 <tr>
                     <th>Phone</th>
-                    <th>State</th>
+                    <th>Department</th>
                     <th>Charge</th>
                 </tr>
                 </thead>
@@ -167,13 +168,13 @@
 <div class="card mb-4">
     <div class="card-header">Top N Highest Charges</div>
     <div class="card-body">
-        <input class="form-control w-25 mb-3" id="topInput" placeholder="Example: 5" />
+        <input class="form-control w-25 mb-3" id="topInput" placeholder="Example: 5"/>
         <button class="btn-modern" onclick="loadTopN()">Load</button>
         <table class="table" id="topOutput">
             <thead>
             <tr>
                 <th>Phone</th>
-                <th>State</th>
+                <th>Department</th>
                 <th>Charge</th>
             </tr>
             </thead>
@@ -222,8 +223,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    let currentPeriod = null;
+
     async function loadSummary() {
-        const res = await fetch('/summary');
+        const res = await fetch(`/summary/period/${currentPeriod}`);
         const s = await res.json();
 
         // Fill stat cards
@@ -240,7 +243,7 @@
 
 
     async function loadRecords() {
-        const res = await fetch('/records');
+        const res = await fetch(`/records/period/${currentPeriod}`);
         const data = await res.json();
 
         const tbody = document.querySelector('#recordsTable tbody');
@@ -250,28 +253,28 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${record.phoneNumber}</td>
-                <td>${record.state}</td>
+                <td>${record.department}</td>
                 <td>$${record.totalCharge.toFixed(2)}</td>
             `;
             tbody.appendChild(row);
         });
     }
 
-    async function loadByState() {
-        const state = document.getElementById('stateInput').value.trim();
-        if (!state) return;
+    async function loadByDepartment() {
+        const department = document.getElementById('departmentSelect').value;
+        if (!department) return;
 
-        const res = await fetch('/records/state/' + state);
+        const res = await fetch('/records/department/' + department);
         const data = await res.json();
 
-        const tbody = document.querySelector('#stateTable tbody');
+        const tbody = document.querySelector('#departmentTable tbody');
         tbody.innerHTML = '';
 
         data.forEach(record => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${record.phoneNumber}</td>
-                <td>${record.state}</td>
+                <td>${record.department}</td>
                 <td>$${record.totalCharge.toFixed(2)}</td>
             `;
             tbody.appendChild(row);
@@ -292,11 +295,52 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${record.phoneNumber}</td>
-                <td>${record.state}</td>
+                <td>${record.department}</td>
                 <td>$${record.totalCharge.toFixed(2)}</td>
             `;
             tbody.appendChild(row);
         });
+    }
+
+    async function loadPeriods() {
+        const res = await fetch('/periods');
+        const periods = await res.json();
+
+        const select = document.getElementById('periodSelect');
+        select.innerHTML = '';
+
+        periods.forEach((p, i) => {
+            const opt = document.createElement('option');
+            opt.value = p;
+            opt.textContent = p;
+            select.appendChild(opt);
+
+            if (i === periods.length - 1) {
+                currentPeriod = p; // default to latest
+            }
+        });
+        select.value = currentPeriod;
+    }
+
+    async function loadDepartments() {
+        const res = await fetch('/departments');
+        const departments = await res.json();
+
+        const select = document.getElementById('departmentSelect');
+        select.innerHTML = '';
+
+        departments.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d;
+            opt.textContent = d;
+            select.appendChild(opt);
+        });
+    }
+
+    function changePeriod() {
+        currentPeriod = document.getElementById('periodSelect').value;
+        loadSummary();
+        loadRecords();
     }
 
     // Open info popup
@@ -310,7 +354,9 @@
 
 
     // To load summary and records on page load
-    window.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("DOMContentLoaded", async () => {
+        await loadPeriods();
+        await loadDepartments();
         loadSummary();
         loadRecords();
     });

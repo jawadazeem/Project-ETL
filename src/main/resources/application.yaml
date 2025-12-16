@@ -1,0 +1,52 @@
+# Configuration applied to all profiles (default)
+spring:
+  application:
+    name: senate-telecom-billing-processor
+  datasource:
+    url: ${DB_URL}
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+
+server:
+  port: 8080
+logging:
+  file:
+    name: app.log
+
+---
+
+# Configuration for the 'dev' profile only
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:devdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  billing:
+    ingest:
+      default-file: classpath:resources/azeemcom_telecom_usage_2025_01.csv
+
+
+---
+# Configuration for the 'prod' profile only
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${PROD_DB_URL}
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate

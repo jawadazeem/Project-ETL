@@ -19,7 +19,7 @@ import java.util.Map;
  *     <li>Total number of billing records</li>
  *     <li>Sum of all charges across records</li>
  *     <li>The record with the highest total charge</li>
- *     <li>Total charges grouped by state</li>
+ *     <li>Total charges grouped by department</li>
  * </ul>
  *
  * <p>SummaryBuilder does not handle parsing, file I/O, serialization,
@@ -86,7 +86,7 @@ public class SummaryBuilder {
         Map<String, Double> totals = new HashMap<>();
 
         for (BillingRecord record: records) {
-            String state = record.state();
+            String state = record.department();
             double charge = record.totalCharge();
             totals.put(state, totals.getOrDefault(state, 0.0) + charge);
         }

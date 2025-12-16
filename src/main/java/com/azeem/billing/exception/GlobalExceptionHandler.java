@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     // Handle StateNotFoundException
-    @ExceptionHandler(StateNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleStateNotFoundException(StateNotFoundException ex) {
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleStateNotFoundException(DepartmentNotFoundException ex) {
         logger.warn("State not found: {}", ex.getMessage());
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),

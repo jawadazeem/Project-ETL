@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//TODO: Add pagination to endpoints returning lists of records to handle large datasets efficiently.
+//TODO: Update documentation to reflect new endpoints for filtering by billing period and retrieving available periods.
 /**
  * REST controller exposing endpoints for billing data retrieval and summary generation.
  * <p>
@@ -16,7 +18,7 @@ import java.util.List;
  * <ul>
  *   <li>GET /records - Retrieve all billing records.</li>
  *   <li>GET /summary - Get aggregated billing summary.</li>
- *   <li>GET /records/state/{state} - Get billing records filtered by state.</li>
+ *   <li>GET /records/department/{department} - Get billing records filtered by department.</li>
  *   <li>GET /top/{n} - Get top N billing records by total charge.</li>
  * </ul>
  */
@@ -42,10 +44,10 @@ public class BillingController {
         return service.generateSummary();
     }
 
-    @GetMapping("/records/state/{state}")
-    public List<BillingRecord> getRecordsByState(@PathVariable String state) {
-        log.info("GET /records/state/{} called to retrieve records for state.", state);
-        return service.getRecordsByState(state);
+    @GetMapping("/records/department/{department}")
+    public List<BillingRecord> getRecordsByDepartment(@PathVariable String department) {
+        log.info("GET /records/department/{} called to retrieve records for department.", department);
+        return service.getRecordsByDepartment(department);
     }
 
     @GetMapping("/top/{n}")
@@ -54,4 +56,31 @@ public class BillingController {
         return service.getTopNRecords(n);
     }
 
+    @GetMapping("/departments")
+    public List<String> getDepartments() {
+        log.info("GET /departments called.");
+        return service.getAllRecords().stream()
+                .map(BillingRecord::department)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    @GetMapping("/periods")
+    public List<String> getBillingPeriods() {
+        log.info("GET /periods called.");
+        return service.getAvailableBillingPeriods();
+    }
+
+    @GetMapping("/records/period/{billingPeriod}")
+    public List<BillingRecord> getRecordsByPeriod(@PathVariable String billingPeriod) {
+        log.info("GET /records/period/{} called.", billingPeriod);
+        return service.getRecordsByPeriod(billingPeriod);
+    }
+
+    @GetMapping("/summary/period/{billingPeriod}")
+    public BillingSummary getSummaryByPeriod(@PathVariable String billingPeriod) {
+        log.info("GET /summary/period/{} called.", billingPeriod);
+        return service.generateSummaryForPeriod(billingPeriod);
+    }
 }
