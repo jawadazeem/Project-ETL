@@ -1,6 +1,8 @@
 package com.azeem.billing.etl;
 
 import com.azeem.billing.model.BillingRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class BillingRecordAssembler {
     public BillingRecordAssembler() {}
 
     public List<BillingRecord> assembleRecord(List<String[]> entries) {
+        Logger log = LoggerFactory.getLogger(BillingRecordAssembler.class);
         final List<BillingRecord> records = new ArrayList<>();
         for (String[] entry : entries) {
             // Expect the exact 9 fields BillingRecord uses
@@ -67,6 +70,7 @@ public class BillingRecordAssembler {
 
             records.add(record);
         }
+        log.info("Assembled {} BillingRecord instances from raw data.", records.size());
         return records;
     }
 }

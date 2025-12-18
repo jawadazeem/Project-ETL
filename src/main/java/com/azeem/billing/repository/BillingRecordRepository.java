@@ -13,7 +13,10 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
 
     @Query("SELECT DISTINCT b.billingPeriod FROM BillingRecordEntity b ORDER BY b.billingPeriod")
     List<String> findAllBillingPeriods();
+
     // Purpose: To find billing records by billing period.
     List<BillingRecordEntity> findByBillingPeriod(String billingPeriod);
+
+    List<BillingRecordEntity> findByDepartment(String department);
 }
 

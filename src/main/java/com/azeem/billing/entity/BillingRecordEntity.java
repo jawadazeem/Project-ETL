@@ -15,10 +15,10 @@ import jakarta.persistence.*;
  */
 
 @Entity
-@Table(name="billing_records")
+@Table(name = "billing_records")
 public class BillingRecordEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id; // Auto-generated primary key by DB
 
     private String accountName;

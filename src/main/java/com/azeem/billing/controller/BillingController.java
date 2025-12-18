@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //TODO: Add pagination to endpoints returning lists of records to handle large datasets efficiently.
-//TODO: Update documentation to reflect new endpoints for filtering by billing period and retrieving available periods.
 /**
  * REST controller exposing endpoints for billing data retrieval and summary generation.
  * <p>
@@ -20,6 +19,12 @@ import java.util.List;
  *   <li>GET /summary - Get aggregated billing summary.</li>
  *   <li>GET /records/department/{department} - Get billing records filtered by department.</li>
  *   <li>GET /top/{n} - Get top N billing records by total charge.</li>
+ *   <li>GET /departments - List all unique departments.</li>
+ *   <li>GET /periods - List all available billing periods.</li>
+ *   <li>GET /records/period/{billingPeriod} - Get billing records for
+ *   specified billing period.</li>
+ *   <li>GET /summary/period/{billingPeriod} - Get billing summary for
+ *   specified billing period.</li>
  * </ul>
  */
 

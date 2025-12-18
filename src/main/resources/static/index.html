@@ -12,6 +12,9 @@
 
     <link rel="icon" href="/favicon.png"/>
 
+    <!-- Chart.js (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             padding: 30px;
@@ -47,6 +50,12 @@
             transition: all 0.25s ease;
         }
 
+        .btn-modern.alarms {
+            font-weight: 700;
+            background: rgba(255, 0, 0, 0.85);
+            color: white;
+        }
+
         .btn-modern:hover {
             background: rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
@@ -74,15 +83,129 @@
             transition: all 0.25s ease;
         }
 
+        .modal-overlay{
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 16px;
+            }
+
+            .alarm-modal{
+            width: min(760px, 96vw);
+            max-height: 80vh;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+            .modal-header{
+            display:flex;
+            align-items:center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            }
+
+            .modal-header h3{
+            margin:0;
+            font-size: 18px;
+            }
+
+            .modal-close{
+            border: none;
+            background: transparent;
+            font-size: 20px;
+            cursor: pointer;
+            line-height: 1;
+            }
+
+            .modal-body{
+            padding: 12px 16px 16px 16px;
+            overflow: auto;
+            max-height: calc(80vh - 56px);
+            }
+
+            .alarms-list{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 10px;
+            }
+
+            .alarm-item{
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 12px;
+            display:flex;
+            justify-content: space-between;
+            gap: 12px;
+            }
+
+            .alarm-left{
+            display:flex;
+            flex-direction: column;
+            gap: 4px;
+            }
+
+            .alarm-title{
+            font-weight: 700;
+            }
+
+            .alarm-meta{
+            font-size: 13px;
+            color: #555;
+            }
+
+            .alarm-explain{
+            font-size: 13px;
+            color: #333;
+            }
+
+            .badge{
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 12px;
+            align-self: start;
+            }
+
+            .badge.low{ background: #fff4cc; }
+            .badge.medium{ background: #ffe0cc; }
+            .badge.high{ background: #ffd6d6; }
+
+
     </style>
 </head>
 
 <body>
-<h1>Billing Intelligence Platform</h1>
+<h1>Telecom Billing Intelligence Platform</h1>
 
 <nav class="navbar navbar-light bg-white shadow-sm mb-4" style="border-radius: 10px;">
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1" style="font-weight:600;">Billing Portal</span>
+        <button class="btn-modern alarms" id="alarms-btn" type="button">
+            Alarms (0)
+        </button>
+
+        <div class="modal-overlay" id="alarms-overlay" style="display:none;">
+            <div class="alarm-modal">
+            <div class="modal-header">
+                    <h3 id="alarms-title">Alarms</h3>
+                    <button class="modal-close" id="alarms-close" type="button">✕</button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="alarms-empty" style="display:none;">No alarms found.</div>
+                    <ul class="alarms-list" id="alarms-list"></ul>
+                </div>
+            </div>
+        </div>
         <select id="periodSelect" class="form-select w-auto" onchange="changePeriod()"></select>
     </div>
 </nav>
@@ -121,6 +244,13 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Charges by Department</div>
+    <div class="card-body">
+        <canvas id="deptChart"></canvas>
     </div>
 </div>
 
@@ -341,6 +471,7 @@
         currentPeriod = document.getElementById('periodSelect').value;
         loadSummary();
         loadRecords();
+        loadAlarmsCount();
     }
 
     // Open info popup
@@ -352,6 +483,125 @@
         );
     }
 
+    async function loadDeptChart() {
+      const res = await fetch('/records');
+      const data = await res.json();
+
+      const totals = {};
+      data.forEach(r => {
+        totals[r.department] = (totals[r.department] || 0) + r.totalCharge;
+      });
+
+      new Chart(document.getElementById('deptChart'), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(totals),
+          datasets: [{
+            label: 'Total Charges ($)',
+            data: Object.values(totals)
+          }]
+        }
+      });
+    }
+
+        async function fetchAlarms() {
+          if (!currentPeriod) return [];
+          const res = await fetch(`/alarms/${currentPeriod}`);
+          if (!res.ok) throw new Error('Failed to load alarms');
+          return await res.json();
+        }
+
+        function renderAlarms(alarms) {
+          const list = document.getElementById('alarms-list');
+          const empty = document.getElementById('alarms-empty');
+
+          list.innerHTML = '';
+
+          if (!alarms || alarms.length === 0) {
+            empty.style.display = 'block';
+            return;
+          }
+          empty.style.display = 'none';
+
+          for (const a of alarms) {
+            const sev = (a.alarmSeverity || '').toLowerCase(); // low/medium/high
+            const type = a.alarmType || 'Alarm';
+            const phone = a.phoneNumber || '—';
+            const emp = a.employeeId || '—';
+            const period = a.billingPeriod || '—';
+            const explanation = a.explanation || '';
+
+            const li = document.createElement('li');
+            li.className = 'alarm-item';
+
+            li.innerHTML = `
+              <div class="alarm-left">
+                <div class="alarm-title">${type}</div>
+                <div class="alarm-meta">Employee: ${emp} • Phone: ${phone} • Period: ${period}</div>
+                <div class="alarm-explain">${explanation}</div>
+              </div>
+              <div class="badge ${sev}">${(a.alarmSeverity || 'UNKNOWN')}</div>
+            `;
+
+            list.appendChild(li);
+          }
+        }
+
+        function openAlarmsModal() {
+          document.getElementById('alarms-overlay').style.display = 'flex';
+        }
+
+        function closeAlarmsModal() {
+          document.getElementById('alarms-overlay').style.display = 'none';
+        }
+
+        async function loadAlarmsCount() {
+          try {
+            const alarms = await fetchAlarms();
+            document.getElementById('alarms-btn').textContent = `Alarms (${alarms.length})`;
+          } catch (e) {
+            console.error(e);
+            document.getElementById('alarms-btn').textContent = `Alarms (?)`;
+          }
+        }
+
+        async function onAlarmsClick() {
+          openAlarmsModal();
+          try {
+            const alarms = await fetchAlarms();
+            document.getElementById('alarms-title').textContent = `Alarms (${alarms.length})`;
+            renderAlarms(alarms);
+            // also keep button in sync
+            document.getElementById('alarms-btn').textContent = `Alarms (${alarms.length})`;
+          } catch (e) {
+            console.error(e);
+            renderAlarms([]);
+          }
+        }
+
+    async function loadAlarmsCount() {
+        try {
+            if (!currentPeriod) return;
+
+            const res = await fetch(`/alarms/${currentPeriod}`);
+            const alarms = await res.json();
+
+            const count = alarms.length;
+            const btn = document.getElementById("alarms-btn");
+
+            btn.textContent = `Alarms (${count})`;
+
+            // Optional: hide red button if no alarms
+            if (count === 0) {
+                btn.style.opacity = "0.4";
+            } else {
+                btn.style.opacity = "1";
+            }
+
+        } catch (e) {
+            console.error("Failed to load alarms", e);
+        }
+    }
 
     // To load summary and records on page load
     window.addEventListener("DOMContentLoaded", async () => {
@@ -359,6 +609,22 @@
         await loadDepartments();
         loadSummary();
         loadRecords();
+        loadDeptChart();
+        loadAlarmsCount();
+        document.getElementById("alarms-btn").addEventListener("click", onAlarmsClick);
+        document.getElementById("alarms-close").addEventListener("click", closeAlarmsModal);
+
+        // click outside modal closes
+        document.getElementById("alarms-overlay").addEventListener("click", (e) => {
+          if (e.target.id === "alarms-overlay") closeAlarmsModal();
+        });
+
+        // escape closes
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeAlarmsModal();
+        });
+
+        loadAlarmsCount();
     });
 </script>
 </body>

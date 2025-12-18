@@ -25,7 +25,7 @@ public class BillingRecordMapper {
     }
 
     public BillingRecord mapToDomain(BillingRecordEntity entity) {
-        BillingRecord record = new BillingRecord(
+        return new BillingRecord(
                 entity.getAccountName(),
                 entity.getEmployeeId(),
                 entity.getDepartment(),
@@ -36,6 +36,5 @@ public class BillingRecordMapper {
                 entity.getSmsCount(),
                 entity.getTotalCharge()
         );
-        return record;
     }
 }

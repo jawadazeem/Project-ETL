@@ -36,13 +36,15 @@ public class BillingIngestionService {
     private static final Logger log = LoggerFactory.getLogger(BillingIngestionService.class);
     private final BillingRecordRepository repository;
     private final BillingRecordAssembler billingRecordAssembler;
+    private final AlarmService alarmService;
 
-    public BillingIngestionService(BillingRecordAssembler billingRecordAssembler, BillingRecordRepository repository) {
+    public BillingIngestionService(BillingRecordAssembler billingRecordAssembler, BillingRecordRepository repository, AlarmService alarmService) {
         this.repository = repository;
         this.billingRecordAssembler = billingRecordAssembler;
+        this.alarmService = alarmService;
     }
 
-    public void ingestData(String filePath) {
+    public void ingestData(String billingPeriod, String filePath) {
         BillingFileReader billingFileReader = new CsvBillingReader(filePath, true);
         List<BillingRecord> domainRecords = billingRecordAssembler.assembleRecord(billingFileReader.parse());
         BillingRecordMapper mapper = new BillingRecordMapper();
@@ -53,5 +55,7 @@ public class BillingIngestionService {
         }
         repository.saveAll(entityList);
         log.info("Billing data ingested successfully with {} records.", entityList.size());
+        alarmService.detectAndPersistAlarms(billingPeriod);
+        log.info("Alarm data persisted successfully into DB");
     }
 }

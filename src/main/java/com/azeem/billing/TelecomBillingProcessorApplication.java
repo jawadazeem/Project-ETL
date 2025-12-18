@@ -16,7 +16,7 @@ public class TelecomBillingProcessorApplication {
             if (event instanceof ApplicationReadyEvent readyEvent) {
                 readyEvent.getApplicationContext()
                         .getBean(BillingIngestionService.class)
-                        .ingestData("src/main/resources/azeemcom_telecom_usage_2025_01.csv");
+                        .ingestData("2025-01","src/main/resources/azeemcom_telecom_usage_2025_01.csv");
             }
         });
 

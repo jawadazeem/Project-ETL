@@ -1,11 +1,7 @@
 # Configuration applied to all profiles (default)
 spring:
   application:
-    name: senate-telecom-billing-processor
-  datasource:
-    url: ${DB_URL}
-    password: ${DB_PASSWORD}
-    username: ${DB_USERNAME}
+    name: telecom-billing-processor
 
 server:
   port: 8080
@@ -36,6 +32,19 @@ spring:
     ingest:
       default-file: classpath:resources/azeemcom_telecom_usage_2025_01.csv
 
+---
+# Configuration for the 'test' profile only
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:postgresql://localhost:5432/billingdb
+    username: billing_app
+    password: 875869
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
 
 ---
 # Configuration for the 'prod' profile only
@@ -49,4 +58,4 @@ spring:
     password: ${PROD_DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
