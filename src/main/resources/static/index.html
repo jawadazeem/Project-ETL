@@ -254,6 +254,17 @@
     </div>
 </div>
 
+
+<div class="card mb-4">
+    <div class="card-header">Alarms by Severity (Selected Period)</div>
+    <div class="card-body">
+        <canvas id="alarmsChart" height="300"></canvas>
+        <small class="text-muted d-block mt-2">
+            Shows how many alarms are Low / Medium / High for the currently selected billing period.
+        </small>
+    </div>
+</div>
+
 <!-- All Records -->
 <div class="card mb-4">
     <div class="card-header">All Records</div>
@@ -370,6 +381,58 @@
 
         document.getElementById("summaryStats").style.display = "flex";
     }
+    let alarmsChartInstance = null;
+
+    function countBySeverity(alarms) {
+      const counts = { LOW: 0, MEDIUM: 0, HIGH: 0, UNKNOWN: 0 };
+      for (const a of (alarms || [])) {
+        const sev = String(a.alarmSeverity || "UNKNOWN").toUpperCase();
+        if (counts[sev] === undefined) counts.UNKNOWN++;
+        else counts[sev]++;
+      }
+      return counts;
+    }
+
+    async function loadAlarmsChart() {
+      if (!currentPeriod) return;
+
+      try {
+        const alarms = await fetchAlarms(); // you already have this helper
+        const counts = countBySeverity(alarms);
+
+        const labels = Object.keys(counts);
+        const values = Object.values(counts);
+
+        // destroy old chart before re-creating (prevents overlay + memory leak)
+        if (alarmsChartInstance) {
+          alarmsChartInstance.destroy();
+        }
+
+        alarmsChartInstance = new Chart(document.getElementById("alarmsChart"), {
+          type: "bar",
+          data: {
+            labels,
+            datasets: [{
+              label: "Alarm Count",
+              data: values
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { enabled: true }
+            },
+            scales: {
+              y: { beginAtZero: true, ticks: { precision: 0 } }
+            }
+          }
+        });
+
+      } catch (e) {
+        console.error("Failed to load alarms chart", e);
+      }
+    }
 
 
     async function loadRecords() {
@@ -472,6 +535,7 @@
         loadSummary();
         loadRecords();
         loadAlarmsCount();
+        loadAlarmsChart();
     }
 
     // Open info popup
@@ -555,15 +619,6 @@
           document.getElementById('alarms-overlay').style.display = 'none';
         }
 
-        async function loadAlarmsCount() {
-          try {
-            const alarms = await fetchAlarms();
-            document.getElementById('alarms-btn').textContent = `Alarms (${alarms.length})`;
-          } catch (e) {
-            console.error(e);
-            document.getElementById('alarms-btn').textContent = `Alarms (?)`;
-          }
-        }
 
         async function onAlarmsClick() {
           openAlarmsModal();
@@ -605,27 +660,23 @@
 
     // To load summary and records on page load
     window.addEventListener("DOMContentLoaded", async () => {
-        await loadPeriods();
-        await loadDepartments();
-        loadSummary();
-        loadRecords();
-        loadDeptChart();
-        loadAlarmsCount();
-        document.getElementById("alarms-btn").addEventListener("click", onAlarmsClick);
-        document.getElementById("alarms-close").addEventListener("click", closeAlarmsModal);
+      await loadPeriods();
+      await loadDepartments();
 
-        // click outside modal closes
-        document.getElementById("alarms-overlay").addEventListener("click", (e) => {
-          if (e.target.id === "alarms-overlay") closeAlarmsModal();
-        });
+      loadSummary();
+      loadRecords();
+      loadDeptChart();
+      loadAlarmsCount();
+      loadAlarmsChart();
+      loadFilteredRecords();
 
-        // escape closes
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeAlarmsModal();
-        });
+      document.getElementById("alarms-btn")
+        .addEventListener("click", onAlarmsClick);
 
-        loadAlarmsCount();
+      document.getElementById("alarms-close")
+        .addEventListener("click", closeAlarmsModal);
     });
+
 </script>
 </body>
 </html>

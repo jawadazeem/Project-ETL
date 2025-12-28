@@ -1,7 +1,7 @@
 # Telecom Billing Processor (v2)
 
 ### Author: Jawad Azeem
-This is version 2 of the Senate Telecom Billing Processor project.  
+This is version 2 of the Telecom Billing Processor project.  
 It is a Spring Boot application that performs a full ETL (Extract, Transform, Load) workflow on telecom billing data stored in CSV format.
 It reads the data, processes it into structured records, computes various analytics, and exposes the results via REST API endpoints.
 A live version of the API is hosted on AWS.
@@ -18,7 +18,6 @@ A live version of the API is hosted on AWS.
 
 ## How to Run
 - Access the Live API at:
-   - http://senate-telecom-billing-api-env.eba-wbb6t53w.us-east-1.elasticbeanstalk.com/
    - https://telecom.jawadazeem.com
 
 ## Technologies Used
@@ -36,11 +35,13 @@ A live version of the API is hosted on AWS.
 - Repository-based persistence
 
 ## Notes
-This is an early version of the project. 
 Future versions will add:
 - CSV upload endpoint
 - additional analytics
 - AI integration for anomaly detection
 - Kubernetes deployment
+
+## Future Directions
+- For V3 (Delivery by Jan 5, 2026), I'd like to turn this into a bank-grade data + risk + revenue system
 
 Version: **v2** (Dec 2025)

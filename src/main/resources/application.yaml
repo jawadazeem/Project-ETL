@@ -2,15 +2,23 @@
 spring:
   application:
     name: telecom-billing-processor
-
 server:
   port: 8080
 logging:
   file:
     name: app.log
+alarm:
+  department:
+    monthlyLimit: 2500
+  individual:
+    low: 200
+    medium: 350
+    high: 500
+  account:
+    low: 15000
+    high: 20000
 
 ---
-
 # Configuration for the 'dev' profile only
 spring:
   config:

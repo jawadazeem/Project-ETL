@@ -7,3 +7,5 @@ java -jar target/billing-0.0.1-SNAPSHOT.jar
 # Run the script with:
 #chmod +x scripts/run-test.sh
 #./scripts/run-test.sh
+
+#Same as: java -Dspring.profiles.active=test -jar target/billing-0.0.1-SNAPSHOT.jar
