@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="004-create-alarms" author="jawad">
+        <createTable tableName="alarms">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="dataset_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="business_key" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="alarm_scope" type="varchar(50)"/>
+            <column name="billing_period" type="varchar(20)"/>
+            <column name="alarm_type" type="varchar(255)"/>
+            <column name="alarm_severity" type="varchar(20)"/>
+            <column name="explanation" type="text"/>
+            <column name="timestamp" type="timestamptz"/>
+            <column name="employee_id" type="varchar(100)"/>
+            <column name="phone_number" type="varchar(50)"/>
+            <column name="department" type="varchar(100)"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="alarms"
+            baseColumnNames="dataset_id"
+            constraintName="fk_alarms_dataset"
+            referencedTableName="datasets"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <addUniqueConstraint
+            tableName="alarms"
+            columnNames="dataset_id, business_key"
+            constraintName="uq_alarms_dataset_business_key"/>
+    </changeSet>
+
+</databaseChangeLog>

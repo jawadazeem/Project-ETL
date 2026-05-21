@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="003-create-billing-records" author="jawad">
+        <createTable tableName="billing_records">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="dataset_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="billing_period" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_name" type="varchar(255)"/>
+            <column name="department" type="varchar(255)"/>
+            <column name="employee_id" type="varchar(100)"/>
+            <column name="phone_number" type="varchar(50)"/>
+            <column name="minutes_used" type="int"/>
+            <column name="data_gb_used" type="double precision"/>
+            <column name="sms_count" type="int"/>
+            <column name="total_charge" type="double precision"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="billing_records"
+            baseColumnNames="dataset_id"
+            constraintName="fk_billing_records_dataset"
+            referencedTableName="datasets"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <createIndex tableName="billing_records" indexName="idx_billing_period">
+            <column name="billing_period"/>
+        </createIndex>
+
+        <createIndex tableName="billing_records" indexName="idx_total_charge_desc">
+            <column name="total_charge" descending="true"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -86,7 +86,7 @@ spring:
       connection-timeout: 30000
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
 management:
   endpoints:
     web:
@@ -121,7 +121,7 @@ spring:
     password: ${PROD_DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 management:
   endpoints:
     web:
