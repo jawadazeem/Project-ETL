@@ -32,6 +32,24 @@ server:
   error:
     whitelabel:
       enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,loggers
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: Blueprint
+    description: Telecom Billing Intelligence Platform
+    version: 1.0.0
 logging:
   file:
     name: app.log
@@ -69,6 +87,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 ---
 # Configuration for the 'test' profile only
 spring:
@@ -96,3 +122,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
