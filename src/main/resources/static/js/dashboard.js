@@ -1,12 +1,13 @@
 let deptChartInstance = null;
 let alarmsChartInstance = null;
 let currentPeriod = null;
+let currentDatasetId = null;
 let currentPageAllRecords = 0;
 let currentPageFilterByDepartment = 0;
 const pageSize = 20;
 
 async function loadSummary() {
-    const res = await fetch(`/summary/period/${currentPeriod}`);
+    const res = await fetch(`/datasets/${currentDatasetId}/summary/periods/${currentPeriod}`);
     const s = await res.json();
 
     document.getElementById("statRecords").textContent = s.totalRecords;
@@ -50,6 +51,7 @@ function appendChatMessage(sender, text) {
 }
 
 async function sendChat() {
+    if (!currentDatasetId) return;
     const input = document.getElementById("chatInput");
     const text = input.value.trim();
     if (!text) return;
@@ -58,7 +60,7 @@ async function sendChat() {
     input.value = "";
 
     try {
-        const res = await fetch("/martin", {
+        const res = await fetch(`/datasets/${currentDatasetId}/martin`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -91,7 +93,7 @@ async function sendChat() {
 }
 
 async function loadAlarmsChart() {
-    if (!currentPeriod) return;
+    if (!currentPeriod || !currentDatasetId) return;
 
     try {
         const alarms = await fetchAlarms();
@@ -128,7 +130,8 @@ async function loadAlarmsChart() {
 }
 
 async function loadRecords() {
-    const res = await fetch(`/records/period/${currentPeriod}?page=${currentPageAllRecords}&size=${pageSize}`);
+    if (!currentDatasetId || !currentPeriod) return;
+    const res = await fetch(`/datasets/${currentDatasetId}/records/periods/${currentPeriod}?page=${currentPageAllRecords}&size=${pageSize}`);
     const data = await res.json();
     const records = data.content || [];
     const totalPages = data.totalPages || 1;
@@ -173,10 +176,11 @@ function changePeriod() {
 }
 
 async function loadByDepartment() {
+    if (!currentDatasetId) return;
     const department = document.getElementById("departmentSelect").value;
     if (!department) return;
 
-    const res = await fetch(`/records/department/${department}?page=${currentPageFilterByDepartment}&size=${pageSize}`);
+    const res = await fetch(`/datasets/${currentDatasetId}/records/departments/${department}?page=${currentPageFilterByDepartment}&size=${pageSize}`);
     const data = await res.json();
     const records = data.content || [];
     const totalPages = data.totalPages || 1;
@@ -201,10 +205,11 @@ async function loadByDepartment() {
 }
 
 async function loadTopN() {
+    if (!currentDatasetId) return;
     const n = document.getElementById("topInput").value.trim();
     if (!n) return;
 
-    const res = await fetch(`/top/${n}`);
+    const res = await fetch(`/datasets/${currentDatasetId}/top/${n}`);
     const data = await res.json();
     const records = Array.isArray(data) ? data : (data.content || []);
 
@@ -223,8 +228,10 @@ async function loadTopN() {
 }
 
 async function loadPeriods() {
-    const res = await fetch("/periods");
-    const periods = await res.json();
+    if (!currentDatasetId) return;
+    const res = await fetch(`/datasets/${currentDatasetId}/records/periods`);
+    const data = await res.json();
+    const periods = data.content || [];
     const select = document.getElementById("periodSelect");
     select.innerHTML = "";
 
@@ -243,16 +250,23 @@ async function loadPeriods() {
 }
 
 async function loadDepartments() {
-    const res = await fetch("/departments");
-    const departments = await res.json();
+    if (!currentDatasetId || !currentPeriod) return;
+    const res = await fetch(`/datasets/${currentDatasetId}/records/periods/${currentPeriod}?page=0&size=1000`);
+    const data = await res.json();
+    const records = data.content || [];
+
+    const seen = new Set();
     const select = document.getElementById("departmentSelect");
     select.innerHTML = "";
 
-    departments.forEach(department => {
-        const opt = document.createElement("option");
-        opt.value = department;
-        opt.textContent = department;
-        select.appendChild(opt);
+    records.forEach(record => {
+        if (record.department && !seen.has(record.department)) {
+            seen.add(record.department);
+            const opt = document.createElement("option");
+            opt.value = record.department;
+            opt.textContent = record.department;
+            select.appendChild(opt);
+        }
     });
 }
 
@@ -261,7 +275,8 @@ function openInfo() {
 }
 
 async function loadDeptChart() {
-    const res = await fetch(`/records/period/${currentPeriod}?page=0&size=1000`);
+    if (!currentDatasetId || !currentPeriod) return;
+    const res = await fetch(`/datasets/${currentDatasetId}/records/periods/${currentPeriod}?page=0&size=1000`);
     const data = await res.json();
     const records = Array.isArray(data) ? data : (data.content || []);
     const totals = {};
@@ -287,8 +302,8 @@ async function loadDeptChart() {
 }
 
 async function fetchAlarms() {
-    if (!currentPeriod) return [];
-    const res = await fetch(`/alarms/${currentPeriod}`);
+    if (!currentPeriod || !currentDatasetId) return [];
+    const res = await fetch(`/datasets/${currentDatasetId}/alarms/${currentPeriod}`);
     if (!res.ok) throw new Error("Failed to load alarms");
     return await res.json();
 }
@@ -352,13 +367,14 @@ async function loadDummyData() {
     btn.textContent = "Loading...";
 
     try {
-        const res = await fetch("/demo-load", { method: "POST" });
+        const res = await fetch("/demo-dataset", { method: "POST" });
         if (!res.ok) {
             const txt = await res.text();
             alert(`Failed to load dummy data: ${txt || res.status}`);
             return;
         }
 
+        currentDatasetId = "00000000-0000-0000-0000-000000000000";
         await waitForDataReady();
         await loadPeriods();
         await loadDepartments();
@@ -388,10 +404,10 @@ async function onAlarmsClick() {
 }
 
 async function loadAlarmsCount() {
-    try {
-        if (!currentPeriod) return;
+    if (!currentPeriod || !currentDatasetId) return;
 
-        const res = await fetch(`/alarms/${currentPeriod}`);
+    try {
+        const res = await fetch(`/datasets/${currentDatasetId}/alarms/${currentPeriod}`);
         const alarms = await res.json();
         const count = alarms.length;
         const btn = document.getElementById("alarms-btn");
@@ -422,12 +438,15 @@ async function uploadFile() {
     uploadBtn.textContent = "Uploading...";
 
     try {
-        const response = await fetch("/upload", {
+        const response = await fetch("/datasets", {
             method: "POST",
+            headers: { "X-User-Id": "guest-user" },
             body: formData
         });
 
         if (response.ok) {
+            const dataset = await response.json();
+            currentDatasetId = dataset.id;
             fileInput.value = "";
 
             setTimeout(async () => {
@@ -449,11 +468,12 @@ async function uploadFile() {
 }
 
 async function waitForDataReady() {
+    if (!currentDatasetId) return;
     for (let i = 0; i < 10; i++) {
-        const res = await fetch("/periods");
+        const res = await fetch(`/datasets/${currentDatasetId}/records/periods`);
         const data = await res.json();
 
-        if (data.length > 0) return;
+        if (data.content && data.content.length > 0) return;
 
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
@@ -488,16 +508,6 @@ function wireDashboardEvents() {
     }
 }
 
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", () => {
     wireDashboardEvents();
-    await loadPeriods();
-    await loadDepartments();
-
-    if (!currentPeriod) return;
-
-    loadSummary();
-    loadRecords();
-    loadDeptChart();
-    loadAlarmsCount();
-    loadAlarmsChart();
 });
