@@ -16,6 +16,7 @@ import com.azeem.blueprint.mapper.DatasetMapper;
 import com.azeem.blueprint.model.dataset.Dataset;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.service.AppUser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
 import java.time.Instant;
 import java.util.List;
@@ -38,6 +39,7 @@ class DatasetServiceTest {
   @Mock private BillingRecordRepository billingRecordRepository;
   @Mock private BillingS3Service s3Service;
   @Mock private DatasetMapper datasetMapper;
+  @Mock private AppUserService appUserService;
 
   @InjectMocks private DatasetService datasetService;
 
@@ -59,21 +61,22 @@ class DatasetServiceTest {
   @DisplayName("listDatasets returns mapped datasets for a given owner")
   void listDatasets_returnsDatasets() {
     DatasetEntity entity = sampleEntity();
-    when(datasetRepository.findByOwnerUserId(OWNER_ID)).thenReturn(List.of(entity));
+    when(datasetRepository.findByOwnerUserIdOrOwnerUserIsNull(OWNER_ID))
+        .thenReturn(List.of(entity));
     when(datasetMapper.mapToDomain(entity)).thenReturn(sampleDataset());
 
     List<Dataset> result = datasetService.listDatasets(OWNER_ID);
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).id()).isEqualTo(DATASET_ID);
-    verify(datasetRepository).findByOwnerUserId(OWNER_ID);
+    verify(datasetRepository).findByOwnerUserIdOrOwnerUserIsNull(OWNER_ID);
     verify(datasetMapper).mapToDomain(entity);
   }
 
   @Test
   @DisplayName("listDatasets returns empty list when owner has no datasets")
   void listDatasets_noDatasets_returnsEmpty() {
-    when(datasetRepository.findByOwnerUserId(OWNER_ID)).thenReturn(List.of());
+    when(datasetRepository.findByOwnerUserIdOrOwnerUserIsNull(OWNER_ID)).thenReturn(List.of());
 
     List<Dataset> result = datasetService.listDatasets(OWNER_ID);
 

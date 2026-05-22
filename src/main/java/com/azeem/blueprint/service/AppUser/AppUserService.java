@@ -9,6 +9,7 @@ import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.mapper.AppUserMapper;
 import com.azeem.blueprint.model.user.AppUser;
 import com.azeem.blueprint.repository.AppUserRepository;
+import java.time.Instant;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,20 @@ public class AppUserService {
 
   public AppUserEntity getAppUserEntityById(UUID userId) {
     return appUserRepository.getReferenceById(userId);
+  }
+
+  public AppUserEntity findOrCreateGuest(UUID userId) {
+    return appUserRepository
+        .findById(userId)
+        .orElseGet(
+            () -> {
+              AppUserEntity guest = new AppUserEntity();
+              guest.setId(userId);
+              guest.setDisplayName("Guest");
+              guest.setProvider("local");
+              guest.setRole("USER");
+              guest.setCreatedAt(Instant.now());
+              return appUserRepository.save(guest);
+            });
   }
 }

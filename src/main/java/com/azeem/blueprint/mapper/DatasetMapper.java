@@ -9,6 +9,7 @@ import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.dataset.Dataset;
 import com.azeem.blueprint.repository.AppUserRepository;
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 /** Mapper class to convert between Dataset domain model and DatasetEntity database entity. */
@@ -33,9 +34,11 @@ public class DatasetMapper {
   }
 
   public Dataset mapToDomain(DatasetEntity datasetEntity) {
+    UUID ownerUserId =
+        datasetEntity.getOwnerUser() != null ? datasetEntity.getOwnerUser().getId() : null;
     return new Dataset(
         datasetEntity.getId(),
-        datasetEntity.getOwnerUser().getId(),
+        ownerUserId,
         datasetEntity.getBillingPeriod(),
         datasetEntity.getSourceFilename(),
         datasetEntity.getS3ObjectKey(),

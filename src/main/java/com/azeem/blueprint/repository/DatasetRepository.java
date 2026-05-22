@@ -18,6 +18,8 @@ public interface DatasetRepository extends JpaRepository<DatasetEntity, UUID> {
 
   List<DatasetEntity> findByOwnerUserId(UUID ownerUserId);
 
+  List<DatasetEntity> findByOwnerUserIdOrOwnerUserIsNull(UUID ownerUserId);
+
   @Modifying
   @Transactional
   int deleteByIdAndOwnerUserId(UUID datasetId, UUID ownerUserId);

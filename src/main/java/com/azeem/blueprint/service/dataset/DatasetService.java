@@ -5,12 +5,14 @@
 
 package com.azeem.blueprint.service.dataset;
 
+import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.exception.infra.DatasetNotFoundException;
 import com.azeem.blueprint.mapper.DatasetMapper;
 import com.azeem.blueprint.model.dataset.Dataset;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.service.AppUser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
 import java.time.Instant;
 import java.util.List;
@@ -29,16 +31,19 @@ public class DatasetService {
   private final BillingRecordRepository billingRecordRepository;
   private final BillingS3Service s3Service;
   private final DatasetMapper datasetMapper;
+  private final AppUserService appUserService;
 
   public DatasetService(
       DatasetRepository datasetRepository,
       BillingRecordRepository billingRecordRepository,
       BillingS3Service s3Service,
-      DatasetMapper datasetMapper) {
+      DatasetMapper datasetMapper,
+      AppUserService appUserService) {
     this.datasetRepository = datasetRepository;
     this.billingRecordRepository = billingRecordRepository;
     this.s3Service = s3Service;
     this.datasetMapper = datasetMapper;
+    this.appUserService = appUserService;
   }
 
   /**
@@ -49,7 +54,11 @@ public class DatasetService {
   public Dataset initializeAndUploadDataset(String externalUserId, MultipartFile file) {
     log.info("Initializing new dataset upload for user: {}", externalUserId);
 
+    UUID userId = UUID.fromString(externalUserId);
+    AppUserEntity ownerUser = appUserService.findOrCreateGuest(userId);
+
     DatasetEntity datasetEntity = new DatasetEntity();
+    datasetEntity.setOwnerUser(ownerUser);
     datasetEntity.setSourceFilename(file.getOriginalFilename());
     datasetEntity.setUploadedAt(Instant.now());
     datasetEntity.setStatus("PENDING_INGESTION");
@@ -71,7 +80,7 @@ public class DatasetService {
   }
 
   public List<Dataset> listDatasets(UUID ownerUserId) {
-    return datasetRepository.findByOwnerUserId(ownerUserId).stream()
+    return datasetRepository.findByOwnerUserIdOrOwnerUserIsNull(ownerUserId).stream()
         .map(datasetMapper::mapToDomain)
         .toList();
   }

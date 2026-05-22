@@ -7,6 +7,7 @@ package com.azeem.blueprint.listener;
 
 import com.azeem.blueprint.exception.infra.S3SqsPipelineIngestionException;
 import com.azeem.blueprint.model.billing.IngestionResult;
+import com.azeem.blueprint.repository.DatasetRepository;
 import com.azeem.blueprint.service.alarm.AlarmService;
 import com.azeem.blueprint.service.billing.BillingIngestionService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
@@ -27,15 +28,18 @@ public class BillingEventListener {
 
   private final BillingS3Service s3Service;
   private final BillingIngestionService ingestionService;
+  private final DatasetRepository datasetRepository;
   private final ObjectMapper objectMapper;
 
   public BillingEventListener(
       BillingS3Service s3Service,
       BillingIngestionService ingestionService,
       AlarmService alarmService,
+      DatasetRepository datasetRepository,
       ObjectMapper objectMapper) {
     this.s3Service = s3Service;
     this.ingestionService = ingestionService;
+    this.datasetRepository = datasetRepository;
     this.objectMapper = objectMapper;
   }
 
@@ -90,12 +94,28 @@ public class BillingEventListener {
         }
 
         log.info("Event-driven ingestion successful for {}", key);
+        markDatasetReady(datasetId);
       }
 
     } catch (Exception e) {
       log.error("Failed to process S3 event from SQS", e);
       throw new S3SqsPipelineIngestionException(
           "Re-throwing exception to trigger SQS message redelivery", e);
+    }
+  }
+
+  private void markDatasetReady(UUID datasetId) {
+    try {
+      datasetRepository
+          .findById(datasetId)
+          .ifPresent(
+              dataset -> {
+                dataset.setStatus("READY");
+                datasetRepository.save(dataset);
+                log.info("Dataset {} status updated to READY", datasetId);
+              });
+    } catch (Exception e) {
+      log.warn("Failed to update dataset status to READY for {}: {}", datasetId, e.getMessage());
     }
   }
 }
