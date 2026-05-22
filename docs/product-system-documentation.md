@@ -1,8 +1,9 @@
 # Blueprint Product and System Documentation
 
-This document explains what Blueprint currently is, how it works, and how the major workflows are implemented. It documents implemented code and clearly labels incomplete or scaffolded systems. 
-<br>
-Last updated: May 14, 2026
+This document explains what Blueprint currently is, how it works, and how the major workflows are implemented. It documents implemented code and clearly labels incomplete or scaffolded systems.
+
+Last updated: May 22, 2026
+
 ## Project Overview
 
 Blueprint is a telecom billing intelligence dashboard. It helps users ingest telecom billing CSV data, store it in PostgreSQL, inspect records by period and department, summarize charges, surface budget alarms, and ask natural-language billing questions through an AI assistant named Martin.
@@ -10,46 +11,47 @@ Blueprint is a telecom billing intelligence dashboard. It helps users ingest tel
 The current product is a full-stack Spring Boot application with:
 
 - A static HTML/CSS/JavaScript frontend served directly by Spring Boot.
-- REST APIs for records, summaries, departments, periods, alarms, upload, demo loading, and Martin chat.
-- PostgreSQL persistence through Spring Data JPA.
+- REST APIs for dataset management, records, summaries, departments, periods, alarms, demo loading, and Martin chat. All data APIs are scoped to a dataset ID.
+- PostgreSQL persistence through Spring Data JPA, with schema managed by Liquibase.
 - CSV ingestion through OpenCSV.
 - Event-driven upload processing through S3 object-created events delivered to SQS.
 - Local S3/SQS emulation through LocalStack in Docker Compose.
 - Google Gemini integration through Spring AI.
+- A `NotificationClient` that dispatches alarm payloads to an external TypeScript notification microservice on a best-effort basis.
 
-Current maturity: functional demo / prototype with real ETL, persistence, alarms, and AI query execution, but incomplete auth, incomplete tests, no migrations, and production deployment assumptions that need hardening.
+Current maturity: functional demo with real ETL, persistence, alarms, multi-dataset management, Liquibase-managed schema, complete test coverage, and AI query execution. Remaining gaps: no real authentication, Martin SQL validation is string-based, and the notification microservice does not yet exist.
 
 ## Target Users
 
-The implementation is aimed at users who need to inspect telecom billing data:
-
 - Internal finance or operations teams reviewing telecom spend.
 - Technical reviewers evaluating ETL, event-driven ingestion, and AI analytics patterns.
-- Demo users who do not have their own CSV and can load bundled dummy data.
+- Demo users who do not have their own CSV and can load bundled demo data.
 
-There is no implemented multi-user account system, tenant model, roles, permissions, or billing/payment system.
+There is no implemented multi-user account system, tenant model, roles, or permissions. All requests use a stable guest UUID (`00000000-0000-0000-0000-000000000001`).
 
 ## Primary Workflows
 
 ```mermaid
 flowchart TD
     A["Open dashboard"] --> B{"Data already loaded?"}
-    B -->|No| C["Load dummy data or upload CSV"]
-    C --> D["Ingest CSV rows"]
-    D --> E["Persist billing records"]
-    E --> F["Detect alarms"]
-    B -->|Yes| G["Select billing period"]
-    F --> G
-    G --> H["View summary cards"]
-    G --> I["Browse paginated records"]
-    G --> J["View charge and alarm charts"]
-    G --> K["Filter by department"]
-    G --> L["Top N charge lookup"]
-    G --> M["Ask Martin"]
-    M --> N["Generate SQL with Gemini"]
-    N --> O["Validate SQL"]
-    O --> P["Execute query"]
-    P --> Q["Generate natural-language answer"]
+    B -->|No| C["Welcome overlay — upload CSV or load demo"]
+    C --> D["Dataset created, CSV uploaded to S3"]
+    D --> E["SQS triggers ingestion"]
+    E --> F["Persist billing records"]
+    F --> G["Detect and persist alarms"]
+    B -->|Yes| H["Silently pick first READY dataset"]
+    G --> I["Select billing period"]
+    H --> I
+    I --> J["View summary cards"]
+    I --> K["Browse paginated records"]
+    I --> L["View charge and alarm charts"]
+    I --> M["Filter by department"]
+    I --> N["Top N charge lookup"]
+    I --> O["Ask Martin"]
+    O --> P["Generate SQL with Gemini"]
+    P --> Q["Validate SQL"]
+    Q --> R["Execute query"]
+    R --> S["Generate natural-language answer"]
 ```
 
 ## Architecture Overview
@@ -58,21 +60,24 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    StaticUI["Static UI<br/>HTML/CSS/JS"] --> Controllers["Spring REST Controllers"]
-    Controllers --> BillingService["BillingService"]
+    StaticUI["Static UI\nHTML/CSS/JS"] --> Controllers["Spring REST Controllers"]
+    Controllers --> DatasetService["DatasetService"]
+    Controllers --> BillingService["BillingQueryService"]
     Controllers --> AlarmService["AlarmService"]
     Controllers --> MartinService["MartinService"]
-    Controllers --> S3Service["BillingS3Service"]
-    S3Service --> S3["S3 or LocalStack S3"]
+    DatasetService --> S3Service["BillingS3Service"]
+    S3Service --> S3["S3 / LocalStack"]
     S3 --> SQS["SQS event queue"]
     SQS --> Listener["BillingEventListener"]
     Listener --> Ingestion["BillingIngestionService"]
     Ingestion --> Repository["Spring Data JPA repositories"]
     BillingService --> Repository
     AlarmService --> Repository
+    AlarmService --> NotifClient["NotificationClient"]
+    NotifClient --> NotifService["blueprint-notifications\n(external TS service)"]
     MartinService --> JDBC["JdbcTemplate"]
     MartinService --> Gemini["Google Gemini via Spring AI"]
-    Repository --> DB["PostgreSQL"]
+    Repository --> DB["PostgreSQL\n(Liquibase schema)"]
     JDBC --> DB
 ```
 
@@ -81,9 +86,12 @@ flowchart LR
 The frontend in `src/main/resources/static` is responsible for:
 
 - Rendering the dashboard, login, info, and 404 pages.
-- Calling backend REST APIs with `fetch`.
+- Showing a welcome overlay on first visit and silently restoring the last READY dataset on return visits.
+- Providing a dataset switcher in the navbar to switch between uploaded datasets.
+- Calling backend REST APIs with `fetch`, including an `X-User-Id` header for dataset-scoped requests.
 - Rendering Chart.js charts.
-- Handling client-side page interactions such as period selection, pagination controls, upload button, modal open/close, and Martin chat input.
+- Showing skeleton loaders during async fetches and toast notifications on errors.
+- Handling client-side page interactions: period selection, pagination, upload, dataset switching, modal open/close, Martin chat.
 
 It has no build step, package manager, client-side router, frontend state library, auth provider, or component system.
 
@@ -92,13 +100,14 @@ It has no build step, package manager, client-side router, frontend state librar
 The Spring Boot app is responsible for:
 
 - Serving static files.
-- Accepting CSV uploads.
-- Uploading files to S3/LocalStack S3.
+- Provisioning `AppUser` records for incoming `X-User-Id` values on demand.
+- Accepting CSV uploads, creating `Dataset` tracking records, and streaming files to S3.
 - Listening for SQS messages triggered by S3 object creation.
-- Parsing and ingesting CSV records.
-- Persisting billing records and alarms.
-- Serving analytics queries.
+- Parsing and ingesting CSV records into the correct dataset.
+- Persisting billing records and alarms, scoped by dataset.
+- Serving analytics queries scoped to a dataset.
 - Generating AI SQL and explanations through Martin.
+- Dispatching alarm notifications to the external notification service after persistence.
 - Handling validation and domain exceptions.
 
 ## Repository Map
@@ -106,42 +115,102 @@ The Spring Boot app is responsible for:
 ```text
 src/main/java/com/azeem/blueprint/
 ├── BlueprintApplication.java
+├── client/
+│   └── NotificationClient.java
 ├── config/
 │   ├── AlarmConfig.java
 │   └── BillingReaderConfig.java
 ├── controller/
 │   ├── AlarmController.java
 │   ├── BillingController.java
+│   ├── DatasetController.java
+│   ├── DemoController.java
 │   └── MartinController.java
-├── demo/
-│   └── LoadDummyDataService.java
 ├── entity/
 │   ├── AlarmEntity.java
-│   └── BillingRecordEntity.java
+│   ├── AppUserEntity.java
+│   ├── BillingRecordEntity.java
+│   └── DatasetEntity.java
 ├── etl/
 │   ├── BillingRecordAssembler.java
 │   ├── CsvBillingReader.java
 │   ├── SummaryBuilder.java
 │   └── TsvBillingReader.java
 ├── exception/
+│   ├── ErrorResponse.java
+│   ├── GlobalExceptionHandler.java
+│   ├── core/
+│   │   ├── BillingDataIngestionException.java
+│   │   ├── BillingDataLoadException.java
+│   │   ├── BillingDataNotFoundException.java
+│   │   ├── BillingException.java
+│   │   ├── DepartmentNotFoundException.java
+│   │   └── MartinResponseInvalidException.java
+│   ├── infra/
+│   │   ├── DatasetNotFoundException.java
+│   │   ├── MalformedS3ObjectKeyException.java
+│   │   └── S3SqsPipelineIngestionException.java
+│   └── web/
+│       ├── ApiException.java
+│       └── QueryLimitExceededException.java
 ├── listener/
 │   └── BillingEventListener.java
 ├── mapper/
 │   ├── AlarmMapper.java
-│   └── BillingRecordMapper.java
+│   ├── AppUserMapper.java
+│   ├── BillingRecordMapper.java
+│   └── DatasetMapper.java
 ├── model/
 │   ├── alarm/
+│   │   ├── Alarm.java
+│   │   ├── AlarmScope.java
+│   │   └── AlarmSeverity.java
 │   ├── billing/
-│   └── martin/
+│   │   ├── BillingRecord.java
+│   │   ├── BillingSummary.java
+│   │   ├── Department.java
+│   │   └── IngestionResult.java
+│   ├── dataset/
+│   │   └── Dataset.java
+│   ├── martin/
+│   │   ├── MartinRequest.java
+│   │   ├── MartinResponse.java
+│   │   └── SqlResponse.java
+│   ├── notification/
+│   │   └── AlarmNotificationPayload.java
+│   └── user/
+│       └── AppUser.java
 ├── repository/
 │   ├── AlarmRepository.java
-│   └── BillingRecordRepository.java
+│   ├── AppUserRepository.java
+│   ├── BillingRecordRepository.java
+│   └── DatasetRepository.java
 ├── service/
+│   ├── AppUser/
+│   │   └── AppUserService.java
 │   ├── alarm/
+│   │   ├── AlarmDetectionService.java
+│   │   └── AlarmService.java
 │   ├── billing/
+│   │   ├── BillingIngestionService.java
+│   │   ├── BillingQueryService.java
+│   │   └── BillingS3Service.java
+│   ├── dataset/
+│   │   ├── DatasetService.java
+│   │   └── demo/
+│   │       └── DemoDatasetLoader.java
 │   └── martin/
+│       ├── MartinService.java
+│       ├── QueryExecutionService.java
+│       ├── SchemaService.java
+│       └── SqlValidationService.java
 ├── util/
+│   └── BillingFileReader.java
 └── validation/
+    ├── BillingPeriod.java
+    ├── BillingPeriodFormatValidator.java
+    ├── CsvFileValidator.java
+    └── ValidCsvFile.java
 ```
 
 ## Core Features
@@ -152,27 +221,26 @@ Purpose: allow the dashboard to work without a user-provided CSV.
 
 User flow:
 
-1. User opens dashboard.
-2. User opens Help.
-3. User clicks `Load Dummy Data`.
-4. Frontend sends `POST /demo-load`.
-5. Backend ingests `src/main/resources/dummy-data.csv`.
-6. Dashboard refreshes periods, departments, summary, records, and charts.
+1. User opens the dashboard for the first time and sees the welcome overlay.
+2. User clicks `Load Demo Data` on the overlay (or inside the Help modal).
+3. Frontend sends `POST /demo-dataset`.
+4. Backend ingests the bundled `dummy-data.csv` as a fixed demo dataset.
+5. Welcome overlay disappears and the dashboard refreshes.
 
 Backend flow:
 
 ```mermaid
 sequenceDiagram
     participant UI
-    participant BillingController
-    participant LoadDummyDataService
+    participant DemoController
+    participant DemoDatasetLoader
     participant BillingIngestionService
     participant AlarmService
     participant DB
-    UI->>BillingController: POST /demo-load
-    BillingController->>LoadDummyDataService: loadDummyData()
-    LoadDummyDataService->>DB: existsByBillingPeriod("dummy-data")
-    LoadDummyDataService->>BillingIngestionService: ingestData(classpath CSV)
+    UI->>DemoController: POST /demo-dataset
+    DemoController->>DemoDatasetLoader: loadDemoData()
+    DemoDatasetLoader->>DB: check if demo dataset exists
+    DemoDatasetLoader->>BillingIngestionService: ingestData(classpath CSV)
     BillingIngestionService->>DB: save billing records
     BillingIngestionService->>AlarmService: detectAndPersistAlarms(period)
     AlarmService->>DB: save alarms
@@ -183,16 +251,17 @@ Important files:
 | File | Role |
 |---|---|
 | `src/main/resources/dummy-data.csv` | Bundled seed dataset. |
-| `src/main/java/com/azeem/blueprint/demo/LoadDummyDataService.java` | Loads seed CSV. |
-| `src/main/java/com/azeem/blueprint/controller/BillingController.java` | Exposes `POST /demo-load`. |
-| `src/main/resources/static/js/dashboard.js` | Calls `/demo-load` and refreshes UI. |
+| `service/dataset/demo/DemoDatasetLoader.java` | Loads seed CSV. |
+| `controller/DemoController.java` | Exposes `POST /demo-dataset`. |
+| `src/main/resources/static/js/dashboard.js` | Calls `/demo-dataset` and refreshes UI. |
 
 Status: implemented.
 
 Constraints:
 
-- The loader skips repeat ingestion if any billing record exists for `dummy-data`.
+- The loader skips repeat ingestion if the demo dataset already exists.
 - `dummy-data` is explicitly allowed by `BillingPeriodFormatValidator` even though normal periods must be `YYYY-MM`.
+- The demo dataset ID is fixed as `00000000-0000-0000-0000-000000000000`.
 
 ### 2. CSV Upload and Event-Driven Ingestion
 
@@ -200,65 +269,113 @@ Purpose: allow users to upload billing CSVs and process them asynchronously thro
 
 User flow:
 
-1. User chooses a `.csv` file from the dashboard.
+1. User chooses a `.csv` file from the dashboard navbar (or the welcome overlay).
 2. User clicks `Upload`.
-3. Frontend posts multipart form data to `/upload`.
-4. Backend uploads the file to bucket `telecom-billing`.
-5. S3/LocalStack emits object-created event to SQS.
-6. `BillingEventListener` receives the message and ingests the object.
+3. Frontend posts multipart form data to `POST /datasets` with `X-User-Id` header.
+4. Backend creates a `Dataset` tracking record with status `PENDING_INGESTION`.
+5. Backend uploads the file to S3 under path `ownerUserId/datasetId/filename.csv`.
+6. S3/LocalStack emits object-created event to SQS.
+7. `BillingEventListener` receives the message and ingests the object.
+8. On successful ingestion the dataset transitions to `READY`.
 
 Backend flow:
 
 ```mermaid
 sequenceDiagram
     participant UI
-    participant BillingController
+    participant DatasetController
+    participant DatasetService
     participant BillingS3Service
     participant S3
     participant SQS
     participant BillingEventListener
     participant BillingIngestionService
     participant DB
-    UI->>BillingController: POST /upload multipart file
-    BillingController->>BillingS3Service: uploadUserFile("telecom-billing", file)
+    UI->>DatasetController: POST /datasets (X-User-Id, multipart file)
+    DatasetController->>DatasetService: initializeAndUploadDataset(userId, file)
+    DatasetService->>DB: save DatasetEntity (status=PENDING_INGESTION)
+    DatasetService->>BillingS3Service: uploadUserFile(bucket, dataset, file)
     BillingS3Service->>S3: upload object
     S3->>SQS: object-created event
     SQS->>BillingEventListener: message
     BillingEventListener->>BillingS3Service: getBillingDataStream(bucket, key)
     BillingEventListener->>BillingIngestionService: ingestData(stream)
-    BillingIngestionService->>DB: save records and alarms
+    BillingIngestionService->>DB: save records, update dataset status=READY
+    BillingIngestionService->>AlarmService: detectAndPersistAlarms
 ```
 
 Important files:
 
 | File | Role |
 |---|---|
-| `BillingController.java` | `POST /upload`. |
-| `BillingS3Service.java` | S3 download/upload/error-log operations. |
+| `controller/DatasetController.java` | `POST /datasets`, `GET /datasets`, `GET /datasets/{id}`. |
+| `service/dataset/DatasetService.java` | Dataset creation, S3 upload orchestration, listing. |
+| `BillingS3Service.java` | S3 upload/download/error-log operations. |
 | `BillingEventListener.java` | `@SqsListener("billing-event-queue")`. |
 | `BillingIngestionService.java` | Parses, persists, and triggers alarms. |
 | `docker-compose.dev.yml` | Creates LocalStack S3/SQS and notification bridge. |
 
 Status: implemented for Docker/LocalStack.
 
+Dataset status lifecycle:
+
+| Status | Meaning |
+|---|---|
+| `PENDING_INGESTION` | Dataset record created; S3 upload complete; awaiting SQS processing. |
+| `READY` | Ingestion complete; billing records and alarms are queryable. |
+
 Edge cases and constraints:
 
 - `CsvFileValidator` accepts only non-empty files whose original filename ends with `.csv`.
-- `BillingS3Service.uploadUserFile` refuses duplicate object keys by returning early if the object exists.
+- `BillingS3Service.uploadUserFile` refuses duplicate S3 object keys by returning early if the object exists.
 - Ingestion catches per-row parse errors, records them in an error log buffer, and continues.
 - If any row failures occur, `BillingEventListener` uploads an error log to `error-logs/{billingPeriod}-errors.log`.
 - The frontend waits two seconds after upload before polling periods and refreshing the dashboard.
 
-### 3. Billing Records and Summary Analytics
+### 3. Dataset Management
 
-Purpose: expose stored billing records and aggregate analytics.
+Purpose: let users list and switch between multiple uploaded datasets.
+
+The `Dataset` domain model is the central tracking entity. Every billing record and alarm is scoped to a dataset ID.
+
+Dataset API:
+
+| Method | Path | Auth header | Response |
+|---|---|---|---|
+| `POST /datasets` | Upload new CSV | `X-User-Id: String` | `Dataset` |
+| `GET /datasets` | List user's datasets | `X-User-Id: UUID` | `List<Dataset>` |
+| `GET /datasets/{datasetId}` | Get a single dataset | none | `Dataset` |
+
+Frontend dataset switcher:
+
+- On first load the dashboard calls `GET /datasets` and finds the first `READY` dataset — the welcome overlay stays visible if none exists.
+- After any successful upload or demo load, `loadDatasetList()` is called to populate and reveal the dataset switcher `<select>` in the navbar.
+- Switching datasets resets pagination and reloads all sections via `switchDataset()`.
+- If the active dataset status is not `READY`, the switcher select gets a yellow `dataset-not-ready` border class.
+
+Important files:
+
+| File | Role |
+|---|---|
+| `controller/DatasetController.java` | Dataset CRUD endpoints. |
+| `service/dataset/DatasetService.java` | Dataset creation, listing, and period cleanup. |
+| `entity/DatasetEntity.java` | JPA entity for `datasets` table. |
+| `model/dataset/Dataset.java` | Domain record: `id`, `ownerUserId`, `billingPeriod`, `sourceFilename`, `s3ObjectKey`, `uploadedAt`, `status`. |
+| `mapper/DatasetMapper.java` | Entity/domain mapping. |
+| `repository/DatasetRepository.java` | `findByOwnerUserId`, `findByIdAndOwnerUserId`. |
+
+Status: implemented.
+
+### 4. Billing Records and Summary Analytics
+
+Purpose: expose stored billing records and aggregate analytics, scoped to a dataset.
 
 Backend implementation:
 
 | Layer | Files |
 |---|---|
-| Controller | `BillingController.java` |
-| Service | `BillingService.java` |
+| Controller | `BillingController.java` (under `/datasets/{datasetId}`) |
+| Service | `BillingQueryService.java` |
 | Repository | `BillingRecordRepository.java` |
 | Entity | `BillingRecordEntity.java` |
 | Domain model | `BillingRecord.java`, `BillingSummary.java` |
@@ -277,27 +394,25 @@ APIs involved:
 
 | Endpoint | Used by frontend | Behavior |
 |---|---|---|
-| `GET /periods` | yes | Populates period dropdown. |
-| `GET /departments` | yes | Populates department dropdown. |
-| `GET /records/period/{billingPeriod}` | yes | Paged all-records table and department chart source. |
-| `GET /summary/period/{billingPeriod}` | yes | Summary cards. |
-| `GET /records/department/{department}` | yes | Department filter table. |
-| `GET /top/{n}` | yes | Top N table. |
-| `GET /records` | no current frontend use | All records across periods. |
-| `GET /summary` | no current frontend use | Summary across all records. |
+| `GET /datasets/{id}/records/periods` | yes | Populates period dropdown. Returns `List<String>`. |
+| `GET /datasets/{id}/records/periods/{billingPeriod}` | yes | Paged records table and department chart source. |
+| `GET /datasets/{id}/summary/periods/{billingPeriod}` | yes | Summary cards. |
+| `GET /datasets/{id}/records/departments/{department}` | yes | Department filter table. |
+| `GET /datasets/{id}/top/{n}` | yes | Top N table. |
+| `GET /datasets/{id}/records` | no current frontend use | All records across periods. |
+| `GET /datasets/{id}/summary` | no current frontend use | Summary across all records. |
 
 Status: implemented.
 
 Constraints:
 
-- `GET /top/{n}` rejects values above `billing.charges.max-top-n`, default 100.
-- `GET /top/{n}` also rejects values above the total number of ingested records.
-- Period routes validate `YYYY-MM` or `dummy-data`.
-- Summary across all records paginates through records in batches of 1,000 in service code.
+- `GET /top/{n}` validates `n` between 1 and 100 via `@Min`/`@Max`.
+- Period routes validate `YYYY-MM` format or the literal `dummy-data`.
+- Department routes validate `@NotBlank` on the path variable.
 
-### 4. Alarm Detection
+### 5. Alarm Detection and Notification Dispatch
 
-Purpose: detect telecom spend anomalies/budget alarms after ingestion and expose them for the dashboard.
+Purpose: detect telecom spend anomalies after ingestion, persist them, and notify an external service.
 
 Alarm scopes:
 
@@ -322,20 +437,39 @@ alarm:
     high: 60000
 ```
 
+After persisting new alarms, `AlarmService` calls `notifyQuietly()`, which dispatches the alarm list to `NotificationClient`. The client maps each `Alarm` to an `AlarmNotificationPayload` and `POST`s the array to `${NOTIFICATION_SERVICE_URL:http://localhost:3000}/notify`. Failures are caught and logged as `WARN` — they never propagate or roll back alarm persistence.
+
+`AlarmNotificationPayload` fields:
+
+| Field | Type | Notes |
+|---|---|---|
+| `datasetId` | UUID | |
+| `billingPeriod` | String | |
+| `alarmScope` | String | `INDIVIDUAL`, `DEPARTMENT`, or `ACCOUNT` |
+| `alarmSeverity` | String | `LOW`, `MEDIUM`, or `HIGH` |
+| `alarmType` | String | Human-readable type label |
+| `explanation` | String | |
+| `employeeId` | String nullable | Individual alarms only |
+| `phoneNumber` | String nullable | Individual alarms only |
+| `department` | String nullable | Department alarms only |
+| `timestamp` | Instant | |
+
+This payload is the contract between Blueprint and the `blueprint-notifications` TypeScript microservice.
+
 Important files:
 
 | File | Role |
 |---|---|
 | `AlarmDetectionService.java` | Pure detection logic over billing records. |
-| `AlarmService.java` | Loads records, deduplicates against existing alarm business keys, persists alarms. |
+| `AlarmService.java` | Loads records, deduplicates, persists alarms, triggers notification. |
+| `client/NotificationClient.java` | HTTP client for `POST /notify`. |
+| `model/notification/AlarmNotificationPayload.java` | Shared payload contract. |
 | `AlarmRepository.java` | Alarm queries. |
-| `AlarmController.java` | Alarm API endpoints. |
-| `AlarmEntity.java` | Persistence model. |
-| `AlarmMapper.java` | Entity/domain mapper. |
+| `AlarmController.java` | Alarm API endpoints under `/datasets/{datasetId}`. |
 
 Frontend flow:
 
-- Dashboard calls `/alarms/{billingPeriod}` to update the red alarm button count.
+- Dashboard calls `/datasets/{id}/alarms/{billingPeriod}` to update the red alarm button count.
 - Alarm modal lists all alarms for selected period.
 - Alarm severity chart groups returned alarms by LOW, MEDIUM, HIGH, UNKNOWN.
 
@@ -343,13 +477,13 @@ Status: implemented.
 
 Known implementation caveats:
 
-- `AlarmDetectionService` creates new random `businessKey` values every detection run. `AlarmService` checks existing keys, but random keys do not provide deterministic deduplication across repeated detection for the same underlying alarm.
-- Department detection only maps a fixed set of departments in the `Department` enum/map. Dummy data contains additional departments such as `Security` and `Quality`; those can still exist as billing record departments but will not map to department-scoped alarm enum values.
-- In `getGrandTotalOverLimit`, the high branch condition is `grandTotal >= accountLow`, not `grandTotal >= accountHigh`, because it is in the `else if` after the low-range check. Practically this means totals at or above `accountHigh` become high, but the condition label is imprecise.
+- Alarm detection is chunked by 1,000 records. Department totals and account totals are computed per chunk, not per full dataset-period. This can produce false negatives or duplicates for datasets larger than one chunk. There is a TODO in `AlarmService` for this.
+- Department detection only maps a fixed set of departments in the `Department` enum. Free-form department strings in billing records that do not map to an enum value are skipped for department-scoped alarms.
+- In `getGrandTotalOverLimit`, the high-severity branch condition is `grandTotal >= accountLow` in an `else if` after the low range check. Practically this means totals at or above `accountHigh` are correctly classified as HIGH, but the condition label is imprecise.
 
-### 5. Martin AI Analytics
+### 6. Martin AI Analytics
 
-Purpose: let users ask natural-language questions about billing data.
+Purpose: let users ask natural-language questions about billing data scoped to the active dataset.
 
 Backend flow:
 
@@ -361,8 +495,8 @@ sequenceDiagram
     participant Gemini
     participant SQLValidator
     participant DB
-    UI->>MartinController: POST /martin {prompt, period}
-    MartinController->>MartinService: ask(prompt, period)
+    UI->>MartinController: POST /datasets/{datasetId}/martin {prompt, period}
+    MartinController->>MartinService: ask(prompt, datasetId, period)
     MartinService->>Gemini: generate JSON SQL response
     Gemini-->>MartinService: {"sql": "...", "reasoning": "..."}
     MartinService->>SQLValidator: isValidSql(sql)
@@ -376,7 +510,7 @@ Important files:
 
 | File | Role |
 |---|---|
-| `MartinController.java` | Exposes `POST /martin`. |
+| `MartinController.java` | Exposes `POST /datasets/{datasetId}/martin`. |
 | `MartinService.java` | Prompting, Gemini calls, validation orchestration, explanation generation. |
 | `SchemaService.java` | Hardcoded schema string provided to Gemini. |
 | `SqlValidationService.java` | Lightweight SQL safety check. |
@@ -385,7 +519,7 @@ Important files:
 
 Prompt behavior:
 
-- Gemini is instructed to act as a PostgreSQL query generator.
+- Gemini is instructed to act as a PostgreSQL query generator scoped to the given dataset.
 - Gemini must return only JSON with `sql` and `reasoning`.
 - Prompt includes the hardcoded database schema.
 - Prompt instructs that all queries must include the selected `billing_period`.
@@ -404,7 +538,7 @@ Risk:
 - The generated SQL is executed directly through `JdbcTemplate.queryForList`.
 - Validation does not currently parse SQL grammar, enforce a table allowlist, enforce a hard row limit, or verify the period predicate beyond prompting the model.
 
-### 6. Login Page
+### 7. Login Page
 
 Purpose: provide a demo entry screen.
 
@@ -423,8 +557,40 @@ Behavior:
 - `Sign In` requires non-empty username and password, logs credentials to the browser console, shows success, and redirects to `/`.
 - `Continue as Guest` shows success and redirects to `/`.
 - There is no backend login endpoint.
-- There is no Spring Security dependency/configuration.
+- There is no Spring Security dependency or configuration.
 - There are no users, password hashing, sessions, JWTs, protected routes, roles, or permissions.
+
+### 8. Frontend Dashboard Experience
+
+Purpose: provide a polished first-run and returning-user experience with visible loading and error feedback.
+
+**Welcome overlay:**
+
+- Displayed on first visit when no dataset is active (`currentDatasetId === null`).
+- Shows `Upload CSV` and `Load Demo Data` action buttons.
+- Dismissed automatically when a dataset becomes active.
+- On return visits, `tryLoadExistingDatasets()` runs silently on `DOMContentLoaded`: it calls `GET /datasets`, finds the first `READY` dataset, and skips the welcome overlay entirely.
+
+**Dataset switcher:**
+
+- A `<select>` in the navbar, hidden until the first dataset loads (`d-none` class removed by `loadDatasetList()`).
+- Populated with each dataset's filename, upload date, and status.
+- Changing the selection calls `switchDataset()`, which resets pagination and reloads all dashboard sections.
+
+**Skeleton loaders:**
+
+Each async-loaded card area has a corresponding `skeleton-block` element that shows an animated shimmer during fetches and hides on completion or error. Skeleton IDs: `skeleton-summary`, `skeleton-dept-chart`, `skeleton-alarms-chart`, `skeleton-records`, `skeleton-dept-records`, `skeleton-top`.
+
+**Toast error system:**
+
+- `showToast(message, type)` creates a dismissable toast in `#toast-container` (fixed top-right).
+- Types: `error` (red left border) and `info` (blue left border).
+- Toasts auto-dismiss after 5 seconds.
+- Every `catch` block in a fetch function calls `showToast` in addition to `console.error`.
+
+**Empty states:**
+
+- When a table fetch returns 0 records, `tbody` is set to a single centered "No records found." row instead of being left blank.
 
 ## Authentication and Authorization
 
@@ -432,70 +598,94 @@ No real authentication or authorization is implemented.
 
 What exists:
 
-- Static `login.html`.
-- Client-side validation only.
-- Client-side redirect into dashboard.
+- Static `login.html` with client-side validation and redirect.
+- `AppUserEntity`, `AppUserRepository`, `AppUserMapper`, and `AppUserService` — the scaffolding for user provisioning is in place.
+- `X-User-Id` request header consumed by `DatasetController`. The guest user ID `00000000-0000-0000-0000-000000000001` is hardcoded in `dashboard.js`.
 
 What does not exist:
 
 - No `spring-boot-starter-security`.
-- No auth controller.
-- No user entity/table.
-- No session or token middleware.
+- No auth controller or token endpoint.
+- No OAuth integration.
+- No session or JWT middleware.
 - No roles or permissions.
 - No protected API routes.
 
-This is a significant gap if the app is exposed beyond a trusted demo environment.
+`AppUserEntity` fields include `provider`, `providerSubject`, `email`, `displayName`, `pictureUrl`, `role`, `createdAt`, and `lastLoginAt` — these anticipate an OAuth provider integration but are not wired to any auth flow.
 
 ## Data Model Overview
 
-### BillingRecord
+### Dataset
 
-Domain model: `src/main/java/com/azeem/blueprint/model/billing/BillingRecord.java`
+Domain model: `model/dataset/Dataset.java`
 
-Persistence model: `src/main/java/com/azeem/blueprint/entity/BillingRecordEntity.java`
-
-Fields:
-
-| Field | Type | Meaning |
-|---|---|---|
-| `id` | `long` | DB-generated primary key, entity only. |
-| `accountName` | `String` | Billing account/person name. |
-| `employeeId` | `String` | Employee identifier. |
-| `department` | `String` | Department name. |
-| `phoneNumber` | `String` | Phone number. |
-| `billingPeriod` | `String` | Period, usually `YYYY-MM`, or `dummy-data`. |
-| `minutesUsed` | `int` | Usage minutes. |
-| `dataGbUsed` | `double` | Data usage. |
-| `smsCount` | `int` | SMS usage. |
-| `totalCharge` | `double` | Total charge. |
-
-Relationships:
-
-- No JPA relationship is declared between billing records and alarms.
-- Alarms reference period/employee/phone/department values as denormalized fields.
-
-### Alarm
-
-Domain model: `src/main/java/com/azeem/blueprint/model/alarm/Alarm.java`
-
-Persistence model: `src/main/java/com/azeem/blueprint/entity/AlarmEntity.java`
+Persistence model: `entity/DatasetEntity.java`
 
 Fields:
 
 | Field | Type | Meaning |
 |---|---|---|
 | `id` | UUID | DB-generated primary key. |
-| `businessKey` | UUID | Unique key intended for deduplication. |
+| `ownerUserId` | UUID | Reference to `AppUserEntity`. |
+| `billingPeriod` | String | Detected billing period from the CSV. |
+| `sourceFilename` | String | Original uploaded filename. |
+| `s3ObjectKey` | String | S3 path: `ownerUserId/datasetId/filename.csv`. |
+| `uploadedAt` | Instant | Upload timestamp. |
+| `status` | String | `PENDING_INGESTION` or `READY`. |
+
+### BillingRecord
+
+Domain model: `model/billing/BillingRecord.java`
+
+Persistence model: `entity/BillingRecordEntity.java`
+
+Fields:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `datasetId` | UUID | Owning dataset (first field on domain record). |
+| `accountName` | String | Billing account/person name. |
+| `employeeId` | String | Employee identifier. |
+| `department` | String | Department name. |
+| `phoneNumber` | String | Phone number. |
+| `billingPeriod` | String | Period, usually `YYYY-MM`, or `dummy-data`. |
+| `minutesUsed` | int | Usage minutes. |
+| `dataGbUsed` | double | Data usage in GB. |
+| `smsCount` | int | SMS usage. |
+| `totalCharge` | double | Total charge. |
+
+### Alarm
+
+Domain model: `model/alarm/Alarm.java`
+
+Persistence model: `entity/AlarmEntity.java`
+
+Fields:
+
+| Field | Type | Meaning |
+|---|---|---|
+| `id` | UUID | DB-generated primary key. |
+| `datasetId` | UUID | Owning dataset. |
+| `businessKey` | UUID | Unique key for deduplication. |
 | `alarmScope` | enum | `INDIVIDUAL`, `DEPARTMENT`, or `ACCOUNT`. |
 | `billingPeriod` | String | Associated period. |
 | `alarmType` | String | Human-readable type. |
-| `alarmSeverity` | enum | `LOW`, `MEDIUM`, `HIGH`. |
+| `alarmSeverity` | enum | `LOW`, `MEDIUM`, or `HIGH`. |
 | `explanation` | String | Display explanation. |
 | `timestamp` | Instant | Detection time. |
 | `employeeId` | String nullable | Used for individual alarms. |
 | `phoneNumber` | String nullable | Used for individual alarms. |
 | `department` | enum nullable | Used for department alarms. |
+
+### AppUser
+
+Domain model: `model/user/AppUser.java`
+
+Persistence model: `entity/AppUserEntity.java`
+
+Fields: `id`, `provider`, `providerSubject`, `email`, `displayName`, `pictureUrl`, `role`, `createdAt`, `lastLoginAt`.
+
+Status: entity and mapper exist; `AppUserService` is scaffolded for OAuth provisioning but not yet integrated into any auth flow.
 
 ### Martin Models
 
@@ -516,34 +706,45 @@ There is no generated OpenAPI spec. The route list below is the source-code-deri
 - Error responses use `ErrorResponse` with `status`, `message`, and `timestamp` for handled exceptions.
 - Validation uses Jakarta Bean Validation annotations on controller parameters and custom validators.
 
-### Billing Routes
+### Dataset Routes
+
+| Method | Path | Header | Request | Response |
+|---|---|---|---|---|
+| `POST` | `/datasets` | `X-User-Id: String` | multipart `file` | `Dataset` |
+| `GET` | `/datasets` | `X-User-Id: UUID` | — | `List<Dataset>` |
+| `GET` | `/datasets/{datasetId}` | — | — | `Dataset` |
+
+### Demo Route
+
+| Method | Path | Response |
+|---|---|---|
+| `POST` | `/demo-dataset` | plain text |
+
+### Billing Routes (all under `/datasets/{datasetId}`)
 
 | Method | Path | Request | Response | Validation |
 |---|---|---|---|---|
-| `POST` | `/upload` | multipart `file` | plain text success | `@ValidCsvFile` |
-| `POST` | `/demo-load` | none | plain text success | none |
-| `GET` | `/records` | query `page`, `size` | `Page<BillingRecord>` | no min/max annotations here |
-| `GET` | `/summary` | none | `BillingSummary` | throws if no data |
-| `GET` | `/records/department/{department}` | path + `page`, `size` | `Page<BillingRecord>` | department not blank, page >= 0, size 1-100 |
-| `GET` | `/top/{n}` | path `n` | `Page<BillingRecord>` | n 1-100 plus service max and count checks |
-| `GET` | `/departments` | none | `List<String>` | none |
-| `GET` | `/periods` | none | `List<String>` | none |
-| `GET` | `/records/period/{billingPeriod}` | path + `page`, `size` | `Page<BillingRecord>` | custom billing period validator |
-| `GET` | `/summary/period/{billingPeriod}` | path | `BillingSummary` | custom billing period validator |
+| `GET` | `/records` | `page`, `size` | `Page<BillingRecord>` | — |
+| `GET` | `/records/periods` | — | `List<String>` | — |
+| `GET` | `/records/periods/{billingPeriod}` | `page`, `size` | `Page<BillingRecord>` | custom billing period validator |
+| `GET` | `/records/departments/{department}` | `page`, `size` | `Page<BillingRecord>` | `@NotBlank`, `@Min(0)`, `@Min(1) @Max(100)` |
+| `GET` | `/summary` | — | `BillingSummary` | — |
+| `GET` | `/summary/periods/{billingPeriod}` | — | `BillingSummary` | custom billing period validator |
+| `GET` | `/top/{n}` | — | `Page<BillingRecord>` | `@Min(1) @Max(100)` |
 
-### Alarm Routes
+### Alarm Routes (all under `/datasets/{datasetId}`)
 
 | Method | Path | Response |
 |---|---|---|
 | `GET` | `/alarms/{billingPeriod}` | `List<Alarm>` |
-| `GET` | `/alarms/department/{billingPeriod}` | `List<Alarm>` |
-| `GET` | `/alarms/individual/{billingPeriod}` | `List<Alarm>` |
-| `GET` | `/alarms/account/{billingPeriod}` | `List<Alarm>` |
+| `GET` | `/alarms/{billingPeriod}/department` | `List<Alarm>` |
+| `GET` | `/alarms/{billingPeriod}/individual` | `List<Alarm>` |
+| `GET` | `/alarms/{billingPeriod}/account` | `List<Alarm>` |
 
 ### Martin Route
 
 ```http
-POST /martin
+POST /datasets/{datasetId}/martin
 Content-Type: application/json
 
 {
@@ -573,7 +774,7 @@ AI provider:
 
 AI-controlled logic:
 
-- Martin generates SQL.
+- Martin generates SQL scoped to a dataset ID.
 - Martin generates an explanation based on prompt, generated SQL, and query results.
 
 Deterministic logic:
@@ -608,19 +809,22 @@ Safety boundaries:
 | File | Purpose |
 |---|---|
 | `js/main.js` | Shared navigation helpers on `window.Blueprint`. |
-| `js/dashboard.js` | Dashboard state, backend calls, chart rendering, modals, upload, demo load, Martin chat. |
+| `js/dashboard.js` | Dashboard state, backend calls, chart rendering, modals, upload, demo load, Martin chat, toast system, skeleton helpers, welcome overlay, dataset switcher. |
 | `js/login.js` | Login and guest redirect behavior. |
 | `js/info.js` | Open dashboard button. |
 | `js/error.js` | Go home button. |
 
 ### Frontend State Management
 
-State is simple module/global state in `dashboard.js`:
+State is module-global in `dashboard.js`:
 
 ```js
+const GUEST_USER_ID = "00000000-0000-0000-0000-000000000001";
+
 let deptChartInstance = null;
 let alarmsChartInstance = null;
 let currentPeriod = null;
+let currentDatasetId = null;
 let currentPageAllRecords = 0;
 let currentPageFilterByDepartment = 0;
 const pageSize = 20;
@@ -638,40 +842,70 @@ No frontend framework, no router, no stores, and no build-time types exist.
 
 ### Controller Layer
 
-| Controller | Responsibility |
-|---|---|
-| `BillingController` | Upload, demo load, records, summary, departments, periods, top N. |
-| `AlarmController` | Alarm retrieval by scope and period. |
-| `MartinController` | AI chat endpoint. |
+| Controller | Base path | Responsibility |
+|---|---|---|
+| `DatasetController` | `/datasets` | Dataset creation, listing, retrieval. |
+| `DemoController` | `/demo-dataset` | Demo data loading. |
+| `BillingController` | `/datasets/{datasetId}` | Records, summary, top N. |
+| `AlarmController` | `/datasets/{datasetId}` | Alarm retrieval by scope and period. |
+| `MartinController` | `/datasets/{datasetId}` | AI chat endpoint. |
 
 ### Service Layer
 
 | Service | Responsibility |
 |---|---|
-| `BillingService` | Read-only billing queries and summaries. |
+| `DatasetService` | Dataset record creation, S3 upload orchestration, listing, period cleanup. |
+| `DemoDatasetLoader` | Classpath seed data ingestion into the fixed demo dataset. |
+| `AppUserService` | User provisioning and lookup. |
+| `BillingQueryService` | Read-only billing queries and summaries, dataset-scoped. |
 | `BillingIngestionService` | CSV stream ingestion, batching, persistence, alarm triggering. |
-| `BillingS3Service` | S3 object upload/download/error-log upload. |
-| `LoadDummyDataService` | Classpath seed data ingestion. |
+| `BillingS3Service` | S3 object upload, download, error-log upload. |
 | `AlarmDetectionService` | Pure alarm detection rules. |
-| `AlarmService` | Alarm persistence and read APIs. |
+| `AlarmService` | Alarm persistence, deduplication, read APIs, notification dispatch. |
 | `MartinService` | Gemini prompt orchestration, validation, SQL execution, explanation. |
 | `QueryExecutionService` | SQL execution through `JdbcTemplate`. |
 | `SchemaService` | Hardcoded schema string for AI prompts. |
 | `SqlValidationService` | Lightweight SQL validation. |
 
+### Notification Client
+
+`NotificationClient` is a Spring `@Component` using Spring's `RestClient` (Spring 6 native). It:
+
+- Accepts a list of `Alarm` domain objects.
+- Maps each to `AlarmNotificationPayload`.
+- `POST`s the array as JSON to `${NOTIFICATION_SERVICE_URL:http://localhost:3000}/notify`.
+- Logs success at INFO level.
+- `AlarmService.notifyQuietly()` wraps every call in a try-catch — exceptions are logged as WARN and never propagate.
+
 ### Persistence Layer
 
-- Spring Data JPA repositories for `billing_records` and `alarms`.
-- `JdbcTemplate` for AI-generated SQL execution.
-- Hibernate schema generation, no migrations.
+- Spring Data JPA repositories for `app_users`, `datasets`, `billing_records`, and `alarms`.
+- `JdbcTemplate` for AI-generated SQL execution (Martin queries only).
+- Schema managed by **Liquibase** with four ordered changesets:
+
+| Changeset file | Creates |
+|---|---|
+| `001-create-app-users.xml` | `app_users` table |
+| `002-create-datasets.xml` | `datasets` table with FK to `app_users` |
+| `003-create-billing-records.xml` | `billing_records` table with FK to `datasets` |
+| `004-create-alarms.xml` | `alarms` table with FK to `datasets` |
+
+### Mapper Layer
+
+| Mapper | Dependency | Notes |
+|---|---|---|
+| `DatasetMapper` | none | Entity ↔ `Dataset` domain record. |
+| `BillingRecordMapper` | `DatasetRepository` | Entity ↔ `BillingRecord`; resolves dataset reference. |
+| `AlarmMapper` | `DatasetRepository` | Entity ↔ `Alarm`; resolves dataset reference. |
+| `AppUserMapper` | none | Entity ↔ `AppUser` domain record. |
 
 ### Background Processing
 
-Implemented background/event processing:
+Implemented:
 
 - `BillingEventListener` uses `@SqsListener("billing-event-queue")`.
 - It expects S3 event JSON with `Records[0].s3.bucket.name` and `Records[0].s3.object.key`.
-- It downloads the object and ingests the CSV.
+- It downloads the object, resolves the dataset by S3 key, and ingests the CSV.
 
 No other scheduled jobs, worker processes, cron jobs, or async executors are present.
 
@@ -685,35 +919,21 @@ Development:
 - Postgres 16.
 - LocalStack 3.0.0 with S3 and SQS.
 - App container built from Dockerfile.
-- Inline AWS CLI setup container.
+- Inline AWS CLI setup container creates the S3 bucket, SQS queue, and S3→SQS notification bridge.
 
 Production-like:
 
 - `docker-compose.prod.yml`
-- Same app/Postgres/LocalStack pattern.
-- Adds Cloudflare tunnel.
-- Uses host bind mounts under `/home/jawadazeem`.
+- Same app/Postgres/LocalStack pattern with Cloudflare tunnel.
 - Explicitly documented as not real production infrastructure.
 
 ### CI/CD
 
-Workflow:
+Workflow: `.github/workflows/docker-pipeline.yml`
 
-```text
-.github/workflows/docker-pipeline.yml
-```
+Trigger: push to `main`
 
-Trigger:
-
-```text
-push to main
-```
-
-Runner:
-
-```text
-self-hosted
-```
+Runner: self-hosted
 
 Deployment command:
 
@@ -728,20 +948,21 @@ docker system prune -f
 
 - Spring Boot Actuator is included.
 - `application.yaml` configures `logging.file.name: app.log`.
-- No metrics backend, tracing, dashboards, alerts, or log aggregation are configured in repo.
+- No metrics backend, tracing, dashboards, alerts, or log aggregation are configured in the repo.
 
 ### Storage Providers
 
 - S3 abstraction through Spring Cloud AWS S3.
 - Local default endpoint points to LocalStack.
-- Upload bucket name is hardcoded as `telecom-billing` in controller/Compose setup.
-- Error logs are uploaded to `error-logs/{billingPeriod}-errors.log`.
+- Upload bucket name: `telecom-billing`.
+- S3 object key layout: `ownerUserId/datasetId/filename.csv`.
+- Error logs: `error-logs/{billingPeriod}-errors.log`.
 
 ### Queues and Events
 
 - SQS abstraction through Spring Cloud AWS SQS.
 - Queue name hardcoded in listener: `billing-event-queue`.
-- Compose setup configures S3 bucket notifications to SQS.
+- Compose setup configures S3 bucket notifications to SQS automatically.
 
 ## Local Development Workflow
 
@@ -751,19 +972,21 @@ Recommended:
 docker compose --env-file .env -f docker-compose.dev.yml up --build
 ```
 
-Known blocker:
+To reset the database (e.g. after schema changes):
 
-- Docker build runs `mvn package`.
-- Maven currently fails at Spotless due test placeholder formatting.
-- Run `mvn spotless:apply` before building if needed.
+```bash
+docker compose -f docker-compose.dev.yml down -v
+docker compose -f docker-compose.dev.yml up --build
+```
 
 Development verification:
 
 ```bash
 curl http://localhost:8080/actuator/health
-curl -X POST http://localhost:8080/demo-load
-curl http://localhost:8080/periods
-curl http://localhost:8080/summary/period/dummy-data
+curl -X POST http://localhost:8080/demo-dataset
+curl -H "X-User-Id: 00000000-0000-0000-0000-000000000001" http://localhost:8080/datasets
+curl http://localhost:8080/datasets/00000000-0000-0000-0000-000000000000/records/periods
+curl http://localhost:8080/datasets/00000000-0000-0000-0000-000000000000/summary/periods/dummy-data
 ```
 
 Debug logs:
@@ -778,18 +1001,15 @@ docker compose -f docker-compose.dev.yml logs aws-cli-setup
 
 | Area | Finding |
 |---|---|
-| Auth | Login is client-only demo behavior. Backend has no auth or route protection. |
-| Secrets | `.env` is checked in and includes real-looking values. Rotate secrets and remove from history. |
-| Migrations | No Flyway/Liquibase. Schema generation depends on Hibernate settings. |
-| Prod Compose profile | `docker-compose.prod.yml` uses `SPRING_PROFILES_ACTIVE=dev`, which selects `create-drop`. |
-| AI SQL validation | String-based validation is not sufficient for robust SQL safety. Code contains TODO for AST parser. |
-| Martin prompt | Prompt concatenation around `billing_period =` and schema text is brittle and does not quote/escape period value in the instruction. |
+| Auth | Login is client-only demo behavior. Backend has no auth or route protection. `AppUserEntity` scaffolding exists but is not wired to any auth flow. |
+| Secrets | `.env` is checked in and includes real-looking values. Rotate secrets and remove from history before any public exposure. |
+| AI SQL validation | String-based validation is not sufficient for robust SQL safety. Code contains TODO for AST parser (JSQLParser). |
+| Martin prompt | Period value is injected into the prompt via string concatenation without quoting or escaping. |
 | Martin query limits | No hard result limit is enforced for generated SQL. |
-| Alarm deduplication | Random business keys make deduplication ineffective across repeated detections. |
+| Alarm detection chunking | Department and account totals are computed per 1,000-record chunk, not per full dataset. Large datasets can produce false negatives. TODO exists in `AlarmService`. |
 | Department enum mismatch | Billing records store free-form department strings, but department alarms support only enum values in a fixed map. |
-| Test suite | Several test classes are empty placeholders; `mvn test` currently blocked by Spotless placeholder formatting. |
-| API docs | No OpenAPI/Swagger. |
+| Dataset status transitions | There is no `FAILED` status or error recovery flow exposed to the user. |
+| Notification microservice | `NotificationClient` is wired and dispatches payloads, but the external TypeScript service (`blueprint-notifications`) does not yet exist. |
+| API docs | No OpenAPI/Swagger spec is generated. |
 | Frontend | No frontend tests, linting, package manager, bundling, or module system. |
 | Deployment | README references AWS services beyond what the checked-in deployment currently provisions. |
-| Empty script | `init-s3.sh` exists but has no content. |
-| Duplicate naming | Test mapper placeholder files are named `AlarmMapper.java` and `BillingRecordMapper.java`, not `*Test.java`. |
