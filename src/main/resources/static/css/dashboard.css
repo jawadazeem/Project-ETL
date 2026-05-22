@@ -176,6 +176,13 @@
     width: 200px;
 }
 
+.session-badge {
+    color: #555;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .dashboard-page .card {
     border-radius: 12px;
     border: none;

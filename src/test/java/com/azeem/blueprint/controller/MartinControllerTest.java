@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.azeem.blueprint.config.SecurityConfig;
 import com.azeem.blueprint.model.martin.MartinRequest;
 import com.azeem.blueprint.model.martin.MartinResponse;
 import com.azeem.blueprint.service.martin.MartinService;
@@ -20,12 +21,14 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(MartinController.class)
+@Import(SecurityConfig.class)
 @WithMockUser
 class MartinControllerTest {
   private static final String DATASET_ID = "00000000-0000-0000-0000-000000000001";

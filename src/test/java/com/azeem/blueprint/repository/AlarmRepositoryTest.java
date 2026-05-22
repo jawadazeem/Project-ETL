@@ -143,8 +143,7 @@ class AlarmRepositoryTest {
   void testFindBusinessKeysByDatasetIdAndBillingPeriod() {
     UUID datasetId = dataset.getId();
 
-    assertThat(
-            alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(datasetId, "2026-01"))
+    assertThat(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(datasetId, "2026-01"))
         .containsExactlyInAnyOrderElementsOf(
             alarms.stream()
                 .filter(a -> a.getBillingPeriod().equals("2026-01"))

@@ -45,8 +45,13 @@ class DatasetServiceTest {
 
   private Dataset sampleDataset() {
     return new Dataset(
-        DATASET_ID, OWNER_ID, "2026-01", "billing.csv", "key/billing.csv",
-        Instant.parse("2026-01-01T00:00:00Z"), "READY");
+        DATASET_ID,
+        OWNER_ID,
+        "2026-01",
+        "billing.csv",
+        "key/billing.csv",
+        Instant.parse("2026-01-01T00:00:00Z"),
+        "READY");
   }
 
   private DatasetEntity sampleEntity() {
@@ -123,8 +128,7 @@ class DatasetServiceTest {
   void deleteRecordsByPeriodInDataset_unknownDataset_throwsDatasetNotFoundException() {
     when(datasetRepository.existsById(DATASET_ID)).thenReturn(false);
 
-    assertThatThrownBy(
-            () -> datasetService.deleteRecordsByPeriodInDataset(DATASET_ID, "2026-01"))
+    assertThatThrownBy(() -> datasetService.deleteRecordsByPeriodInDataset(DATASET_ID, "2026-01"))
         .isInstanceOf(DatasetNotFoundException.class);
 
     verify(billingRecordRepository, never()).deleteByDatasetIdAndBillingPeriod(any(), any());

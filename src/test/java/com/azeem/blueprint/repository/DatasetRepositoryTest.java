@@ -64,7 +64,8 @@ class DatasetRepositoryTest {
     List<DatasetEntity> result = repository.findByOwnerUserId(user1.getId());
 
     assertThat(result).hasSize(2);
-    assertThat(result).extracting(DatasetEntity::getSourceFilename)
+    assertThat(result)
+        .extracting(DatasetEntity::getSourceFilename)
         .containsExactlyInAnyOrder("billing-jan.csv", "billing-feb.csv");
   }
 

@@ -33,7 +33,6 @@
 .brand-title {
     font-size: 58px;
     font-weight: 800;
-    letter-spacing: -2px;
     margin-bottom: 16px;
     line-height: 1;
 }
@@ -60,7 +59,7 @@
 
 .login-header p {
     color: var(--muted);
-    margin-bottom: 34px;
+    margin-bottom: 26px;
 }
 
 .login-page .form-label {
@@ -80,22 +79,13 @@
     box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
 }
 
-.login-btn {
-    width: 100%;
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-weight: 700;
-    margin-top: 8px;
-}
-
 .guest-btn {
     width: 100%;
     border-radius: 12px;
-    padding: 16px;
+    padding: 18px;
     font-weight: 800;
-    font-size: 16px;
-    margin-top: 14px;
+    font-size: 17px;
+    margin-bottom: 24px;
     background: #111;
     color: #fff;
     border: none;
@@ -107,11 +97,65 @@
     opacity: 0.9;
 }
 
+.auth-separator {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+    color: var(--muted);
+    margin-bottom: 18px;
+}
+
+.auth-separator span {
+    height: 1px;
+    background: var(--border);
+}
+
+.auth-separator small {
+    font-weight: 700;
+}
+
+.auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 5px;
+    background: #f4f6f9;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 22px;
+}
+
+.auth-tab {
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 12px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 800;
+}
+
+.auth-tab.active {
+    background: #fff;
+    color: #111;
+    box-shadow: 0 3px 12px rgba(10, 20, 50, 0.08);
+}
+
+.login-btn {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
 .helper-row {
     display: flex;
     justify-content: space-between;
     margin-top: 14px;
     margin-bottom: 26px;
+    gap: 14px;
 }
 
 .helper-link {
@@ -119,10 +163,17 @@
     color: var(--accent);
     font-weight: 600;
     text-decoration: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
 }
 
 .helper-link:hover {
     text-decoration: underline;
+}
+
+.hidden {
+    display: none;
 }
 
 .status-message {

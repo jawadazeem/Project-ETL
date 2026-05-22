@@ -88,6 +88,16 @@ class BillingRecordRepositoryTest {
   }
 
   @Test
+  @DisplayName("Should return distinct billing periods as a non-paged list")
+  void testFindDistinctBillingPeriodByDatasetId() {
+    UUID datasetId = dataset.getId();
+
+    List<String> periods = repository.findDistinctBillingPeriodByDatasetId(datasetId);
+
+    assertThat(periods).containsExactly("2026-01", "2026-02");
+  }
+
+  @Test
   @DisplayName("Should return true when billing period exists for a dataset")
   void testExistsByDatasetIdAndBillingPeriod() {
     UUID datasetId = dataset.getId();

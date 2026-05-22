@@ -25,11 +25,14 @@ public class SummaryBuilderTest {
   void build_happyPath_producesCorrectSummary() {
     LinkedList<BillingRecord> records = new LinkedList<>();
     records.add(
-        new BillingRecord(DATASET_ID, "Acme", "E1", "Engineering", "555-0001", "2026-01", 100, 1.5, 10, 45.50));
+        new BillingRecord(
+            DATASET_ID, "Acme", "E1", "Engineering", "555-0001", "2026-01", 100, 1.5, 10, 45.50));
     records.add(
-        new BillingRecord(DATASET_ID, "Beta", "E2", "Sales", "555-0002", "2026-01", 50, 0.5, 5, 10.00));
+        new BillingRecord(
+            DATASET_ID, "Beta", "E2", "Sales", "555-0002", "2026-01", 50, 0.5, 5, 10.00));
     records.add(
-        new BillingRecord(DATASET_ID, "Acme", "E3", "Engineering", "555-0003", "2026-01", 10, 0.1, 1, 5.25));
+        new BillingRecord(
+            DATASET_ID, "Acme", "E3", "Engineering", "555-0003", "2026-01", 10, 0.1, 1, 5.25));
 
     BillingSummary summary = new SummaryBuilder(records).build();
 

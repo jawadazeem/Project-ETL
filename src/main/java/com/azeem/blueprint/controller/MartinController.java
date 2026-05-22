@@ -8,12 +8,11 @@ package com.azeem.blueprint.controller;
 import com.azeem.blueprint.model.martin.MartinRequest;
 import com.azeem.blueprint.model.martin.MartinResponse;
 import com.azeem.blueprint.service.martin.MartinService;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/datasets/{datasetId}")
@@ -26,9 +25,10 @@ public class MartinController {
   }
 
   @PostMapping("/martin")
-  public ResponseEntity<MartinResponse> chat(@PathVariable String datasetId,
-          @RequestBody MartinRequest request) {
-    MartinResponse response = martinService.ask(request.getPrompt(), UUID.fromString(datasetId), request.getPeriod());
+  public ResponseEntity<MartinResponse> chat(
+      @PathVariable String datasetId, @RequestBody MartinRequest request) {
+    MartinResponse response =
+        martinService.ask(request.getPrompt(), UUID.fromString(datasetId), request.getPeriod());
     return ResponseEntity.ok(response);
   }
 }

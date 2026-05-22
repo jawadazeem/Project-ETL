@@ -78,8 +78,7 @@ class BillingControllerTest {
         .thenReturn(Page.empty());
 
     mockMvc
-        .perform(
-            get(BASE + "/records/periods/2026-01").param("page", "1").param("size", "10"))
+        .perform(get(BASE + "/records/periods/2026-01").param("page", "1").param("size", "10"))
         .andExpect(status().isOk());
 
     verify(billingQueryService)
@@ -105,8 +104,7 @@ class BillingControllerTest {
   @Test
   void customPageAndSize_shouldReturnRecordsByDepartment() throws Exception {
     mockMvc
-        .perform(
-            get(BASE + "/records/departments/IT").param("page", "1").param("size", "20"))
+        .perform(get(BASE + "/records/departments/IT").param("page", "1").param("size", "20"))
         .andExpect(status().isOk());
 
     verify(billingQueryService)
@@ -128,8 +126,7 @@ class BillingControllerTest {
 
     mockMvc.perform(get(BASE + "/summary/periods/2026-01")).andExpect(status().isOk());
 
-    verify(billingQueryService)
-        .generateSummaryForPeriodInDataset(any(UUID.class), eq("2026-01"));
+    verify(billingQueryService).generateSummaryForPeriodInDataset(any(UUID.class), eq("2026-01"));
   }
 
   @Test

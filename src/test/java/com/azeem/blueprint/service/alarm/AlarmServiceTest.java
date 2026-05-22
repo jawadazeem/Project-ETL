@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import com.azeem.blueprint.client.NotificationClient;
 import com.azeem.blueprint.entity.AlarmEntity;
 import com.azeem.blueprint.entity.BillingRecordEntity;
 import com.azeem.blueprint.mapper.AlarmMapper;
@@ -19,7 +20,6 @@ import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
 import com.azeem.blueprint.model.billing.Department;
-import com.azeem.blueprint.client.NotificationClient;
 import com.azeem.blueprint.repository.AlarmRepository;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import java.time.Instant;
@@ -71,7 +71,8 @@ class AlarmServiceTest {
   void shouldDetectAndPersistAlarms() {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of());
-    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(eq(DATASET_ID), anyString(), any()))
+    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(
+            eq(DATASET_ID), anyString(), any()))
         .thenReturn(new PageImpl<>(List.of(billingRecordEntity())));
     when(billingMapper.mapToDomain(any())).thenReturn(mock(BillingRecord.class));
     when(alarmDetectionService.detectAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
@@ -87,7 +88,8 @@ class AlarmServiceTest {
   void shouldNotPersistWhenNoAlarmsDetected() {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of());
-    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(eq(DATASET_ID), anyString(), any()))
+    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(
+            eq(DATASET_ID), anyString(), any()))
         .thenReturn(Page.empty());
     when(alarmDetectionService.detectAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of());
@@ -102,7 +104,8 @@ class AlarmServiceTest {
     UUID key = new UUID(0L, 1L);
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of(key));
-    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(eq(DATASET_ID), anyString(), any()))
+    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(
+            eq(DATASET_ID), anyString(), any()))
         .thenReturn(new PageImpl<>(List.of(billingRecordEntity())));
     when(alarmDetectionService.detectAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of(alarm(key)));
@@ -118,7 +121,8 @@ class AlarmServiceTest {
     UUID newKey = new UUID(0L, 2L);
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of(existing));
-    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(eq(DATASET_ID), anyString(), any()))
+    when(billingRecordRepository.findByDatasetIdAndBillingPeriod(
+            eq(DATASET_ID), anyString(), any()))
         .thenReturn(new PageImpl<>(List.of(billingRecordEntity())));
     when(alarmDetectionService.detectAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of(alarm(existing), alarm(newKey)));

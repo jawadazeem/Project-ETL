@@ -40,8 +40,14 @@ class DatasetControllerTest {
   @MockitoBean private DatasetService datasetService;
 
   private Dataset sampleDataset() {
-    return new Dataset(DATASET_ID, USER_UUID, "2026-01", "billing.csv", "key/billing.csv",
-        Instant.parse("2026-01-01T00:00:00Z"), "PENDING_INGESTION");
+    return new Dataset(
+        DATASET_ID,
+        USER_UUID,
+        "2026-01",
+        "billing.csv",
+        "key/billing.csv",
+        Instant.parse("2026-01-01T00:00:00Z"),
+        "PENDING_INGESTION");
   }
 
   @Test
@@ -53,10 +59,7 @@ class DatasetControllerTest {
         new MockMultipartFile("file", "billing.csv", MediaType.TEXT_PLAIN_VALUE, "data".getBytes());
 
     mockMvc
-        .perform(
-            multipart("/datasets")
-                .file(file)
-                .header("X-User-Id", USER_ID))
+        .perform(multipart("/datasets").file(file).header("X-User-Id", USER_ID))
         .andExpect(status().isOk());
 
     verify(datasetService).initializeAndUploadDataset(eq(USER_ID), any());
@@ -66,14 +69,10 @@ class DatasetControllerTest {
   @DisplayName("POST /datasets returns 400 when file is not a CSV")
   void postDataset_nonCsvFile_returns400() throws Exception {
     MockMultipartFile file =
-        new MockMultipartFile(
-            "file", "report.xlsx", MediaType.TEXT_PLAIN_VALUE, "data".getBytes());
+        new MockMultipartFile("file", "report.xlsx", MediaType.TEXT_PLAIN_VALUE, "data".getBytes());
 
     mockMvc
-        .perform(
-            multipart("/datasets")
-                .file(file)
-                .header("X-User-Id", USER_ID))
+        .perform(multipart("/datasets").file(file).header("X-User-Id", USER_ID))
         .andExpect(status().isBadRequest());
   }
 
@@ -82,9 +81,7 @@ class DatasetControllerTest {
   void getDatasets_validRequest_returns200() throws Exception {
     when(datasetService.listDatasets(USER_UUID)).thenReturn(List.of(sampleDataset()));
 
-    mockMvc
-        .perform(get("/datasets").header("X-User-Id", USER_ID))
-        .andExpect(status().isOk());
+    mockMvc.perform(get("/datasets").header("X-User-Id", USER_ID)).andExpect(status().isOk());
 
     verify(datasetService).listDatasets(USER_UUID);
   }
@@ -94,9 +91,7 @@ class DatasetControllerTest {
   void getDatasetById_existingDataset_returns200() throws Exception {
     when(datasetService.getDataset(DATASET_ID)).thenReturn(sampleDataset());
 
-    mockMvc
-        .perform(get("/datasets/{id}", DATASET_ID))
-        .andExpect(status().isOk());
+    mockMvc.perform(get("/datasets/{id}", DATASET_ID)).andExpect(status().isOk());
 
     verify(datasetService).getDataset(DATASET_ID);
   }

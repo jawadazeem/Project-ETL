@@ -74,7 +74,9 @@ public class BillingRecordAssemblerTest {
     @Test
     @DisplayName("assembleRecord should throw NumberFormatException for invalid numeric fields")
     void assembleRecord_invalidNumber_throws() {
-      String[] badNumbers = {"Acme", "E1", "D", "000", "2026-01", "not-a-number", "0.0", "0", "0.0"};
+      String[] badNumbers = {
+        "Acme", "E1", "D", "000", "2026-01", "not-a-number", "0.0", "0", "0.0"
+      };
       assertThrows(
           NumberFormatException.class, () -> assembler.assembleRecord(badNumbers, DATASET_ID));
     }

@@ -41,32 +41,66 @@ public class DemoDatasetLoader {
 
   public void loadDemoData() {
     if (isLoaded()) {
+      markDatasetReady();
       log.info("Demo data already loaded, cannot load again.");
       return;
     }
 
-    ensureDatasetRowExists();
+    DatasetEntity demo = ensureDatasetRowExists();
+    demo.setStatus("LOADING");
+    datasetRepository.save(demo);
 
     ClassPathResource resource = new ClassPathResource("dummy-data.csv");
     try (InputStream is = resource.getInputStream()) {
       log.info("Loading demo data from: {}", resource.getFilename());
       billingIngestionService.ingestData(DUMMY_DATA_DATASET_ID, is);
+      markDatasetReady();
     } catch (IOException e) {
+      markDatasetFailed();
       log.error("Demo data ingestion failed: {}", e.getMessage());
+      throw new IllegalStateException("Demo data ingestion failed", e);
+    } catch (RuntimeException e) {
+      markDatasetFailed();
+      log.error("Demo data ingestion failed: {}", e.getMessage(), e);
+      throw e;
     }
   }
 
-  private void ensureDatasetRowExists() {
-    if (datasetRepository.existsById(DUMMY_DATA_DATASET_ID)) {
-      return;
-    }
+  private DatasetEntity ensureDatasetRowExists() {
+    return datasetRepository.findById(DUMMY_DATA_DATASET_ID).orElseGet(this::createDemoDataset);
+  }
+
+  private DatasetEntity createDemoDataset() {
     DatasetEntity demo = new DatasetEntity();
     demo.setId(DUMMY_DATA_DATASET_ID);
+    demo.setBillingPeriod("dummy-data");
     demo.setSourceFilename("dummy-data.csv");
-    demo.setStatus("READY");
+    demo.setS3ObjectKey("classpath:dummy-data.csv");
+    demo.setStatus("LOADING");
     demo.setUploadedAt(Instant.now());
-    datasetRepository.save(demo);
+    DatasetEntity savedDemo = datasetRepository.save(demo);
     log.info("Created demo dataset row with ID: {}", DUMMY_DATA_DATASET_ID);
+    return savedDemo;
+  }
+
+  private void markDatasetReady() {
+    datasetRepository
+        .findById(DUMMY_DATA_DATASET_ID)
+        .ifPresent(
+            dataset -> {
+              dataset.setStatus("READY");
+              datasetRepository.save(dataset);
+            });
+  }
+
+  private void markDatasetFailed() {
+    datasetRepository
+        .findById(DUMMY_DATA_DATASET_ID)
+        .ifPresent(
+            dataset -> {
+              dataset.setStatus("FAILED");
+              datasetRepository.save(dataset);
+            });
   }
 
   private boolean isLoaded() {

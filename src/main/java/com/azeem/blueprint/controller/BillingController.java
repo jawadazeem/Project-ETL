@@ -59,7 +59,8 @@ public class BillingController {
         billingPeriod,
         page,
         size);
-    return ResponseEntity.ok(service.getDatasetRecordsByPeriod(datasetId, billingPeriod, page, size));
+    return ResponseEntity.ok(
+        service.getDatasetRecordsByPeriod(datasetId, billingPeriod, page, size));
   }
 
   @GetMapping("/records/departments/{department}")
@@ -69,7 +70,8 @@ public class BillingController {
       @RequestParam(defaultValue = "0") @Min(0) int page,
       @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
     log.info("GET /datasets/{}/records/departments/{} called.", datasetId, department);
-    return ResponseEntity.ok(service.getRecordsByDepartmentInDataset(datasetId, department, page, size));
+    return ResponseEntity.ok(
+        service.getRecordsByDepartmentInDataset(datasetId, department, page, size));
   }
 
   @GetMapping("/summary")

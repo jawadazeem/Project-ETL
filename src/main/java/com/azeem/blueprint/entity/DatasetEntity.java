@@ -12,19 +12,32 @@ import java.util.UUID;
 @Entity
 @Table(name = "datasets")
 public class DatasetEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  @Id private UUID id;
 
   @ManyToOne
   @JoinColumn(name = "owner_user_id")
   private AppUserEntity ownerUser;
 
+  @Column(name = "billing_period")
   private String billingPeriod;
+
+  @Column(name = "source_filename")
   private String sourceFilename;
+
+  @Column(name = "s3_object_key")
   private String s3ObjectKey;
+
+  @Column(name = "uploaded_at")
   private Instant uploadedAt;
+
   private String status;
+
+  @PrePersist
+  void ensureId() {
+    if (id == null) {
+      id = UUID.randomUUID();
+    }
+  }
 
   public UUID getId() {
     return id;

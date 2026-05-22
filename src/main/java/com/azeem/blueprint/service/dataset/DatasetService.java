@@ -50,7 +50,6 @@ public class DatasetService {
    * Orchestrates the initialization of a Dataset track record and streams the multipart payload
    * securely directly out to the S3 infrastructure.
    */
-  @Transactional
   public Dataset initializeAndUploadDataset(String externalUserId, MultipartFile file) {
     log.info("Initializing new dataset upload for user: {}", externalUserId);
 
@@ -64,16 +63,21 @@ public class DatasetService {
     datasetEntity.setStatus("PENDING_INGESTION");
 
     DatasetEntity savedEntity = datasetRepository.save(datasetEntity);
-    Dataset domainModel = datasetMapper.mapToDomain(savedEntity);
-
-    // Path layout: bucket/ownerUserId/datasetId/YYYY-MM.csv
-    String targetBucket = "telecom-billing";
-    s3Service.uploadUserFile(targetBucket, domainModel, file);
     String s3Key =
-        "%s/%s/%s"
-            .formatted(domainModel.ownerUserId(), domainModel.id(), file.getOriginalFilename());
+        "%s/%s/%s".formatted(ownerUser.getId(), savedEntity.getId(), file.getOriginalFilename());
     savedEntity.setS3ObjectKey(s3Key);
-    datasetRepository.save(savedEntity);
+    savedEntity = datasetRepository.save(savedEntity);
+
+    Dataset domainModel = datasetMapper.mapToDomain(savedEntity);
+    String targetBucket = "telecom-billing";
+
+    try {
+      s3Service.uploadUserFile(targetBucket, domainModel, file);
+    } catch (RuntimeException e) {
+      savedEntity.setStatus("FAILED");
+      datasetRepository.save(savedEntity);
+      throw e;
+    }
 
     log.info("Dataset tracking initialized successfully. UUID: {}", savedEntity.getId());
     return datasetMapper.mapToDomain(savedEntity);

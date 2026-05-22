@@ -40,6 +40,13 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
   List<String> findDistinctDepartmentsByDatasetId(@Param("datasetId") UUID datasetId);
 
   // DB-level distinct billing periods (non-paged)
+  @Query(
+      """
+      SELECT DISTINCT b.billingPeriod
+      FROM BillingRecordEntity b
+      WHERE b.dataset.id = :datasetId
+      ORDER BY b.billingPeriod
+    """)
   List<String> findDistinctBillingPeriodByDatasetId(@Param("datasetId") UUID datasetId);
 
   @Query(

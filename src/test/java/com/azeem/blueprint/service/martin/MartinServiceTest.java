@@ -73,8 +73,7 @@ class MartinServiceTest {
         .thenReturn(VALID_SQL_JSON);
     when(sqlValidationService.isValidSql(any())).thenReturn(false);
 
-    assertThatThrownBy(
-            () -> martinService.ask("Drop all tables", DATASET_ID, BILLING_PERIOD))
+    assertThatThrownBy(() -> martinService.ask("Drop all tables", DATASET_ID, BILLING_PERIOD))
         .isInstanceOf(MartinResponseInvalidException.class)
         .hasMessageContaining("Unsafe SQL");
   }
@@ -86,8 +85,7 @@ class MartinServiceTest {
     when(chatModel.call(any(Prompt.class)).getResult().getOutput().getText())
         .thenReturn("this is not json at all");
 
-    assertThatThrownBy(
-            () -> martinService.ask("Show me records", DATASET_ID, BILLING_PERIOD))
+    assertThatThrownBy(() -> martinService.ask("Show me records", DATASET_ID, BILLING_PERIOD))
         .isInstanceOf(MartinResponseInvalidException.class);
   }
 }

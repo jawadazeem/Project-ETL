@@ -24,7 +24,9 @@ public class DatasetMapper {
   public DatasetEntity mapToEntity(Dataset dataset) {
     DatasetEntity datasetEntity = new DatasetEntity();
     datasetEntity.setId(dataset.id());
-    datasetEntity.setOwnerUser(getAppUserEntityById(dataset));
+    if (dataset.ownerUserId() != null) {
+      datasetEntity.setOwnerUser(getAppUserEntityById(dataset));
+    }
     datasetEntity.setBillingPeriod(dataset.billingPeriod());
     datasetEntity.setSourceFilename(dataset.sourceFilename());
     datasetEntity.setS3ObjectKey(dataset.s3ObjectKey());

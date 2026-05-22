@@ -105,9 +105,9 @@ public class MartinService {
                 You are a PostgreSQL 16 query generator. Read-only access only.
                 Return ONLY valid JSON format: {"sql": "<query>", "reasoning": "<short explanation>"}
                 Do not include markdown markdown formatting, comments, or extra text.
-    
+
                 All queries MUST include: WHERE dataset_id = '%s' AND billing_period = '%s'
-    
+
                 Schema:
                 %s
                 (Note: 'dummy-data' is a valid billing_period for demo purposes.)

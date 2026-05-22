@@ -8,6 +8,11 @@ let currentPageAllRecords = 0;
 let currentPageFilterByDepartment = 0;
 const pageSize = 20;
 
+function asArray(payload) {
+    if (Array.isArray(payload)) return payload;
+    return payload && Array.isArray(payload.content) ? payload.content : [];
+}
+
 // ── Welcome overlay ───────────────────────────────────────────────────────
 
 function showWelcome() {
@@ -16,6 +21,10 @@ function showWelcome() {
 
 function hideWelcome() {
     document.getElementById("welcome-overlay").style.display = "none";
+}
+
+function isWelcomeVisible() {
+    return document.getElementById("welcome-overlay").style.display !== "none";
 }
 
 // ── Toast notifications ───────────────────────────────────────────────────
@@ -342,10 +351,11 @@ async function loadPeriods() {
         const res = await fetch(`/datasets/${currentDatasetId}/records/periods`);
         if (!res.ok) throw new Error(`Periods fetch failed: ${res.status}`);
         const data = await res.json();
-        const periods = data.content || [];
+        const periods = asArray(data);
         const select = document.getElementById("periodSelect");
         select.innerHTML = "";
 
+        currentPeriod = null;
         periods.forEach((period, i) => {
             const opt = document.createElement("option");
             opt.value = period;
@@ -632,7 +642,7 @@ async function waitForDataReady() {
         try {
             const res = await fetch(`/datasets/${currentDatasetId}/records/periods`);
             const data = await res.json();
-            if (data.content && data.content.length > 0) return;
+            if (asArray(data).length > 0) return;
         } catch (_) {
             // not ready yet
         }
@@ -669,11 +679,17 @@ function wireDashboardEvents() {
     document.getElementById("periodSelect")?.addEventListener("change", changePeriod);
     document.getElementById("datasetSelect")?.addEventListener("change", switchDataset);
     document.getElementById("uploadBtn")?.addEventListener("click", uploadFile);
+    document.getElementById("fileInput")?.addEventListener("change", () => {
+        if (isWelcomeVisible()) {
+            uploadFile();
+        }
+    });
     document.getElementById("alarms-btn")?.addEventListener("click", onAlarmsClick);
     document.getElementById("alarms-close")?.addEventListener("click", closeAlarmsModal);
     document.getElementById("helpBtn")?.addEventListener("click", openHelpModal);
     document.getElementById("help-close")?.addEventListener("click", closeHelpModal);
     document.getElementById("helpSecondaryClose")?.addEventListener("click", closeHelpModal);
+    document.getElementById("logoutBtn")?.addEventListener("click", window.Blueprint.endSession);
     document.getElementById("loadDummyBtn")?.addEventListener("click", loadDummyData);
     document.getElementById("chatSendBtn")?.addEventListener("click", sendChat);
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
@@ -700,9 +716,21 @@ function wireDashboardEvents() {
     }
 }
 
+function renderSession(session) {
+    const badge = document.getElementById("sessionBadge");
+    if (!badge) return;
+
+    const label = session.mode === "guest" ? "Guest" : session.username;
+    badge.textContent = label ? `Signed in as ${label}` : "";
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────
 
 window.addEventListener("DOMContentLoaded", async () => {
+    const session = window.Blueprint.requireSession();
+    if (!session) return;
+
+    renderSession(session);
     wireDashboardEvents();
     showWelcome();
 

@@ -34,15 +34,41 @@ public class AppUserService {
   public AppUserEntity findOrCreateGuest(UUID userId) {
     return appUserRepository
         .findById(userId)
+        .map(this::normalizeGuest)
         .orElseGet(
             () -> {
               AppUserEntity guest = new AppUserEntity();
               guest.setId(userId);
+              guest.setProvider("guest");
+              guest.setProviderSubject(userId.toString());
+              guest.setEmail("guest@blueprint.local");
               guest.setDisplayName("Guest");
-              guest.setProvider("local");
-              guest.setRole("USER");
+              guest.setRole("GUEST");
               guest.setCreatedAt(Instant.now());
               return appUserRepository.save(guest);
             });
+  }
+
+  private AppUserEntity normalizeGuest(AppUserEntity user) {
+    boolean changed = false;
+
+    if (user.getProvider() == null) {
+      user.setProvider("guest");
+      changed = true;
+    }
+    if (user.getProviderSubject() == null) {
+      user.setProviderSubject(user.getId().toString());
+      changed = true;
+    }
+    if (user.getDisplayName() == null) {
+      user.setDisplayName("Guest");
+      changed = true;
+    }
+    if (user.getRole() == null) {
+      user.setRole("GUEST");
+      changed = true;
+    }
+
+    return changed ? appUserRepository.save(user) : user;
   }
 }

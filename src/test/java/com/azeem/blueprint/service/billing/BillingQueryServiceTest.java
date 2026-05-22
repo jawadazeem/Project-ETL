@@ -146,7 +146,8 @@ class BillingQueryServiceTest {
   void shouldReturnRecordsForGivenBillingPeriod() {
     Page<BillingRecordEntity> entityPage =
         new PageImpl<>(List.of(entity1), PageRequest.of(0, 5), 1);
-    when(repository.findByDatasetIdAndBillingPeriod(eq(DATASET_ID), eq("2026-01"), any(Pageable.class)))
+    when(repository.findByDatasetIdAndBillingPeriod(
+            eq(DATASET_ID), eq("2026-01"), any(Pageable.class)))
         .thenReturn(entityPage);
 
     service.getDatasetRecordsByPeriod(DATASET_ID, "2026-01", 0, 5);
@@ -161,7 +162,8 @@ class BillingQueryServiceTest {
 
   @Test
   void shouldThrowWhenNoDataExistsForBillingPeriod() {
-    when(repository.findByDatasetIdAndBillingPeriod(eq(DATASET_ID), anyString(), any(Pageable.class)))
+    when(repository.findByDatasetIdAndBillingPeriod(
+            eq(DATASET_ID), anyString(), any(Pageable.class)))
         .thenReturn(Page.empty());
 
     assertThatThrownBy(() -> service.getDatasetRecordsByPeriod(DATASET_ID, "2026-01", 0, 5))
@@ -172,7 +174,8 @@ class BillingQueryServiceTest {
   void shouldReturnRecordsByDepartmentCaseInsensitive() {
     Page<BillingRecordEntity> entityPage =
         new PageImpl<>(List.of(entity1), PageRequest.of(0, 5), 1);
-    when(repository.findByDatasetIdAndDepartmentIgnoreCase(eq(DATASET_ID), any(String.class), any(Pageable.class)))
+    when(repository.findByDatasetIdAndDepartmentIgnoreCase(
+            eq(DATASET_ID), any(String.class), any(Pageable.class)))
         .thenReturn(entityPage);
 
     service.getRecordsByDepartmentInDataset(DATASET_ID, "fInanCe", 0, 5);
@@ -229,9 +232,9 @@ class BillingQueryServiceTest {
 
   @Test
   void shouldGenerateSummaryAcrossMultiplePages() {
-    Page<BillingRecordEntity> firstPage = new PageImpl<>(List.of(entity1), PageRequest.of(0, 1000), 2);
+    Page<BillingRecordEntity> firstPage = new PageImpl<>(List.of(entity1), PageRequest.of(0, 1), 2);
     Page<BillingRecordEntity> secondPage =
-        new PageImpl<>(List.of(entity2), PageRequest.of(1, 1000), 2);
+        new PageImpl<>(List.of(entity2), PageRequest.of(1, 1), 2);
 
     when(repository.findByDatasetId(eq(DATASET_ID), any(Pageable.class)))
         .thenReturn(firstPage)

@@ -12,20 +12,37 @@ import java.util.UUID;
 @Entity
 @Table(name = "app_users", uniqueConstraints = @UniqueConstraint(columnNames = "provider_subject"))
 public class AppUserEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  @Id private UUID id;
 
   private String provider;
+
+  @Column(name = "provider_subject")
   private String providerSubject;
+
   private String email;
+
+  @Column(name = "display_name")
   private String displayName;
+
+  @Column(name = "picture_url")
   private String pictureUrl;
+
   private String role;
+
+  @Column(name = "created_at")
   private Instant createdAt;
+
+  @Column(name = "last_login_at")
   private Instant lastLoginAt;
 
   public AppUserEntity() {}
+
+  @PrePersist
+  void ensureId() {
+    if (id == null) {
+      id = UUID.randomUUID();
+    }
+  }
 
   public UUID getId() {
     return id;
