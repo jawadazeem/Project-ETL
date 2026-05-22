@@ -9,17 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.azeem.blueprint.model.billing.BillingRecord;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit tests for {@link BillingRecordAssembler}.
- *
- * <p>Uses JUnit 5 and focuses on deterministic, small-scope tests that exercise both successful
- * parsing and common failure modes.
- */
 public class BillingRecordAssemblerTest {
+
+  private static final UUID DATASET_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
   private final BillingRecordAssembler assembler = new BillingRecordAssembler();
 
@@ -27,21 +24,13 @@ public class BillingRecordAssemblerTest {
   @DisplayName("assembleRecord should convert a valid row into a BillingRecord")
   void assembleRecord_validRow_createsBillingRecord() {
     String[] row = {
-      "Acme Corp", // accountName
-      "E12345", // employeeId
-      "Engineering", // department
-      "555-0100", // phoneNumber
-      "2026-01", // billingPeriod
-      "120", // minutesUsed
-      "1.5", // dataGbUsed
-      "10", // smsCount
-      "45.75" // totalCharge
+      "Acme Corp", "E12345", "Engineering", "555-0100", "2026-01", "120", "1.5", "10", "45.75"
     };
 
-    BillingRecord record = assembler.assembleRecord(row);
+    BillingRecord record = assembler.assembleRecord(row, DATASET_ID);
 
     assertAll(
-        "Verify assembled record fields",
+        () -> assertEquals(DATASET_ID, record.datasetId()),
         () -> assertEquals("Acme Corp", record.accountName()),
         () -> assertEquals("E12345", record.employeeId()),
         () -> assertEquals("Engineering", record.department()),
@@ -61,9 +50,10 @@ public class BillingRecordAssemblerTest {
             new String[] {"A", "id1", "DeptA", "111", "2026-01", "10", "0.1", "1", "2.5"},
             new String[] {"B", "id2", "DeptB", "222", "2026-02", "20", "0.2", "2", "5.0"});
 
-    List<BillingRecord> records = assembler.assembleRecords(rows);
+    List<BillingRecord> records = assembler.assembleRecords(rows, DATASET_ID);
 
     assertEquals(2, records.size());
+    assertEquals(DATASET_ID, records.get(0).datasetId());
     assertEquals("id1", records.get(0).employeeId());
     assertEquals("DeptB", records.get(1).department());
   }
@@ -75,25 +65,18 @@ public class BillingRecordAssemblerTest {
     @Test
     @DisplayName("assembleRecord should throw ArrayIndexOutOfBoundsException for too few columns")
     void assembleRecord_tooFewColumns_throws() {
-      String[] shortRow = {"Only", "a", "few"}; // intentionally too short
-      assertThrows(ArrayIndexOutOfBoundsException.class, () -> assembler.assembleRecord(shortRow));
+      String[] shortRow = {"Only", "a", "few"};
+      assertThrows(
+          ArrayIndexOutOfBoundsException.class,
+          () -> assembler.assembleRecord(shortRow, DATASET_ID));
     }
 
     @Test
     @DisplayName("assembleRecord should throw NumberFormatException for invalid numeric fields")
     void assembleRecord_invalidNumber_throws() {
-      String[] badNumbers = {
-        "Acme",
-        "E1",
-        "D",
-        "000",
-        "2026-01",
-        "not-a-number", // minutesUsed invalid
-        "0.0",
-        "0",
-        "0.0"
-      };
-      assertThrows(NumberFormatException.class, () -> assembler.assembleRecord(badNumbers));
+      String[] badNumbers = {"Acme", "E1", "D", "000", "2026-01", "not-a-number", "0.0", "0", "0.0"};
+      assertThrows(
+          NumberFormatException.class, () -> assembler.assembleRecord(badNumbers, DATASET_ID));
     }
   }
 }

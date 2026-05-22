@@ -6,28 +6,47 @@
 package com.azeem.blueprint.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import com.azeem.blueprint.entity.BillingRecordEntity;
+import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.billing.BillingRecord;
+import com.azeem.blueprint.repository.DatasetRepository;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class BillingRecordMapperTest {
+
+  @Mock private DatasetRepository datasetRepository;
 
   private BillingRecordMapper billingRecordMapper;
 
+  private static final UUID DATASET_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+  private DatasetEntity datasetEntity;
+
   @BeforeEach
   void setUp() {
-    billingRecordMapper = new BillingRecordMapper();
+    billingRecordMapper = new BillingRecordMapper(datasetRepository);
+
+    datasetEntity = new DatasetEntity();
+    datasetEntity.setId(DATASET_ID);
   }
 
   @Test
   @DisplayName("Should map BillingRecord domain object to BillingRecordEntity")
   void shouldMapToEntity() {
+    when(datasetRepository.getReferenceById(DATASET_ID)).thenReturn(datasetEntity);
 
     BillingRecord record =
         new BillingRecord(
+            DATASET_ID,
             "Acme Corporation",
             "EMP-1001",
             "FINANCE",
@@ -41,7 +60,7 @@ class BillingRecordMapperTest {
     BillingRecordEntity result = billingRecordMapper.mapToEntity(record);
 
     assertThat(result).isNotNull();
-
+    assertThat(result.getDataset()).isEqualTo(datasetEntity);
     assertThat(result.getAccountName()).isEqualTo("Acme Corporation");
     assertThat(result.getEmployeeId()).isEqualTo("EMP-1001");
     assertThat(result.getDepartment()).isEqualTo("FINANCE");
@@ -56,10 +75,9 @@ class BillingRecordMapperTest {
   @Test
   @DisplayName("Should map BillingRecordEntity to BillingRecord domain object")
   void shouldMapToDomain() {
-
     BillingRecordEntity entity = new BillingRecordEntity();
-
     entity.setId(1L);
+    entity.setDataset(datasetEntity);
     entity.setAccountName("Acme Corporation");
     entity.setEmployeeId("EMP-1001");
     entity.setDepartment("FINANCE");
@@ -73,7 +91,7 @@ class BillingRecordMapperTest {
     BillingRecord result = billingRecordMapper.mapToDomain(entity);
 
     assertThat(result).isNotNull();
-
+    assertThat(result.datasetId()).isEqualTo(DATASET_ID);
     assertThat(result.accountName()).isEqualTo("Acme Corporation");
     assertThat(result.employeeId()).isEqualTo("EMP-1001");
     assertThat(result.department()).isEqualTo("FINANCE");
@@ -88,8 +106,10 @@ class BillingRecordMapperTest {
   @Test
   @DisplayName("Should preserve null optional fields during mapping")
   void shouldHandleNullFields() {
+    when(datasetRepository.getReferenceById(DATASET_ID)).thenReturn(datasetEntity);
 
-    BillingRecord record = new BillingRecord(null, null, null, null, "2026-01", 0, 0.0, 0, 0.0);
+    BillingRecord record =
+        new BillingRecord(DATASET_ID, null, null, null, null, "2026-01", 0, 0.0, 0, 0.0);
 
     BillingRecordEntity entity = billingRecordMapper.mapToEntity(record);
 
@@ -98,8 +118,10 @@ class BillingRecordMapperTest {
     assertThat(entity.getDepartment()).isNull();
     assertThat(entity.getPhoneNumber()).isNull();
 
+    entity.setDataset(datasetEntity);
     BillingRecord mappedBack = billingRecordMapper.mapToDomain(entity);
 
+    assertThat(mappedBack.datasetId()).isEqualTo(DATASET_ID);
     assertThat(mappedBack.accountName()).isNull();
     assertThat(mappedBack.employeeId()).isNull();
     assertThat(mappedBack.department()).isNull();
@@ -107,11 +129,13 @@ class BillingRecordMapperTest {
   }
 
   @Test
-  @DisplayName("Should preserve numeric values accurately during mapping")
+  @DisplayName("Should preserve numeric values accurately during round-trip mapping")
   void shouldPreserveNumericValues() {
+    when(datasetRepository.getReferenceById(DATASET_ID)).thenReturn(datasetEntity);
 
     BillingRecord record =
         new BillingRecord(
+            DATASET_ID,
             "Enterprise Telecom",
             "EMP-9001",
             "OPERATIONS",
@@ -129,6 +153,7 @@ class BillingRecordMapperTest {
     assertThat(entity.getSmsCount()).isEqualTo(50000);
     assertThat(entity.getTotalCharge()).isEqualTo(123456.78);
 
+    entity.setDataset(datasetEntity);
     BillingRecord mappedBack = billingRecordMapper.mapToDomain(entity);
 
     assertThat(mappedBack.minutesUsed()).isEqualTo(99999);
