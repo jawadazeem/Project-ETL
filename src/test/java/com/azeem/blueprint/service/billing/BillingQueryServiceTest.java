@@ -102,6 +102,17 @@ class BillingQueryServiceTest {
   }
 
   @Test
+  void shouldReturnDistinctBillingPeriodsForDataset() {
+    when(repository.findDistinctBillingPeriodByDatasetId(DATASET_ID))
+        .thenReturn(List.of("2026-02", "2026-01"));
+
+    List<String> periods = service.getDistinctBillingPeriodsById(DATASET_ID);
+
+    assertThat(periods).containsExactly("2026-02", "2026-01");
+    verify(repository).findDistinctBillingPeriodByDatasetId(DATASET_ID);
+  }
+
+  @Test
   void shouldReturnPagedBillingRecordsForValidPageAndSize() {
     Page<BillingRecordEntity> entityPage =
         new PageImpl<>(List.of(entity1), PageRequest.of(0, 5), 1);
