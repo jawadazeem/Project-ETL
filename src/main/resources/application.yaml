@@ -70,6 +70,9 @@ alarm:
 billing-reader:
   has-header: true
   batch-size: 100
+notification:
+  service:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:3000}
 
 ---
 # Configuration for the 'dev' profile only

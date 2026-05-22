@@ -19,6 +19,7 @@ import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
 import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.client.NotificationClient;
 import com.azeem.blueprint.repository.AlarmRepository;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import java.time.Instant;
@@ -42,6 +43,7 @@ class AlarmServiceTest {
   @Mock private AlarmDetectionService alarmDetectionService;
   @Mock private AlarmMapper alarmMapper;
   @Mock private BillingRecordMapper billingMapper;
+  @Mock private NotificationClient notificationClient;
 
   @InjectMocks private AlarmService service;
 
