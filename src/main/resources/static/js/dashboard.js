@@ -687,6 +687,7 @@ function wireDashboardEvents() {
     document.getElementById("alarms-btn")?.addEventListener("click", onAlarmsClick);
     document.getElementById("alarms-close")?.addEventListener("click", closeAlarmsModal);
     document.getElementById("helpBtn")?.addEventListener("click", openHelpModal);
+    document.getElementById("learnMoreBtn")?.addEventListener("click", openInfo);
     document.getElementById("help-close")?.addEventListener("click", closeHelpModal);
     document.getElementById("helpSecondaryClose")?.addEventListener("click", closeHelpModal);
     document.getElementById("logoutBtn")?.addEventListener("click", window.Blueprint.endSession);
