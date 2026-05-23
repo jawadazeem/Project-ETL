@@ -23,5 +23,5 @@ A live version of the API is hosted on AWS.
 - PostgreSQL & Liquibase
 
 ## Cloud Architecture
-![Architectural Bluprint](images/application-cloud-architecture-diagram.png)
+![Architectural Bluprint](images/architecture.svg)
 Version: **v1.0.0 General Availability**
