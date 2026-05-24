@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="005-add-performance-indexes" author="jawad">
+        <!-- billing_records: dataset_id is used in nearly every query -->
+        <createIndex tableName="billing_records" indexName="idx_billing_records_dataset_id">
+            <column name="dataset_id"/>
+        </createIndex>
+
+        <!-- billing_records: composite index for the most common query pattern -->
+        <createIndex tableName="billing_records" indexName="idx_billing_records_dataset_period">
+            <column name="dataset_id"/>
+            <column name="billing_period"/>
+        </createIndex>
+
+        <!-- billing_records: department lookups (case-insensitive via LOWER in app) -->
+        <createIndex tableName="billing_records" indexName="idx_billing_records_department">
+            <column name="department"/>
+        </createIndex>
+
+        <!-- alarms: dataset + billing_period is the primary query path -->
+        <createIndex tableName="alarms" indexName="idx_alarms_dataset_period">
+            <column name="dataset_id"/>
+            <column name="billing_period"/>
+        </createIndex>
+
+        <!-- datasets: owner_user_id for user-scoped dataset listing -->
+        <createIndex tableName="datasets" indexName="idx_datasets_owner_user_id">
+            <column name="owner_user_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

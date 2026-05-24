@@ -71,6 +71,26 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
 
   long countByDatasetId(UUID datasetId);
 
+  @Query(
+      """
+      SELECT b.department, SUM(b.totalCharge)
+      FROM BillingRecordEntity b
+      WHERE b.dataset.id = :datasetId AND b.billingPeriod = :billingPeriod
+        AND b.department IS NOT NULL
+      GROUP BY b.department
+    """)
+  List<Object[]> sumTotalChargeGroupedByDepartment(
+      @Param("datasetId") UUID datasetId, @Param("billingPeriod") String billingPeriod);
+
+  @Query(
+      """
+      SELECT COALESCE(SUM(b.totalCharge), 0)
+      FROM BillingRecordEntity b
+      WHERE b.dataset.id = :datasetId AND b.billingPeriod = :billingPeriod
+    """)
+  double sumTotalChargeByDatasetIdAndBillingPeriod(
+      @Param("datasetId") UUID datasetId, @Param("billingPeriod") String billingPeriod);
+
   @Modifying
   @Transactional
   int deleteByDatasetIdAndBillingPeriod(UUID datasetId, String billingPeriod);

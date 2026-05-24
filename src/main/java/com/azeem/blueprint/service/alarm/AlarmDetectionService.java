@@ -39,6 +39,46 @@ public class AlarmDetectionService {
     return alarms;
   }
 
+  /** Detects individual alarms only — safe to call per-chunk since each record is independent. */
+  public List<Alarm> detectIndividualAlarms(
+      UUID datasetId, List<BillingRecord> records, String billingPeriod) {
+    return getIndividualChargesOverLimit(datasetId, records, billingPeriod);
+  }
+
+  /** Detects department alarms from pre-computed totals (full dataset, not chunked). */
+  public List<Alarm> detectDepartmentAlarms(
+      UUID datasetId, Map<String, Double> departmentTotals, String billingPeriod) {
+    List<Alarm> alarms = new ArrayList<>();
+    double deptLimit = alarmConfig.getDepartment().getMonthlyLimit();
+
+    for (Map.Entry<String, Double> entry : departmentTotals.entrySet()) {
+      if (entry.getValue() > deptLimit) {
+        try {
+          Department dept = Department.fromString(entry.getKey());
+          alarms.add(Alarm.department(datasetId, billingPeriod, dept));
+        } catch (IllegalArgumentException ignored) {
+          // Unknown department name — skip
+        }
+      }
+    }
+
+    return alarms;
+  }
+
+  /** Detects account-level alarm from the pre-computed grand total (full dataset, not chunked). */
+  public Optional<Alarm> detectAccountAlarm(
+      UUID datasetId, double grandTotal, String billingPeriod) {
+    double accountLow = alarmConfig.getAccount().getLow();
+    double accountHigh = alarmConfig.getAccount().getHigh();
+
+    if (grandTotal >= accountHigh) {
+      return Optional.of(Alarm.accountHigh(datasetId, billingPeriod));
+    } else if (grandTotal > accountLow) {
+      return Optional.of(Alarm.accountLow(datasetId, billingPeriod));
+    }
+    return Optional.empty();
+  }
+
   private List<Alarm> getDepartmentsOverLimit(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
     List<Alarm> alarms = new ArrayList<>();
