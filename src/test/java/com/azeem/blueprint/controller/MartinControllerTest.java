@@ -16,6 +16,7 @@ import com.azeem.blueprint.config.SecurityConfig;
 import com.azeem.blueprint.model.martin.MartinRequest;
 import com.azeem.blueprint.model.martin.MartinResponse;
 import com.azeem.blueprint.service.martin.MartinService;
+import com.azeem.blueprint.service.martin.RateLimiter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,11 @@ class MartinControllerTest {
   @Autowired private ObjectMapper mapper;
 
   @MockitoBean private MartinService martinService;
+  @MockitoBean private RateLimiter rateLimiter;
 
   @Test
   void shouldReturnChatResponse() throws Exception {
+    when(rateLimiter.tryAcquire()).thenReturn(true);
     MartinRequest request = new MartinRequest("testing", "2026-01");
 
     when(martinService.ask(eq("testing"), any(UUID.class), eq("2026-01")))

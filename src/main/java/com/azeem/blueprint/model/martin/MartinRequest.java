@@ -5,9 +5,15 @@
 
 package com.azeem.blueprint.model.martin;
 
+import jakarta.validation.constraints.NotBlank;
+
 /** Martin Request DTO */
 public class MartinRequest {
+
+  @NotBlank(message = "Prompt must not be blank")
   private String prompt;
+
+  @NotBlank(message = "Billing period must not be blank")
   private String period;
 
   public MartinRequest() {}

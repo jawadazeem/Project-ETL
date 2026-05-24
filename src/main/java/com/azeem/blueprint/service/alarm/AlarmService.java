@@ -49,50 +49,80 @@ public class AlarmService {
     this.notificationClient = notificationClient;
   }
 
-  // TODO: Fix. Alarm detection is chunked by 1000 records, but department totals and account totals
-  // are computed per chunk, not per full dataset-period. That can produce false negatives or
-  // duplicate-ish behavior once datasets exceed one page.
   /**
    * Detects alarms from billing records and persists only new ones for the given billing period.
-   * Newly persisted alarms are forwarded to the notification service on a best-effort basis.
+   *
+   * <p>Department and account-level alarms use SQL aggregates computed over the full dataset-period,
+   * so they are accurate regardless of dataset size. Individual alarms (per-record threshold checks)
+   * are still processed in chunks to limit memory usage.
+   *
+   * <p>Newly persisted alarms are forwarded to the notification service on a best-effort basis.
    */
   @Transactional
   public void detectAndPersistAlarmsForDataset(UUID datasetId, String billingPeriod) {
-    int page = 0;
-    int chunkSize = 1000;
-    Page<BillingRecordEntity> chunk;
     Set<UUID> existingKeys =
         new HashSet<>(
             alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(datasetId, billingPeriod));
 
     List<Alarm> allNewAlarms = new ArrayList<>();
 
+    // Department alarms — computed from SQL aggregates over the full dataset-period
+    Map<String, Double> departmentTotals = buildDepartmentTotals(datasetId, billingPeriod);
+    List<Alarm> deptAlarms =
+        alarmDetectionService.detectDepartmentAlarms(datasetId, departmentTotals, billingPeriod);
+    persistNewAlarms(deptAlarms, existingKeys, allNewAlarms);
+
+    // Account-level alarm — computed from SQL aggregate over the full dataset-period
+    double grandTotal =
+        billingRecordRepository.sumTotalChargeByDatasetIdAndBillingPeriod(datasetId, billingPeriod);
+    alarmDetectionService
+        .detectAccountAlarm(datasetId, grandTotal, billingPeriod)
+        .ifPresent(alarm -> persistNewAlarms(List.of(alarm), existingKeys, allNewAlarms));
+
+    // Individual alarms — chunked, since each record is checked independently
+    int page = 0;
+    int chunkSize = 1000;
     boolean hasMore = true;
     while (hasMore) {
-      chunk =
+      Page<BillingRecordEntity> chunk =
           billingRecordRepository.findByDatasetIdAndBillingPeriod(
               datasetId, billingPeriod, PageRequest.of(page++, chunkSize));
 
       List<BillingRecord> chunkList = chunk.stream().map(billingMapper::mapToDomain).toList();
-      List<Alarm> detectedAlarms =
-          alarmDetectionService.detectAlarms(datasetId, chunkList, billingPeriod);
-
-      if (!detectedAlarms.isEmpty()) {
-        List<Alarm> newAlarms =
-            detectedAlarms.stream().filter(a -> !existingKeys.contains(a.businessKey())).toList();
-
-        if (!newAlarms.isEmpty()) {
-          alarmRepository.saveAll(newAlarms.stream().map(alarmMapper::mapToEntity).toList());
-          newAlarms.forEach(a -> existingKeys.add(a.businessKey()));
-          allNewAlarms.addAll(newAlarms);
-        }
-      }
+      List<Alarm> individualAlarms =
+          alarmDetectionService.detectIndividualAlarms(datasetId, chunkList, billingPeriod);
+      persistNewAlarms(individualAlarms, existingKeys, allNewAlarms);
 
       hasMore = chunk.hasNext();
     }
 
     if (!allNewAlarms.isEmpty()) {
       notifyQuietly(allNewAlarms);
+    }
+  }
+
+  private Map<String, Double> buildDepartmentTotals(UUID datasetId, String billingPeriod) {
+    Map<String, Double> totals = new HashMap<>();
+    for (Object[] row :
+        billingRecordRepository.sumTotalChargeGroupedByDepartment(datasetId, billingPeriod)) {
+      String department = (String) row[0];
+      Double total = (Double) row[1];
+      if (department != null && total != null) {
+        totals.put(department, total);
+      }
+    }
+    return totals;
+  }
+
+  private void persistNewAlarms(
+      List<Alarm> detected, Set<UUID> existingKeys, List<Alarm> allNewAlarms) {
+    if (detected.isEmpty()) return;
+    List<Alarm> newAlarms =
+        detected.stream().filter(a -> !existingKeys.contains(a.businessKey())).toList();
+    if (!newAlarms.isEmpty()) {
+      alarmRepository.saveAll(newAlarms.stream().map(alarmMapper::mapToEntity).toList());
+      newAlarms.forEach(a -> existingKeys.add(a.businessKey()));
+      allNewAlarms.addAll(newAlarms);
     }
   }
 

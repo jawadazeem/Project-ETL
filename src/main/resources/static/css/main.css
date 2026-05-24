@@ -2,8 +2,17 @@
     --bg: #f5f6fa;
     --card: #ffffff;
     --muted: #6c757d;
-    --accent: #0d6efd;
-    --border: #e9ecef;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-light: #eef2ff;
+    --border: #e5e7eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --radius: 12px;
 }
 
 * {
@@ -12,7 +21,8 @@
 
 body {
     font-family: "Montserrat", sans-serif;
-    color: #222;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
 }
 
 .app-footer {
@@ -34,6 +44,28 @@ body {
 .footer-separator {
     margin: 0 8px;
     opacity: 0.5;
+}
+
+.btn-primary {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
+}
+
+.btn-outline-primary {
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: #fff !important;
 }
 
 .btn-primary-lg {

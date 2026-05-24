@@ -5,28 +5,39 @@
 
 package com.azeem.blueprint.controller;
 
+import com.azeem.blueprint.exception.web.QueryLimitExceededException;
 import com.azeem.blueprint.model.martin.MartinRequest;
 import com.azeem.blueprint.model.martin.MartinResponse;
 import com.azeem.blueprint.service.martin.MartinService;
+import com.azeem.blueprint.service.martin.RateLimiter;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Validated
 @RestController
 @RequestMapping("/datasets/{datasetId}")
 public class MartinController {
   private static final Logger log = LoggerFactory.getLogger(MartinController.class);
   private final MartinService martinService;
+  private final RateLimiter rateLimiter;
 
-  public MartinController(MartinService martinService) {
+  public MartinController(MartinService martinService, RateLimiter rateLimiter) {
     this.martinService = martinService;
+    this.rateLimiter = rateLimiter;
   }
 
   @PostMapping("/martin")
   public ResponseEntity<MartinResponse> chat(
-      @PathVariable String datasetId, @RequestBody MartinRequest request) {
+      @PathVariable String datasetId, @Valid @RequestBody MartinRequest request) {
+    if (!rateLimiter.tryAcquire()) {
+      throw new QueryLimitExceededException(
+          "AI query rate limit exceeded. Please wait a moment before trying again.");
+    }
     MartinResponse response =
         martinService.ask(request.getPrompt(), UUID.fromString(datasetId), request.getPeriod());
     return ResponseEntity.ok(response);

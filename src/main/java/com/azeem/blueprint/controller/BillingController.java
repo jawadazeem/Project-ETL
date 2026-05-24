@@ -35,8 +35,8 @@ public class BillingController {
   @GetMapping("/records")
   public ResponseEntity<Page<BillingRecord>> getRecords(
       @PathVariable UUID datasetId,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "20") int size) {
+      @RequestParam(defaultValue = "0") @Min(0) int page,
+      @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
     log.info("GET /datasets/{}/records called, page: {}, size: {}.", datasetId, page, size);
     return ResponseEntity.ok(service.getAllRecordsInDataset(datasetId, page, size));
   }
@@ -51,8 +51,8 @@ public class BillingController {
   public ResponseEntity<Page<BillingRecord>> getRecordsByPeriod(
       @PathVariable UUID datasetId,
       @BillingPeriod @PathVariable String billingPeriod,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "20") int size) {
+      @RequestParam(defaultValue = "0") @Min(0) int page,
+      @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
     log.info(
         "GET /datasets/{}/records/periods/{} called, page: {}, size: {}.",
         datasetId,

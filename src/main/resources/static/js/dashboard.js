@@ -157,13 +157,24 @@ async function loadAlarmsChart() {
             alarmsChartInstance.destroy();
         }
 
+        const alarmColors = {
+            LOW: "#facc15",
+            MEDIUM: "#f97316",
+            HIGH: "#ef4444",
+            UNKNOWN: "#94a3b8"
+        };
+        const barColors = Object.keys(counts).map(k => alarmColors[k] || "#94a3b8");
+
         alarmsChartInstance = new Chart(document.getElementById("alarmsChart"), {
             type: "bar",
             data: {
                 labels: Object.keys(counts),
                 datasets: [{
                     label: "Alarm Count",
-                    data: Object.values(counts)
+                    data: Object.values(counts),
+                    backgroundColor: barColors,
+                    borderRadius: 6,
+                    borderSkipped: false
                 }]
             },
             options: {
@@ -174,7 +185,8 @@ async function loadAlarmsChart() {
                     tooltip: { enabled: true }
                 },
                 scales: {
-                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                    y: { beginAtZero: true, ticks: { precision: 0 } },
+                    x: { grid: { display: false } }
                 }
             }
         });
@@ -205,14 +217,46 @@ async function loadDeptChart() {
             deptChartInstance.destroy();
         }
 
+        const deptPalette = [
+            "#6366f1", "#8b5cf6", "#a78bfa", "#818cf8",
+            "#7c3aed", "#6d28d9", "#5b21b6", "#4f46e5",
+            "#4338ca", "#3730a3"
+        ];
+        const deptLabels = Object.keys(totals);
+        const deptColors = deptLabels.map((_, i) => deptPalette[i % deptPalette.length]);
+
         deptChartInstance = new Chart(document.getElementById("deptChart"), {
             type: "bar",
             data: {
-                labels: Object.keys(totals),
+                labels: deptLabels,
                 datasets: [{
                     label: "Total Charges ($)",
-                    data: Object.values(totals)
+                    data: Object.values(totals),
+                    backgroundColor: deptColors,
+                    borderRadius: 6,
+                    borderSkipped: false
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `$${ctx.raw.toFixed(2)}`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: v => `$${v.toLocaleString()}`
+                        }
+                    },
+                    x: { grid: { display: false } }
+                }
             }
         });
     } catch (e) {
@@ -503,14 +547,32 @@ function appendChatMessage(sender, text) {
     chat.scrollTop = chat.scrollHeight;
 }
 
+function showTypingIndicator() {
+    const chat = document.getElementById("chatWindow");
+    const wrapper = document.createElement("div");
+    wrapper.className = "chat-message bot";
+    wrapper.id = "typing-indicator";
+    wrapper.innerHTML = '<div class="chat-typing"><span></span><span></span><span></span></div>';
+    chat.appendChild(wrapper);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const el = document.getElementById("typing-indicator");
+    if (el) el.remove();
+}
+
 async function sendChat() {
     if (!currentDatasetId) return;
     const input = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("chatSendBtn");
     const text = input.value.trim();
     if (!text) return;
 
     appendChatMessage("user", text);
     input.value = "";
+    sendBtn.disabled = true;
+    showTypingIndicator();
 
     try {
         const res = await fetch(`/datasets/${currentDatasetId}/martin`, {
@@ -518,6 +580,8 @@ async function sendChat() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: text, period: currentPeriod })
         });
+
+        hideTypingIndicator();
 
         if (!res.ok) {
             appendChatMessage("bot", `Server error: ${res.status}`);
@@ -532,9 +596,12 @@ async function sendChat() {
 
         appendChatMessage("bot", msg);
     } catch (e) {
+        hideTypingIndicator();
         console.error("Chat send failed", e);
         appendChatMessage("bot", "Failed to send message — the chat service may be unavailable.");
         showToast("Martin is unavailable. Check the connection.");
+    } finally {
+        sendBtn.disabled = false;
     }
 }
 

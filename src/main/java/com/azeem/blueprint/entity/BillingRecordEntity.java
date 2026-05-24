@@ -17,7 +17,10 @@ import jakarta.persistence.*;
     name = "billing_records",
     indexes = {
       @Index(name = "idx_billing_period", columnList = "billingPeriod"),
-      @Index(name = "idx_total_charge_desc", columnList = "totalCharge DESC")
+      @Index(name = "idx_total_charge_desc", columnList = "totalCharge DESC"),
+      @Index(name = "idx_billing_records_dataset_id", columnList = "dataset_id"),
+      @Index(name = "idx_billing_records_dataset_period", columnList = "dataset_id, billingPeriod"),
+      @Index(name = "idx_billing_records_department", columnList = "department")
     })
 public class BillingRecordEntity {
   @Id

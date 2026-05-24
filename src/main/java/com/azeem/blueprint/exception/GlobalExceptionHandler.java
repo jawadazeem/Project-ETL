@@ -6,12 +6,14 @@
 package com.azeem.blueprint.exception;
 
 import com.azeem.blueprint.exception.core.*;
+import com.azeem.blueprint.exception.infra.DatasetNotFoundException;
 import com.azeem.blueprint.exception.web.ApiException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -74,20 +76,37 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-  // Handle ApiExceptions
   @ExceptionHandler(ApiException.class)
   public ResponseEntity<ErrorResponse> handleApiException(ApiException ex) {
-
+    logger.warn("API rate limit exceeded: {}", ex.getMessage());
     ErrorResponse response =
         new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS.value(), ex.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.TOO_MANY_REQUESTS);
+  }
 
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex) {
+    String message =
+        ex.getBindingResult().getFieldErrors().stream()
+            .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
+            .findFirst()
+            .orElse("Validation error");
+    logger.warn("Request body validation failed: {}", message);
+    ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-  // Handle generic exceptions
+  @ExceptionHandler(DatasetNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleDatasetNotFound(DatasetNotFoundException ex) {
+    logger.warn("Dataset not found: {}", ex.getMessage());
+    ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
+
   @ExceptionHandler(BillingException.class)
   public ResponseEntity<ErrorResponse> handleGenericException(BillingException ex) {
-    logger.error("Unhandled exception", ex);
+    logger.error("Unhandled billing exception", ex);
     ErrorResponse response =
         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
