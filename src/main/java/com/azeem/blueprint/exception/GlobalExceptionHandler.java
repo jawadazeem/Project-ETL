@@ -104,6 +104,29 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(CorporateInfoNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleCorporateInfoNotFound(
+      CorporateInfoNotFoundException ex) {
+    logger.warn("Corporate info not found: {}", ex.getMessage());
+    ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(PdfReportNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handlePdfReportNotFound(PdfReportNotFoundException ex) {
+    logger.warn("PDF report not found: {}", ex.getMessage());
+    ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(PdfGenerationException.class)
+  public ResponseEntity<ErrorResponse> handlePdfGenerationException(PdfGenerationException ex) {
+    logger.error("PDF generation failed", ex);
+    ErrorResponse response =
+        new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "PDF generation failed");
+    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
   @ExceptionHandler(BillingException.class)
   public ResponseEntity<ErrorResponse> handleGenericException(BillingException ex) {
     logger.error("Unhandled billing exception", ex);

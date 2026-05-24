@@ -752,6 +752,108 @@ function changePageFilterByDepartment(step) {
     loadByDepartment();
 }
 
+// ── PDF Report ──────────────────────────────────────────────────────────
+
+async function onGeneratePdfClick() {
+    if (!currentDatasetId || !currentPeriod) {
+        showToast("Select a dataset and billing period first.", "error");
+        return;
+    }
+
+    try {
+        const res = await fetch(`/users/${GUEST_USER_ID}/corporate-info`);
+
+        if (res.status === 404) {
+            openCorporateInfoModal();
+            return;
+        }
+
+        if (!res.ok) throw new Error("Failed to check corporate info");
+        await generatePdf();
+    } catch (e) {
+        console.error("PDF flow error", e);
+        showToast("Could not start PDF generation.");
+    }
+}
+
+function openCorporateInfoModal() {
+    document.getElementById("corporate-info-overlay").style.display = "flex";
+}
+
+function closeCorporateInfoModal() {
+    document.getElementById("corporate-info-overlay").style.display = "none";
+}
+
+async function saveCorporateInfoAndGenerate() {
+    const companyName = document.getElementById("corpCompanyName").value.trim();
+    if (!companyName) {
+        showToast("Company name is required.", "error");
+        return;
+    }
+
+    const body = {
+        companyName,
+        addressLine1: document.getElementById("corpAddress1").value.trim(),
+        addressLine2: document.getElementById("corpAddress2").value.trim(),
+        city: document.getElementById("corpCity").value.trim(),
+        state: document.getElementById("corpState").value.trim(),
+        zipCode: document.getElementById("corpZip").value.trim(),
+        phone: document.getElementById("corpPhone").value.trim(),
+        email: document.getElementById("corpEmail").value.trim()
+    };
+
+    try {
+        const res = await fetch(`/users/${GUEST_USER_ID}/corporate-info`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", "X-User-Id": GUEST_USER_ID },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) throw new Error("Failed to save corporate info");
+
+        closeCorporateInfoModal();
+        showToast("Company info saved.", "success");
+        await generatePdf();
+    } catch (e) {
+        console.error("Save corporate info failed", e);
+        showToast("Could not save company information.");
+    }
+}
+
+async function generatePdf() {
+    const btn = document.getElementById("generate-pdf-btn");
+    btn.disabled = true;
+    btn.textContent = "Generating...";
+
+    try {
+        const res = await fetch(
+            `/datasets/${currentDatasetId}/reports/pdf?period=${encodeURIComponent(currentPeriod)}`,
+            {
+                method: "POST",
+                headers: { "X-User-Id": GUEST_USER_ID }
+            }
+        );
+
+        if (!res.ok) throw new Error(`PDF generation failed: ${res.status}`);
+
+        const report = await res.json();
+        showToast("PDF generated successfully.", "success");
+
+        const a = document.createElement("a");
+        a.href = `/datasets/${currentDatasetId}/reports/pdf/${report.id}`;
+        a.download = `billing-report-${currentPeriod}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    } catch (e) {
+        console.error("PDF generation failed", e);
+        showToast("Could not generate PDF report.");
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Generate PDF";
+    }
+}
+
 // ── Event wiring ──────────────────────────────────────────────────────────
 
 function wireDashboardEvents() {
@@ -779,6 +881,10 @@ function wireDashboardEvents() {
     document.getElementById("departmentSearchBtn")?.addEventListener("click", loadByDepartment);
     document.getElementById("topLoadBtn")?.addEventListener("click", loadTopN);
     document.getElementById("infoBtn")?.addEventListener("click", openInfo);
+    document.getElementById("generate-pdf-btn")?.addEventListener("click", onGeneratePdfClick);
+    document.getElementById("corporate-info-close")?.addEventListener("click", closeCorporateInfoModal);
+    document.getElementById("corpCancelBtn")?.addEventListener("click", closeCorporateInfoModal);
+    document.getElementById("corpSaveBtn")?.addEventListener("click", saveCorporateInfoAndGenerate);
 
     document.getElementById("welcomeUploadBtn")?.addEventListener("click", () => {
         document.getElementById("fileInput").click();
