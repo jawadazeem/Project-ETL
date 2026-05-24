@@ -188,6 +188,37 @@ class BillingQueryServiceTest {
   }
 
   @Test
+  void shouldReturnRecordsByDepartmentWithinBillingPeriod() {
+    Page<BillingRecordEntity> entityPage =
+        new PageImpl<>(List.of(entity1), PageRequest.of(0, 5), 1);
+    when(repository.findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
+            eq(DATASET_ID), eq("2026-01"), eq("IT"), any(Pageable.class)))
+        .thenReturn(entityPage);
+    when(mapper.mapToDomain(entity1)).thenReturn(domain1);
+
+    Page<BillingRecord> result =
+        service.getRecordsByDepartmentInDatasetForPeriod(DATASET_ID, "2026-01", "IT", 0, 5);
+
+    assertThat(result.getContent()).containsExactly(domain1);
+    ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+    verify(repository)
+        .findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
+            eq(DATASET_ID), eq("2026-01"), eq("IT"), pageableCaptor.capture());
+    assertThat(pageableCaptor.getValue().getSort()).isEqualTo(Sort.by("totalCharge").descending());
+  }
+
+  @Test
+  void shouldReturnDistinctDepartmentsForDataset() {
+    when(repository.findDistinctDepartmentsByDatasetId(DATASET_ID))
+        .thenReturn(List.of("Finance", "IT"));
+
+    List<String> departments = service.getDistinctDepartmentsInDataset(DATASET_ID);
+
+    assertThat(departments).containsExactly("Finance", "IT");
+    verify(repository).findDistinctDepartmentsByDatasetId(DATASET_ID);
+  }
+
+  @Test
   void shouldReturnTopNRecordsSortedByTotalChargeDescending() {
     Page<BillingRecordEntity> entityPage =
         new PageImpl<>(List.of(entity1), PageRequest.of(0, 1), 1);

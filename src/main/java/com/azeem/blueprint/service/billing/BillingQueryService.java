@@ -110,6 +110,25 @@ public class BillingQueryService {
     return entityPage.map(mapper::mapToDomain);
   }
 
+  public Page<BillingRecord> getRecordsByDepartmentInDatasetForPeriod(
+      UUID datasetId,
+      @NotBlank String billingPeriod,
+      @NotBlank String department,
+      int page,
+      int size) {
+    Pageable pageRequest = PageRequest.of(page, size, Sort.by("totalCharge").descending());
+    Page<BillingRecordEntity> entityPage =
+        repository.findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
+            datasetId, billingPeriod, department, pageRequest);
+    log.info(
+        "Found {} records in DB for dept: {} and period: {}",
+        entityPage.getTotalElements(),
+        department,
+        billingPeriod);
+
+    return entityPage.map(mapper::mapToDomain);
+  }
+
   // DB-backed distinct departments
   public List<String> getDistinctDepartmentsInDataset(UUID datasetId) {
     return repository.findDistinctDepartmentsByDatasetId(datasetId);

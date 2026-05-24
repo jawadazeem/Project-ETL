@@ -61,6 +61,16 @@ class BillingControllerTest {
   }
 
   @Test
+  void shouldReturnDepartments() throws Exception {
+    when(billingQueryService.getDistinctDepartmentsInDataset(any(UUID.class)))
+        .thenReturn(List.of("Finance", "IT"));
+
+    mockMvc.perform(get(BASE + "/records/departments")).andExpect(status().isOk());
+
+    verify(billingQueryService).getDistinctDepartmentsInDataset(any(UUID.class));
+  }
+
+  @Test
   void defaultPageAndSize_shouldReturnRecordsByPeriod() throws Exception {
     Page<BillingRecord> page = new PageImpl<>(List.of(), PageRequest.of(0, 20), 0);
     when(billingQueryService.getDatasetRecordsByPeriod(any(), anyString(), anyInt(), anyInt()))
@@ -109,6 +119,23 @@ class BillingControllerTest {
 
     verify(billingQueryService)
         .getRecordsByDepartmentInDataset(any(UUID.class), eq("IT"), eq(1), eq(20));
+  }
+
+  @Test
+  void shouldReturnRecordsByDepartmentAndBillingPeriod() throws Exception {
+    mockMvc
+        .perform(
+            get(BASE + "/records/departments/IT")
+                .param("billingPeriod", "2026-01")
+                .param("page", "1")
+                .param("size", "20"))
+        .andExpect(status().isOk());
+
+    verify(billingQueryService)
+        .getRecordsByDepartmentInDatasetForPeriod(
+            any(UUID.class), eq("2026-01"), eq("IT"), eq(1), eq(20));
+    verify(billingQueryService, never())
+        .getRecordsByDepartmentInDataset(any(UUID.class), anyString(), anyInt(), anyInt());
   }
 
   @Test

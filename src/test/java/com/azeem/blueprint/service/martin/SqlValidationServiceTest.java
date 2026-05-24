@@ -48,7 +48,8 @@ class SqlValidationServiceTest {
   @DisplayName("Column named 'updated_at' does not trigger false positive")
   void columnNamedUpdatedAt_doesNotFalsePositive() {
     assertThat(
-            validator.isValidSql(sql("SELECT updated_at, deleted_at FROM billing_records LIMIT 10")))
+            validator.isValidSql(
+                sql("SELECT updated_at, deleted_at FROM billing_records LIMIT 10")))
         .isTrue();
   }
 
@@ -92,18 +93,14 @@ class SqlValidationServiceTest {
   @Test
   @DisplayName("Multi-statement query with semicolon is rejected")
   void multiStatement_rejected() {
-    assertThat(
-            validator.isValidSql(
-                sql("SELECT 1; DROP TABLE billing_records")))
-        .isFalse();
+    assertThat(validator.isValidSql(sql("SELECT 1; DROP TABLE billing_records"))).isFalse();
   }
 
   @Test
   @DisplayName("Dangerous keyword hidden in block comment is rejected")
   void dangerousKeywordInBlockComment_rejected() {
     assertThat(
-            validator.isValidSql(
-                sql("SELECT /* just a comment */ 1; DROP TABLE billing_records")))
+            validator.isValidSql(sql("SELECT /* just a comment */ 1; DROP TABLE billing_records")))
         .isFalse();
   }
 
@@ -144,8 +141,6 @@ class SqlValidationServiceTest {
   @Test
   @DisplayName("CREATE statement is rejected")
   void createStatement_rejected() {
-    assertThat(
-            validator.isValidSql(sql("CREATE TABLE evil (id INT)")))
-        .isFalse();
+    assertThat(validator.isValidSql(sql("CREATE TABLE evil (id INT)"))).isFalse();
   }
 }

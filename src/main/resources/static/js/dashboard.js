@@ -150,6 +150,10 @@ async function loadAlarmsChart() {
     showSkeleton("skeleton-alarms-chart");
 
     try {
+        if (typeof Chart === "undefined") {
+            throw new Error("Chart.js is unavailable");
+        }
+
         const alarms = await fetchAlarms();
         const counts = countBySeverity(alarms);
 
@@ -203,15 +207,14 @@ async function loadDeptChart() {
     showSkeleton("skeleton-dept-chart");
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/records/periods/${currentPeriod}?page=0&size=1000`);
+        if (typeof Chart === "undefined") {
+            throw new Error("Chart.js is unavailable");
+        }
+
+        const res = await fetch(`/datasets/${currentDatasetId}/summary/periods/${encodeURIComponent(currentPeriod)}`);
         if (!res.ok) throw new Error(`Dept chart fetch failed: ${res.status}`);
         const data = await res.json();
-        const records = Array.isArray(data) ? data : (data.content || []);
-        const totals = {};
-
-        records.forEach(record => {
-            totals[record.department] = (totals[record.department] || 0) + record.totalCharge;
-        });
+        const totals = data.chargesByDepartment || {};
 
         if (deptChartInstance) {
             deptChartInstance.destroy();
@@ -315,7 +318,16 @@ async function loadByDepartment() {
     showSkeleton("skeleton-dept-records");
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/records/departments/${department}?page=${currentPageFilterByDepartment}&size=${pageSize}`);
+        const params = new URLSearchParams({
+            page: currentPageFilterByDepartment,
+            size: pageSize
+        });
+
+        if (currentPeriod) {
+            params.set("billingPeriod", currentPeriod);
+        }
+
+        const res = await fetch(`/datasets/${currentDatasetId}/records/departments/${encodeURIComponent(department)}?${params}`);
         if (!res.ok) throw new Error(`Dept records fetch failed: ${res.status}`);
         const data = await res.json();
         const records = data.content || [];
@@ -422,21 +434,20 @@ async function loadDepartments() {
     if (!currentDatasetId || !currentPeriod) return;
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/records/periods/${currentPeriod}?page=0&size=1000`);
+        const res = await fetch(`/datasets/${currentDatasetId}/records/departments`);
         if (!res.ok) return;
-        const data = await res.json();
-        const records = data.content || [];
+        const departments = asArray(await res.json());
 
         const seen = new Set();
         const select = document.getElementById("departmentSelect");
         select.innerHTML = "";
 
-        records.forEach(record => {
-            if (record.department && !seen.has(record.department)) {
-                seen.add(record.department);
+        departments.forEach(department => {
+            if (department && !seen.has(department)) {
+                seen.add(department);
                 const opt = document.createElement("option");
-                opt.value = record.department;
-                opt.textContent = record.department;
+                opt.value = department;
+                opt.textContent = department;
                 select.appendChild(opt);
             }
         });
@@ -449,9 +460,9 @@ async function loadDepartments() {
 
 async function fetchAlarms() {
     if (!currentPeriod || !currentDatasetId) return [];
-    const res = await fetch(`/datasets/${currentDatasetId}/alarms/${currentPeriod}`);
+    const res = await fetch(`/datasets/${currentDatasetId}/alarms/${encodeURIComponent(currentPeriod)}`);
     if (!res.ok) throw new Error("Failed to load alarms");
-    return await res.json();
+    return asArray(await res.json());
 }
 
 function renderAlarms(alarms) {
@@ -514,8 +525,9 @@ async function loadAlarmsCount() {
     if (!currentPeriod || !currentDatasetId) return;
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/alarms/${currentPeriod}`);
-        const alarms = await res.json();
+        const res = await fetch(`/datasets/${currentDatasetId}/alarms/${encodeURIComponent(currentPeriod)}`);
+        if (!res.ok) throw new Error(`Alarms count fetch failed: ${res.status}`);
+        const alarms = asArray(await res.json());
         const count = alarms.length;
         const btn = document.getElementById("alarms-btn");
 

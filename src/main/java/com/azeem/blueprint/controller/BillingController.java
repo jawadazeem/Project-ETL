@@ -67,11 +67,24 @@ public class BillingController {
   public ResponseEntity<Page<BillingRecord>> getRecordsByDepartment(
       @PathVariable UUID datasetId,
       @PathVariable @NotBlank String department,
+      @RequestParam(required = false) String billingPeriod,
       @RequestParam(defaultValue = "0") @Min(0) int page,
       @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
     log.info("GET /datasets/{}/records/departments/{} called.", datasetId, department);
+    if (billingPeriod != null && !billingPeriod.isBlank()) {
+      return ResponseEntity.ok(
+          service.getRecordsByDepartmentInDatasetForPeriod(
+              datasetId, billingPeriod, department, page, size));
+    }
+
     return ResponseEntity.ok(
         service.getRecordsByDepartmentInDataset(datasetId, department, page, size));
+  }
+
+  @GetMapping("/records/departments")
+  public ResponseEntity<List<String>> getDepartments(@PathVariable UUID datasetId) {
+    log.info("GET /datasets/{}/records/departments called.", datasetId);
+    return ResponseEntity.ok(service.getDistinctDepartmentsInDataset(datasetId));
   }
 
   @GetMapping("/summary")

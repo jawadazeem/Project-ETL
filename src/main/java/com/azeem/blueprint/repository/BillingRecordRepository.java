@@ -69,6 +69,9 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
   Page<BillingRecordEntity> findByDatasetIdAndDepartmentIgnoreCase(
       UUID datasetId, String department, Pageable pageable);
 
+  Page<BillingRecordEntity> findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
+      UUID datasetId, String billingPeriod, String department, Pageable pageable);
+
   long countByDatasetId(UUID datasetId);
 
   @Query(

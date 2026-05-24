@@ -52,9 +52,9 @@ public class AlarmService {
   /**
    * Detects alarms from billing records and persists only new ones for the given billing period.
    *
-   * <p>Department and account-level alarms use SQL aggregates computed over the full dataset-period,
-   * so they are accurate regardless of dataset size. Individual alarms (per-record threshold checks)
-   * are still processed in chunks to limit memory usage.
+   * <p>Department and account-level alarms use SQL aggregates computed over the full
+   * dataset-period, so they are accurate regardless of dataset size. Individual alarms (per-record
+   * threshold checks) are still processed in chunks to limit memory usage.
    *
    * <p>Newly persisted alarms are forwarded to the notification service on a best-effort basis.
    */
