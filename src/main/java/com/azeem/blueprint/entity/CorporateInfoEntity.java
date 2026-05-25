@@ -6,15 +6,17 @@
 package com.azeem.blueprint.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(
-    name = "corporate_info",
-    uniqueConstraints = @UniqueConstraint(columnNames = "user_id"))
+@Table(name = "corporate_info")
 public class CorporateInfoEntity {
-  @Id private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
@@ -42,29 +44,15 @@ public class CorporateInfoEntity {
   @Column(name = "logo_url")
   private String logoUrl;
 
-  @Column(name = "created_at")
+  @CreationTimestamp
+  @Column(name = "created_at", updatable = false, nullable = false)
   private Instant createdAt;
 
+  @UpdateTimestamp
   @Column(name = "updated_at")
   private Instant updatedAt;
 
   public CorporateInfoEntity() {}
-
-  @PrePersist
-  void ensureId() {
-    if (id == null) {
-      id = UUID.randomUUID();
-    }
-    if (createdAt == null) {
-      createdAt = Instant.now();
-    }
-    updatedAt = Instant.now();
-  }
-
-  @PreUpdate
-  void onUpdate() {
-    updatedAt = Instant.now();
-  }
 
   public UUID getId() {
     return id;
