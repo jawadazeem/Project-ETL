@@ -22,6 +22,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +55,7 @@ public class BillingQueryService {
   }
 
   // DB-backed distinct billing periods for a given dataset (small result set expected)
+  @Cacheable(value = "billingPeriods", key = "#datasetId")
   public List<String> getDistinctBillingPeriodsById(UUID datasetId) {
     return repository.findDistinctBillingPeriodByDatasetId(datasetId);
   }
@@ -130,6 +132,7 @@ public class BillingQueryService {
   }
 
   // DB-backed distinct departments
+  @Cacheable(value = "departments", key = "#datasetId")
   public List<String> getDistinctDepartmentsInDataset(UUID datasetId) {
     return repository.findDistinctDepartmentsByDatasetId(datasetId);
   }
@@ -152,6 +155,13 @@ public class BillingQueryService {
     return records;
   }
 
+  public List<BillingRecord> getAllRecordsForExport(UUID datasetId, String billingPeriod) {
+    return repository.findByDatasetIdAndBillingPeriod(datasetId, billingPeriod).stream()
+        .map(mapper::mapToDomain)
+        .toList();
+  }
+
+  @Cacheable(value = "billingSummaries", key = "#datasetId + '-' + #billingPeriod")
   public BillingSummary generateSummaryForPeriodInDataset(
       UUID datasetId, @BillingPeriod String billingPeriod) {
     List<BillingRecord> records =
@@ -167,6 +177,7 @@ public class BillingQueryService {
     return new SummaryBuilder(records).build();
   }
 
+  @Cacheable(value = "billingSummaries", key = "#datasetId")
   public BillingSummary generateSummary(UUID datasetId) {
 
     int page = 0;

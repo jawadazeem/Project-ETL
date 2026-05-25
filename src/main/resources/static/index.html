@@ -79,6 +79,9 @@
             <div id="alarms-empty">No alarms found.</div>
             <ul class="alarms-list" id="alarms-list"></ul>
         </div>
+        <div class="modal-footer" style="padding: 12px 24px; text-align: right;">
+            <button class="btn btn-sm btn-outline-secondary" id="exportAlarmsBtn" type="button">Export CSV</button>
+        </div>
     </div>
 </div>
 
@@ -262,6 +265,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <span>All Records</span>
             <div id="paginationControlsAll" class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-secondary" id="exportRecordsBtn" type="button">Export CSV</button>
                 <button class="btn btn-sm btn-outline-secondary" id="prevBtnAllRecords" type="button">Previous</button>
                 <span id="pageInfoAllRecords" class="small fw-bold page-info">Page 1</span>
                 <button class="btn btn-sm btn-outline-secondary" id="nextBtnAllRecords" type="button">Next</button>

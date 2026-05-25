@@ -521,6 +521,24 @@ async function onAlarmsClick() {
     }
 }
 
+// ── CSV Export ───────────────────────────────────────────────────────────
+
+function exportRecordsCsv() {
+    if (!currentDatasetId || !currentPeriod) {
+        showToast("Select a billing period first.");
+        return;
+    }
+    window.location.href = `/datasets/${currentDatasetId}/records/export?billingPeriod=${encodeURIComponent(currentPeriod)}`;
+}
+
+function exportAlarmsCsv() {
+    if (!currentDatasetId || !currentPeriod) {
+        showToast("Select a billing period first.");
+        return;
+    }
+    window.location.href = `/datasets/${currentDatasetId}/alarms/${encodeURIComponent(currentPeriod)}/export`;
+}
+
 async function loadAlarmsCount() {
     if (!currentPeriod || !currentDatasetId) return;
 
@@ -880,6 +898,8 @@ function wireDashboardEvents() {
     document.getElementById("nextBtnFilterByDepartments")?.addEventListener("click", () => changePageFilterByDepartment(1));
     document.getElementById("departmentSearchBtn")?.addEventListener("click", loadByDepartment);
     document.getElementById("topLoadBtn")?.addEventListener("click", loadTopN);
+    document.getElementById("exportRecordsBtn")?.addEventListener("click", exportRecordsCsv);
+    document.getElementById("exportAlarmsBtn")?.addEventListener("click", exportAlarmsCsv);
     document.getElementById("infoBtn")?.addEventListener("click", openInfo);
     document.getElementById("generate-pdf-btn")?.addEventListener("click", onGeneratePdfClick);
     document.getElementById("corporate-info-close")?.addEventListener("click", closeCorporateInfoModal);
