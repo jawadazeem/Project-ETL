@@ -10,6 +10,8 @@ import com.azeem.blueprint.model.martin.MartinRequest;
 import com.azeem.blueprint.model.martin.MartinResponse;
 import com.azeem.blueprint.service.martin.MartinService;
 import com.azeem.blueprint.service.martin.RateLimiter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequestMapping("/datasets/{datasetId}")
+@Tag(name = "AI Assistant", description = "Natural language billing queries")
 public class MartinController {
   private static final Logger log = LoggerFactory.getLogger(MartinController.class);
   private final MartinService martinService;
@@ -31,6 +34,7 @@ public class MartinController {
     this.rateLimiter = rateLimiter;
   }
 
+  @Operation(summary = "Ask a natural language question about billing data")
   @PostMapping("/martin")
   public ResponseEntity<MartinResponse> chat(
       @PathVariable String datasetId, @Valid @RequestBody MartinRequest request) {

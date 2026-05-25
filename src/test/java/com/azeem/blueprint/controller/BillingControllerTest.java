@@ -36,6 +36,7 @@ class BillingControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean private BillingQueryService billingQueryService;
+  @MockitoBean private com.azeem.blueprint.etl.CsvExportService csvExportService;
 
   @Test
   void defaultPageAndSize_shouldReturnAllRecords() throws Exception {

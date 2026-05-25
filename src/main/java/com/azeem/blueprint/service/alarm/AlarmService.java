@@ -17,6 +17,7 @@ import com.azeem.blueprint.repository.BillingRecordRepository;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -127,6 +128,7 @@ public class AlarmService {
   }
 
   /** Retrieves all alarms for a given billing period. */
+  @Cacheable(value = "alarms", key = "#datasetId + '-' + #billingPeriod")
   public List<Alarm> getAllAlarmsInDataset(UUID datasetId, String billingPeriod) {
     return alarmRepository.findByDatasetIdAndBillingPeriod(datasetId, billingPeriod).stream()
         .map(alarmMapper::mapToDomain)
@@ -134,6 +136,7 @@ public class AlarmService {
   }
 
   /** Retrieves alarms scoped to departments for a billing period. */
+  @Cacheable(value = "alarms", key = "#datasetId + '-' + #billingPeriod + '-dept'")
   public List<Alarm> getDepartmentAlarmsInDataset(UUID datasetId, String billingPeriod) {
     return alarmRepository
         .findByDatasetIdAndBillingPeriodAndAlarmScope(
@@ -144,6 +147,7 @@ public class AlarmService {
   }
 
   /** Retrieves alarms scoped to individual users for a billing period. */
+  @Cacheable(value = "alarms", key = "#datasetId + '-' + #billingPeriod + '-individual'")
   public List<Alarm> getIndividualAlarmsInDataset(UUID datasetId, String billingPeriod) {
     return alarmRepository
         .findByDatasetIdAndBillingPeriodAndAlarmScope(
@@ -154,6 +158,7 @@ public class AlarmService {
   }
 
   /** Retrieves account-level alarms for a billing period. */
+  @Cacheable(value = "alarms", key = "#datasetId + '-' + #billingPeriod + '-account'")
   public List<Alarm> getAccountAlarm(UUID datasetId, String billingPeriod) {
     return alarmRepository
         .findByDatasetIdAndBillingPeriodAndAlarmScope(datasetId, billingPeriod, AlarmScope.ACCOUNT)

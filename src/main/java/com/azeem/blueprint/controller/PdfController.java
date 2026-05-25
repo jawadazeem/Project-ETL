@@ -7,6 +7,8 @@ package com.azeem.blueprint.controller;
 
 import com.azeem.blueprint.model.report.PdfReport;
 import com.azeem.blueprint.service.report.PdfReportService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.InputStream;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/datasets/{datasetId}/reports")
+@Tag(name = "PDF Reports", description = "PDF report generation and download")
 public class PdfController {
   private static final Logger log = LoggerFactory.getLogger(PdfController.class);
 
@@ -28,6 +31,7 @@ public class PdfController {
     this.pdfReportService = pdfReportService;
   }
 
+  @Operation(summary = "Generate a PDF billing report")
   @PostMapping("/pdf")
   public ResponseEntity<PdfReport> generatePdf(
       @PathVariable UUID datasetId,
@@ -39,6 +43,7 @@ public class PdfController {
     return ResponseEntity.ok(report);
   }
 
+  @Operation(summary = "Download a generated PDF report")
   @GetMapping("/pdf/{reportId}")
   public ResponseEntity<InputStreamResource> downloadPdf(
       @PathVariable UUID datasetId, @PathVariable UUID reportId) {

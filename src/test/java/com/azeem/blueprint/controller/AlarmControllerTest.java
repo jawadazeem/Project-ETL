@@ -29,6 +29,7 @@ class AlarmControllerTest {
   @Autowired private MockMvc mockMvc;
 
   @MockitoBean AlarmService alarmService;
+  @MockitoBean com.azeem.blueprint.etl.CsvExportService csvExportService;
 
   @Test
   void shouldReturnAlarmsByBillingPeriod() throws Exception {
