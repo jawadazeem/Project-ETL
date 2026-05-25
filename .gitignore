@@ -38,6 +38,9 @@ build/
 .vscode/
 .env
 
+### Claude Code ###
+.claude/settings.local.json
+
 ### logs ###
 app.log
 *.gz

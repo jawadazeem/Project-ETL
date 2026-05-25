@@ -69,7 +69,7 @@ alarm:
     high: 60000
 billing-reader:
   has-header: true
-  batch-size: 100
+  batch-size: 1000
 notification:
   service:
     url: ${NOTIFICATION_SERVICE_URL:http://localhost:3000}

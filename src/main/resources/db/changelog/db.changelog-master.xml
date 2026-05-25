@@ -10,4 +10,6 @@
     <include file="db/changelog/003-create-billing-records.xml"/>
     <include file="db/changelog/004-create-alarms.xml"/>
     <include file="db/changelog/005-add-performance-indexes.xml"/>
+    <include file="db/changelog/006-create-corporate-info.xml"/>
+    <include file="db/changelog/007-create-pdf-reports.xml"/>
 </databaseChangeLog>

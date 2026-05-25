@@ -6,14 +6,12 @@
 package com.azeem.blueprint.service.billing;
 
 import com.azeem.blueprint.config.BillingReaderConfig;
-import com.azeem.blueprint.entity.BillingRecordEntity;
 import com.azeem.blueprint.etl.BillingRecordAssembler;
 import com.azeem.blueprint.etl.CsvBillingReader;
+import com.azeem.blueprint.etl.JdbcBillingBatchWriter;
 import com.azeem.blueprint.exception.infra.S3SqsPipelineIngestionException;
-import com.azeem.blueprint.mapper.BillingRecordMapper;
 import com.azeem.blueprint.model.billing.BillingRecord;
 import com.azeem.blueprint.model.billing.IngestionResult;
-import com.azeem.blueprint.repository.BillingRecordRepository;
 import com.azeem.blueprint.service.alarm.AlarmService;
 import jakarta.validation.constraints.NotNull;
 import java.io.InputStream;
@@ -34,7 +32,7 @@ import org.springframework.validation.annotation.Validated;
  * <ul>
  *   <li>Reads raw billing data from a CSV file
  *   <li>Assembles domain {@link BillingRecord} objects
- *   <li>Persists data as {@link BillingRecordEntity}
+ *   <li>Persists data via JDBC batch inserts
  * </ul>
  *
  * <p>This service is stateless and write-focused. After ingestion, the database is the single
@@ -44,22 +42,19 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class BillingIngestionService {
   private static final Logger log = LoggerFactory.getLogger(BillingIngestionService.class);
-  private final BillingRecordMapper mapper;
-  private final BillingRecordRepository repository;
   private final BillingRecordAssembler billingRecordAssembler;
+  private final JdbcBillingBatchWriter batchWriter;
   private final BillingReaderConfig billingReaderConfig;
   private final AlarmService alarmService;
 
   public BillingIngestionService(
       BillingRecordAssembler billingRecordAssembler,
-      BillingRecordRepository repository,
-      BillingRecordMapper mapper,
+      JdbcBillingBatchWriter batchWriter,
       BillingReaderConfig billingReaderConfig,
       AlarmService alarmService) {
-    this.repository = repository;
     this.billingRecordAssembler = billingRecordAssembler;
+    this.batchWriter = batchWriter;
     this.billingReaderConfig = billingReaderConfig;
-    this.mapper = mapper;
     this.alarmService = alarmService;
   }
 
@@ -74,13 +69,13 @@ public class BillingIngestionService {
 
     try (CsvBillingReader reader =
         new CsvBillingReader(inputStream, billingReaderConfig.hasHeader())) {
-      List<BillingRecordEntity> batch = new ArrayList<>();
+      List<BillingRecord> batch = new ArrayList<>();
       String[] row;
 
       while ((row = reader.parseNextRow()) != null) {
         try {
           BillingRecord domain = billingRecordAssembler.assembleRecord(row, datasetId);
-          batch.add(mapper.mapToEntity(domain));
+          batch.add(domain);
 
           if (firstRow) {
             billingPeriod = domain.billingPeriod();
@@ -88,8 +83,7 @@ public class BillingIngestionService {
           }
 
           if (batch.size() >= billingReaderConfig.getBatchSize()) {
-            repository.saveAll(batch);
-            repository.flush();
+            batchWriter.writeBatch(batch);
             successCount += batch.size();
             batch.clear();
           }
@@ -108,7 +102,7 @@ public class BillingIngestionService {
 
       if (!batch.isEmpty()) {
         try {
-          repository.saveAll(batch);
+          batchWriter.writeBatch(batch);
           successCount += batch.size();
         } catch (Exception e) {
           failureCount += batch.size();

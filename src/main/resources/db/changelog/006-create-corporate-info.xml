@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="006-create-corporate-info" author="jawad">
+        <createTable tableName="corporate_info">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="uq_corporate_info_user"/>
+            </column>
+            <column name="company_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_line1" type="varchar(255)"/>
+            <column name="address_line2" type="varchar(255)"/>
+            <column name="city" type="varchar(100)"/>
+            <column name="state" type="varchar(100)"/>
+            <column name="zip_code" type="varchar(20)"/>
+            <column name="country" type="varchar(100)"/>
+            <column name="phone" type="varchar(50)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="logo_url" type="varchar(1024)"/>
+            <column name="created_at" type="timestamptz"/>
+            <column name="updated_at" type="timestamptz"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="corporate_info"
+            baseColumnNames="user_id"
+            constraintName="fk_corporate_info_user"
+            referencedTableName="app_users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>
