@@ -1,6 +1,6 @@
-# AGENTS.md
+# CLAUDE.md
 
-This file provides guidance to AI coding agents (Claude Code, Codex, etc.) working in this repository.
+This file provides guidance to AI coding agents (specifically Claude Code, but also Codex and others) working in this repository.
 
 ---
 
@@ -35,8 +35,8 @@ mvn clean package
 # Run tests
 mvn test
 
-# Run with dev profile (after building)
-./scripts/run-dev.sh
+# Run with dev profile (after building) using Docker
+./scripts/docker/dev.sh
 
 # Apply code formatting (Google Java Format via Spotless)
 mvn spotless:apply
