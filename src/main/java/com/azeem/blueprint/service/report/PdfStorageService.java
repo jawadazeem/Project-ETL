@@ -30,8 +30,7 @@ public class PdfStorageService {
   }
 
   public String store(UUID userId, UUID datasetId, String billingPeriod, byte[] pdfBytes) {
-    String key =
-        "%s/%s/reports/%s-report.pdf".formatted(userId, datasetId, billingPeriod);
+    String key = "%s/%s/reports/%s-report.pdf".formatted(userId, datasetId, billingPeriod);
     log.info("Uploading PDF report to S3: {}", key);
     s3Template.upload(bucketName, key, new ByteArrayInputStream(pdfBytes));
     return key;

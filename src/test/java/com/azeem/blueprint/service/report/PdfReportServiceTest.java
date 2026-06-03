@@ -125,10 +125,20 @@ class PdfReportServiceTest {
 
   private CorporateInfo makeCorporateInfo() {
     return new CorporateInfo(
-        UUID.randomUUID(), USER_ID, "Acme Corp",
-        "123 Main St", null, "Springfield", "IL", "62701", "US",
-        "555-0100", "info@acme.com", null,
-        Instant.now(), Instant.now());
+        UUID.randomUUID(),
+        USER_ID,
+        "Acme Corp",
+        "123 Main St",
+        null,
+        "Springfield",
+        "IL",
+        "62701",
+        "US",
+        "555-0100",
+        "info@acme.com",
+        null,
+        Instant.now(),
+        Instant.now());
   }
 
   private PdfReport makePdfReport() {

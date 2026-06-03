@@ -133,8 +133,7 @@ public class BillingController {
     log.info("GET /datasets/{}/records/export called for period {}.", datasetId, billingPeriod);
     response.setContentType("text/csv");
     response.setHeader(
-        "Content-Disposition",
-        "attachment; filename=\"billing-" + billingPeriod + ".csv\"");
+        "Content-Disposition", "attachment; filename=\"billing-" + billingPeriod + ".csv\"");
     List<BillingRecord> records = service.getAllRecordsForExport(datasetId, billingPeriod);
     csvExportService.writeRecords(records, response.getOutputStream());
   }

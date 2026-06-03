@@ -6,8 +6,8 @@
 package com.azeem.blueprint.etl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 import com.azeem.blueprint.model.billing.BillingRecord;
@@ -37,10 +37,26 @@ class JdbcBillingBatchWriterTest {
     List<BillingRecord> records =
         List.of(
             new BillingRecord(
-                DATASET_ID, "Acme", "E001", "Engineering", "555-0100", "2026-01", 120, 1.5, 10,
+                DATASET_ID,
+                "Acme",
+                "E001",
+                "Engineering",
+                "555-0100",
+                "2026-01",
+                120,
+                1.5,
+                10,
                 45.75),
             new BillingRecord(
-                DATASET_ID, "Beta Inc", "E002", "Finance", "555-0200", "2026-01", 90, 0.8, 5,
+                DATASET_ID,
+                "Beta Inc",
+                "E002",
+                "Finance",
+                "555-0200",
+                "2026-01",
+                90,
+                0.8,
+                5,
                 32.50));
 
     writer.writeBatch(records);

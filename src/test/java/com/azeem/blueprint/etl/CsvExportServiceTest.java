@@ -31,10 +31,26 @@ class CsvExportServiceTest {
     List<BillingRecord> records =
         List.of(
             new BillingRecord(
-                DATASET_ID, "Acme Corp", "E001", "Engineering", "555-0100", "2026-01", 120, 1.5,
-                10, 45.75),
+                DATASET_ID,
+                "Acme Corp",
+                "E001",
+                "Engineering",
+                "555-0100",
+                "2026-01",
+                120,
+                1.5,
+                10,
+                45.75),
             new BillingRecord(
-                DATASET_ID, "Beta Inc", "E002", "Finance", "555-0200", "2026-01", 90, 0.8, 5,
+                DATASET_ID,
+                "Beta Inc",
+                "E002",
+                "Finance",
+                "555-0200",
+                "2026-01",
+                90,
+                0.8,
+                5,
                 32.50));
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();

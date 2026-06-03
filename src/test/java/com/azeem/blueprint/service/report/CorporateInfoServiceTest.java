@@ -6,7 +6,6 @@
 package com.azeem.blueprint.service.report;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.azeem.blueprint.entity.AppUserEntity;
@@ -65,7 +64,8 @@ class CorporateInfoServiceTest {
   @Test
   @DisplayName("Creates corporate info on first upsert")
   void shouldCreateCorporateInfoOnFirstUpsert() {
-    CorporateInfoRequest request = new CorporateInfoRequest("Acme Corp", null, null, null, null, null, null, null, null, null);
+    CorporateInfoRequest request =
+        new CorporateInfoRequest("Acme Corp", null, null, null, null, null, null, null, null, null);
     AppUserEntity user = new AppUserEntity();
     CorporateInfoEntity newEntity = new CorporateInfoEntity();
     CorporateInfo domain = makeCorporateInfo();
@@ -85,7 +85,8 @@ class CorporateInfoServiceTest {
   @Test
   @DisplayName("Updates corporate info on subsequent upsert")
   void shouldUpdateCorporateInfoOnSubsequentUpsert() {
-    CorporateInfoRequest request = new CorporateInfoRequest("New Name", null, null, null, null, null, null, null, null, null);
+    CorporateInfoRequest request =
+        new CorporateInfoRequest("New Name", null, null, null, null, null, null, null, null, null);
     CorporateInfoEntity existing = new CorporateInfoEntity();
     CorporateInfo domain = makeCorporateInfo();
 
@@ -102,9 +103,19 @@ class CorporateInfoServiceTest {
 
   private CorporateInfo makeCorporateInfo() {
     return new CorporateInfo(
-        UUID.randomUUID(), USER_ID, "Acme Corp",
-        "123 Main St", null, "Springfield", "IL", "62701", "US",
-        "555-0100", "info@acme.com", null,
-        Instant.now(), Instant.now());
+        UUID.randomUUID(),
+        USER_ID,
+        "Acme Corp",
+        "123 Main St",
+        null,
+        "Springfield",
+        "IL",
+        "62701",
+        "US",
+        "555-0100",
+        "info@acme.com",
+        null,
+        Instant.now(),
+        Instant.now());
   }
 }

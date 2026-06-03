@@ -38,8 +38,7 @@ public class PdfController {
       @RequestParam String period,
       @RequestHeader("X-User-Id") String userId) {
     log.info("POST /datasets/{}/reports/pdf by user={}, period={}", datasetId, userId, period);
-    PdfReport report =
-        pdfReportService.generateReport(UUID.fromString(userId), datasetId, period);
+    PdfReport report = pdfReportService.generateReport(UUID.fromString(userId), datasetId, period);
     return ResponseEntity.ok(report);
   }
 

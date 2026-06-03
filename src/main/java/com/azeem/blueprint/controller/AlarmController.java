@@ -76,8 +76,7 @@ public class AlarmController {
     log.info("GET /datasets/{}/alarms/{}/export called.", datasetId, billingPeriod);
     response.setContentType("text/csv");
     response.setHeader(
-        "Content-Disposition",
-        "attachment; filename=\"alarms-" + billingPeriod + ".csv\"");
+        "Content-Disposition", "attachment; filename=\"alarms-" + billingPeriod + ".csv\"");
     List<Alarm> alarms = service.getAllAlarmsInDataset(datasetId, billingPeriod);
     csvExportService.writeAlarms(alarms, response.getOutputStream());
   }

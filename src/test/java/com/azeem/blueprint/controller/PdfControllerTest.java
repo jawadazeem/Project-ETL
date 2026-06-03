@@ -5,7 +5,6 @@
 
 package com.azeem.blueprint.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -81,7 +80,8 @@ class PdfControllerTest {
         .perform(get("/datasets/{datasetId}/reports/pdf/{reportId}", DATASET_ID, reportId))
         .andExpect(status().isOk())
         .andExpect(content().contentType("application/pdf"))
-        .andExpect(header().string("Content-Disposition", "attachment; filename=\"billing-report.pdf\""));
+        .andExpect(
+            header().string("Content-Disposition", "attachment; filename=\"billing-report.pdf\""));
   }
 
   @Test

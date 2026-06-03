@@ -88,35 +88,31 @@ services:
     image: amazon/aws-cli
     container_name: infra-setup
     depends_on:
-      - localstack
+      localstack:
+        condition: service_healthy
     environment:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_DEFAULT_REGION=us-east-1
     entrypoint: [ "/bin/sh", "-c" ]
     command: >
-      "
       echo 'Waiting for Localstack S3...';
-      until aws --endpoint-url=http://billing-s3-mock:4566 s3 ls > /dev/null 2>&1; do
+      until aws --endpoint-url=http://localstack:4566 s3 ls > /dev/null 2>&1; do
         sleep 2;
       done;
-
-      echo 'Waiting for SQS...';
-      until aws --endpoint-url=http://billing-s3-mock:4566 sqs list-queues > /dev/null 2>&1; do
-        sleep 2;
-      done;
-
-      echo 'Configuring SQS...';
-      aws --endpoint-url=http://billing-s3-mock:4566 sqs create-queue --queue-name billing-event-queue;
-
-      echo 'Configuring S3...';
-      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://telecom-billing;
-
-      echo 'Linking S3 to SQS (The Permanent Bridge)...';
-      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket telecom-billing --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:billing-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}'
-
-      echo 'Infrastructure configuration complete.'
-      "
       
-volumes:
-  postgres_data:
+      echo 'Waiting for SQS...';
+      until aws --endpoint-url=http://localstack:4566 sqs list-queues > /dev/null 2>&1; do
+        sleep 2;
+      done;
+      
+      echo 'Configuring SQS...';
+      aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name billing-event-queue;
+      
+      echo 'Configuring S3...';
+      aws --endpoint-url=http://localstack:4566 s3 mb s3://telecom-billing;
+      
+      echo 'Linking S3 to SQS (The Permanent Bridge)...';
+      aws --endpoint-url=http://localstack:4566 s3api put-bucket-notification-configuration --bucket telecom-billing --notification-configuration '{"QueueConfigurations":[{"QueueArn":"arn:aws:sqs:us-east-1:000000000000:billing-event-queue","Events":["s3:ObjectCreated:*"]}]}'
+      
+      echo 'Infrastructure configuration complete.'

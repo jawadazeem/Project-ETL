@@ -35,8 +35,7 @@ public class CsvExportService {
   };
 
   public void writeRecords(List<BillingRecord> records, OutputStream out) {
-    try (CSVWriter writer =
-        new CSVWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
+    try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
       writer.writeNext(RECORD_HEADER);
       for (BillingRecord r : records) {
         writer.writeNext(
@@ -58,8 +57,7 @@ public class CsvExportService {
   }
 
   public void writeAlarms(List<Alarm> alarms, OutputStream out) {
-    try (CSVWriter writer =
-        new CSVWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
+    try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
       writer.writeNext(ALARM_HEADER);
       for (Alarm a : alarms) {
         writer.writeNext(
