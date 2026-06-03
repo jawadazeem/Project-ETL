@@ -20,6 +20,9 @@ services:
     depends_on:
       app:
         condition: service_started
+    networks:
+      - default
+      - proxy-net
 
   app:
     build: .
@@ -47,6 +50,11 @@ services:
       - AWS_SECRET_KEY=${AWS_SECRET_KEY}
       - SPRING_AI_GOOGLE_GENAI_API_KEY=${GOOGLE_GENAI_API_KEY}
       - SPRING_AI_GOOGLE_GENAI_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      # The Fix: Disables automatic Spring Security lockdown for the tunnel
+      - SPRING_AUTOCONFIGURE_EXCLUDE=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    networks:
+      - default
+      - proxy-net
 
   postgres:
     image: postgres:16
@@ -78,7 +86,7 @@ services:
     volumes:
       - "/home/jawadazeem/localstack_persistence:/var/lib/localstack"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:4566/_localstack/health" ]
+      test: [ "CMD", "curl", "-f", "http://]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -97,22 +105,17 @@ services:
     entrypoint: [ "/bin/sh", "-c" ]
     command: >
       echo 'Waiting for Localstack S3...';
-      until aws --endpoint-url=http://localstack:4566 s3 ls > /dev/null 2>&1; do
-        sleep 2;
-      done;
-      
+      until aws --endpoint-url=http://localstack:4566 s3 ls > /dev/null 2>&1; do sleep 2; done;
       echo 'Waiting for SQS...';
-      until aws --endpoint-url=http://localstack:4566 sqs list-queues > /dev/null 2>&1; do
-        sleep 2;
-      done;
-      
+      until aws --endpoint-url=http://localstack:4566 sqs list-queues > /dev/null 2>&1; do sleep 2; done;
       echo 'Configuring SQS...';
       aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name billing-event-queue;
-      
       echo 'Configuring S3...';
       aws --endpoint-url=http://localstack:4566 s3 mb s3://telecom-billing;
-      
-      echo 'Linking S3 to SQS (The Permanent Bridge)...';
-      aws --endpoint-url=http://localstack:4566 s3api put-bucket-notification-configuration --bucket telecom-billing --notification-configuration '{"QueueConfigurations":[{"QueueArn":"arn:aws:sqs:us-east-1:000000000000:billing-event-queue","Events":["s3:ObjectCreated:*"]}]}'
-      
+      echo 'Linking S3 to SQS...';
+      aws --endpoint-url=http://localstack:4566 s3api put-bucket-notification-configuration --bucket telecom-billing --notification-configuration '{"QueueConfigurations":[{"QueueArn":"arn:aws:sqs:us-east-::billing-event-queue","Events":["s:ObjectCreated:*"]}]}'
       echo 'Infrastructure configuration complete.'
+
+networks:
+  proxy-net:
+    external: true
