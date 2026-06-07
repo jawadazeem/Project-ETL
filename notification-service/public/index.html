@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blueprint Notifications</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Blueprint</p>
+          <h1>Notification Log</h1>
+        </div>
+        <button id="refresh-button" type="button">Refresh</button>
+      </header>
+
+      <section class="summary" aria-label="Delivery summary">
+        <div>
+          <span id="sent-count">0</span>
+          <small>Sent</small>
+        </div>
+        <div>
+          <span id="failed-count">0</span>
+          <small>Failed</small>
+        </div>
+        <div>
+          <span id="alarm-count">0</span>
+          <small>Alarms</small>
+        </div>
+      </section>
+
+      <section class="table-wrap" aria-label="Notifications">
+        <table>
+          <thead>
+            <tr>
+              <th>Alarm</th>
+              <th>Severity</th>
+              <th>Recipients</th>
+              <th>Status</th>
+              <th>Sent</th>
+            </tr>
+          </thead>
+          <tbody id="notification-rows">
+            <tr>
+              <td colspan="5">Loading notifications...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

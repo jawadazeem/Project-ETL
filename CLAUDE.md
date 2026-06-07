@@ -10,19 +10,42 @@ Blueprint is a Spring Boot application that performs ETL on large telecom billin
 the results through a REST API. It includes an autonomous AI agent ("Martin") that translates
 natural language questions into validated PostgreSQL queries and returns plain-English answers.
 
+The system consists of three services:
+
+1. **Monolith** — the Spring Boot application (Java, PostgreSQL, S3/SQS)
+2. **Notification Microservice** — TypeScript/Express/MongoDB service for alarm delivery via email and Slack (`notification-service/`)
+3. **Prediction Microservice** — Python/Flask/scikit-learn service for billing trend forecasting (`prediction-service/`)
+
 A live version of the API is deployed on AWS at **https://blueprint.jawadazeem.com**.
 
 ---
 
 ## Tech Stack
 
-- **Java 25 with Spring Boot 3
+### Monolith (Java)
+- **Java 25** with **Spring Boot 3.5**
 - **PostgreSQL** (production) / **H2** (tests)
 - **Liquibase** for schema migrations
-- **Google Gemini** via Spring AI for natural language → SQL
+- **Spring Security** (all routes permit all — no real auth yet)
+- **Spring AI** with **Google Gemini** for natural language → SQL
+- **Spring Cloud AWS** for S3 and SQS integration
+- **OpenAPI/Swagger** via springdoc-openapi
+- **Caching** via Spring Cache
 - **AWS**: ECS (hosting), RDS (database), S3 (file storage), SQS (event-driven ingestion), SNS
 - **Docker** for containerisation
 - **JUnit 5 + Mockito** for testing
+
+### Notification Microservice (TypeScript)
+- **Node.js** with **Express** and **TypeScript**
+- **MongoDB** with **Mongoose** for notification history
+- **AWS SES** for email delivery
+- **Slack Webhooks** for Slack notifications
+- **Zod** for request validation
+
+### Prediction Microservice (Python)
+- **Python** with **Flask**
+- **scikit-learn** for linear regression forecasting
+- **pandas** and **NumPy** for data processing
 
 ---
 
@@ -53,23 +76,37 @@ mvn spotless:check
 ## Project Structure
 
 ```
-src/main/java/com/azeem/blueprint/
-├── config/          # Spring configuration beans (alarms, billing readers, etc.)
-├── controller/      # REST controllers — thin layer, delegate to services
-├── demo/            # Loads dummy data on startup (dev/demo only)
-├── entity/          # JPA entities mapped to database tables
-├── etl/             # CSV/TSV parsing and billing record assembly
-├── exception/       # Custom exceptions and global exception handler
-├── listener/        # SQS event listeners (event-driven ingestion)
-├── mapper/          # Converts between entities and domain models
-├── model/           # Domain model records/classes (not persisted directly)
-├── repository/      # Spring Data JPA repositories
-├── service/         # Business logic, organised by domain
-│   ├── alarm/       # Alarm detection and persistence
-│   ├── billing/     # Ingestion, S3 handling, querying
-│   └── martin/      # AI agent: SQL generation, validation, execution
-├── util/            # Shared utilities
-└── validation/      # Custom Jakarta Bean Validation annotations and validators
+blueprint/
+├── notification-service/     # TypeScript notification microservice (Express/MongoDB)
+│   ├── src/                  # TypeScript source (server, controllers, services, models)
+│   └── public/               # Notification dashboard UI
+├── prediction-service/       # Python prediction microservice (Flask/scikit-learn)
+│   ├── app.py                # Flask app with /predict endpoint
+│   └── Dockerfile
+├── docs/                     # Product and system documentation
+├── scripts/                  # Docker and JAR run scripts
+├── images/                   # Architecture diagrams
+└── src/main/java/com/azeem/blueprint/
+    ├── client/          # HTTP clients for external services (NotificationClient)
+    ├── config/          # Spring configuration beans (alarms, billing readers, caching, security, OpenAPI)
+    ├── controller/      # REST controllers — thin layer, delegate to services
+    ├── demo/            # Loads dummy data on startup (dev/demo only)
+    ├── entity/          # JPA entities mapped to database tables
+    ├── etl/             # CSV/TSV parsing, billing record assembly, CSV export, JDBC batch writer
+    ├── exception/       # Custom exceptions and global exception handler
+    ├── listener/        # SQS event listeners (event-driven ingestion)
+    ├── mapper/          # Converts between entities and domain models
+    ├── model/           # Domain model records/classes (not persisted directly)
+    ├── repository/      # Spring Data JPA repositories
+    ├── service/         # Business logic, organised by domain
+    │   ├── alarm/       # Alarm detection and persistence
+    │   ├── billing/     # Ingestion, S3 handling, querying
+    │   ├── dataset/     # Dataset management, archiving, demo loading
+    │   ├── martin/      # AI agent: SQL generation, validation, execution
+    │   ├── prediction/  # Client for Python prediction microservice
+    │   └── report/      # PDF generation, corporate info, storage
+    ├── util/            # Shared utilities
+    └── validation/      # Custom Jakarta Bean Validation annotations and validators
 ```
 
 ---
@@ -77,14 +114,28 @@ src/main/java/com/azeem/blueprint/
 ## Domain Areas
 
 **Billing** — ingests CSV/TSV datasets uploaded via S3/SQS, stores them as structured records in
-PostgreSQL, and exposes query and summary endpoints.
+PostgreSQL, and exposes query, summary, and CSV export endpoints.
+
+**Datasets** — tracks uploaded datasets with lifecycle management including archiving and restoration.
+Datasets can be archived (soft-delete) and restored. Hard deletion cascades to billing records,
+alarms, and PDF reports via foreign key constraints.
 
 **Alarms** — after ingestion, runs threshold-based detection across department totals, individual
-charges, and account-level grand totals. Alarms are scoped by dataset and billing period.
+charges, and account-level grand totals. Alarms are scoped by dataset and billing period. Detected
+alarms are dispatched to the notification microservice on a best-effort basis.
 
 **Martin (AI Agent)** — receives a natural language question, generates a validated read-only SQL
 query using Gemini, executes it against the database, and returns a plain-English answer alongside
 the SQL and its reasoning.
+
+**PDF Reports** — generates PDF billing reports with corporate branding, stores them in S3, and
+provides download endpoints.
+
+**Predictions** — proxies billing data to the Python prediction microservice for trend forecasting
+using linear regression.
+
+**Notifications** — the TypeScript microservice receives alarm payloads from the monolith, delivers
+them via email (SES) and Slack webhooks, and maintains a MongoDB delivery log.
 
 ---
 
@@ -99,16 +150,17 @@ without the developer explicitly asking:
 - `.github/workflows/` — CI/CD pipeline; changes affect live deployments
 - `docker-compose.prod.yml` — production container configuration
 - `Dockerfile` — container build definition
-- `src/main/resources/db/migration/` — Liquibase migrations are irreversible once applied to production
+- `src/main/resources/db/changelog/` — Liquibase migrations are irreversible once applied to production
 - `LICENSE` — legal document
 
 ### Be cautious with these files
 
 Changes here have broad impact across the application:
 
-- `src/main/resources/application.yml` / `application-*.yml` — environment config and secrets wiring
+- `src/main/resources/application.yaml` — environment config and secrets wiring
 - Any `*Config.java` in the `config/` package — modifying beans can have wide side effects
 - `GlobalExceptionHandler.java` — changes affect all error responses across every endpoint
+- `notification-service/src/validation/notification.schema.ts` — Zod schema is the contract between monolith and notification service
 
 ### Safe areas for AI agents
 
@@ -119,6 +171,7 @@ These areas are generally safe to work in without special caution:
 - `src/main/java/.../service/` — business logic, but verify callers when changing method signatures
 - `src/main/java/.../controller/` — REST layer, but don't change URL paths without checking clients
 - `docs/` — documentation only
+- `src/main/resources/static/` — frontend HTML/CSS/JS (no build step)
 
 ---
 
@@ -148,3 +201,6 @@ These areas are generally safe to work in without special caution:
 Pushing to `main` triggers the GitHub Actions pipeline (`.github/workflows/docker-pipeline.yml`),
 which builds a Docker image and deploys it to AWS ECS automatically. Do not push broken code to
 `main`.
+
+The production Docker Compose orchestrates the monolith, PostgreSQL, LocalStack (S3/SQS),
+the notification microservice, and the prediction microservice together.

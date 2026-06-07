@@ -12,4 +12,5 @@
     <include file="db/changelog/005-add-performance-indexes.xml"/>
     <include file="db/changelog/006-create-corporate-info.xml"/>
     <include file="db/changelog/007-create-pdf-reports.xml"/>
+    <include file="db/changelog/008-add-archived-to-datasets.xml"/>
 </databaseChangeLog>

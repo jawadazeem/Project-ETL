@@ -32,6 +32,9 @@ public class DatasetEntity {
 
   private String status;
 
+  @Column(name = "archived", nullable = false)
+  private boolean archived = false;
+
   @PrePersist
   void ensureId() {
     if (id == null) {
@@ -93,5 +96,13 @@ public class DatasetEntity {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public boolean isArchived() {
+    return archived;
+  }
+
+  public void setArchived(boolean archived) {
+    this.archived = archived;
   }
 }

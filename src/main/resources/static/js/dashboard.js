@@ -872,6 +872,231 @@ async function generatePdf() {
     }
 }
 
+// ── Notifications modal ──────────────────────────────────────────────────
+
+function openNotificationsModal() {
+    document.getElementById("notifications-overlay").style.display = "flex";
+    loadNotifications();
+}
+
+function closeNotificationsModal() {
+    document.getElementById("notifications-overlay").style.display = "none";
+}
+
+async function loadNotifications() {
+    const rows = document.getElementById("notification-rows");
+    rows.innerHTML = `<tr><td colspan="5" class="text-muted text-center">Loading notifications...</td></tr>`;
+
+    try {
+        const res = await fetch("/api/notifications?limit=50");
+        if (!res.ok) throw new Error(`Request failed with ${res.status}`);
+
+        const notifications = await res.json();
+
+        const deliveries = notifications.flatMap(n => n.deliveries || []);
+        document.getElementById("notif-sent-count").textContent =
+            deliveries.filter(d => d.status === "succeeded").length;
+        document.getElementById("notif-failed-count").textContent =
+            deliveries.filter(d => d.status === "failed").length;
+        document.getElementById("notif-alarm-count").textContent = notifications.length;
+
+        if (!notifications.length) {
+            rows.innerHTML = `<tr><td colspan="5" class="text-muted text-center">No notifications have been sent yet.</td></tr>`;
+            return;
+        }
+
+        rows.innerHTML = notifications.map(n => {
+            const dels = n.deliveries || [];
+            const recipients = dels.map(d => `${d.channel}: ${escapeForHtml(d.recipient)}`).join("<br>");
+            const failed = dels.some(d => d.status === "failed");
+            const statusClass = failed ? "text-danger" : "text-success";
+            const statusLabel = failed ? "Failed" : "Sent";
+            const severityBadge = `<span class="badge ${n.severity?.toLowerCase()}">${n.severity}</span>`;
+            const sentDate = n.createdAt ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date(n.createdAt)) : "";
+
+            return `<tr>
+                <td><strong>${escapeForHtml(n.title)}</strong><br><small class="text-muted">${escapeForHtml(n.alarmId)}</small></td>
+                <td>${severityBadge}</td>
+                <td>${recipients || "None"}</td>
+                <td><span class="${statusClass}" style="font-weight:700;">${statusLabel}</span></td>
+                <td>${sentDate}</td>
+            </tr>`;
+        }).join("");
+    } catch (e) {
+        console.error("Failed to load notifications", e);
+        rows.innerHTML = `<tr><td colspan="5" class="text-muted text-center">Could not load notifications.</td></tr>`;
+    }
+}
+
+function escapeForHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// ── Delete dataset ──────────────────────────────────────────────────────
+
+async function onDeleteDatasetClick() {
+    if (!currentDatasetId) {
+        showToast("No dataset selected.");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to permanently delete this dataset?\n\nThis will remove all billing records, alarms, and PDF reports associated with it. This action cannot be undone.")) {
+        return;
+    }
+
+    const btn = document.getElementById("delete-dataset-btn");
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`/datasets/${currentDatasetId}`, {
+            method: "DELETE",
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
+
+        showToast("Dataset deleted successfully.", "success");
+        currentDatasetId = null;
+        currentPeriod = null;
+
+        await loadDatasetList();
+        const hasDatasets = await tryLoadExistingDatasets();
+        if (!hasDatasets) {
+            showWelcome();
+        }
+    } catch (e) {
+        console.error("Delete dataset failed", e);
+        showToast("Could not delete dataset.");
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+// ── Archive dataset ─────────────────────────────────────────────────────
+
+async function onArchiveDatasetClick() {
+    if (!currentDatasetId) {
+        showToast("No dataset selected.");
+        return;
+    }
+
+    if (!confirm("Archive this dataset?\n\nThe dataset will be hidden from the active view but not deleted. You can restore it later from the archived datasets view.")) {
+        return;
+    }
+
+    const btn = document.getElementById("archive-dataset-btn");
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`/datasets/${currentDatasetId}/archive`, {
+            method: "PATCH",
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) throw new Error(`Archive failed: ${res.status}`);
+
+        showToast("Dataset archived successfully.", "success");
+        currentDatasetId = null;
+        currentPeriod = null;
+
+        await loadDatasetList();
+        const hasDatasets = await tryLoadExistingDatasets();
+        if (!hasDatasets) {
+            showWelcome();
+        }
+    } catch (e) {
+        console.error("Archive dataset failed", e);
+        showToast("Could not archive dataset.");
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+// ── Archived datasets view ──────────────────────────────────────────────
+
+let viewingArchived = false;
+
+function toggleArchivedView() {
+    viewingArchived = !viewingArchived;
+    const toggleBtn = document.getElementById("toggle-archived-btn");
+    toggleBtn.textContent = viewingArchived ? "Show Active" : "Show Archived";
+
+    document.getElementById("delete-dataset-btn").style.display = viewingArchived ? "none" : "";
+    document.getElementById("archive-dataset-btn").style.display = viewingArchived ? "none" : "";
+    document.getElementById("generate-pdf-btn").style.display = viewingArchived ? "none" : "";
+    document.getElementById("restore-dataset-btn").style.display = viewingArchived ? "" : "none";
+
+    if (viewingArchived) {
+        loadArchivedDatasetList();
+    } else {
+        loadDatasetList();
+        tryLoadExistingDatasets();
+    }
+}
+
+async function loadArchivedDatasetList() {
+    try {
+        const res = await fetch("/datasets/archived", {
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+        if (!res.ok) return;
+
+        const datasets = await res.json();
+        const select = document.getElementById("datasetSelect");
+        select.innerHTML = "";
+
+        if (!datasets.length) {
+            const opt = document.createElement("option");
+            opt.textContent = "No archived datasets";
+            opt.disabled = true;
+            select.appendChild(opt);
+            currentDatasetId = null;
+            return;
+        }
+
+        datasets.forEach(ds => {
+            const opt = document.createElement("option");
+            opt.value = ds.id;
+            const date = ds.uploadedAt ? new Date(ds.uploadedAt).toLocaleDateString() : "";
+            opt.textContent = `[Archived] ${ds.sourceFilename}${date ? " · " + date : ""}`;
+            select.appendChild(opt);
+        });
+
+        currentDatasetId = datasets[0].id;
+        select.value = currentDatasetId;
+    } catch (e) {
+        console.error("Failed to load archived datasets", e);
+    }
+}
+
+async function onRestoreDatasetClick() {
+    if (!currentDatasetId) {
+        showToast("No dataset selected.");
+        return;
+    }
+
+    const btn = document.getElementById("restore-dataset-btn");
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`/datasets/${currentDatasetId}/restore`, {
+            method: "PATCH",
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) throw new Error(`Restore failed: ${res.status}`);
+
+        showToast("Dataset restored successfully.", "success");
+        await loadArchivedDatasetList();
+    } catch (e) {
+        console.error("Restore dataset failed", e);
+        showToast("Could not restore dataset.");
+    } finally {
+        btn.disabled = false;
+    }
+}
+
 // ── Event wiring ──────────────────────────────────────────────────────────
 
 function wireDashboardEvents() {
@@ -906,6 +1131,12 @@ function wireDashboardEvents() {
     document.getElementById("corpCancelBtn")?.addEventListener("click", closeCorporateInfoModal);
     document.getElementById("corpSaveBtn")?.addEventListener("click", saveCorporateInfoAndGenerate);
     document.getElementById("generateForecastBtn")?.addEventListener("click", generateForecast);
+    document.getElementById("delete-dataset-btn")?.addEventListener("click", onDeleteDatasetClick);
+    document.getElementById("archive-dataset-btn")?.addEventListener("click", onArchiveDatasetClick);
+    document.getElementById("notifications-btn")?.addEventListener("click", openNotificationsModal);
+    document.getElementById("notifications-close")?.addEventListener("click", closeNotificationsModal);
+    document.getElementById("toggle-archived-btn")?.addEventListener("click", toggleArchivedView);
+    document.getElementById("restore-dataset-btn")?.addEventListener("click", onRestoreDatasetClick);
 
     document.getElementById("welcomeUploadBtn")?.addEventListener("click", () => {
         document.getElementById("fileInput").click();

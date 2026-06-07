@@ -39,20 +39,23 @@
 <nav class="navbar navbar-light bg-white shadow-sm mb-4 dashboard-navbar">
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1 d-flex align-items-center dashboard-brand" aria-label="Application">
-            <button id="helpBtn" type="button" class="btn btn-sm btn-outline-primary ms-2">Help</button>
-            <button id="learnMoreBtn" type="button" class="btn btn-sm btn-outline-primary ms-2">Learn More</button>
+            <button id="helpBtn" type="button" class="btn-modern ms-2">Help</button>
+            <button id="learnMoreBtn" type="button" class="btn-modern ms-2">Learn More</button>
         </span>
 
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2">
             <span id="sessionBadge" class="session-badge"></span>
-            <button id="logoutBtn" class="btn btn-sm btn-outline-secondary" type="button">Sign Out</button>
+            <button id="logoutBtn" class="btn-modern" type="button">Sign Out</button>
 
             <div class="d-flex align-items-center bg-light p-1 rounded-3 border">
                 <input type="file" id="fileInput" class="form-control form-control-sm file-input" accept=".csv">
-                <button class="btn btn-sm btn-primary ms-2" id="uploadBtn" type="button">Upload</button>
+                <button class="btn-modern btn-modern-primary ms-2" id="uploadBtn" type="button">Upload</button>
             </div>
 
             <button class="btn-modern" id="generate-pdf-btn" type="button">Generate PDF</button>
+            <button class="btn-modern btn-modern-danger" id="delete-dataset-btn" type="button">Delete Dataset</button>
+            <button class="btn-modern" id="archive-dataset-btn" type="button">Archive Dataset</button>
+            <button class="btn-modern" id="notifications-btn" type="button">Notifications</button>
 
             <button class="btn-modern alarms" id="alarms-btn" type="button">
                 Alarms (0)
@@ -61,7 +64,9 @@
             <div id="datasetSwitcherContainer" class="d-none d-flex align-items-center gap-2">
                 <label class="small text-muted mb-0 text-nowrap">Dataset:</label>
                 <select id="datasetSelect" class="form-select form-select-sm dataset-select"></select>
+                <button class="btn-modern" id="toggle-archived-btn" type="button" style="font-size: 12px; padding: 4px 10px;">Show Archived</button>
             </div>
+            <button class="btn-modern" id="restore-dataset-btn" type="button" style="display: none;">Restore Dataset</button>
 
             <select id="periodSelect" class="form-select w-auto"></select>
         </div>
@@ -106,6 +111,49 @@
             <div class="mt-3 d-flex gap-2">
                 <button id="loadDummyBtn" class="btn btn-lg btn-primary" type="button">Load Dummy Data</button>
                 <button class="btn btn-outline-secondary" id="helpSecondaryClose" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="notifications-overlay">
+    <div class="alarm-modal" style="max-width: 900px;">
+        <div class="modal-header">
+            <h3>Notification Log</h3>
+            <button class="modal-close" id="notifications-close" type="button">&#10005;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="d-flex gap-3 mb-3">
+                <div class="flex-fill text-center p-3 rounded-3" style="background: #e7f6ed;">
+                    <div style="font-size: 1.6rem; font-weight: 800;" id="notif-sent-count">0</div>
+                    <small style="font-weight: 700; color: #556b80;">Sent</small>
+                </div>
+                <div class="flex-fill text-center p-3 rounded-3" style="background: #ffe1e1;">
+                    <div style="font-size: 1.6rem; font-weight: 800;" id="notif-failed-count">0</div>
+                    <small style="font-weight: 700; color: #556b80;">Failed</small>
+                </div>
+                <div class="flex-fill text-center p-3 rounded-3" style="background: #f1f5ff;">
+                    <div style="font-size: 1.6rem; font-weight: 800;" id="notif-alarm-count">0</div>
+                    <small style="font-weight: 700; color: #556b80;">Alarms</small>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th>Alarm</th>
+                        <th>Severity</th>
+                        <th>Recipients</th>
+                        <th>Status</th>
+                        <th>Sent</th>
+                    </tr>
+                    </thead>
+                    <tbody id="notification-rows">
+                    <tr><td colspan="5" class="text-muted text-center">Loading notifications...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

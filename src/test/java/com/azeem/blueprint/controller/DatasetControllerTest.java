@@ -39,6 +39,8 @@ class DatasetControllerTest {
 
   @MockitoBean private DatasetService datasetService;
 
+  @MockitoBean private com.azeem.blueprint.client.NotificationClient notificationClient;
+
   private Dataset sampleDataset() {
     return new Dataset(
         DATASET_ID,
@@ -47,7 +49,8 @@ class DatasetControllerTest {
         "billing.csv",
         "key/billing.csv",
         Instant.parse("2026-01-01T00:00:00Z"),
-        "PENDING_INGESTION");
+        "PENDING_INGESTION",
+        false);
   }
 
   @Test

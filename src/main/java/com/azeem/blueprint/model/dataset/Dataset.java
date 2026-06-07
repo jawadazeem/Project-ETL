@@ -15,4 +15,5 @@ public record Dataset(
     String sourceFilename,
     String s3ObjectKey,
     Instant uploadedAt,
-    String status) {}
+    String status,
+    boolean archived) {}

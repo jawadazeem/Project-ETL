@@ -84,7 +84,13 @@ public class DatasetService {
   }
 
   public List<Dataset> listDatasets(UUID ownerUserId) {
-    return datasetRepository.findByOwnerUserIdOrOwnerUserIsNull(ownerUserId).stream()
+    return datasetRepository.findActiveDatasets(ownerUserId).stream()
+        .map(datasetMapper::mapToDomain)
+        .toList();
+  }
+
+  public List<Dataset> listArchivedDatasets(UUID ownerUserId) {
+    return datasetRepository.findArchivedDatasets(ownerUserId).stream()
         .map(datasetMapper::mapToDomain)
         .toList();
   }
@@ -95,6 +101,38 @@ public class DatasetService {
             .findById(datasetId)
             .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()));
     return datasetMapper.mapToDomain(entity);
+  }
+
+  @Transactional
+  public void deleteDataset(UUID datasetId, UUID ownerUserId) {
+    log.info("Deleting dataset: {} for user: {}", datasetId, ownerUserId);
+    DatasetEntity entity =
+        datasetRepository
+            .findByIdAndOwnerUserId(datasetId, ownerUserId)
+            .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()));
+    datasetRepository.delete(entity);
+  }
+
+  @Transactional
+  public void archiveDataset(UUID datasetId, UUID ownerUserId) {
+    log.info("Archiving dataset: {} for user: {}", datasetId, ownerUserId);
+    DatasetEntity entity =
+        datasetRepository
+            .findByIdAndOwnerUserId(datasetId, ownerUserId)
+            .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()));
+    entity.setArchived(true);
+    datasetRepository.save(entity);
+  }
+
+  @Transactional
+  public void restoreDataset(UUID datasetId, UUID ownerUserId) {
+    log.info("Restoring dataset: {} for user: {}", datasetId, ownerUserId);
+    DatasetEntity entity =
+        datasetRepository
+            .findByIdAndOwnerUserId(datasetId, ownerUserId)
+            .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()));
+    entity.setArchived(false);
+    datasetRepository.save(entity);
   }
 
   /** Cleans out targeted tracking elements securely under a dataset boundary. */
