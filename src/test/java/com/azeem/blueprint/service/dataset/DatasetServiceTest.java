@@ -67,8 +67,7 @@ class DatasetServiceTest {
   @DisplayName("listDatasets returns mapped datasets for a given owner")
   void listDatasets_returnsDatasets() {
     DatasetEntity entity = sampleEntity();
-    when(datasetRepository.findActiveDatasets(OWNER_ID))
-        .thenReturn(List.of(entity));
+    when(datasetRepository.findActiveDatasets(OWNER_ID)).thenReturn(List.of(entity));
     when(datasetMapper.mapToDomain(entity)).thenReturn(sampleDataset());
 
     List<Dataset> result = datasetService.listDatasets(OWNER_ID);
