@@ -73,6 +73,9 @@ billing-reader:
 notification:
   service:
     url: ${NOTIFICATION_SERVICE_URL:http://localhost:3000}
+prediction:
+  service:
+    url: ${PREDICTION_SERVICE_URL:http://prediction-service:5000}
 
 ---
 # Configuration for the 'dev' profile only

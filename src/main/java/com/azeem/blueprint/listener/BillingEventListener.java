@@ -94,7 +94,7 @@ public class BillingEventListener {
         }
 
         log.info("Event-driven ingestion successful for {}", key);
-        markDatasetReady(datasetId);
+        markDatasetReady(datasetId, result.billingPeriod());
       }
 
     } catch (Exception e) {
@@ -104,15 +104,17 @@ public class BillingEventListener {
     }
   }
 
-  private void markDatasetReady(UUID datasetId) {
+  private void markDatasetReady(UUID datasetId, String billingPeriod) {
     try {
       datasetRepository
           .findById(datasetId)
           .ifPresent(
               dataset -> {
                 dataset.setStatus("READY");
+                dataset.setBillingPeriod(billingPeriod);
                 datasetRepository.save(dataset);
-                log.info("Dataset {} status updated to READY", datasetId);
+                log.info(
+                    "Dataset {} status updated to READY with period {}", datasetId, billingPeriod);
               });
     } catch (Exception e) {
       log.warn("Failed to update dataset status to READY for {}: {}", datasetId, e.getMessage());

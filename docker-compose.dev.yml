@@ -95,5 +95,10 @@ services:
       echo 'Infrastructure configuration complete.'
       "
 
+  prediction-service:
+    build: ./prediction-service
+    container_name: prediction-service
+    restart: always
+
 volumes:
   postgres_data:

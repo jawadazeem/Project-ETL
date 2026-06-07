@@ -349,6 +349,44 @@
     </div>
 </div>
 
+<div class="card mb-4 premium-card predictions-section" id="predictionsSection">
+    <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
+        <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
+        <span class="badge bg-light text-dark prediction-badge">Powered by ML</span>
+    </div>
+    <div class="card-body glass-panel">
+        <p class="text-muted">Select at least 3 datasets representing adjacent or near-adjacent months to forecast future costs.</p>
+        
+        <div class="row mb-3 align-items-end">
+            <div class="col-md-8">
+                <label class="form-label fw-bold">Select Datasets for Training Data:</label>
+                <select id="predictionDatasetsSelect" class="form-select form-select-lg prediction-multi-select" multiple size="4">
+                    <!-- Options populated via JS -->
+                </select>
+                <div class="form-text text-danger d-none mt-2" id="predictionError">
+                    Please select at least 3 datasets.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary btn-lg w-100 generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
+                    <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
+                    <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 14px;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
+            <hr class="my-4 subtle-hr">
+            <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
+            <div class="chart-box premium-chart-box">
+                <canvas id="predictionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer class="app-footer mt-5">
     <div class="container text-center py-3">
         <span class="footer-title">Blueprint Billing Portal</span>

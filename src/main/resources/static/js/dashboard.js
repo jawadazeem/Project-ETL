@@ -905,6 +905,7 @@ function wireDashboardEvents() {
     document.getElementById("corporate-info-close")?.addEventListener("click", closeCorporateInfoModal);
     document.getElementById("corpCancelBtn")?.addEventListener("click", closeCorporateInfoModal);
     document.getElementById("corpSaveBtn")?.addEventListener("click", saveCorporateInfoAndGenerate);
+    document.getElementById("generateForecastBtn")?.addEventListener("click", generateForecast);
 
     document.getElementById("welcomeUploadBtn")?.addEventListener("click", () => {
         document.getElementById("fileInput").click();
@@ -963,6 +964,7 @@ async function tryLoadExistingDatasets() {
         await loadPeriods();
         await loadDepartments();
         await loadDatasetList();
+        await populatePredictionDatasets();
 
         if (currentPeriod) {
             changePeriod();
@@ -972,4 +974,152 @@ async function tryLoadExistingDatasets() {
     } catch (e) {
         return false;
     }
+}
+
+// ── Predictions ───────────────────────────────────────────────────────────
+
+let predictionChartInstance = null;
+
+async function populatePredictionDatasets() {
+    const select = document.getElementById("predictionDatasetsSelect");
+    if (!select) return;
+
+    try {
+        const res = await fetch("/datasets", {
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+        if (!res.ok) return;
+
+        const datasets = await res.json();
+        const readyDatasets = datasets.filter(d => d.status === "READY");
+        
+        readyDatasets.sort((a, b) => (a.billingPeriod || "").localeCompare(b.billingPeriod || ""));
+
+        select.innerHTML = "";
+        readyDatasets.forEach(ds => {
+            if (!ds.billingPeriod) return;
+            const opt = document.createElement("option");
+            opt.value = ds.id;
+            opt.textContent = `Period: ${ds.billingPeriod} (${ds.sourceFilename})`;
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        console.error("Failed to populate prediction datasets", e);
+    }
+}
+
+async function generateForecast() {
+    const select = document.getElementById("predictionDatasetsSelect");
+    const errorMsg = document.getElementById("predictionError");
+    const wrapper = document.getElementById("predictionChartWrapper");
+    const btn = document.getElementById("generateForecastBtn");
+    const spinner = document.getElementById("forecastSpinner");
+    
+    const selectedOptions = Array.from(select.selectedOptions);
+    if (selectedOptions.length < 3) {
+        errorMsg.classList.remove("d-none");
+        wrapper.style.display = "none";
+        return;
+    }
+    errorMsg.classList.add("d-none");
+    
+    const datasetIds = selectedOptions.map(opt => opt.value);
+    
+    btn.disabled = true;
+    spinner.classList.remove("d-none");
+
+    try {
+        const res = await fetch("/api/predictions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datasetIds)
+        });
+
+        if (!res.ok) {
+            throw new Error(`Prediction API failed: ${res.status}`);
+        }
+
+        const data = await res.json();
+        renderPredictionChart(data.predictions);
+        wrapper.style.display = "block";
+        
+        wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } catch (e) {
+        console.error("Forecast failed", e);
+        showToast("Failed to generate forecast. Ensure datasets have valid charges.");
+        wrapper.style.display = "none";
+    } finally {
+        btn.disabled = false;
+        spinner.classList.add("d-none");
+    }
+}
+
+function renderPredictionChart(predictions) {
+    if (predictionChartInstance) {
+        predictionChartInstance.destroy();
+    }
+    
+    const labels = predictions.map(p => p.period);
+    const dataPoints = predictions.map(p => p.charge);
+    
+    const ctx = document.getElementById("predictionChart").getContext("2d");
+    
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, "rgba(37, 99, 235, 0.4)");
+    gradient.addColorStop(1, "rgba(37, 99, 235, 0.0)");
+
+    predictionChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Forecasted Total Charge ($)",
+                data: dataPoints,
+                borderColor: "#2563eb",
+                backgroundColor: gradient,
+                borderWidth: 3,
+                pointBackgroundColor: "#ffffff",
+                pointBorderColor: "#2563eb",
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: "rgba(30, 41, 59, 0.9)",
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 14, weight: 'bold' },
+                    padding: 12,
+                    callbacks: {
+                        label: ctx => `$${ctx.raw.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: "#f1f5f9" },
+                    ticks: {
+                        callback: v => `$${v.toLocaleString()}`,
+                        color: "#64748b"
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: "#64748b" }
+                }
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
 }
