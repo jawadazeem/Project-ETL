@@ -86,7 +86,7 @@ services:
     volumes:
       - "/home/jawadazeem/localstack_persistence:/var/lib/localstack"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://]
+      test: [ "CMD", "curl", "-f", "http://" ]
       interval: 10s
       timeout: 5s
       retries: 5
