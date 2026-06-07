@@ -32,6 +32,7 @@ public class DatasetMapper {
     datasetEntity.setS3ObjectKey(dataset.s3ObjectKey());
     datasetEntity.setUploadedAt(dataset.uploadedAt());
     datasetEntity.setStatus(dataset.status());
+    datasetEntity.setArchived(dataset.archived());
     return datasetEntity;
   }
 
@@ -45,7 +46,8 @@ public class DatasetMapper {
         datasetEntity.getSourceFilename(),
         datasetEntity.getS3ObjectKey(),
         datasetEntity.getUploadedAt(),
-        datasetEntity.getStatus());
+        datasetEntity.getStatus(),
+        datasetEntity.isArchived());
   }
 
   private AppUserEntity getAppUserEntityById(Dataset dataset) {

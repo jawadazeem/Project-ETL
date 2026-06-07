@@ -51,7 +51,8 @@ class DatasetServiceTest {
         "billing.csv",
         "key/billing.csv",
         Instant.parse("2026-01-01T00:00:00Z"),
-        "READY");
+        "READY",
+        false);
   }
 
   private DatasetEntity sampleEntity() {
@@ -66,7 +67,7 @@ class DatasetServiceTest {
   @DisplayName("listDatasets returns mapped datasets for a given owner")
   void listDatasets_returnsDatasets() {
     DatasetEntity entity = sampleEntity();
-    when(datasetRepository.findByOwnerUserIdOrOwnerUserIsNull(OWNER_ID))
+    when(datasetRepository.findActiveDatasets(OWNER_ID))
         .thenReturn(List.of(entity));
     when(datasetMapper.mapToDomain(entity)).thenReturn(sampleDataset());
 
@@ -74,14 +75,14 @@ class DatasetServiceTest {
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).id()).isEqualTo(DATASET_ID);
-    verify(datasetRepository).findByOwnerUserIdOrOwnerUserIsNull(OWNER_ID);
+    verify(datasetRepository).findActiveDatasets(OWNER_ID);
     verify(datasetMapper).mapToDomain(entity);
   }
 
   @Test
   @DisplayName("listDatasets returns empty list when owner has no datasets")
   void listDatasets_noDatasets_returnsEmpty() {
-    when(datasetRepository.findByOwnerUserIdOrOwnerUserIsNull(OWNER_ID)).thenReturn(List.of());
+    when(datasetRepository.findActiveDatasets(OWNER_ID)).thenReturn(List.of());
 
     List<Dataset> result = datasetService.listDatasets(OWNER_ID);
 

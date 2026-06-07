@@ -79,6 +79,32 @@
     border: 1px solid rgba(13, 110, 253, 0.08);
 }
 
+.tech-section-label {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.tech-section-label:first-of-type {
+    margin-top: 0;
+}
+
+.tech-badge-notif {
+    background: #ecfdf5;
+    color: #065f46;
+    border-color: rgba(16, 185, 129, 0.12);
+}
+
+.tech-badge-pred {
+    background: #fef9c3;
+    color: #854d0e;
+    border-color: rgba(245, 158, 11, 0.12);
+}
+
 .feature-list {
     list-style: none;
     padding: 0;

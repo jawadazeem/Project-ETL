@@ -53,4 +53,39 @@ public class DatasetController {
     log.info("GET /datasets/{} called.", datasetId);
     return ResponseEntity.ok(datasetService.getDataset(datasetId));
   }
+
+  @Operation(summary = "Delete a dataset and all associated records")
+  @DeleteMapping("/{datasetId}")
+  public ResponseEntity<Void> deleteDataset(
+      @RequestHeader("X-User-Id") UUID userId, @PathVariable UUID datasetId) {
+    log.info("DELETE /datasets/{} called by user: {}", datasetId, userId);
+    datasetService.deleteDataset(datasetId, userId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @Operation(summary = "Archive a dataset")
+  @PatchMapping("/{datasetId}/archive")
+  public ResponseEntity<Void> archiveDataset(
+      @RequestHeader("X-User-Id") UUID userId, @PathVariable UUID datasetId) {
+    log.info("PATCH /datasets/{}/archive called by user: {}", datasetId, userId);
+    datasetService.archiveDataset(datasetId, userId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @Operation(summary = "Restore an archived dataset")
+  @PatchMapping("/{datasetId}/restore")
+  public ResponseEntity<Void> restoreDataset(
+      @RequestHeader("X-User-Id") UUID userId, @PathVariable UUID datasetId) {
+    log.info("PATCH /datasets/{}/restore called by user: {}", datasetId, userId);
+    datasetService.restoreDataset(datasetId, userId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @Operation(summary = "List archived datasets for a user")
+  @GetMapping("/archived")
+  public ResponseEntity<List<Dataset>> listArchivedDatasets(
+      @RequestHeader("X-User-Id") UUID userId) {
+    log.info("GET /datasets/archived called by user: {}", userId);
+    return ResponseEntity.ok(datasetService.listArchivedDatasets(userId));
+  }
 }

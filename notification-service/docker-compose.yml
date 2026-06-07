@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: blueprint-notifications-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express:1
+    container_name: blueprint-notifications-mongo-express
+    depends_on:
+      - mongo
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+      ME_CONFIG_BASICAUTH: "false"
+
+volumes:
+  mongo-data:
