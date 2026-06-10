@@ -2,6 +2,70 @@
 
 These are natural next steps based on the current codebase. Items already implemented have been moved to the main documentation.
 
+### Audit Agent
+
+**Mission:** Find billing errors, anomalies, contract violations, and compliance issues before they impact the business.
+
+#### Core Responsibilities
+
+- Detect duplicate or overlapping charges across billing periods
+- Identify unusual spending spikes and usage anomalies
+- Compare contract rates against invoice rates and negotiated pricing
+- Flag inactive or low-usage lines that continue generating costs
+- Detect unexpected roaming, international, or premium-service charges
+- Validate billing consistency across departments, accounts, and vendors
+- Identify missing credits, discounts, or contractual adjustments
+- Surface recurring anomalies that indicate systemic billing issues
+
+#### Investigation Workflow
+
+1. Analyze newly ingested billing data
+2. Compare charges against historical baselines
+3. Validate invoice data against contract terms
+4. Gather evidence supporting identified issues
+5. Generate findings with confidence scores and estimated financial impact
+6. Recommend escalation or remediation actions
+
+#### Example Outputs
+
+- "14 inactive mobile lines have incurred charges for 90 consecutive days."
+- "Invoice rate exceeds contracted rate by 18% for 27 accounts."
+- "International roaming costs increased 340% compared to the previous six-month baseline."
+- "Potential duplicate charge detected across multiple billing periods."
+
+---
+
+### FinOps Agent
+
+**Mission:** Optimize telecom spending, forecast future costs, and continuously identify savings opportunities.
+
+#### Core Responsibilities
+
+- Identify cost reduction opportunities across departments and accounts
+- Recommend actions to reduce future telecom expenses
+- Forecast upcoming billing periods using historical trends and usage patterns
+- Detect underutilized services and subscriptions
+- Prioritize savings opportunities based on projected financial impact
+- Analyze spending efficiency across departments and business units
+- Model the impact of proposed optimization actions
+- Generate executive-level cost optimization reports
+
+#### Optimization Workflow
+
+1. Analyze historical billing and usage trends
+2. Identify inefficiencies and optimization opportunities
+3. Estimate potential savings and implementation effort
+4. Rank recommendations by expected ROI
+5. Simulate future cost scenarios
+6. Produce actionable recommendations for stakeholders
+
+#### Example Outputs
+
+- "Cancelling 37 inactive lines could reduce annual spend by approximately $18,600."
+- "Migrating low-usage accounts to a lower-cost plan may save 12% annually."
+- "Projected telecom spend next quarter is expected to increase 9.4% due to seasonal usage patterns."
+- "Sales and Operations account for 78% of spend growth over the last six months."
+
 ### Harden AI Query Execution
 
 - Replace string checks with SQL AST parsing (JSQLParser is the natural choice from the Java side).
@@ -19,15 +83,6 @@ Steps when the time comes:
 - Replace the hardcoded `X-User-Id` header with a resolved principal from the security context.
 - Remove credential logging from `login.js`.
 - Protect upload, Martin, and delete endpoints before public exposure.
-
-### Optimize Bulk Ingestion Pipeline
-
-The current pipeline uses `JdbcBillingBatchWriter` for raw JDBC batch inserts, which is significantly faster than the original JPA entity flow. Further improvements:
-
-- Introduce PostgreSQL `COPY` via `CopyManager` for maximum CSV ingestion throughput.
-- Evaluate Spring Batch for chunked reads, parallel processing, and restart/retry on ingestion failure.
-- Normalize the billing schema into `departments`, `employees`, and `billing_records` tables to reduce INSERT payload size and improve query performance.
-- Disable indexes during bulk load and rebuild post-ingestion to eliminate per-row index maintenance overhead.
 
 ### Splunk SIEM Integration
 
