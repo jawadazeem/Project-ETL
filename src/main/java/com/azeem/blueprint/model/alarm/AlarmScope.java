@@ -6,7 +6,7 @@
 package com.azeem.blueprint.model.alarm;
 
 public enum AlarmScope {
-  INDIVIDUAL,
-  DEPARTMENT,
+  RESOURCE,
+  PROVIDER,
   ACCOUNT
 }

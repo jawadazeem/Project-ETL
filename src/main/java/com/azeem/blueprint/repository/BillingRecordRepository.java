@@ -29,17 +29,15 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
   """)
   Page<String> findBillingPeriodByDatasetId(@Param("datasetId") UUID datasetId, Pageable pageable);
 
-  // DB-level distinct departments
   @Query(
       """
-      SELECT DISTINCT b.department
+      SELECT DISTINCT b.cloudProvider
       FROM BillingRecordEntity b
       WHERE b.dataset.id = :datasetId
-      ORDER BY b.department
+      ORDER BY b.cloudProvider
     """)
-  List<String> findDistinctDepartmentsByDatasetId(@Param("datasetId") UUID datasetId);
+  List<String> findDistinctCloudProvidersByDatasetId(@Param("datasetId") UUID datasetId);
 
-  // DB-level distinct billing periods (non-paged)
   @Query(
       """
       SELECT DISTINCT b.billingPeriod
@@ -66,23 +64,23 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
 
   List<BillingRecordEntity> findByDatasetIdAndBillingPeriod(UUID datasetId, String billingPeriod);
 
-  Page<BillingRecordEntity> findByDatasetIdAndDepartmentIgnoreCase(
-      UUID datasetId, String department, Pageable pageable);
+  Page<BillingRecordEntity> findByDatasetIdAndCloudProviderIgnoreCase(
+      UUID datasetId, String cloudProvider, Pageable pageable);
 
-  Page<BillingRecordEntity> findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
-      UUID datasetId, String billingPeriod, String department, Pageable pageable);
+  Page<BillingRecordEntity> findByDatasetIdAndBillingPeriodAndCloudProviderIgnoreCase(
+      UUID datasetId, String billingPeriod, String cloudProvider, Pageable pageable);
 
   long countByDatasetId(UUID datasetId);
 
   @Query(
       """
-      SELECT b.department, SUM(b.totalCharge)
+      SELECT b.cloudProvider, SUM(b.totalCharge)
       FROM BillingRecordEntity b
       WHERE b.dataset.id = :datasetId AND b.billingPeriod = :billingPeriod
-        AND b.department IS NOT NULL
-      GROUP BY b.department
+        AND b.cloudProvider IS NOT NULL
+      GROUP BY b.cloudProvider
     """)
-  List<Object[]> sumTotalChargeGroupedByDepartment(
+  List<Object[]> sumTotalChargeGroupedByCloudProvider(
       @Param("datasetId") UUID datasetId, @Param("billingPeriod") String billingPeriod);
 
   @Query(

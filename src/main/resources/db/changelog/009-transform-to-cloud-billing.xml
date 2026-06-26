@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="009-transform-billing-records-to-cloud" author="jawad.azeem">
+        <comment>Transform billing_records from telecom to cloud billing schema</comment>
+
+        <!-- Rename existing columns -->
+        <renameColumn tableName="billing_records" oldColumnName="employee_id" newColumnName="resource_id" columnDataType="varchar(100)"/>
+        <renameColumn tableName="billing_records" oldColumnName="department" newColumnName="cloud_provider" columnDataType="varchar(255)"/>
+        <renameColumn tableName="billing_records" oldColumnName="data_gb_used" newColumnName="storage_gb_used" columnDataType="double"/>
+
+        <!-- Drop telecom-specific columns -->
+        <dropColumn tableName="billing_records" columnName="phone_number"/>
+        <dropColumn tableName="billing_records" columnName="minutes_used"/>
+        <dropColumn tableName="billing_records" columnName="sms_count"/>
+
+        <!-- Add cloud billing columns -->
+        <addColumn tableName="billing_records">
+            <column name="compute_hours" type="double" defaultValueNumeric="0"/>
+            <column name="api_requests" type="bigint" defaultValueNumeric="0"/>
+            <column name="service_name" type="varchar(255)"/>
+            <column name="description" type="text"/>
+        </addColumn>
+
+        <!-- Update indexes -->
+        <dropIndex tableName="billing_records" indexName="idx_billing_records_department"/>
+        <createIndex tableName="billing_records" indexName="idx_billing_records_cloud_provider">
+            <column name="cloud_provider"/>
+        </createIndex>
+        <createIndex tableName="billing_records" indexName="idx_billing_records_service_name">
+            <column name="service_name"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

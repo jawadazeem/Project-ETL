@@ -22,11 +22,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
   private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-  // Handle DepartmentNotFoundException
-  @ExceptionHandler(DepartmentNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleDepartmentNotFoundException(
-      DepartmentNotFoundException ex) {
-    logger.warn("Department not found: {}", ex.getMessage());
+  @ExceptionHandler(CloudProviderNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleCloudProviderNotFoundException(
+      CloudProviderNotFoundException ex) {
+    logger.warn("Cloud provider not found: {}", ex.getMessage());
     ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }

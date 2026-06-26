@@ -41,21 +41,21 @@ class AlarmControllerTest {
   }
 
   @Test
-  void shouldReturnAllDepartmentAlarmsByBillingPeriod() throws Exception {
+  void shouldReturnAllProviderAlarmsByBillingPeriod() throws Exception {
     mockMvc
-        .perform(get("/datasets/{datasetId}/alarms/{period}/department", DATASET_ID, PERIOD))
+        .perform(get("/datasets/{datasetId}/alarms/{period}/provider", DATASET_ID, PERIOD))
         .andExpect(status().isOk());
 
-    verify(alarmService).getDepartmentAlarmsInDataset(any(UUID.class), eq(PERIOD));
+    verify(alarmService).getProviderAlarmsInDataset(any(UUID.class), eq(PERIOD));
   }
 
   @Test
-  void shouldReturnAllIndividualAlarmsByBillingPeriod() throws Exception {
+  void shouldReturnAllResourceAlarmsByBillingPeriod() throws Exception {
     mockMvc
-        .perform(get("/datasets/{datasetId}/alarms/{period}/individual", DATASET_ID, PERIOD))
+        .perform(get("/datasets/{datasetId}/alarms/{period}/resource", DATASET_ID, PERIOD))
         .andExpect(status().isOk());
 
-    verify(alarmService).getIndividualAlarmsInDataset(any(UUID.class), eq(PERIOD));
+    verify(alarmService).getResourceAlarmsInDataset(any(UUID.class), eq(PERIOD));
   }
 
   @Test

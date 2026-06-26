@@ -69,7 +69,7 @@ public class DatasetService {
     savedEntity = datasetRepository.save(savedEntity);
 
     Dataset domainModel = datasetMapper.mapToDomain(savedEntity);
-    String targetBucket = "telecom-billing";
+    String targetBucket = "cloud-billing";
 
     try {
       s3Service.uploadUserFile(targetBucket, domainModel, file);

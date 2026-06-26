@@ -27,14 +27,15 @@ public class BillingRecordMapper {
     BillingRecordEntity entity = new BillingRecordEntity();
     entity.setDataset(getDatasetById(record));
     entity.setAccountName(record.accountName());
-    entity.setEmployeeId(record.employeeId());
-    entity.setDepartment(record.department());
-    entity.setPhoneNumber(record.phoneNumber());
+    entity.setResourceId(record.resourceId());
+    entity.setCloudProvider(record.cloudProvider());
     entity.setBillingPeriod(record.billingPeriod());
-    entity.setMinutesUsed(record.minutesUsed());
-    entity.setDataGbUsed(record.dataGbUsed());
-    entity.setSmsCount(record.smsCount());
+    entity.setComputeHours(record.computeHours());
+    entity.setStorageGbUsed(record.storageGbUsed());
+    entity.setApiRequests(record.apiRequests());
     entity.setTotalCharge(record.totalCharge());
+    entity.setServiceName(record.serviceName());
+    entity.setDescription(record.description());
     return entity;
   }
 
@@ -42,14 +43,15 @@ public class BillingRecordMapper {
     return new BillingRecord(
         entity.getDataset().getId(),
         entity.getAccountName(),
-        entity.getEmployeeId(),
-        entity.getDepartment(),
-        entity.getPhoneNumber(),
+        entity.getResourceId(),
+        entity.getCloudProvider(),
         entity.getBillingPeriod(),
-        entity.getMinutesUsed(),
-        entity.getDataGbUsed(),
-        entity.getSmsCount(),
-        entity.getTotalCharge());
+        entity.getComputeHours(),
+        entity.getStorageGbUsed(),
+        entity.getApiRequests(),
+        entity.getTotalCharge(),
+        entity.getServiceName(),
+        entity.getDescription());
   }
 
   private DatasetEntity getDatasetById(BillingRecord record) {

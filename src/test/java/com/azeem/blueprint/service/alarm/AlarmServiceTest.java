@@ -19,7 +19,7 @@ import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
-import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import com.azeem.blueprint.repository.AlarmRepository;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import java.time.Instant;
@@ -57,7 +57,7 @@ class AlarmServiceTest {
         null,
         DATASET_ID,
         businessKey,
-        AlarmScope.DEPARTMENT,
+        AlarmScope.PROVIDER,
         "2026-01",
         null,
         AlarmSeverity.HIGH,
@@ -65,11 +65,12 @@ class AlarmServiceTest {
         Instant.now(),
         null,
         null,
-        Department.IT);
+        CloudProvider.AWS);
   }
 
   private void stubAggregateQueries() {
-    when(billingRecordRepository.sumTotalChargeGroupedByDepartment(eq(DATASET_ID), eq("2026-01")))
+    when(billingRecordRepository.sumTotalChargeGroupedByCloudProvider(
+            eq(DATASET_ID), eq("2026-01")))
         .thenReturn(List.of());
     when(billingRecordRepository.sumTotalChargeByDatasetIdAndBillingPeriod(
             eq(DATASET_ID), eq("2026-01")))
@@ -77,11 +78,11 @@ class AlarmServiceTest {
   }
 
   private void stubDetectionReturnsNothing() {
-    when(alarmDetectionService.detectDepartmentAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
+    when(alarmDetectionService.detectProviderAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
         .thenReturn(List.of());
     when(alarmDetectionService.detectAccountAlarm(eq(DATASET_ID), anyDouble(), eq("2026-01")))
         .thenReturn(Optional.empty());
-    when(alarmDetectionService.detectIndividualAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
+    when(alarmDetectionService.detectResourceAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of());
   }
 
@@ -90,7 +91,7 @@ class AlarmServiceTest {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of());
     stubAggregateQueries();
-    when(alarmDetectionService.detectDepartmentAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
+    when(alarmDetectionService.detectProviderAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
         .thenReturn(List.of());
     when(alarmDetectionService.detectAccountAlarm(eq(DATASET_ID), anyDouble(), eq("2026-01")))
         .thenReturn(Optional.empty());
@@ -98,7 +99,7 @@ class AlarmServiceTest {
             eq(DATASET_ID), anyString(), any()))
         .thenReturn(new PageImpl<>(List.of(billingRecordEntity())));
     when(billingMapper.mapToDomain(any())).thenReturn(mock(BillingRecord.class));
-    when(alarmDetectionService.detectIndividualAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
+    when(alarmDetectionService.detectResourceAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of(alarm(new UUID(0L, 1L))));
     when(alarmMapper.mapToEntity(any())).thenReturn(new AlarmEntity());
 
@@ -128,14 +129,14 @@ class AlarmServiceTest {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of(key));
     stubAggregateQueries();
-    when(alarmDetectionService.detectDepartmentAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
+    when(alarmDetectionService.detectProviderAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
         .thenReturn(List.of(alarm(key)));
     when(alarmDetectionService.detectAccountAlarm(eq(DATASET_ID), anyDouble(), eq("2026-01")))
         .thenReturn(Optional.empty());
     when(billingRecordRepository.findByDatasetIdAndBillingPeriod(
             eq(DATASET_ID), anyString(), any()))
         .thenReturn(Page.empty());
-    when(alarmDetectionService.detectIndividualAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
+    when(alarmDetectionService.detectResourceAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of());
 
     service.detectAndPersistAlarmsForDataset(DATASET_ID, "2026-01");
@@ -150,14 +151,14 @@ class AlarmServiceTest {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01"))
         .thenReturn(List.of(existing));
     stubAggregateQueries();
-    when(alarmDetectionService.detectDepartmentAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
+    when(alarmDetectionService.detectProviderAlarms(eq(DATASET_ID), anyMap(), eq("2026-01")))
         .thenReturn(List.of(alarm(existing), alarm(newKey)));
     when(alarmDetectionService.detectAccountAlarm(eq(DATASET_ID), anyDouble(), eq("2026-01")))
         .thenReturn(Optional.empty());
     when(billingRecordRepository.findByDatasetIdAndBillingPeriod(
             eq(DATASET_ID), anyString(), any()))
         .thenReturn(Page.empty());
-    when(alarmDetectionService.detectIndividualAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
+    when(alarmDetectionService.detectResourceAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of());
     when(alarmMapper.mapToEntity(any())).thenReturn(new AlarmEntity());
 
@@ -167,7 +168,7 @@ class AlarmServiceTest {
   }
 
   @Test
-  void shouldUseAggregateQueriesForDepartmentAndAccountAlarms() {
+  void shouldUseAggregateQueriesForProviderAndAccountAlarms() {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(any(), anyString()))
         .thenReturn(List.of());
     stubAggregateQueries();
@@ -177,26 +178,26 @@ class AlarmServiceTest {
 
     service.detectAndPersistAlarmsForDataset(DATASET_ID, "2026-01");
 
-    verify(billingRecordRepository).sumTotalChargeGroupedByDepartment(DATASET_ID, "2026-01");
+    verify(billingRecordRepository).sumTotalChargeGroupedByCloudProvider(DATASET_ID, "2026-01");
     verify(billingRecordRepository)
         .sumTotalChargeByDatasetIdAndBillingPeriod(DATASET_ID, "2026-01");
-    verify(alarmDetectionService).detectDepartmentAlarms(eq(DATASET_ID), anyMap(), eq("2026-01"));
+    verify(alarmDetectionService).detectProviderAlarms(eq(DATASET_ID), anyMap(), eq("2026-01"));
     verify(alarmDetectionService).detectAccountAlarm(eq(DATASET_ID), anyDouble(), eq("2026-01"));
   }
 
   @Test
-  void shouldMapBillingRecordsToDomainBeforeIndividualDetection() {
+  void shouldMapBillingRecordsToDomainBeforeResourceDetection() {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(any(), anyString()))
         .thenReturn(List.of());
     stubAggregateQueries();
-    when(alarmDetectionService.detectDepartmentAlarms(any(), anyMap(), anyString()))
+    when(alarmDetectionService.detectProviderAlarms(any(), anyMap(), anyString()))
         .thenReturn(List.of());
     when(alarmDetectionService.detectAccountAlarm(any(), anyDouble(), anyString()))
         .thenReturn(Optional.empty());
     when(billingRecordRepository.findByDatasetIdAndBillingPeriod(any(), anyString(), any()))
         .thenReturn(new PageImpl<>(List.of(billingRecordEntity())));
     when(billingMapper.mapToDomain(any())).thenReturn(mock(BillingRecord.class));
-    when(alarmDetectionService.detectIndividualAlarms(any(), anyList(), anyString()))
+    when(alarmDetectionService.detectResourceAlarms(any(), anyList(), anyString()))
         .thenReturn(List.of());
 
     service.detectAndPersistAlarmsForDataset(DATASET_ID, "2026-01");
@@ -210,13 +211,13 @@ class AlarmServiceTest {
     when(alarmRepository.findBusinessKeysByDatasetIdAndBillingPeriod(any(), anyString()))
         .thenReturn(List.of());
     stubAggregateQueries();
-    when(alarmDetectionService.detectDepartmentAlarms(any(), anyMap(), anyString()))
+    when(alarmDetectionService.detectProviderAlarms(any(), anyMap(), anyString()))
         .thenReturn(List.of(alarm(key)));
     when(alarmDetectionService.detectAccountAlarm(any(), anyDouble(), anyString()))
         .thenReturn(Optional.empty());
     when(billingRecordRepository.findByDatasetIdAndBillingPeriod(any(), anyString(), any()))
         .thenReturn(Page.empty());
-    when(alarmDetectionService.detectIndividualAlarms(any(), anyList(), anyString()))
+    when(alarmDetectionService.detectResourceAlarms(any(), anyList(), anyString()))
         .thenReturn(List.of());
     when(alarmMapper.mapToEntity(any())).thenReturn(new AlarmEntity());
 
@@ -237,23 +238,23 @@ class AlarmServiceTest {
   }
 
   @Test
-  void shouldReturnDepartmentAlarms() {
+  void shouldReturnProviderAlarms() {
     when(alarmRepository.findByDatasetIdAndBillingPeriodAndAlarmScope(
-            DATASET_ID, "2026-01", AlarmScope.DEPARTMENT))
+            DATASET_ID, "2026-01", AlarmScope.PROVIDER))
         .thenReturn(List.of(new AlarmEntity()));
     when(alarmMapper.mapToDomain(any())).thenReturn(alarm(new UUID(0L, 1L)));
 
-    assertFalse(service.getDepartmentAlarmsInDataset(DATASET_ID, "2026-01").isEmpty());
+    assertFalse(service.getProviderAlarmsInDataset(DATASET_ID, "2026-01").isEmpty());
   }
 
   @Test
-  void shouldReturnIndividualAlarms() {
+  void shouldReturnResourceAlarms() {
     when(alarmRepository.findByDatasetIdAndBillingPeriodAndAlarmScope(
-            DATASET_ID, "2026-01", AlarmScope.INDIVIDUAL))
+            DATASET_ID, "2026-01", AlarmScope.RESOURCE))
         .thenReturn(List.of(new AlarmEntity()));
     when(alarmMapper.mapToDomain(any())).thenReturn(alarm(new UUID(0L, 1L)));
 
-    assertFalse(service.getIndividualAlarmsInDataset(DATASET_ID, "2026-01").isEmpty());
+    assertFalse(service.getResourceAlarmsInDataset(DATASET_ID, "2026-01").isEmpty());
   }
 
   @Test

@@ -24,7 +24,7 @@ public class PdfStorageService {
 
   public PdfStorageService(
       S3Template s3Template,
-      @Value("${spring.cloud.aws.s3.bucket:telecom-billing}") String bucketName) {
+      @Value("${spring.cloud.aws.s3.bucket:cloud-billing}") String bucketName) {
     this.s3Template = s3Template;
     this.bucketName = bucketName;
   }

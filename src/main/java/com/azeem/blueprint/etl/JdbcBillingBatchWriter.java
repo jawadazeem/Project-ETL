@@ -26,10 +26,10 @@ public class JdbcBillingBatchWriter {
   private static final String INSERT_SQL =
       """
       INSERT INTO billing_records
-        (dataset_id, billing_period, account_name, department,
-         employee_id, phone_number, minutes_used, data_gb_used,
-         sms_count, total_charge)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (dataset_id, billing_period, account_name, cloud_provider,
+         resource_id, compute_hours, storage_gb_used,
+         api_requests, total_charge, service_name, description)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       """;
 
   private final JdbcTemplate jdbcTemplate;
@@ -48,13 +48,14 @@ public class JdbcBillingBatchWriter {
             ps.setObject(1, r.datasetId());
             ps.setString(2, r.billingPeriod());
             ps.setString(3, r.accountName());
-            ps.setString(4, r.department());
-            ps.setString(5, r.employeeId());
-            ps.setString(6, r.phoneNumber());
-            ps.setInt(7, r.minutesUsed());
-            ps.setDouble(8, r.dataGbUsed());
-            ps.setInt(9, r.smsCount());
-            ps.setDouble(10, r.totalCharge());
+            ps.setString(4, r.cloudProvider());
+            ps.setString(5, r.resourceId());
+            ps.setDouble(6, r.computeHours());
+            ps.setDouble(7, r.storageGbUsed());
+            ps.setLong(8, r.apiRequests());
+            ps.setDouble(9, r.totalCharge());
+            ps.setString(10, r.serviceName());
+            ps.setString(11, r.description());
           }
 
           @Override

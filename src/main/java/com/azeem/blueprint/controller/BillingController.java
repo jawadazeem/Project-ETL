@@ -74,30 +74,30 @@ public class BillingController {
         service.getDatasetRecordsByPeriod(datasetId, billingPeriod, page, size));
   }
 
-  @Operation(summary = "List billing records filtered by department")
-  @GetMapping("/records/departments/{department}")
-  public ResponseEntity<Page<BillingRecord>> getRecordsByDepartment(
+  @Operation(summary = "List billing records filtered by cloud provider")
+  @GetMapping("/records/providers/{provider}")
+  public ResponseEntity<Page<BillingRecord>> getRecordsByProvider(
       @PathVariable UUID datasetId,
-      @PathVariable @NotBlank String department,
+      @PathVariable @NotBlank String provider,
       @RequestParam(required = false) String billingPeriod,
       @RequestParam(defaultValue = "0") @Min(0) int page,
       @RequestParam(defaultValue = "20") @Min(1) @Max(100) int size) {
-    log.info("GET /datasets/{}/records/departments/{} called.", datasetId, department);
+    log.info("GET /datasets/{}/records/providers/{} called.", datasetId, provider);
     if (billingPeriod != null && !billingPeriod.isBlank()) {
       return ResponseEntity.ok(
-          service.getRecordsByDepartmentInDatasetForPeriod(
-              datasetId, billingPeriod, department, page, size));
+          service.getRecordsByProviderInDatasetForPeriod(
+              datasetId, billingPeriod, provider, page, size));
     }
 
     return ResponseEntity.ok(
-        service.getRecordsByDepartmentInDataset(datasetId, department, page, size));
+        service.getRecordsByProviderInDataset(datasetId, provider, page, size));
   }
 
-  @Operation(summary = "List distinct departments in a dataset")
-  @GetMapping("/records/departments")
-  public ResponseEntity<List<String>> getDepartments(@PathVariable UUID datasetId) {
-    log.info("GET /datasets/{}/records/departments called.", datasetId);
-    return ResponseEntity.ok(service.getDistinctDepartmentsInDataset(datasetId));
+  @Operation(summary = "List distinct cloud providers in a dataset")
+  @GetMapping("/records/providers")
+  public ResponseEntity<List<String>> getProviders(@PathVariable UUID datasetId) {
+    log.info("GET /datasets/{}/records/providers called.", datasetId);
+    return ResponseEntity.ok(service.getDistinctProvidersInDataset(datasetId));
   }
 
   @Operation(summary = "Generate billing summary for entire dataset")

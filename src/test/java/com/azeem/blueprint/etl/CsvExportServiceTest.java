@@ -11,6 +11,7 @@ import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.Collections;
@@ -33,25 +34,27 @@ class CsvExportServiceTest {
             new BillingRecord(
                 DATASET_ID,
                 "Acme Corp",
-                "E001",
-                "Engineering",
-                "555-0100",
+                "i-0abc123",
+                "AWS",
                 "2026-01",
-                120,
+                120.5,
                 1.5,
-                10,
-                45.75),
+                10000,
+                45.75,
+                "EC2",
+                "m5.xlarge instance"),
             new BillingRecord(
                 DATASET_ID,
                 "Beta Inc",
-                "E002",
-                "Finance",
-                "555-0200",
+                "proj-xyz",
+                "GCP",
                 "2026-01",
-                90,
+                90.0,
                 0.8,
-                5,
-                32.50));
+                5000,
+                32.50,
+                "BigQuery",
+                "analytics query"));
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     service.writeRecords(records, out);
@@ -86,15 +89,15 @@ class CsvExportServiceTest {
                 UUID.randomUUID(),
                 DATASET_ID,
                 UUID.randomUUID(),
-                AlarmScope.DEPARTMENT,
+                AlarmScope.PROVIDER,
                 "2026-01",
-                "Department Charge Exceeded",
+                "Provider Spend Exceeded",
                 AlarmSeverity.LOW,
-                "Engineering department exceeds limit",
+                "AWS cloud spend exceeds charge limit",
                 Instant.now(),
                 null,
                 null,
-                null));
+                CloudProvider.AWS));
 
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     service.writeAlarms(alarms, out);
@@ -104,8 +107,8 @@ class CsvExportServiceTest {
     assertThat(lines).hasSizeGreaterThanOrEqualTo(2);
     assertThat(lines[0]).contains("Scope");
     assertThat(lines[0]).contains("Severity");
-    assertThat(lines[1]).contains("DEPARTMENT");
-    assertThat(lines[1]).contains("Engineering department exceeds limit");
+    assertThat(lines[1]).contains("PROVIDER");
+    assertThat(lines[1]).contains("AWS cloud spend exceeds charge limit");
   }
 
   @Test

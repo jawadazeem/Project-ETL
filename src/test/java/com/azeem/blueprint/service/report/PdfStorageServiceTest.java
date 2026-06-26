@@ -28,7 +28,7 @@ class PdfStorageServiceTest {
 
   private static final UUID USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
   private static final UUID DATASET_ID = UUID.fromString("00000000-0000-0000-0000-000000000002");
-  private static final String BUCKET = "telecom-billing";
+  private static final String BUCKET = "cloud-billing";
 
   @Mock private S3Template s3Template;
 

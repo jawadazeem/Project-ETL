@@ -2,17 +2,17 @@
 
 This document explains what Blueprint currently is, how it works, and how the major workflows are implemented. It documents implemented code and clearly labels incomplete or scaffolded systems.
 
-Last updated: June 7, 2026
+Last updated: June 25, 2026
 
 ## Project Overview
 
-Blueprint is a telecom billing intelligence dashboard. It helps users ingest telecom billing CSV data, store it in PostgreSQL, inspect records by period and department, summarize charges, surface budget alarms, generate PDF reports, forecast future costs, and ask natural-language billing questions through an AI assistant named Martin.
+Blueprint is a multi-cloud FinOps cost management platform. It helps users ingest cloud billing CSV data from AWS, GCP, and Azure, store it in PostgreSQL, inspect records by period and cloud provider, summarize charges, surface budget alarms, generate PDF reports, forecast future costs, and ask natural-language billing questions through an AI assistant named Martin.
 
 The system consists of three services:
 
 1. **Monolith** — a full-stack Spring Boot application with:
    - A static HTML/CSS/JavaScript frontend served directly by Spring Boot.
-   - REST APIs for dataset management, records, summaries, departments, periods, alarms, demo loading, PDF reports, predictions, notifications, corporate info, CSV export, and Martin chat. All data APIs are scoped to a dataset ID.
+   - REST APIs for dataset management, records, summaries, cloud providers, periods, alarms, demo loading, PDF reports, predictions, notifications, corporate info, CSV export, and Martin chat. All data APIs are scoped to a dataset ID.
    - PostgreSQL persistence through Spring Data JPA, with schema managed by Liquibase.
    - CSV ingestion through OpenCSV and raw JDBC batch writes for performance.
    - Event-driven upload processing through S3 object-created events delivered to SQS.
@@ -38,7 +38,7 @@ Current maturity: functional demo with real ETL, persistence, dataset lifecycle 
 
 ## Target Users
 
-- Internal finance or operations teams reviewing telecom spend.
+- Internal finance or operations teams reviewing multi-cloud spend.
 - Technical reviewers evaluating ETL, event-driven ingestion, and AI analytics patterns.
 - Demo users who do not have their own CSV and can load bundled demo data.
 
@@ -61,7 +61,7 @@ flowchart TD
     I --> J["View summary cards"]
     I --> K["Browse paginated records"]
     I --> L["View charge and alarm charts"]
-    I --> M["Filter by department"]
+    I --> M["Filter by cloud provider"]
     I --> N["Top N charge lookup"]
     I --> O["Ask Martin"]
     I --> P2["Generate PDF report"]
@@ -115,7 +115,7 @@ The frontend in `src/main/resources/static` is responsible for:
 - Showing a welcome overlay on first visit and silently restoring the last READY dataset on return visits.
 - Providing a dataset switcher in the navbar to switch between uploaded datasets.
 - Calling backend REST APIs with `fetch`, including an `X-User-Id` header for dataset-scoped requests.
-- Rendering Chart.js charts (department charges, alarm severity, billing predictions).
+- Rendering Chart.js charts (cloud provider charges, alarm severity, billing predictions).
 - Showing skeleton loaders during async fetches and toast notifications on errors.
 - Handling client-side page interactions: period selection, pagination, upload, dataset switching, modal open/close, Martin chat, notifications, archive/restore.
 - Dataset lifecycle actions: delete (with confirmation), archive, view archived, restore.
@@ -216,7 +216,7 @@ blueprint/
 │   │   │   ├── BillingDataNotFoundException.java
 │   │   │   ├── BillingException.java
 │   │   │   ├── CorporateInfoNotFoundException.java
-│   │   │   ├── DepartmentNotFoundException.java
+│   │   │   ├── CloudProviderNotFoundException.java
 │   │   │   ├── MartinResponseInvalidException.java
 │   │   │   ├── PdfGenerationException.java
 │   │   │   └── PdfReportNotFoundException.java
@@ -244,7 +244,7 @@ blueprint/
 │   │   ├── billing/
 │   │   │   ├── BillingRecord.java
 │   │   │   ├── BillingSummary.java
-│   │   │   ├── Department.java
+│   │   │   ├── CloudProvider.java
 │   │   │   └── IngestionResult.java
 │   │   ├── dataset/
 │   │   │   └── Dataset.java
@@ -492,8 +492,8 @@ User-facing dashboard areas:
 
 - Latest period summary cards.
 - All records table with pagination.
-- Charges by department Chart.js bar chart.
-- Department filter table.
+- Charges by cloud provider Chart.js bar chart.
+- Cloud provider filter table.
 - Top N highest charges table.
 - CSV export of billing data.
 
@@ -502,9 +502,9 @@ APIs involved:
 | Endpoint | Used by frontend | Behavior |
 |---|---|---|
 | `GET /datasets/{id}/records/periods` | yes | Populates period dropdown. Returns `List<String>`. |
-| `GET /datasets/{id}/records/periods/{billingPeriod}` | yes | Paged records table and department chart source. |
+| `GET /datasets/{id}/records/periods/{billingPeriod}` | yes | Paged records table and provider chart source. |
 | `GET /datasets/{id}/summary/periods/{billingPeriod}` | yes | Summary cards. |
-| `GET /datasets/{id}/records/departments/{department}` | yes | Department filter table. |
+| `GET /datasets/{id}/records/providers/{provider}` | yes | Cloud provider filter table. |
 | `GET /datasets/{id}/top/{n}` | yes | Top N table. |
 | `GET /datasets/{id}/records` | no current frontend use | All records across periods. |
 | `GET /datasets/{id}/summary` | yes (predictions) | Summary across all records. |
@@ -515,33 +515,33 @@ Constraints:
 
 - `GET /top/{n}` validates `n` between 1 and 100 via `@Min`/`@Max`.
 - Period routes validate `YYYY-MM` format or the literal `dummy-data`.
-- Department routes validate `@NotBlank` on the path variable.
+- Provider routes validate `@NotBlank` on the path variable.
 
 ### 5. Alarm Detection and Notification Dispatch
 
-Purpose: detect telecom spend anomalies after ingestion, persist them, and notify an external service.
+Purpose: detect cloud spend anomalies after ingestion, persist them, and notify an external service.
 
 Alarm scopes:
 
 | Scope | Implementation |
 |---|---|
-| `DEPARTMENT` | Department total exceeds configured monthly limit. |
-| `INDIVIDUAL` | Individual record charge exceeds low/medium/high thresholds. |
+| `PROVIDER` | Cloud provider total exceeds configured monthly limit. |
+| `RESOURCE` | Individual resource charge exceeds low/medium/high thresholds. |
 | `ACCOUNT` | Grand total exceeds configured account thresholds. |
 
 Configuration in `application.yaml`:
 
 ```yaml
 alarm:
-  department:
-    monthlyLimit: 7500
+  provider:
+    monthlyLimit: 25000
   individual:
-    low: 250
-    medium: 370
-    high: 500
+    low: 500
+    medium: 2000
+    high: 5000
   account:
-    low: 45000
-    high: 60000
+    low: 100000
+    high: 250000
 ```
 
 After persisting new alarms, `AlarmService` calls `notifyQuietly()`, which dispatches the alarm list to `NotificationClient`. The client sends one `POST /notify` per alarm to `${NOTIFICATION_SERVICE_URL:http://localhost:3001}`. Each payload matches the Zod schema defined in `notification-service/src/validation/notification.schema.ts`. Failures are caught and logged as `WARN` — they never propagate or roll back alarm persistence.
@@ -580,8 +580,8 @@ Status: implemented.
 
 Known implementation caveats:
 
-- Alarm detection is chunked by 1,000 records. Department totals and account totals are computed per chunk, not per full dataset-period. This can produce false negatives or duplicates for datasets larger than one chunk. There is a TODO in `AlarmService` for this.
-- Department detection only maps a fixed set of departments in the `Department` enum. Free-form department strings in billing records that do not map to an enum value are skipped for department-scoped alarms.
+- Alarm detection is chunked by 1,000 records. Provider totals and account totals are computed per chunk, not per full dataset-period. This can produce false negatives or duplicates for datasets larger than one chunk. There is a TODO in `AlarmService` for this.
+- Provider detection maps cloud provider strings via the `CloudProvider` enum (`AWS`, `GCP`, `AZURE`, `OTHER`). Free-form provider strings that do not map to an enum value are skipped for provider-scoped alarms.
 
 ### 6. Martin AI Analytics
 
@@ -821,15 +821,16 @@ Fields:
 | Field | Type | Meaning |
 |---|---|---|
 | `datasetId` | UUID | Owning dataset (first field on domain record). |
-| `accountName` | String | Billing account/person name. |
-| `employeeId` | String | Employee identifier. |
-| `department` | String | Department name. |
-| `phoneNumber` | String | Phone number. |
+| `accountName` | String | Billing account name. |
+| `resourceId` | String | Cloud resource identifier (e.g., `i-0abc123`). |
+| `cloudProvider` | String | Cloud provider name (AWS, GCP, AZURE). |
 | `billingPeriod` | String | Period, usually `YYYY-MM`, or `dummy-data`. |
-| `minutesUsed` | int | Usage minutes. |
-| `dataGbUsed` | double | Data usage in GB. |
-| `smsCount` | int | SMS usage. |
+| `computeHours` | double | Compute usage in hours. |
+| `storageGbUsed` | double | Storage usage in GB. |
+| `apiRequests` | long | API request count. |
 | `totalCharge` | double | Total charge. |
+| `serviceName` | String | Cloud service name (e.g., EC2, BigQuery, Blob Storage). |
+| `description` | String | Human-readable description of the resource or charge. |
 
 ### Alarm
 
@@ -844,15 +845,15 @@ Fields:
 | `id` | UUID | DB-generated primary key. |
 | `datasetId` | UUID | Owning dataset. |
 | `businessKey` | UUID | Unique key for deduplication. |
-| `alarmScope` | enum | `INDIVIDUAL`, `DEPARTMENT`, or `ACCOUNT`. |
+| `alarmScope` | enum | `RESOURCE`, `PROVIDER`, or `ACCOUNT`. |
 | `billingPeriod` | String | Associated period. |
 | `alarmType` | String | Human-readable type. |
 | `alarmSeverity` | enum | `LOW`, `MEDIUM`, or `HIGH`. |
 | `explanation` | String | Display explanation. |
 | `timestamp` | Instant | Detection time. |
-| `employeeId` | String nullable | Used for individual alarms. |
-| `phoneNumber` | String nullable | Used for individual alarms. |
-| `department` | enum nullable | Used for department alarms. |
+| `resourceId` | String nullable | Used for resource alarms. |
+| `serviceName` | String nullable | Cloud service name for resource alarms. |
+| `cloudProvider` | CloudProvider nullable | Used for provider alarms. |
 
 ### CorporateInfo
 
@@ -936,7 +937,7 @@ OpenAPI/Swagger documentation is available via springdoc-openapi at `/swagger-ui
 | `GET` | `/records` | `page`, `size` | `Page<BillingRecord>` | — |
 | `GET` | `/records/periods` | — | `List<String>` | — |
 | `GET` | `/records/periods/{billingPeriod}` | `page`, `size` | `Page<BillingRecord>` | custom billing period validator |
-| `GET` | `/records/departments/{department}` | `page`, `size` | `Page<BillingRecord>` | `@NotBlank`, `@Min(0)`, `@Min(1) @Max(100)` |
+| `GET` | `/records/providers/{provider}` | `page`, `size`, `billingPeriod` | `Page<BillingRecord>` | `@NotBlank`, `@Min(0)`, `@Min(1) @Max(100)` |
 | `GET` | `/summary` | — | `BillingSummary` | — |
 | `GET` | `/summary/periods/{billingPeriod}` | — | `BillingSummary` | custom billing period validator |
 | `GET` | `/top/{n}` | — | `Page<BillingRecord>` | `@Min(1) @Max(100)` |
@@ -946,8 +947,8 @@ OpenAPI/Swagger documentation is available via springdoc-openapi at `/swagger-ui
 | Method | Path | Response |
 |---|---|---|
 | `GET` | `/alarms/{billingPeriod}` | `List<Alarm>` |
-| `GET` | `/alarms/{billingPeriod}/department` | `List<Alarm>` |
-| `GET` | `/alarms/{billingPeriod}/individual` | `List<Alarm>` |
+| `GET` | `/alarms/{billingPeriod}/provider` | `List<Alarm>` |
+| `GET` | `/alarms/{billingPeriod}/resource` | `List<Alarm>` |
 | `GET` | `/alarms/{billingPeriod}/account` | `List<Alarm>` |
 
 ### Martin Route
@@ -957,7 +958,7 @@ POST /datasets/{datasetId}/martin
 Content-Type: application/json
 
 {
-  "prompt": "What departments have the highest total charges?",
+  "prompt": "Which cloud providers have the highest total charges?",
   "period": "dummy-data"
 }
 ```
@@ -1059,12 +1060,12 @@ State is module-global in `dashboard.js`:
 ```js
 const GUEST_USER_ID = "00000000-0000-0000-0000-000000000001";
 
-let deptChartInstance = null;
+let providerChartInstance = null;
 let alarmsChartInstance = null;
 let currentPeriod = null;
 let currentDatasetId = null;
 let currentPageAllRecords = 0;
-let currentPageFilterByDepartment = 0;
+let currentPageFilterByProvider = 0;
 let viewingArchived = false;
 const pageSize = 20;
 ```
@@ -1205,7 +1206,7 @@ Runner: self-hosted
 
 - S3 abstraction through Spring Cloud AWS S3.
 - Local default endpoint points to LocalStack.
-- Upload bucket name: `telecom-billing`.
+- Upload bucket name: `cloud-billing`.
 - S3 object key layout: `ownerUserId/datasetId/filename.csv`.
 - Error logs: `error-logs/{billingPeriod}-errors.log`.
 - PDF reports stored in S3 under generated keys.
@@ -1257,7 +1258,7 @@ docker compose -f docker-compose.dev.yml logs aws-cli-setup
 | AI SQL validation | String-based validation is not sufficient for robust SQL safety. Code contains TODO for AST parser (JSQLParser). |
 | Martin prompt | Period value is injected into the prompt via string concatenation without quoting or escaping. |
 | Martin query limits | No hard result limit is enforced for generated SQL. |
-| Alarm detection chunking | Department and account totals are computed per 1,000-record chunk, not per full dataset. Large datasets can produce false negatives. TODO exists in `AlarmService`. |
-| Department enum mismatch | Billing records store free-form department strings, but department alarms support only enum values in a fixed map. |
+| Alarm detection chunking | Provider and account totals are computed per 1,000-record chunk, not per full dataset. Large datasets can produce false negatives. TODO exists in `AlarmService`. |
+| CloudProvider enum mismatch | Billing records store free-form cloud provider strings, but provider alarms support only enum values in the `CloudProvider` enum (AWS, GCP, AZURE, OTHER). |
 | Dataset status transitions | There is no `FAILED` status or error recovery flow exposed to the user. |
 | Frontend | No frontend tests, linting, package manager, bundling, or module system. |

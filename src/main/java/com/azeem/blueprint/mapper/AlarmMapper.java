@@ -28,10 +28,10 @@ public class AlarmMapper {
     alarmEntity.setAlarmSeverity(alarm.alarmSeverity());
     alarmEntity.setAlarmType(alarm.alarmType());
     alarmEntity.setBillingPeriod(alarm.billingPeriod());
-    alarmEntity.setEmployeeId(alarm.employeeId());
+    alarmEntity.setResourceId(alarm.resourceId());
+    alarmEntity.setServiceName(alarm.serviceName());
+    alarmEntity.setCloudProvider(alarm.cloudProvider());
     alarmEntity.setExplanation(alarm.explanation());
-    alarmEntity.setPhoneNumber(alarm.phoneNumber());
-    alarmEntity.setDepartment(alarm.department());
     alarmEntity.setTimestamp(alarm.timestamp());
     return alarmEntity;
   }
@@ -47,9 +47,9 @@ public class AlarmMapper {
         alarmEntity.getAlarmSeverity(),
         alarmEntity.getExplanation(),
         alarmEntity.getTimestamp(),
-        alarmEntity.getEmployeeId(),
-        alarmEntity.getPhoneNumber(),
-        alarmEntity.getDepartment());
+        alarmEntity.getResourceId(),
+        alarmEntity.getServiceName(),
+        alarmEntity.getCloudProvider());
   }
 
   private DatasetEntity getDatasetById(Alarm alarm) {

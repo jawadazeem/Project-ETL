@@ -111,9 +111,9 @@ services:
       echo 'Configuring SQS...';
       aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name billing-event-queue;
       echo 'Configuring S3...';
-      aws --endpoint-url=http://localstack:4566 s3 mb s3://telecom-billing;
+      aws --endpoint-url=http://localstack:4566 s3 mb s3://cloud-billing;
       echo 'Linking S3 to SQS...';
-      aws --endpoint-url=http://localstack:4566 s3api put-bucket-notification-configuration --bucket telecom-billing --notification-configuration '{"QueueConfigurations":[{"QueueArn":"arn:aws:sqs:us-east-::billing-event-queue","Events":["s:ObjectCreated:*"]}]}'
+      aws --endpoint-url=http://localstack:4566 s3api put-bucket-notification-configuration --bucket cloud-billing --notification-configuration '{"QueueConfigurations":[{"QueueArn":"arn:aws:sqs:us-east-::billing-event-queue","Events":["s:ObjectCreated:*"]}]}'
       echo 'Infrastructure configuration complete.'
 
   prediction-service:

@@ -20,14 +20,15 @@ public class CsvExportService {
 
   private static final String[] RECORD_HEADER = {
     "Account Name",
-    "Employee ID",
-    "Department",
-    "Phone Number",
+    "Resource ID",
+    "Cloud Provider",
     "Billing Period",
-    "Minutes Used",
-    "Data GB Used",
-    "SMS Count",
-    "Total Charge"
+    "Compute Hours",
+    "Storage GB Used",
+    "API Requests",
+    "Total Charge",
+    "Service Name",
+    "Description"
   };
 
   private static final String[] ALARM_HEADER = {
@@ -41,14 +42,15 @@ public class CsvExportService {
         writer.writeNext(
             new String[] {
               r.accountName(),
-              r.employeeId(),
-              r.department(),
-              r.phoneNumber(),
+              r.resourceId(),
+              r.cloudProvider(),
               r.billingPeriod(),
-              String.valueOf(r.minutesUsed()),
-              String.valueOf(r.dataGbUsed()),
-              String.valueOf(r.smsCount()),
-              String.valueOf(r.totalCharge())
+              String.valueOf(r.computeHours()),
+              String.valueOf(r.storageGbUsed()),
+              String.valueOf(r.apiRequests()),
+              String.valueOf(r.totalCharge()),
+              r.serviceName(),
+              r.description()
             });
       }
     } catch (Exception e) {

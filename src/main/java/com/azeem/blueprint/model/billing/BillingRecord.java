@@ -11,19 +11,20 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Billing Record DTO
  *
- * <p>Represents the detailed billing record for a single account.
+ * <p>Represents a single cloud billing line item.
  */
 public record BillingRecord(
     UUID datasetId,
     String accountName,
-    String employeeId,
-    String department,
-    String phoneNumber,
+    String resourceId,
+    String cloudProvider,
     String billingPeriod,
-    int minutesUsed,
-    double dataGbUsed,
-    int smsCount,
-    double totalCharge) {
+    double computeHours,
+    double storageGbUsed,
+    long apiRequests,
+    double totalCharge,
+    String serviceName,
+    String description) {
 
   @NotNull
   @Override
@@ -32,20 +33,22 @@ public record BillingRecord(
         + ", "
         + accountName
         + ", "
-        + employeeId
+        + resourceId
         + ", "
-        + department
-        + ", "
-        + phoneNumber
+        + cloudProvider
         + ", "
         + billingPeriod
         + ", "
-        + minutesUsed
+        + computeHours
         + ", "
-        + dataGbUsed
+        + storageGbUsed
         + ", "
-        + smsCount
+        + apiRequests
         + ", "
-        + totalCharge;
+        + totalCharge
+        + ", "
+        + serviceName
+        + ", "
+        + description;
   }
 }

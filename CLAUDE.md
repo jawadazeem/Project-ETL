@@ -6,7 +6,7 @@ This file provides guidance to AI coding agents (specifically Claude Code, but a
 
 ## Project Overview
 
-Blueprint is a Spring Boot application that performs ETL on large telecom billing datasets and exposes
+Blueprint is a Spring Boot application that performs ETL on multi-cloud cost/billing datasets and exposes
 the results through a REST API. It includes an autonomous AI agent ("Martin") that translates
 natural language questions into validated PostgreSQL queries and returns plain-English answers.
 
@@ -113,16 +113,16 @@ blueprint/
 
 ## Domain Areas
 
-**Billing** — ingests CSV/TSV datasets uploaded via S3/SQS, stores them as structured records in
-PostgreSQL, and exposes query, summary, and CSV export endpoints.
+**Billing** — ingests CSV/TSV datasets of multi-cloud cost data (AWS, GCP, Azure) uploaded via S3/SQS,
+stores them as structured records in PostgreSQL, and exposes query, summary, and CSV export endpoints.
 
 **Datasets** — tracks uploaded datasets with lifecycle management including archiving and restoration.
 Datasets can be archived (soft-delete) and restored. Hard deletion cascades to billing records,
 alarms, and PDF reports via foreign key constraints.
 
-**Alarms** — after ingestion, runs threshold-based detection across department totals, individual
-charges, and account-level grand totals. Alarms are scoped by dataset and billing period. Detected
-alarms are dispatched to the notification microservice on a best-effort basis.
+**Alarms** — after ingestion, runs threshold-based detection across cloud provider totals, individual
+resource charges, and account-level grand totals. Alarms are scoped by dataset and billing period.
+Detected alarms are dispatched to the notification microservice on a best-effort basis.
 
 **Martin (AI Agent)** — receives a natural language question, generates a validated read-only SQL
 query using Gemini, executes it against the database, and returns a plain-English answer alongside

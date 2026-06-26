@@ -19,7 +19,7 @@ public class OpenApiConfig {
         .info(
             new Info()
                 .title("Blueprint Billing API")
-                .description("Telecom Billing Intelligence Platform")
+                .description("Multi-Cloud FinOps & Cost Management Platform")
                 .version("1.0.0"));
   }
 }

@@ -13,7 +13,7 @@ import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
-import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import com.azeem.blueprint.repository.DatasetRepository;
 import java.time.Instant;
 import java.util.UUID;
@@ -62,9 +62,9 @@ class AlarmMapperTest {
             AlarmSeverity.HIGH,
             "Usage exceeded threshold",
             TIMESTAMP,
-            "EMP-1001",
-            "+15551234567",
-            Department.FINANCE);
+            "i-0abc123",
+            "EC2",
+            CloudProvider.AWS);
 
     AlarmEntity result = alarmMapper.mapToEntity(alarm);
 
@@ -77,9 +77,9 @@ class AlarmMapperTest {
     assertThat(result.getAlarmSeverity()).isEqualTo(AlarmSeverity.HIGH);
     assertThat(result.getExplanation()).isEqualTo("Usage exceeded threshold");
     assertThat(result.getTimestamp()).isEqualTo(TIMESTAMP);
-    assertThat(result.getEmployeeId()).isEqualTo("EMP-1001");
-    assertThat(result.getPhoneNumber()).isEqualTo("+15551234567");
-    assertThat(result.getDepartment()).isEqualTo(Department.FINANCE);
+    assertThat(result.getResourceId()).isEqualTo("i-0abc123");
+    assertThat(result.getServiceName()).isEqualTo("EC2");
+    assertThat(result.getCloudProvider()).isEqualTo(CloudProvider.AWS);
   }
 
   @Test
@@ -95,9 +95,9 @@ class AlarmMapperTest {
     entity.setAlarmSeverity(AlarmSeverity.HIGH);
     entity.setExplanation("Usage exceeded threshold");
     entity.setTimestamp(TIMESTAMP);
-    entity.setEmployeeId("EMP-1001");
-    entity.setPhoneNumber("+15551234567");
-    entity.setDepartment(Department.FINANCE);
+    entity.setResourceId("i-0abc123");
+    entity.setServiceName("EC2");
+    entity.setCloudProvider(CloudProvider.AWS);
 
     Alarm result = alarmMapper.mapToDomain(entity);
 
@@ -111,9 +111,9 @@ class AlarmMapperTest {
     assertThat(result.alarmSeverity()).isEqualTo(AlarmSeverity.HIGH);
     assertThat(result.explanation()).isEqualTo("Usage exceeded threshold");
     assertThat(result.timestamp()).isEqualTo(TIMESTAMP);
-    assertThat(result.employeeId()).isEqualTo("EMP-1001");
-    assertThat(result.phoneNumber()).isEqualTo("+15551234567");
-    assertThat(result.department()).isEqualTo(Department.FINANCE);
+    assertThat(result.resourceId()).isEqualTo("i-0abc123");
+    assertThat(result.serviceName()).isEqualTo("EC2");
+    assertThat(result.cloudProvider()).isEqualTo(CloudProvider.AWS);
   }
 
   @Test
@@ -130,7 +130,7 @@ class AlarmMapperTest {
             "2026-01",
             "OVERAGE",
             AlarmSeverity.MEDIUM,
-            "Department not specified",
+            "Provider not specified",
             TIMESTAMP,
             null,
             null,
@@ -138,15 +138,15 @@ class AlarmMapperTest {
 
     AlarmEntity entity = alarmMapper.mapToEntity(alarm);
 
-    assertThat(entity.getEmployeeId()).isNull();
-    assertThat(entity.getPhoneNumber()).isNull();
-    assertThat(entity.getDepartment()).isNull();
+    assertThat(entity.getResourceId()).isNull();
+    assertThat(entity.getServiceName()).isNull();
+    assertThat(entity.getCloudProvider()).isNull();
 
     entity.setDataset(datasetEntity);
     Alarm mappedBack = alarmMapper.mapToDomain(entity);
 
-    assertThat(mappedBack.employeeId()).isNull();
-    assertThat(mappedBack.phoneNumber()).isNull();
-    assertThat(mappedBack.department()).isNull();
+    assertThat(mappedBack.resourceId()).isNull();
+    assertThat(mappedBack.serviceName()).isNull();
+    assertThat(mappedBack.cloudProvider()).isNull();
   }
 }

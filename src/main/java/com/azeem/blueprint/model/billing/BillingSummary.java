@@ -30,14 +30,14 @@ public class BillingSummary {
   private double totalCharges;
   private BillingRecord highestChargeRecord;
   private double averageCharge;
-  private Map<String, Double> chargesByDepartment;
+  private Map<String, Double> chargesByProvider;
 
   public BillingSummary() {
     this.totalRecords = 0;
     this.totalCharges = 0.0;
     this.highestChargeRecord = null;
     this.averageCharge = 0;
-    this.chargesByDepartment = new HashMap<>();
+    this.chargesByProvider = new HashMap<>();
   }
 
   public int getTotalRecords() {
@@ -72,12 +72,12 @@ public class BillingSummary {
     this.averageCharge = averageCharge;
   }
 
-  public Map<String, Double> getChargesByDepartment() {
-    return chargesByDepartment;
+  public Map<String, Double> getChargesByProvider() {
+    return chargesByProvider;
   }
 
-  public void setChargesByDepartment(Map<String, Double> chargesByDepartment) {
-    this.chargesByDepartment = chargesByDepartment;
+  public void setChargesByProvider(Map<String, Double> chargesByProvider) {
+    this.chargesByProvider = chargesByProvider;
   }
 
   @Override

@@ -45,7 +45,7 @@ public class SummaryBuilder {
     summary.setTotalRecords(calculateTotalRecords());
     summary.setTotalCharges(calculateTotalCharges());
     summary.setHighestChargeRecord(findHighestChargeRecord());
-    summary.setChargesByDepartment(calculateChargesByState());
+    summary.setChargesByProvider(calculateChargesByProvider());
     summary.setAverageCharge(averageCharge());
 
     log.info("The summary has been built successfully with {} records.", summary.getTotalRecords());
@@ -89,13 +89,13 @@ public class SummaryBuilder {
     return Math.round((calculateTotalCharges() / records.size()) * 100) / 100.0;
   }
 
-  private Map<String, Double> calculateChargesByState() {
+  private Map<String, Double> calculateChargesByProvider() {
     Map<String, Double> totals = new HashMap<>();
 
     for (BillingRecord record : records) {
-      String department = record.department();
+      String provider = record.cloudProvider();
       double charge = record.totalCharge();
-      totals.put(department, totals.getOrDefault(department, 0.0) + charge);
+      totals.put(provider, totals.getOrDefault(provider, 0.0) + charge);
     }
 
     return totals;
