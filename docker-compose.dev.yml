@@ -83,14 +83,20 @@ services:
         sleep 2;
       done;
       
-      echo 'Configuring SQS...';
+      echo 'Configuring SQS Queues...';
       aws --endpoint-url=http://billing-s3-mock:4566 sqs create-queue --queue-name billing-event-queue;
+      aws --endpoint-url=http://billing-s3-mock:4566 sqs create-queue --queue-name knowledge-event-queue;
       
-      echo 'Configuring S3...';
+      echo 'Configuring S3 Buckets...';
       aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://cloud-billing;
+      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://martin-knowledge;
       
-      echo 'Linking S3 to SQS (The Permanent Bridge)...';
-      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket cloud-billing --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:billing-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}'
+      echo 'Linking S3 to SQS...';
+      # Link Billing
+      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket cloud-billing --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:billing-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
+      
+      # Link Knowledge
+      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket martin-knowledge --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:knowledge-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
       
       echo 'Infrastructure configuration complete.'
       "

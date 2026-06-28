@@ -139,8 +139,7 @@ public class AlarmService {
   @Cacheable(value = "alarms", key = "#datasetId + '-' + #billingPeriod + '-provider'")
   public List<Alarm> getProviderAlarmsInDataset(UUID datasetId, String billingPeriod) {
     return alarmRepository
-        .findByDatasetIdAndBillingPeriodAndAlarmScope(
-            datasetId, billingPeriod, AlarmScope.PROVIDER)
+        .findByDatasetIdAndBillingPeriodAndAlarmScope(datasetId, billingPeriod, AlarmScope.PROVIDER)
         .stream()
         .map(alarmMapper::mapToDomain)
         .toList();
@@ -150,8 +149,7 @@ public class AlarmService {
   @Cacheable(value = "alarms", key = "#datasetId + '-' + #billingPeriod + '-resource'")
   public List<Alarm> getResourceAlarmsInDataset(UUID datasetId, String billingPeriod) {
     return alarmRepository
-        .findByDatasetIdAndBillingPeriodAndAlarmScope(
-            datasetId, billingPeriod, AlarmScope.RESOURCE)
+        .findByDatasetIdAndBillingPeriodAndAlarmScope(datasetId, billingPeriod, AlarmScope.RESOURCE)
         .stream()
         .map(alarmMapper::mapToDomain)
         .toList();

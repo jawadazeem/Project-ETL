@@ -37,17 +37,17 @@
 </header>
 
 <nav class="navbar navbar-light bg-white shadow-sm mb-4 dashboard-navbar">
-    <div class="container-fluid">
+    <div class="container-fluid dashboard-navbar-inner">
         <span class="navbar-brand mb-0 h1 d-flex align-items-center dashboard-brand" aria-label="Application">
             <button id="helpBtn" type="button" class="btn-modern ms-2">Help</button>
             <button id="learnMoreBtn" type="button" class="btn-modern ms-2">Learn More</button>
         </span>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="dashboard-toolbar">
             <span id="sessionBadge" class="session-badge"></span>
             <button id="logoutBtn" class="btn-modern" type="button">Sign Out</button>
 
-            <div class="d-flex align-items-center bg-light p-1 rounded-3 border">
+            <div class="upload-control bg-light p-1 rounded-3 border">
                 <input type="file" id="fileInput" class="form-control form-control-sm file-input" accept=".csv">
                 <button class="btn-modern btn-modern-primary ms-2" id="uploadBtn" type="button">Upload</button>
             </div>
@@ -255,16 +255,31 @@
     <div class="card-header">Blueprint Bot Analytics</div>
     <div class="card-body">
         <div id="chatbotModule" class="row g-3">
-            <div class="col-12">
+            <div class="col-lg-8">
                 <div class="card p-3 chat-window" id="chatWindow">
                     <div id="chatEmpty" class="text-muted">Ask Martin questions about cloud billing data, e.g. "Which cloud provider has the highest total spend?" or "Show me the top 5 most expensive services"</div>
                 </div>
             </div>
 
-            <div class="col-9">
+            <div class="col-lg-4">
+                <div class="finops-question-panel">
+                    <div class="panel-eyebrow">FinOps Agent</div>
+                    <h3>Questions Martin should answer</h3>
+                    <div class="finops-question-list">
+                        <button class="finops-question-btn" type="button" data-prompt="Where did cloud spend increase the most this period, and why?">Explain spend increase</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Which services or resources are the best cost optimization candidates?">Find savings opportunities</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Which teams, accounts, or providers are driving cost growth?">Identify cost drivers</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Compare this period against expected company policies and contract context.">Check policy and contract fit</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Create an executive FinOps summary for the current billing period.">Generate executive summary</button>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-3" id="runOptimizationBtn" type="button">Run Cost Optimization Analysis</button>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
                 <input id="chatInput" class="form-control" placeholder="Ask Martin about cloud costs..." aria-label="Chat input" />
             </div>
-            <div class="col-3 d-flex align-items-start">
+            <div class="col-lg-3 d-flex align-items-start">
                 <button class="btn btn-primary w-100" id="chatSendBtn" type="button">Send</button>
             </div>
         </div>
@@ -308,131 +323,204 @@
     </div>
 </div>
 
-<div class="card mb-4">
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span>All Records</span>
-            <div id="paginationControlsAll" class="d-flex align-items-center gap-2">
-                <button class="btn btn-sm btn-outline-secondary" id="exportRecordsBtn" type="button">Export CSV</button>
-                <button class="btn btn-sm btn-outline-secondary" id="prevBtnAllRecords" type="button">Previous</button>
-                <span id="pageInfoAllRecords" class="small fw-bold page-info">Page 1</span>
-                <button class="btn btn-sm btn-outline-secondary" id="nextBtnAllRecords" type="button">Next</button>
+<div class="data-workspace mb-4">
+    <div class="data-module">
+        <div class="card h-100">
+            <div class="card-header data-module-header">
+                <div class="data-tabs" role="tablist" aria-label="Billing data views">
+                    <button class="data-tab active" id="tabAllRecords" type="button" data-tab="all">All Records</button>
+                    <button class="data-tab" id="tabProviderRecords" type="button" data-tab="provider">Filter by Cloud Provider</button>
+                    <button class="data-tab" id="tabTopRecords" type="button" data-tab="top">Top N Highest Charges</button>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary" id="exportDataTabBtn" type="button">Export CSV</button>
+            </div>
+
+            <div class="card-body">
+                <section class="data-panel active" id="panelAllRecords" data-panel="all">
+                    <div class="data-panel-toolbar">
+                        <span class="small text-muted">Current billing period records</span>
+                        <div id="paginationControlsAll" class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="prevBtnAllRecords" type="button">Previous</button>
+                            <span id="pageInfoAllRecords" class="small fw-bold page-info">Page 1</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="nextBtnAllRecords" type="button">Next</button>
+                        </div>
+                    </div>
+                    <div class="skeleton-block" id="skeleton-records">
+                        <div class="skeleton-line w-100"></div>
+                        <div class="skeleton-line w-75"></div>
+                        <div class="skeleton-line w-100"></div>
+                        <div class="skeleton-line w-50"></div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table selectable-table" id="recordsTable">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Charge</th>
+                                <th>Account</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="data-panel" id="panelProviderRecords" data-panel="provider">
+                    <div class="data-panel-toolbar">
+                        <div class="provider-filter-controls">
+                            <select class="form-select form-select-sm" id="providerSelect" aria-label="Cloud provider"></select>
+                            <button class="btn-modern" id="providerSearchBtn" type="button">Search</button>
+                        </div>
+                        <div id="paginationControlsProvider" class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="prevBtnFilterByProviders" type="button">Previous</button>
+                            <span id="pageInfoFilterByProvider" class="small fw-bold page-info">Page 1</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="nextBtnFilterByProviders" type="button">Next</button>
+                        </div>
+                    </div>
+                    <div class="skeleton-block" id="skeleton-provider-records">
+                        <div class="skeleton-line w-100"></div>
+                        <div class="skeleton-line w-75"></div>
+                        <div class="skeleton-line w-50"></div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table selectable-table" id="providerTable">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Charge</th>
+                                <th>Account</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="data-panel" id="panelTopRecords" data-panel="top">
+                    <div class="data-panel-toolbar">
+                        <div class="top-filter-controls">
+                            <input class="form-control form-control-sm" id="topInput" placeholder="Example: 5" />
+                            <button class="btn-modern" id="topLoadBtn" type="button">Load</button>
+                        </div>
+                        <div id="paginationControlsTop" class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="prevBtnTopRecords" type="button">Previous</button>
+                            <span id="pageInfoTopRecords" class="small fw-bold page-info">Page 1</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="nextBtnTopRecords" type="button">Next</button>
+                        </div>
+                    </div>
+                    <div class="skeleton-block" id="skeleton-top">
+                        <div class="skeleton-line w-75"></div>
+                        <div class="skeleton-line w-50"></div>
+                        <div class="skeleton-line w-75"></div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table selectable-table" id="topOutput">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Charge</th>
+                                <th>Account</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
         </div>
-        <div class="card-body">
-            <div class="skeleton-block" id="skeleton-records">
-                <div class="skeleton-line w-100"></div>
-                <div class="skeleton-line w-75"></div>
-                <div class="skeleton-line w-100"></div>
-                <div class="skeleton-line w-50"></div>
+    </div>
+
+    <aside class="description-panel" id="recordDescriptionPanel" aria-live="polite">
+        <div class="description-eyebrow">Description</div>
+        <h3 id="descriptionTitle">Select a record</h3>
+        <p id="descriptionText" class="description-copy">The first billing record will appear here once data loads.</p>
+        <dl class="description-meta">
+            <div>
+                <dt>Resource</dt>
+                <dd id="descriptionResource">--</dd>
             </div>
-            <div class="table-container">
-                <table class="table" id="recordsTable">
-                    <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Provider</th>
-                        <th>Charge</th>
-                        <th>Account</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div>
+                <dt>Provider</dt>
+                <dd id="descriptionProvider">--</dd>
             </div>
-        </div>
-    </div>
+            <div>
+                <dt>Charge</dt>
+                <dd id="descriptionCharge">--</dd>
+            </div>
+            <div>
+                <dt>Account</dt>
+                <dd id="descriptionAccount">--</dd>
+            </div>
+        </dl>
+    </aside>
 </div>
 
-<div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Filter by Cloud Provider</span>
-        <div id="paginationControlsProvider" class="d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-secondary" id="prevBtnFilterByProviders" type="button">Previous</button>
-            <span id="pageInfoFilterByProvider" class="small fw-bold page-info">Page 1</span>
-            <button class="btn btn-sm btn-outline-secondary" id="nextBtnFilterByProviders" type="button">Next</button>
-        </div>
-    </div>
-    <div class="card-body">
-        <select class="form-select w-25 mb-3" id="providerSelect"></select>
-        <button class="btn-modern" id="providerSearchBtn" type="button">Search</button>
-        <div class="skeleton-block" id="skeleton-provider-records">
-            <div class="skeleton-line w-100"></div>
-            <div class="skeleton-line w-75"></div>
-            <div class="skeleton-line w-50"></div>
-        </div>
-        <div class="table-container">
-            <table class="table" id="providerTable">
-                <thead>
-                <tr>
-                    <th>Service</th>
-                    <th>Provider</th>
-                    <th>Charge</th>
-                    <th>Account</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<div class="row mb-4 finops-intelligence-row">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="card h-100 premium-card predictions-section" id="predictionsSection">
+            <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
+                <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
+            </div>
+            <div class="card-body glass-panel">
+                <p class="text-muted">Forecasting will automatically use the most relevant ready datasets once the backend selection logic is implemented.</p>
 
-<div class="card mb-4">
-    <div class="card-header">Top N Highest Charges</div>
-    <div class="card-body">
-        <input class="form-control w-25 mb-3" id="topInput" placeholder="Example: 5" />
-        <button class="btn-modern" id="topLoadBtn" type="button">Load</button>
-        <div class="skeleton-block" id="skeleton-top">
-            <div class="skeleton-line w-75"></div>
-            <div class="skeleton-line w-50"></div>
-            <div class="skeleton-line w-75"></div>
-        </div>
-        <table class="table" id="topOutput">
-            <thead>
-            <tr>
-                <th>Service</th>
-                <th>Provider</th>
-                <th>Charge</th>
-                <th>Account</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-</div>
+                <div class="auto-model-summary mb-3">
+                    <div>
+                        <span class="panel-eyebrow">Auto-selected training data</span>
+                        <strong>Latest eligible billing periods</strong>
+                        <small>Backend placeholder: no manual dataset selection required.</small>
+                    </div>
+                    <button class="btn btn-primary generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
+                        <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
+                        <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 12px;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                </div>
 
-<div class="card mb-4 premium-card predictions-section" id="predictionsSection">
-    <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
-        <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
-        <span class="badge bg-light text-dark prediction-badge">Powered by ML</span>
-    </div>
-    <div class="card-body glass-panel">
-        <p class="text-muted">Select at least 3 datasets representing adjacent or near-adjacent months to forecast future costs.</p>
-
-        <div class="row mb-3 align-items-end">
-            <div class="col-md-8">
-                <label class="form-label fw-bold">Select Datasets for Training Data:</label>
-                <select id="predictionDatasetsSelect" class="form-select form-select-lg prediction-multi-select" multiple size="4">
-                    <!-- Options populated via JS -->
-                </select>
-                <div class="form-text text-danger d-none mt-2" id="predictionError">
-                    Please select at least 3 datasets.
+                <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
+                    <hr class="my-4 subtle-hr">
+                    <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
+                    <div class="chart-box premium-chart-box">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <button class="btn btn-primary btn-lg w-100 generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
-                    <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
-                    <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 14px;">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </button>
-            </div>
         </div>
+    </div>
 
-        <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
-            <hr class="my-4 subtle-hr">
-            <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
-            <div class="chart-box premium-chart-box">
-                <canvas id="predictionChart"></canvas>
+    <div class="col-lg-6">
+        <div class="card h-100 audit-card" id="auditModule">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-shield-alt"></i> Audit Engine</span>
+                <span class="audit-status">Scheduled placeholder</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Martin to explain and prioritize.</p>
+
+                <div class="audit-action-grid">
+                    <button class="audit-action-btn" type="button" data-audit-action="run-audit">
+                        <strong>Run Audit</strong>
+                        <span>Scan billing records for anomalies, duplicates, and policy issues.</span>
+                    </button>
+                    <button class="audit-action-btn" type="button" data-audit-action="review-findings">
+                        <strong>Review Findings</strong>
+                        <span>Open the latest evidence-backed audit results.</span>
+                    </button>
+                    <button class="audit-action-btn" type="button" data-audit-action="explain-findings">
+                        <strong>Ask Martin to Explain</strong>
+                        <span>Summarize audit findings in business language.</span>
+                    </button>
+                </div>
+
+                <div class="audit-placeholder-list mt-3">
+                    <div><span>Duplicate charge detection</span><strong>Planned</strong></div>
+                    <div><span>Spend spike analysis</span><strong>Planned</strong></div>
+                    <div><span>Contract/policy variance checks</span><strong>Planned</strong></div>
+                </div>
             </div>
         </div>
     </div>

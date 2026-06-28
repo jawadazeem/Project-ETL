@@ -70,6 +70,14 @@ alarm:
 billing-reader:
   has-header: true
   batch-size: 1000
+martin-knowledge:
+  folder-path: /martin-knowledge
+  bucket-name: martin-knowledge
+  keys:
+    - cost-optimization-recommendations.md
+    - executive-summary.md
+    - policy-and-contract-fit.md
+    - overview.md
 notification:
   service:
     url: ${NOTIFICATION_SERVICE_URL:http://localhost:3001}

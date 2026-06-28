@@ -90,6 +90,13 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
+        <!-- JSQL for AI SQL Generation Validation -->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>5.2</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

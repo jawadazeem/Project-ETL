@@ -38,26 +38,28 @@ class JdbcBillingBatchWriterTest {
         List.of(
             new BillingRecord(
                 DATASET_ID,
-                "Acme",
-                "E001",
-                "Engineering",
-                "555-0100",
                 "2026-01",
-                120,
+                "Acme",
+                "AWS",
+                "i-0abcd1234efgh5678",
+                120.0,
                 1.5,
-                10,
-                45.75),
+                10L,
+                45.75,
+                "EC2 Instance",
+                "Standard compute usage"),
             new BillingRecord(
                 DATASET_ID,
-                "Beta Inc",
-                "E002",
-                "Finance",
-                "555-0200",
                 "2026-01",
-                90,
+                "Beta Inc",
+                "Azure",
+                "vm-987654321",
+                90.0,
                 0.8,
-                5,
-                32.50));
+                5L,
+                32.50,
+                "Blob Storage",
+                "Standard storage usage"));
 
     writer.writeBatch(records);
 

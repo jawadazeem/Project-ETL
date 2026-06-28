@@ -61,8 +61,7 @@ public record Alarm(
         null);
   }
 
-  public static Alarm provider(
-      UUID datasetId, String billingPeriod, CloudProvider cloudProvider) {
+  public static Alarm provider(UUID datasetId, String billingPeriod, CloudProvider cloudProvider) {
     return new Alarm(
         null,
         datasetId,

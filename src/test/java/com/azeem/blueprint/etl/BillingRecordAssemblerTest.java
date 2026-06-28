@@ -24,7 +24,15 @@ public class BillingRecordAssemblerTest {
   @DisplayName("assembleRecord should convert a valid row into a BillingRecord")
   void assembleRecord_validRow_createsBillingRecord() {
     String[] row = {
-      "Acme Corp", "i-0abc123", "AWS", "2026-01", "120.5", "1.5", "10000", "45.75", "EC2",
+      "Acme Corp",
+      "i-0abc123",
+      "AWS",
+      "2026-01",
+      "120.5",
+      "1.5",
+      "10000",
+      "45.75",
+      "EC2",
       "m5.xlarge instance"
     };
 
@@ -53,7 +61,15 @@ public class BillingRecordAssemblerTest {
               "A", "i-001", "AWS", "2026-01", "10", "0.1", "100", "2.5", "EC2", "test instance"
             },
             new String[] {
-              "B", "proj-002", "GCP", "2026-02", "20", "0.2", "200", "5.0", "BigQuery",
+              "B",
+              "proj-002",
+              "GCP",
+              "2026-02",
+              "20",
+              "0.2",
+              "200",
+              "5.0",
+              "BigQuery",
               "analytics query"
             });
 
