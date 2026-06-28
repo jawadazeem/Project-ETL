@@ -3,7 +3,7 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.AppUser;
+package com.azeem.blueprint.service.appuser;
 
 import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.mapper.AppUserMapper;

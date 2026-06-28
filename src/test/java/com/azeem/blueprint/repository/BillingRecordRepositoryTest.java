@@ -41,13 +41,37 @@ class BillingRecordRepositoryTest {
     entityManager.persist(dataset);
 
     persistRecord(
-        "AWS", "Sherwood Williams", "i-0abc001", "2026-01", 120.0, 5.5, 45, 75.50, "EC2",
+        "AWS",
+        "Sherwood Williams",
+        "i-0abc001",
+        "2026-01",
+        120.0,
+        5.5,
+        45,
+        75.50,
+        "EC2",
         "m5.large instance");
     persistRecord(
-        "GCP", "Scott Savran", "proj-xyz-002", "2026-01", 300.0, 12.2, 10, 110.25, "BigQuery",
+        "GCP",
+        "Scott Savran",
+        "proj-xyz-002",
+        "2026-01",
+        300.0,
+        12.2,
+        10,
+        110.25,
+        "BigQuery",
         "analytics query");
     persistRecord(
-        "AWS", "Abdel Ebrahim", "i-0abc003", "2026-02", 50.0, 1.0, 100, 45.00, "S3",
+        "AWS",
+        "Abdel Ebrahim",
+        "i-0abc003",
+        "2026-02",
+        50.0,
+        1.0,
+        100,
+        45.00,
+        "S3",
         "storage bucket");
 
     entityManager.flush();
@@ -131,7 +155,15 @@ class BillingRecordRepositoryTest {
 
     // Add a duplicate provider record
     persistRecord(
-        "AWS", "Sherwood Williams", "i-0abc001", "2026-01", 120.0, 5.5, 45, 75.50, "EC2",
+        "AWS",
+        "Sherwood Williams",
+        "i-0abc001",
+        "2026-01",
+        120.0,
+        5.5,
+        45,
+        75.50,
+        "EC2",
         "m5.large instance");
     entityManager.flush();
 

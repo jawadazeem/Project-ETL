@@ -127,7 +127,8 @@ public class AlarmDetectionService {
         continue;
       }
       Alarm alarm =
-          Alarm.resource(datasetId, billingPeriod, severity, message, r.resourceId(), r.serviceName());
+          Alarm.resource(
+              datasetId, billingPeriod, severity, message, r.resourceId(), r.serviceName());
       alarms.add(alarm);
     }
 

@@ -185,8 +185,7 @@ class BillingQueryServiceTest {
 
     ArgumentCaptor<String> providerCaptor = ArgumentCaptor.forClass(String.class);
     verify(repository)
-        .findByDatasetIdAndCloudProviderIgnoreCase(
-            eq(DATASET_ID), providerCaptor.capture(), any());
+        .findByDatasetIdAndCloudProviderIgnoreCase(eq(DATASET_ID), providerCaptor.capture(), any());
     assertThat(providerCaptor.getValue()).isEqualTo("aws");
     verify(mapper).mapToDomain(entity1);
   }

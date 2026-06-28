@@ -14,7 +14,7 @@ import com.azeem.blueprint.mapper.CorporateInfoMapper;
 import com.azeem.blueprint.model.report.CorporateInfo;
 import com.azeem.blueprint.model.report.CorporateInfoRequest;
 import com.azeem.blueprint.repository.CorporateInfoRepository;
-import com.azeem.blueprint.service.AppUser.AppUserService;
+import com.azeem.blueprint.service.appuser.AppUserService;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;

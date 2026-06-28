@@ -37,17 +37,17 @@
 </header>
 
 <nav class="navbar navbar-light bg-white shadow-sm mb-4 dashboard-navbar">
-    <div class="container-fluid">
+    <div class="container-fluid dashboard-navbar-inner">
         <span class="navbar-brand mb-0 h1 d-flex align-items-center dashboard-brand" aria-label="Application">
             <button id="helpBtn" type="button" class="btn-modern ms-2">Help</button>
             <button id="learnMoreBtn" type="button" class="btn-modern ms-2">Learn More</button>
         </span>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="dashboard-toolbar">
             <span id="sessionBadge" class="session-badge"></span>
             <button id="logoutBtn" class="btn-modern" type="button">Sign Out</button>
 
-            <div class="d-flex align-items-center bg-light p-1 rounded-3 border">
+            <div class="upload-control bg-light p-1 rounded-3 border">
                 <input type="file" id="fileInput" class="form-control form-control-sm file-input" accept=".csv">
                 <button class="btn-modern btn-modern-primary ms-2" id="uploadBtn" type="button">Upload</button>
             </div>
@@ -308,102 +308,144 @@
     </div>
 </div>
 
-<div class="card mb-4">
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span>All Records</span>
-            <div id="paginationControlsAll" class="d-flex align-items-center gap-2">
-                <button class="btn btn-sm btn-outline-secondary" id="exportRecordsBtn" type="button">Export CSV</button>
-                <button class="btn btn-sm btn-outline-secondary" id="prevBtnAllRecords" type="button">Previous</button>
-                <span id="pageInfoAllRecords" class="small fw-bold page-info">Page 1</span>
-                <button class="btn btn-sm btn-outline-secondary" id="nextBtnAllRecords" type="button">Next</button>
+<div class="data-workspace mb-4">
+    <div class="data-module">
+        <div class="card h-100">
+            <div class="card-header data-module-header">
+                <div class="data-tabs" role="tablist" aria-label="Billing data views">
+                    <button class="data-tab active" id="tabAllRecords" type="button" data-tab="all">All Records</button>
+                    <button class="data-tab" id="tabProviderRecords" type="button" data-tab="provider">Filter by Cloud Provider</button>
+                    <button class="data-tab" id="tabTopRecords" type="button" data-tab="top">Top N Highest Charges</button>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary" id="exportDataTabBtn" type="button">Export CSV</button>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="skeleton-block" id="skeleton-records">
-                <div class="skeleton-line w-100"></div>
-                <div class="skeleton-line w-75"></div>
-                <div class="skeleton-line w-100"></div>
-                <div class="skeleton-line w-50"></div>
-            </div>
-            <div class="table-container">
-                <table class="table" id="recordsTable">
-                    <thead>
-                    <tr>
-                        <th>Service</th>
-                        <th>Provider</th>
-                        <th>Charge</th>
-                        <th>Account</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Filter by Cloud Provider</span>
-        <div id="paginationControlsProvider" class="d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-secondary" id="prevBtnFilterByProviders" type="button">Previous</button>
-            <span id="pageInfoFilterByProvider" class="small fw-bold page-info">Page 1</span>
-            <button class="btn btn-sm btn-outline-secondary" id="nextBtnFilterByProviders" type="button">Next</button>
-        </div>
-    </div>
-    <div class="card-body">
-        <select class="form-select w-25 mb-3" id="providerSelect"></select>
-        <button class="btn-modern" id="providerSearchBtn" type="button">Search</button>
-        <div class="skeleton-block" id="skeleton-provider-records">
-            <div class="skeleton-line w-100"></div>
-            <div class="skeleton-line w-75"></div>
-            <div class="skeleton-line w-50"></div>
-        </div>
-        <div class="table-container">
-            <table class="table" id="providerTable">
-                <thead>
-                <tr>
-                    <th>Service</th>
-                    <th>Provider</th>
-                    <th>Charge</th>
-                    <th>Account</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+            <div class="card-body">
+                <section class="data-panel active" id="panelAllRecords" data-panel="all">
+                    <div class="data-panel-toolbar">
+                        <span class="small text-muted">Current billing period records</span>
+                        <div id="paginationControlsAll" class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="prevBtnAllRecords" type="button">Previous</button>
+                            <span id="pageInfoAllRecords" class="small fw-bold page-info">Page 1</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="nextBtnAllRecords" type="button">Next</button>
+                        </div>
+                    </div>
+                    <div class="skeleton-block" id="skeleton-records">
+                        <div class="skeleton-line w-100"></div>
+                        <div class="skeleton-line w-75"></div>
+                        <div class="skeleton-line w-100"></div>
+                        <div class="skeleton-line w-50"></div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table selectable-table" id="recordsTable">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Charge</th>
+                                <th>Account</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
 
-<div class="card mb-4">
-    <div class="card-header">Top N Highest Charges</div>
-    <div class="card-body">
-        <input class="form-control w-25 mb-3" id="topInput" placeholder="Example: 5" />
-        <button class="btn-modern" id="topLoadBtn" type="button">Load</button>
-        <div class="skeleton-block" id="skeleton-top">
-            <div class="skeleton-line w-75"></div>
-            <div class="skeleton-line w-50"></div>
-            <div class="skeleton-line w-75"></div>
+                <section class="data-panel" id="panelProviderRecords" data-panel="provider">
+                    <div class="data-panel-toolbar">
+                        <div class="provider-filter-controls">
+                            <select class="form-select form-select-sm" id="providerSelect" aria-label="Cloud provider"></select>
+                            <button class="btn-modern" id="providerSearchBtn" type="button">Search</button>
+                        </div>
+                        <div id="paginationControlsProvider" class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="prevBtnFilterByProviders" type="button">Previous</button>
+                            <span id="pageInfoFilterByProvider" class="small fw-bold page-info">Page 1</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="nextBtnFilterByProviders" type="button">Next</button>
+                        </div>
+                    </div>
+                    <div class="skeleton-block" id="skeleton-provider-records">
+                        <div class="skeleton-line w-100"></div>
+                        <div class="skeleton-line w-75"></div>
+                        <div class="skeleton-line w-50"></div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table selectable-table" id="providerTable">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Charge</th>
+                                <th>Account</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="data-panel" id="panelTopRecords" data-panel="top">
+                    <div class="data-panel-toolbar">
+                        <div class="top-filter-controls">
+                            <input class="form-control form-control-sm" id="topInput" placeholder="Example: 5" />
+                            <button class="btn-modern" id="topLoadBtn" type="button">Load</button>
+                        </div>
+                        <div id="paginationControlsTop" class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" id="prevBtnTopRecords" type="button">Previous</button>
+                            <span id="pageInfoTopRecords" class="small fw-bold page-info">Page 1</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="nextBtnTopRecords" type="button">Next</button>
+                        </div>
+                    </div>
+                    <div class="skeleton-block" id="skeleton-top">
+                        <div class="skeleton-line w-75"></div>
+                        <div class="skeleton-line w-50"></div>
+                        <div class="skeleton-line w-75"></div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table selectable-table" id="topOutput">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Provider</th>
+                                <th>Charge</th>
+                                <th>Account</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
         </div>
-        <table class="table" id="topOutput">
-            <thead>
-            <tr>
-                <th>Service</th>
-                <th>Provider</th>
-                <th>Charge</th>
-                <th>Account</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
     </div>
+
+    <aside class="description-panel" id="recordDescriptionPanel" aria-live="polite">
+        <div class="description-eyebrow">Description</div>
+        <h3 id="descriptionTitle">Select a record</h3>
+        <p id="descriptionText" class="description-copy">The first billing record will appear here once data loads.</p>
+        <dl class="description-meta">
+            <div>
+                <dt>Resource</dt>
+                <dd id="descriptionResource">--</dd>
+            </div>
+            <div>
+                <dt>Provider</dt>
+                <dd id="descriptionProvider">--</dd>
+            </div>
+            <div>
+                <dt>Charge</dt>
+                <dd id="descriptionCharge">--</dd>
+            </div>
+            <div>
+                <dt>Account</dt>
+                <dd id="descriptionAccount">--</dd>
+            </div>
+        </dl>
+    </aside>
 </div>
 
 <div class="card mb-4 premium-card predictions-section" id="predictionsSection">
     <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
         <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
-        <span class="badge bg-light text-dark prediction-badge">Powered by ML</span>
     </div>
     <div class="card-body glass-panel">
         <p class="text-muted">Select at least 3 datasets representing adjacent or near-adjacent months to forecast future costs.</p>

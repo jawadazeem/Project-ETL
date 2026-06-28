@@ -29,7 +29,16 @@ public class SummaryBuilderTest {
             DATASET_ID, "Acme", "i-001", "AWS", "2026-01", 100, 1.5, 10, 45.50, "EC2", "desc"));
     records.add(
         new BillingRecord(
-            DATASET_ID, "Beta", "proj-002", "GCP", "2026-01", 50, 0.5, 5, 10.00, "BigQuery",
+            DATASET_ID,
+            "Beta",
+            "proj-002",
+            "GCP",
+            "2026-01",
+            50,
+            0.5,
+            5,
+            10.00,
+            "BigQuery",
             "desc"));
     records.add(
         new BillingRecord(
@@ -78,7 +87,16 @@ public class SummaryBuilderTest {
               DATASET_ID, "A", "i-001", "AWS", "2026-01", 1, 0.0, 0, 100.00, "EC2", "desc"));
       records.add(
           new BillingRecord(
-              DATASET_ID, "B", "proj-002", "GCP", "2026-01", 1, 0.0, 0, 100.00, "BigQuery",
+              DATASET_ID,
+              "B",
+              "proj-002",
+              "GCP",
+              "2026-01",
+              1,
+              0.0,
+              0,
+              100.00,
+              "BigQuery",
               "desc"));
 
       BillingSummary summary = new SummaryBuilder(records).build();
@@ -96,7 +114,16 @@ public class SummaryBuilderTest {
               DATASET_ID, "A", "i-001", "AWS", "2026-01", 1, 0.0, 0, 1.00, "EC2", "desc"));
       records.add(
           new BillingRecord(
-              DATASET_ID, "B", "vm-002", "AZURE", "2026-01", 1, 0.0, 0, 2.50, "Virtual Machines",
+              DATASET_ID,
+              "B",
+              "vm-002",
+              "AZURE",
+              "2026-01",
+              1,
+              0.0,
+              0,
+              2.50,
+              "Virtual Machines",
               "desc"));
 
       BillingSummary summary = new SummaryBuilder(records).build();

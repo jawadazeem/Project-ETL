@@ -6,11 +6,30 @@ let currentPeriod = null;
 let currentDatasetId = null;
 let currentPageAllRecords = 0;
 let currentPageFilterByProvider = 0;
+let currentPageTopRecords = 0;
+let activeDataTab = "all";
+let currentRecordsPage = [];
+let currentProviderPage = [];
+let currentTopRecords = [];
 const pageSize = 20;
+
+const numberFormatter = new Intl.NumberFormat(undefined);
+const currencyFormatter = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: "USD"
+});
 
 function asArray(payload) {
     if (Array.isArray(payload)) return payload;
     return payload && Array.isArray(payload.content) ? payload.content : [];
+}
+
+function formatNumber(value) {
+    return numberFormatter.format(Number(value || 0));
+}
+
+function formatCurrency(value) {
+    return currencyFormatter.format(Number(value || 0));
 }
 
 // ── Welcome overlay ───────────────────────────────────────────────────────
@@ -95,6 +114,8 @@ async function switchDataset() {
     currentDatasetId = select.value;
     currentPageAllRecords = 0;
     currentPageFilterByProvider = 0;
+    currentPageTopRecords = 0;
+    currentTopRecords = [];
 
     await loadPeriods();
     if (currentPeriod) {
@@ -114,12 +135,12 @@ async function loadSummary() {
         if (!res.ok) throw new Error(`Summary fetch failed: ${res.status}`);
         const s = await res.json();
 
-        document.getElementById("statRecords").textContent = s.totalRecords;
-        document.getElementById("statTotal").textContent = `$${s.totalCharges.toFixed(2)}`;
-        document.getElementById("statAvg").textContent = `$${s.averageCharge.toFixed(2)}`;
+        document.getElementById("statRecords").textContent = formatNumber(s.totalRecords);
+        document.getElementById("statTotal").textContent = formatCurrency(s.totalCharges);
+        document.getElementById("statAvg").textContent = formatCurrency(s.averageCharge);
 
         const hi = s.highestChargeRecord;
-        document.getElementById("statHigh").textContent = hi ? `$${hi.totalCharge.toFixed(2)}` : "$0.00";
+        document.getElementById("statHigh").textContent = hi ? formatCurrency(hi.totalCharge) : formatCurrency(0);
         document.getElementById("statHighName").textContent = hi ? hi.accountName : "N/A";
         document.getElementById("summaryStats").style.display = "flex";
     } catch (e) {
@@ -272,6 +293,82 @@ async function loadProviderChart() {
 
 // ── Records ───────────────────────────────────────────────────────────────
 
+function recordTitle(record) {
+    return record.serviceName || record.resourceId || record.accountName || "Billing record";
+}
+
+function clearDescriptionPanel(message = "Select a billing record to inspect its description.") {
+    document.getElementById("descriptionTitle").textContent = "No record selected";
+    document.getElementById("descriptionText").textContent = message;
+    document.getElementById("descriptionResource").textContent = "--";
+    document.getElementById("descriptionProvider").textContent = "--";
+    document.getElementById("descriptionCharge").textContent = "--";
+    document.getElementById("descriptionAccount").textContent = "--";
+}
+
+function selectRecord(record, row) {
+    document.querySelectorAll(".selectable-row.selected-row").forEach(el => {
+        el.classList.remove("selected-row");
+        el.removeAttribute("aria-selected");
+    });
+
+    if (row) {
+        row.classList.add("selected-row");
+        row.setAttribute("aria-selected", "true");
+    }
+
+    document.getElementById("descriptionTitle").textContent = recordTitle(record);
+    document.getElementById("descriptionText").textContent =
+        record.description || "No description is available for this billing record.";
+    document.getElementById("descriptionResource").textContent = record.resourceId || "--";
+    document.getElementById("descriptionProvider").textContent = record.cloudProvider || "--";
+    document.getElementById("descriptionCharge").textContent = formatCurrency(record.totalCharge);
+    document.getElementById("descriptionAccount").textContent = record.accountName || "--";
+}
+
+function selectFirstVisibleRecord(tableSelector, records) {
+    if (!records.length) {
+        clearDescriptionPanel("No records are available for this view.");
+        return;
+    }
+
+    requestAnimationFrame(() => {
+        const firstRow = document.querySelector(`${tableSelector} tbody .selectable-row`);
+        selectRecord(records[0], firstRow);
+    });
+}
+
+function renderSelectableRows(tableSelector, records) {
+    const tbody = document.querySelector(`${tableSelector} tbody`);
+    tbody.innerHTML = "";
+
+    if (records.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
+        return;
+    }
+
+    records.forEach(record => {
+        const row = document.createElement("tr");
+        row.className = "selectable-row";
+        row.tabIndex = 0;
+        row.setAttribute("role", "button");
+        row.innerHTML = `
+            <td>${escapeForHtml(record.serviceName || "")}</td>
+            <td>${escapeForHtml(record.cloudProvider || "")}</td>
+            <td>${formatCurrency(record.totalCharge)}</td>
+            <td>${escapeForHtml(record.accountName || "")}</td>
+        `;
+        row.addEventListener("click", () => selectRecord(record, row));
+        row.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                selectRecord(record, row);
+            }
+        });
+        tbody.appendChild(row);
+    });
+}
+
 async function loadRecords() {
     if (!currentDatasetId || !currentPeriod) return;
     showSkeleton("skeleton-records");
@@ -283,23 +380,9 @@ async function loadRecords() {
         const records = data.content || [];
         const totalPages = data.totalPages || 1;
 
-        const tbody = document.querySelector("#recordsTable tbody");
-        tbody.innerHTML = "";
-
-        if (records.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
-        } else {
-            records.forEach(record => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${record.serviceName || ''}</td>
-                    <td>${record.cloudProvider || ''}</td>
-                    <td>$${record.totalCharge.toFixed(2)}</td>
-                    <td>${record.accountName || ''}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+        currentRecordsPage = records;
+        renderSelectableRows("#recordsTable", records);
+        if (activeDataTab === "all") selectFirstVisibleRecord("#recordsTable", records);
 
         document.getElementById("pageInfoAllRecords").textContent = `Page ${currentPageAllRecords + 1} of ${totalPages}`;
         document.getElementById("prevBtnAllRecords").disabled = currentPageAllRecords <= 0;
@@ -315,7 +398,15 @@ async function loadRecords() {
 async function loadByProvider() {
     if (!currentDatasetId) return;
     const provider = document.getElementById("providerSelect").value;
-    if (!provider) return;
+    if (!provider) {
+        currentProviderPage = [];
+        renderSelectableRows("#providerTable", []);
+        document.getElementById("pageInfoFilterByProvider").textContent = "Page 1";
+        document.getElementById("prevBtnFilterByProviders").disabled = true;
+        document.getElementById("nextBtnFilterByProviders").disabled = true;
+        if (activeDataTab === "provider") clearDescriptionPanel("No cloud providers are available for this dataset.");
+        return;
+    }
     showSkeleton("skeleton-provider-records");
 
     try {
@@ -334,23 +425,9 @@ async function loadByProvider() {
         const records = data.content || [];
         const totalPages = data.totalPages || 1;
 
-        const tbody = document.querySelector("#providerTable tbody");
-        tbody.innerHTML = "";
-
-        if (records.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
-        } else {
-            records.forEach(record => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${record.serviceName || ''}</td>
-                    <td>${record.cloudProvider || ''}</td>
-                    <td>$${record.totalCharge.toFixed(2)}</td>
-                    <td>${record.accountName || ''}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+        currentProviderPage = records;
+        renderSelectableRows("#providerTable", records);
+        if (activeDataTab === "provider") selectFirstVisibleRecord("#providerTable", records);
 
         document.getElementById("pageInfoFilterByProvider").textContent =
             `Page ${currentPageFilterByProvider + 1} of ${totalPages}`;
@@ -376,28 +453,76 @@ async function loadTopN() {
         const data = await res.json();
         const records = Array.isArray(data) ? data : (data.content || []);
 
-        const tbody = document.querySelector("#topOutput tbody");
-        tbody.innerHTML = "";
-
-        if (records.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
-        } else {
-            records.forEach(record => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${record.serviceName || ''}</td>
-                    <td>${record.cloudProvider || ''}</td>
-                    <td>$${record.totalCharge.toFixed(2)}</td>
-                    <td>${record.accountName || ''}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+        currentTopRecords = records;
+        currentPageTopRecords = 0;
+        renderTopRecordsPage();
     } catch (e) {
         console.error("Failed to load top N", e);
         showToast("Could not load top N records.");
     } finally {
         hideSkeleton("skeleton-top");
+    }
+}
+
+function renderTopRecordsPage() {
+    const totalPages = Math.max(1, Math.ceil(currentTopRecords.length / pageSize));
+    currentPageTopRecords = Math.min(currentPageTopRecords, totalPages - 1);
+
+    const start = currentPageTopRecords * pageSize;
+    const records = currentTopRecords.slice(start, start + pageSize);
+
+    renderSelectableRows("#topOutput", records);
+    if (activeDataTab === "top") selectFirstVisibleRecord("#topOutput", records);
+
+    document.getElementById("pageInfoTopRecords").textContent = `Page ${currentPageTopRecords + 1} of ${totalPages}`;
+    document.getElementById("prevBtnTopRecords").disabled = currentPageTopRecords <= 0;
+    document.getElementById("nextBtnTopRecords").disabled = currentPageTopRecords >= totalPages - 1;
+}
+
+function loadActiveDataTab() {
+    if (activeDataTab === "provider") {
+        currentPageFilterByProvider = 0;
+        loadByProvider();
+        return;
+    }
+
+    if (activeDataTab === "top") {
+        renderTopRecordsPage();
+        return;
+    }
+
+    loadRecords();
+}
+
+function setActiveDataTab(tab) {
+    activeDataTab = tab;
+
+    document.querySelectorAll(".data-tab").forEach(button => {
+        const isActive = button.dataset.tab === tab;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-selected", String(isActive));
+    });
+
+    document.querySelectorAll(".data-panel").forEach(panel => {
+        panel.classList.toggle("active", panel.dataset.panel === tab);
+    });
+
+    if (tab === "all") {
+        if (currentRecordsPage.length) {
+            selectFirstVisibleRecord("#recordsTable", currentRecordsPage);
+        } else {
+            loadRecords();
+        }
+    } else if (tab === "provider") {
+        currentPageFilterByProvider = 0;
+        loadByProvider();
+    } else if (tab === "top") {
+        if (currentTopRecords.length) {
+            renderTopRecordsPage();
+        } else {
+            renderTopRecordsPage();
+            clearDescriptionPanel("Load top records to inspect their descriptions.");
+        }
     }
 }
 
@@ -526,12 +651,109 @@ async function onAlarmsClick() {
 
 // ── CSV Export ───────────────────────────────────────────────────────────
 
+function csvCell(value) {
+    return `"${String(value ?? "").replace(/"/g, '""')}"`;
+}
+
+function downloadCsv(filename, records) {
+    if (!records.length) {
+        showToast("There are no records to export.", "info");
+        return;
+    }
+
+    const columns = [
+        "accountName",
+        "resourceId",
+        "cloudProvider",
+        "billingPeriod",
+        "computeHours",
+        "storageGbUsed",
+        "apiRequests",
+        "totalCharge",
+        "serviceName",
+        "description"
+    ];
+
+    const lines = [
+        columns.join(","),
+        ...records.map(record => columns.map(column => csvCell(record[column])).join(","))
+    ];
+
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+}
+
 function exportRecordsCsv() {
     if (!currentDatasetId || !currentPeriod) {
         showToast("Select a billing period first.");
         return;
     }
     window.location.href = `/datasets/${currentDatasetId}/records/export?billingPeriod=${encodeURIComponent(currentPeriod)}`;
+}
+
+async function fetchProviderRecordsForExport(provider) {
+    const exportedRecords = [];
+    let page = 0;
+    let totalPages = 1;
+
+    do {
+        const params = new URLSearchParams({
+            page,
+            size: 100
+        });
+
+        if (currentPeriod) {
+            params.set("billingPeriod", currentPeriod);
+        }
+
+        const res = await fetch(`/datasets/${currentDatasetId}/records/providers/${encodeURIComponent(provider)}?${params}`);
+        if (!res.ok) throw new Error(`Provider export failed: ${res.status}`);
+
+        const data = await res.json();
+        exportedRecords.push(...(data.content || []));
+        totalPages = data.totalPages || 1;
+        page += 1;
+    } while (page < totalPages);
+
+    return exportedRecords;
+}
+
+async function exportActiveDataTabCsv() {
+    if (activeDataTab === "all") {
+        exportRecordsCsv();
+        return;
+    }
+
+    if (!currentDatasetId) {
+        showToast("Select a dataset first.");
+        return;
+    }
+
+    if (activeDataTab === "provider") {
+        const provider = document.getElementById("providerSelect").value;
+        if (!provider) {
+            showToast("Select a cloud provider first.");
+            return;
+        }
+
+        try {
+            const records = await fetchProviderRecordsForExport(provider);
+            downloadCsv(`billing-records-${provider}-${currentPeriod || "all-periods"}.csv`, records);
+        } catch (e) {
+            console.error("Provider export failed", e);
+            showToast("Could not export provider records.");
+        }
+        return;
+    }
+
+    downloadCsv(`top-billing-records-${currentPeriod || "all-periods"}.csv`, currentTopRecords);
 }
 
 function exportAlarmsCsv() {
@@ -756,8 +978,10 @@ function changePeriod() {
     currentPeriod = document.getElementById("periodSelect").value;
     currentPageAllRecords = 0;
     currentPageFilterByProvider = 0;
+    currentPageTopRecords = 0;
+    currentTopRecords = [];
     loadSummary();
-    loadRecords();
+    loadActiveDataTab();
     loadProviderChart();
     loadAlarmsCount();
     loadAlarmsChart();
@@ -771,6 +995,11 @@ function changePageAllRecords(step) {
 function changePageFilterByProvider(step) {
     currentPageFilterByProvider = Math.max(0, currentPageFilterByProvider + step);
     loadByProvider();
+}
+
+function changePageTopRecords(step) {
+    currentPageTopRecords = Math.max(0, currentPageTopRecords + step);
+    renderTopRecordsPage();
 }
 
 // ── PDF Report ──────────────────────────────────────────────────────────
@@ -1124,9 +1353,11 @@ function wireDashboardEvents() {
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));
     document.getElementById("prevBtnFilterByProviders")?.addEventListener("click", () => changePageFilterByProvider(-1));
     document.getElementById("nextBtnFilterByProviders")?.addEventListener("click", () => changePageFilterByProvider(1));
+    document.getElementById("prevBtnTopRecords")?.addEventListener("click", () => changePageTopRecords(-1));
+    document.getElementById("nextBtnTopRecords")?.addEventListener("click", () => changePageTopRecords(1));
     document.getElementById("providerSearchBtn")?.addEventListener("click", loadByProvider);
     document.getElementById("topLoadBtn")?.addEventListener("click", loadTopN);
-    document.getElementById("exportRecordsBtn")?.addEventListener("click", exportRecordsCsv);
+    document.getElementById("exportDataTabBtn")?.addEventListener("click", exportActiveDataTabCsv);
     document.getElementById("exportAlarmsBtn")?.addEventListener("click", exportAlarmsCsv);
     document.getElementById("infoBtn")?.addEventListener("click", openInfo);
     document.getElementById("generate-pdf-btn")?.addEventListener("click", onGeneratePdfClick);
@@ -1141,6 +1372,10 @@ function wireDashboardEvents() {
     document.getElementById("toggle-archived-btn")?.addEventListener("click", toggleArchivedView);
     document.getElementById("restore-dataset-btn")?.addEventListener("click", onRestoreDatasetClick);
 
+    document.querySelectorAll(".data-tab").forEach(button => {
+        button.addEventListener("click", () => setActiveDataTab(button.dataset.tab));
+    });
+
     document.getElementById("welcomeUploadBtn")?.addEventListener("click", () => {
         document.getElementById("fileInput").click();
     });
@@ -1152,6 +1387,16 @@ function wireDashboardEvents() {
             if (e.key === "Enter") {
                 e.preventDefault();
                 sendChat();
+            }
+        });
+    }
+
+    const topInput = document.getElementById("topInput");
+    if (topInput) {
+        topInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                loadTopN();
             }
         });
     }
