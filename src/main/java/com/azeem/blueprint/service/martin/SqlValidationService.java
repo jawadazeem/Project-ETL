@@ -5,47 +5,43 @@
 
 package com.azeem.blueprint.service.martin;
 
+import com.azeem.blueprint.exception.core.MartinResponseInvalidException;
 import com.azeem.blueprint.model.martin.SqlResponse;
-import java.util.regex.Pattern;
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
  * SQL Validation Layer that ensures only safe, read-only SELECT queries are executed.
  *
- * <p>Uses word-boundary regex matching and comment stripping to avoid false positives (e.g.,
- * columns named "updated_at" or "deleted") and false negatives (keywords hidden in comments).
+ * <p>Uses JSql to parse SQL for ensuring the LLM only queries the DB using read-only SQL.
+ * Previously used word-boundary regex matching and comment stripping to avoid false positives
+ * (e.g., columns named "updated_at" or "deleted") and false negatives (keywords hidden in
+ * comments). Though this was deemed unreliable and overly strict.
  */
 @Component
 public class SqlValidationService {
-
-  private static final Pattern BLOCK_COMMENT = Pattern.compile("/\\*.*?\\*/", Pattern.DOTALL);
-  private static final Pattern LINE_COMMENT = Pattern.compile("--[^\n]*");
-  private static final Pattern DANGEROUS_KEYWORD =
-      Pattern.compile(
-          "\\b(insert|update|delete|drop|alter|truncate|create|grant|revoke|exec|execute|call)\\b",
-          Pattern.CASE_INSENSITIVE);
+  private static final Logger log = LoggerFactory.getLogger(SqlValidationService.class);
 
   public boolean isValidSql(SqlResponse response) {
-    if (response.getSql() == null || response.getSql().isBlank()) {
+    String sql = response.getSql();
+
+    if (sql == null || sql.isBlank()) {
       return false;
     }
 
-    String stripped = stripComments(response.getSql());
-    String trimmed = stripped.trim().toLowerCase();
-
-    if (!trimmed.startsWith("select")) {
-      return false;
+    Statement statement = null;
+    try {
+      statement = CCJSqlParserUtil.parse(sql);
+    } catch (JSQLParserException e) {
+      log.error("Could not validate Martin's SQL: {}", e.getMessage());
+      throw new MartinResponseInvalidException(e.getMessage(), e);
     }
 
-    if (stripped.contains(";")) {
-      return false;
-    }
-
-    return !DANGEROUS_KEYWORD.matcher(stripped).find();
-  }
-
-  private String stripComments(String sql) {
-    String noBlock = BLOCK_COMMENT.matcher(sql).replaceAll(" ");
-    return LINE_COMMENT.matcher(noBlock).replaceAll(" ");
+    return statement instanceof PlainSelect;
   }
 }
