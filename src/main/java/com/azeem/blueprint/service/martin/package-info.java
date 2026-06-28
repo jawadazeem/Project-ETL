@@ -8,6 +8,6 @@
  *
  * <p>Martin uses RAG (Retrieval-Augmented Generation) along with generative AI (Gemini GenAI) to
  * execute constrained SQL queries against the database, instead of directly loading extremely large
- * telecom billing datasets.
+ * cloud billing datasets.
  */
 package com.azeem.blueprint.service.martin;

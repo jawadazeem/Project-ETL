@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequestMapping("/datasets/{datasetId}")
-@Tag(name = "Alarms", description = "Billing alarm detection and queries")
+@Tag(name = "Alarms", description = "Cloud spend alarm detection and queries")
 public class AlarmController {
   private static final Logger log = LoggerFactory.getLogger(AlarmController.class);
   private final AlarmService service;
@@ -42,20 +42,20 @@ public class AlarmController {
     return service.getAllAlarmsInDataset(datasetId, billingPeriod);
   }
 
-  @Operation(summary = "Get department-scoped alarms")
-  @GetMapping("/alarms/{billingPeriod}/department")
-  public List<Alarm> getDepartmentAlarms(
+  @Operation(summary = "Get provider-scoped alarms")
+  @GetMapping("/alarms/{billingPeriod}/provider")
+  public List<Alarm> getProviderAlarms(
       @PathVariable UUID datasetId, @BillingPeriod @PathVariable String billingPeriod) {
-    log.info("GET /datasets/{}/alarms/{}/department called.", datasetId, billingPeriod);
-    return service.getDepartmentAlarmsInDataset(datasetId, billingPeriod);
+    log.info("GET /datasets/{}/alarms/{}/provider called.", datasetId, billingPeriod);
+    return service.getProviderAlarmsInDataset(datasetId, billingPeriod);
   }
 
-  @Operation(summary = "Get individual-scoped alarms")
-  @GetMapping("/alarms/{billingPeriod}/individual")
-  public List<Alarm> getIndividualAlarms(
+  @Operation(summary = "Get resource-scoped alarms")
+  @GetMapping("/alarms/{billingPeriod}/resource")
+  public List<Alarm> getResourceAlarms(
       @PathVariable UUID datasetId, @BillingPeriod @PathVariable String billingPeriod) {
-    log.info("GET /datasets/{}/alarms/{}/individual called.", datasetId, billingPeriod);
-    return service.getIndividualAlarmsInDataset(datasetId, billingPeriod);
+    log.info("GET /datasets/{}/alarms/{}/resource called.", datasetId, billingPeriod);
+    return service.getResourceAlarmsInDataset(datasetId, billingPeriod);
   }
 
   @Operation(summary = "Get account-level alarms")

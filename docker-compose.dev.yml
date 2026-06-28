@@ -87,10 +87,10 @@ services:
       aws --endpoint-url=http://billing-s3-mock:4566 sqs create-queue --queue-name billing-event-queue;
       
       echo 'Configuring S3...';
-      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://telecom-billing;
+      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://cloud-billing;
       
       echo 'Linking S3 to SQS (The Permanent Bridge)...';
-      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket telecom-billing --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:billing-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}'
+      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket cloud-billing --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:billing-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}'
       
       echo 'Infrastructure configuration complete.'
       "

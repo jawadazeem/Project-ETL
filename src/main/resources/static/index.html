@@ -22,7 +22,7 @@
 <div id="welcome-overlay">
     <div class="welcome-card">
         <h2 class="welcome-title">Blueprint</h2>
-        <p class="welcome-sub">Telecom Billing Intelligence Platform</p>
+        <p class="welcome-sub">Multi-Cloud FinOps Platform</p>
         <p class="welcome-hint">Upload a CSV file or load the demo dataset to get started.</p>
         <div class="welcome-actions">
             <button id="welcomeUploadBtn" class="btn btn-primary btn-lg">Upload CSV</button>
@@ -33,7 +33,7 @@
 
 <header class="dashboard-title mb-3" role="banner">
     <h1>Blueprint</h1>
-    <p class="subtitle">Telecom Billing Intelligence Platform</p>
+    <p class="subtitle">Multi-Cloud FinOps Platform</p>
 </header>
 
 <nav class="navbar navbar-light bg-white shadow-sm mb-4 dashboard-navbar">
@@ -77,7 +77,7 @@
     <div class="alarm-modal">
         <div class="modal-header">
             <h3 id="alarms-title">Alarms</h3>
-            <button class="modal-close" id="alarms-close" type="button">✕</button>
+            <button class="modal-close" id="alarms-close" type="button">&#10005;</button>
         </div>
 
         <div class="modal-body">
@@ -94,16 +94,16 @@
     <div class="alarm-modal">
         <div class="modal-header">
             <h3>Help</h3>
-            <button class="modal-close" id="help-close" type="button">✕</button>
+            <button class="modal-close" id="help-close" type="button">&#10005;</button>
         </div>
 
         <div class="modal-body">
-            <p>Welcome to the Blueprint Billing Portal. Use the controls in the top-right to upload CSV files, select a billing period, and explore the analytics.</p>
+            <p>Welcome to the Blueprint Cloud FinOps Portal. Use the controls in the top-right to upload CSV files, select a billing period, and explore the analytics.</p>
             <ul>
-                <li>Demo: click "Load Dummy Data" to see Blueprint in action using preformatted schema data.</li>
-                <li>Upload: choose a CSV and click Upload to ingest data.</li>
+                <li>Demo: click "Load Dummy Data" to see Blueprint in action using sample cloud billing data.</li>
+                <li>Upload: choose a CSV and click Upload to ingest cloud cost data.</li>
                 <li>Periods: select a billing period to filter the dashboard.</li>
-                <li>Filter by Department: view records for a particular department.</li>
+                <li>Filter by Provider: view records for a particular cloud provider.</li>
                 <li>Top N: load the top N largest charges.</li>
             </ul>
             <p>For more details, open the <a href="/info.html" target="_blank" rel="noopener">info page</a>.</p>
@@ -257,12 +257,12 @@
         <div id="chatbotModule" class="row g-3">
             <div class="col-12">
                 <div class="card p-3 chat-window" id="chatWindow">
-                    <div id="chatEmpty" class="text-muted">Ask Martin questions about billing data, e.g. "Sort the departments by highest charge in descending order"</div>
+                    <div id="chatEmpty" class="text-muted">Ask Martin questions about cloud billing data, e.g. "Which cloud provider has the highest total spend?" or "Show me the top 5 most expensive services"</div>
                 </div>
             </div>
 
             <div class="col-9">
-                <input id="chatInput" class="form-control" placeholder="Ask Martin..." aria-label="Chat input" />
+                <input id="chatInput" class="form-control" placeholder="Ask Martin about cloud costs..." aria-label="Chat input" />
             </div>
             <div class="col-3 d-flex align-items-start">
                 <button class="btn btn-primary w-100" id="chatSendBtn" type="button">Send</button>
@@ -274,15 +274,15 @@
 <div class="row mb-4">
     <div class="col-lg-6">
         <div class="card h-100">
-            <div class="card-header">Charges by Department</div>
+            <div class="card-header">Charges by Cloud Provider</div>
             <div class="card-body">
-                <div class="skeleton-block" id="skeleton-dept-chart">
+                <div class="skeleton-block" id="skeleton-provider-chart">
                     <div class="skeleton-line w-100"></div>
                     <div class="skeleton-line w-75"></div>
                     <div class="skeleton-line w-50"></div>
                 </div>
                 <div class="chart-box">
-                    <canvas id="deptChart"></canvas>
+                    <canvas id="providerChart"></canvas>
                 </div>
             </div>
         </div>
@@ -330,9 +330,10 @@
                 <table class="table" id="recordsTable">
                     <thead>
                     <tr>
-                        <th>Phone</th>
-                        <th>Department</th>
+                        <th>Service</th>
+                        <th>Provider</th>
                         <th>Charge</th>
+                        <th>Account</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -344,28 +345,29 @@
 
 <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Filter by Department</span>
-        <div id="paginationControlsDept" class="d-flex align-items-center gap-2">
-            <button class="btn btn-sm btn-outline-secondary" id="prevBtnFilterByDepartments" type="button">Previous</button>
-            <span id="pageInfoFilterByDepartment" class="small fw-bold page-info">Page 1</span>
-            <button class="btn btn-sm btn-outline-secondary" id="nextBtnFilterByDepartments" type="button">Next</button>
+        <span>Filter by Cloud Provider</span>
+        <div id="paginationControlsProvider" class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" id="prevBtnFilterByProviders" type="button">Previous</button>
+            <span id="pageInfoFilterByProvider" class="small fw-bold page-info">Page 1</span>
+            <button class="btn btn-sm btn-outline-secondary" id="nextBtnFilterByProviders" type="button">Next</button>
         </div>
     </div>
     <div class="card-body">
-        <select class="form-select w-25 mb-3" id="departmentSelect"></select>
-        <button class="btn-modern" id="departmentSearchBtn" type="button">Search</button>
-        <div class="skeleton-block" id="skeleton-dept-records">
+        <select class="form-select w-25 mb-3" id="providerSelect"></select>
+        <button class="btn-modern" id="providerSearchBtn" type="button">Search</button>
+        <div class="skeleton-block" id="skeleton-provider-records">
             <div class="skeleton-line w-100"></div>
             <div class="skeleton-line w-75"></div>
             <div class="skeleton-line w-50"></div>
         </div>
         <div class="table-container">
-            <table class="table" id="departmentTable">
+            <table class="table" id="providerTable">
                 <thead>
                 <tr>
-                    <th>Phone</th>
-                    <th>Department</th>
+                    <th>Service</th>
+                    <th>Provider</th>
                     <th>Charge</th>
+                    <th>Account</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -387,9 +389,10 @@
         <table class="table" id="topOutput">
             <thead>
             <tr>
-                <th>Phone</th>
-                <th>Department</th>
+                <th>Service</th>
+                <th>Provider</th>
                 <th>Charge</th>
+                <th>Account</th>
             </tr>
             </thead>
             <tbody></tbody>
@@ -404,7 +407,7 @@
     </div>
     <div class="card-body glass-panel">
         <p class="text-muted">Select at least 3 datasets representing adjacent or near-adjacent months to forecast future costs.</p>
-        
+
         <div class="row mb-3 align-items-end">
             <div class="col-md-8">
                 <label class="form-label fw-bold">Select Datasets for Training Data:</label>
@@ -437,10 +440,10 @@
 
 <footer class="app-footer mt-5">
     <div class="container text-center py-3">
-        <span class="footer-title">Blueprint Billing Portal</span>
-        <span class="footer-separator">•</span>
-        <span class="footer-sub">© 2026 Jawad Azeem</span>
-        <span class="footer-separator">•</span>
+        <span class="footer-title">Blueprint Cloud FinOps Portal</span>
+        <span class="footer-separator">&bull;</span>
+        <span class="footer-sub">&copy; 2026 Jawad Azeem</span>
+        <span class="footer-separator">&bull;</span>
         <button class="btn-info" id="infoBtn" type="button"><b>i</b></button>
     </div>
 </footer>

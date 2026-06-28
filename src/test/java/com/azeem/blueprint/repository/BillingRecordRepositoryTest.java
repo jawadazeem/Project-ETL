@@ -41,36 +41,41 @@ class BillingRecordRepositoryTest {
     entityManager.persist(dataset);
 
     persistRecord(
-        "Engineering", "Sherwood Williams", "EMP001", "7035550123", "2026-01", 120, 5.5, 45, 75.50);
+        "AWS", "Sherwood Williams", "i-0abc001", "2026-01", 120.0, 5.5, 45, 75.50, "EC2",
+        "m5.large instance");
     persistRecord(
-        "Operations", "Scott Savran", "EMP002", "7035550456", "2026-01", 300, 12.2, 10, 110.25);
+        "GCP", "Scott Savran", "proj-xyz-002", "2026-01", 300.0, 12.2, 10, 110.25, "BigQuery",
+        "analytics query");
     persistRecord(
-        "Engineering", "Abdel Ebrahim", "EMP003", "7035550789", "2026-02", 50, 1.0, 100, 45.00);
+        "AWS", "Abdel Ebrahim", "i-0abc003", "2026-02", 50.0, 1.0, 100, 45.00, "S3",
+        "storage bucket");
 
     entityManager.flush();
   }
 
   private void persistRecord(
-      String dept,
+      String cloudProvider,
       String name,
-      String empId,
-      String phone,
+      String resourceId,
       String period,
-      int mins,
-      double data,
-      int sms,
-      double charge) {
+      double computeHours,
+      double storageGbUsed,
+      long apiRequests,
+      double charge,
+      String serviceName,
+      String description) {
     BillingRecordEntity record = new BillingRecordEntity();
     record.setDataset(dataset);
-    record.setDepartment(dept);
+    record.setCloudProvider(cloudProvider);
     record.setAccountName(name);
-    record.setEmployeeId(empId);
-    record.setPhoneNumber(phone);
+    record.setResourceId(resourceId);
     record.setBillingPeriod(period);
-    record.setMinutesUsed(mins);
-    record.setDataGbUsed(data);
-    record.setSmsCount(sms);
+    record.setComputeHours(computeHours);
+    record.setStorageGbUsed(storageGbUsed);
+    record.setApiRequests(apiRequests);
     record.setTotalCharge(charge);
+    record.setServiceName(serviceName);
+    record.setDescription(description);
     entityManager.persist(record);
   }
 
@@ -107,31 +112,32 @@ class BillingRecordRepositoryTest {
   }
 
   @Test
-  @DisplayName("Should find departments ignoring case sensitivity")
-  void testFindByDatasetIdAndDepartmentIgnoreCase() {
+  @DisplayName("Should find providers ignoring case sensitivity")
+  void testFindByDatasetIdAndCloudProviderIgnoreCase() {
     UUID datasetId = dataset.getId();
 
     Page<BillingRecordEntity> result =
-        repository.findByDatasetIdAndDepartmentIgnoreCase(
-            datasetId, "engineering", PageRequest.of(0, 5));
+        repository.findByDatasetIdAndCloudProviderIgnoreCase(
+            datasetId, "aws", PageRequest.of(0, 5));
 
     assertThat(result.getContent()).hasSize(2);
-    assertThat(result.getContent().getFirst().getDepartment()).isEqualTo("Engineering");
+    assertThat(result.getContent().getFirst().getCloudProvider()).isEqualTo("AWS");
   }
 
   @Test
-  @DisplayName("Should return distinct departments for a dataset")
-  void testFindDistinctDepartmentsByDatasetId() {
+  @DisplayName("Should return distinct cloud providers for a dataset")
+  void testFindDistinctCloudProvidersByDatasetId() {
     UUID datasetId = dataset.getId();
 
-    // Add a duplicate department record
+    // Add a duplicate provider record
     persistRecord(
-        "Engineering", "Sherwood Williams", "EMP001", "7035550123", "2026-01", 120, 5.5, 45, 75.50);
+        "AWS", "Sherwood Williams", "i-0abc001", "2026-01", 120.0, 5.5, 45, 75.50, "EC2",
+        "m5.large instance");
     entityManager.flush();
 
-    List<String> departments = repository.findDistinctDepartmentsByDatasetId(datasetId);
+    List<String> providers = repository.findDistinctCloudProvidersByDatasetId(datasetId);
 
-    assertThat(departments).hasSize(2);
-    assertThat(departments).containsExactly("Engineering", "Operations");
+    assertThat(providers).hasSize(2);
+    assertThat(providers).containsExactly("AWS", "GCP");
   }
 }

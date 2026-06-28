@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "alarm")
 public class AlarmConfig {
 
-  private Department department;
+  private Provider provider;
   private Individual individual;
   private Account account;
 
-  public Department getDepartment() {
-    return department;
+  public Provider getProvider() {
+    return provider;
   }
 
-  public void setDepartment(Department department) {
-    this.department = department;
+  public void setProvider(Provider provider) {
+    this.provider = provider;
   }
 
   public Individual getIndividual() {
@@ -40,7 +40,7 @@ public class AlarmConfig {
     this.account = account;
   }
 
-  public static class Department {
+  public static class Provider {
     private double monthlyLimit;
 
     public double getMonthlyLimit() {

@@ -1,11 +1,11 @@
 const GUEST_USER_ID = "00000000-0000-0000-0000-000000000001";
 
-let deptChartInstance = null;
+let providerChartInstance = null;
 let alarmsChartInstance = null;
 let currentPeriod = null;
 let currentDatasetId = null;
 let currentPageAllRecords = 0;
-let currentPageFilterByDepartment = 0;
+let currentPageFilterByProvider = 0;
 const pageSize = 20;
 
 function asArray(payload) {
@@ -94,7 +94,7 @@ async function switchDataset() {
     const select = document.getElementById("datasetSelect");
     currentDatasetId = select.value;
     currentPageAllRecords = 0;
-    currentPageFilterByDepartment = 0;
+    currentPageFilterByProvider = 0;
 
     await loadPeriods();
     if (currentPeriod) {
@@ -202,9 +202,9 @@ async function loadAlarmsChart() {
     }
 }
 
-async function loadDeptChart() {
+async function loadProviderChart() {
     if (!currentDatasetId || !currentPeriod) return;
-    showSkeleton("skeleton-dept-chart");
+    showSkeleton("skeleton-provider-chart");
 
     try {
         if (typeof Chart === "undefined") {
@@ -212,30 +212,30 @@ async function loadDeptChart() {
         }
 
         const res = await fetch(`/datasets/${currentDatasetId}/summary/periods/${encodeURIComponent(currentPeriod)}`);
-        if (!res.ok) throw new Error(`Dept chart fetch failed: ${res.status}`);
+        if (!res.ok) throw new Error(`Provider chart fetch failed: ${res.status}`);
         const data = await res.json();
-        const totals = data.chargesByDepartment || {};
+        const totals = data.chargesByProvider || {};
 
-        if (deptChartInstance) {
-            deptChartInstance.destroy();
+        if (providerChartInstance) {
+            providerChartInstance.destroy();
         }
 
-        const deptPalette = [
+        const providerPalette = [
             "#6366f1", "#8b5cf6", "#a78bfa", "#818cf8",
             "#7c3aed", "#6d28d9", "#5b21b6", "#4f46e5",
             "#4338ca", "#3730a3"
         ];
-        const deptLabels = Object.keys(totals);
-        const deptColors = deptLabels.map((_, i) => deptPalette[i % deptPalette.length]);
+        const providerLabels = Object.keys(totals);
+        const providerColors = providerLabels.map((_, i) => providerPalette[i % providerPalette.length]);
 
-        deptChartInstance = new Chart(document.getElementById("deptChart"), {
+        providerChartInstance = new Chart(document.getElementById("providerChart"), {
             type: "bar",
             data: {
-                labels: deptLabels,
+                labels: providerLabels,
                 datasets: [{
                     label: "Total Charges ($)",
                     data: Object.values(totals),
-                    backgroundColor: deptColors,
+                    backgroundColor: providerColors,
                     borderRadius: 6,
                     borderSkipped: false
                 }]
@@ -263,10 +263,10 @@ async function loadDeptChart() {
             }
         });
     } catch (e) {
-        console.error("Failed to load dept chart", e);
-        showToast("Could not load department charges chart.");
+        console.error("Failed to load provider chart", e);
+        showToast("Could not load cloud provider charges chart.");
     } finally {
-        hideSkeleton("skeleton-dept-chart");
+        hideSkeleton("skeleton-provider-chart");
     }
 }
 
@@ -287,14 +287,15 @@ async function loadRecords() {
         tbody.innerHTML = "";
 
         if (records.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3">No records found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
         } else {
             records.forEach(record => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${record.phoneNumber}</td>
-                    <td>${record.department}</td>
+                    <td>${record.serviceName || ''}</td>
+                    <td>${record.cloudProvider || ''}</td>
                     <td>$${record.totalCharge.toFixed(2)}</td>
+                    <td>${record.accountName || ''}</td>
                 `;
                 tbody.appendChild(row);
             });
@@ -311,15 +312,15 @@ async function loadRecords() {
     }
 }
 
-async function loadByDepartment() {
+async function loadByProvider() {
     if (!currentDatasetId) return;
-    const department = document.getElementById("departmentSelect").value;
-    if (!department) return;
-    showSkeleton("skeleton-dept-records");
+    const provider = document.getElementById("providerSelect").value;
+    if (!provider) return;
+    showSkeleton("skeleton-provider-records");
 
     try {
         const params = new URLSearchParams({
-            page: currentPageFilterByDepartment,
+            page: currentPageFilterByProvider,
             size: pageSize
         });
 
@@ -327,38 +328,39 @@ async function loadByDepartment() {
             params.set("billingPeriod", currentPeriod);
         }
 
-        const res = await fetch(`/datasets/${currentDatasetId}/records/departments/${encodeURIComponent(department)}?${params}`);
-        if (!res.ok) throw new Error(`Dept records fetch failed: ${res.status}`);
+        const res = await fetch(`/datasets/${currentDatasetId}/records/providers/${encodeURIComponent(provider)}?${params}`);
+        if (!res.ok) throw new Error(`Provider records fetch failed: ${res.status}`);
         const data = await res.json();
         const records = data.content || [];
         const totalPages = data.totalPages || 1;
 
-        const tbody = document.querySelector("#departmentTable tbody");
+        const tbody = document.querySelector("#providerTable tbody");
         tbody.innerHTML = "";
 
         if (records.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3">No records found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
         } else {
             records.forEach(record => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${record.phoneNumber}</td>
-                    <td>${record.department}</td>
+                    <td>${record.serviceName || ''}</td>
+                    <td>${record.cloudProvider || ''}</td>
                     <td>$${record.totalCharge.toFixed(2)}</td>
+                    <td>${record.accountName || ''}</td>
                 `;
                 tbody.appendChild(row);
             });
         }
 
-        document.getElementById("pageInfoFilterByDepartment").textContent =
-            `Page ${currentPageFilterByDepartment + 1} of ${totalPages}`;
-        document.getElementById("prevBtnFilterByDepartments").disabled = currentPageFilterByDepartment <= 0;
-        document.getElementById("nextBtnFilterByDepartments").disabled = currentPageFilterByDepartment >= totalPages - 1;
+        document.getElementById("pageInfoFilterByProvider").textContent =
+            `Page ${currentPageFilterByProvider + 1} of ${totalPages}`;
+        document.getElementById("prevBtnFilterByProviders").disabled = currentPageFilterByProvider <= 0;
+        document.getElementById("nextBtnFilterByProviders").disabled = currentPageFilterByProvider >= totalPages - 1;
     } catch (e) {
-        console.error("Failed to load dept records", e);
-        showToast("Could not load department records.");
+        console.error("Failed to load provider records", e);
+        showToast("Could not load provider records.");
     } finally {
-        hideSkeleton("skeleton-dept-records");
+        hideSkeleton("skeleton-provider-records");
     }
 }
 
@@ -378,14 +380,15 @@ async function loadTopN() {
         tbody.innerHTML = "";
 
         if (records.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3">No records found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No records found.</td></tr>';
         } else {
             records.forEach(record => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${record.phoneNumber}</td>
-                    <td>${record.department}</td>
+                    <td>${record.serviceName || ''}</td>
+                    <td>${record.cloudProvider || ''}</td>
                     <td>$${record.totalCharge.toFixed(2)}</td>
+                    <td>${record.accountName || ''}</td>
                 `;
                 tbody.appendChild(row);
             });
@@ -398,7 +401,7 @@ async function loadTopN() {
     }
 }
 
-// ── Periods & departments ─────────────────────────────────────────────────
+// ── Periods & providers ─────────────────────────────────────────────────
 
 async function loadPeriods() {
     if (!currentDatasetId) return;
@@ -430,29 +433,29 @@ async function loadPeriods() {
     }
 }
 
-async function loadDepartments() {
+async function loadProviders() {
     if (!currentDatasetId || !currentPeriod) return;
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/records/departments`);
+        const res = await fetch(`/datasets/${currentDatasetId}/records/providers`);
         if (!res.ok) return;
-        const departments = asArray(await res.json());
+        const providers = asArray(await res.json());
 
         const seen = new Set();
-        const select = document.getElementById("departmentSelect");
+        const select = document.getElementById("providerSelect");
         select.innerHTML = "";
 
-        departments.forEach(department => {
-            if (department && !seen.has(department)) {
-                seen.add(department);
+        providers.forEach(provider => {
+            if (provider && !seen.has(provider)) {
+                seen.add(provider);
                 const opt = document.createElement("option");
-                opt.value = department;
-                opt.textContent = department;
+                opt.value = provider;
+                opt.textContent = provider;
                 select.appendChild(opt);
             }
         });
     } catch (e) {
-        console.error("Failed to load departments", e);
+        console.error("Failed to load providers", e);
     }
 }
 
@@ -480,9 +483,9 @@ function renderAlarms(alarms) {
     for (const alarm of alarms) {
         const severity = (alarm.alarmSeverity || "").toLowerCase();
         const type = alarm.alarmType || "Alarm";
-        const phone = alarm.phoneNumber || "—";
-        const employee = alarm.employeeId || "—";
-        const period = alarm.billingPeriod || "—";
+        const resource = alarm.resourceId || "--";
+        const service = alarm.serviceName || "--";
+        const period = alarm.billingPeriod || "--";
         const explanation = alarm.explanation || "";
 
         const li = document.createElement("li");
@@ -490,7 +493,7 @@ function renderAlarms(alarms) {
         li.innerHTML = `
             <div class="alarm-left">
                 <div class="alarm-title">${type}</div>
-                <div class="alarm-meta">Employee: ${employee} • Phone: ${phone} • Period: ${period}</div>
+                <div class="alarm-meta">Resource: ${resource} &bull; Service: ${service} &bull; Period: ${period}</div>
                 <div class="alarm-explain">${explanation}</div>
             </div>
             <div class="badge ${severity}">${alarm.alarmSeverity || "UNKNOWN"}</div>
@@ -683,7 +686,7 @@ async function uploadFile() {
             setTimeout(async () => {
                 await waitForDataReady();
                 await loadPeriods();
-                await loadDepartments();
+                await loadProviders();
                 await loadDatasetList();
                 changePeriod();
             }, 2000);
@@ -720,7 +723,7 @@ async function loadDummyData() {
 
         await waitForDataReady();
         await loadPeriods();
-        await loadDepartments();
+        await loadProviders();
         await loadDatasetList();
         changePeriod();
         closeHelpModal();
@@ -752,10 +755,10 @@ async function waitForDataReady() {
 function changePeriod() {
     currentPeriod = document.getElementById("periodSelect").value;
     currentPageAllRecords = 0;
-    currentPageFilterByDepartment = 0;
+    currentPageFilterByProvider = 0;
     loadSummary();
     loadRecords();
-    loadDeptChart();
+    loadProviderChart();
     loadAlarmsCount();
     loadAlarmsChart();
 }
@@ -765,9 +768,9 @@ function changePageAllRecords(step) {
     loadRecords();
 }
 
-function changePageFilterByDepartment(step) {
-    currentPageFilterByDepartment = Math.max(0, currentPageFilterByDepartment + step);
-    loadByDepartment();
+function changePageFilterByProvider(step) {
+    currentPageFilterByProvider = Math.max(0, currentPageFilterByProvider + step);
+    loadByProvider();
 }
 
 // ── PDF Report ──────────────────────────────────────────────────────────
@@ -1119,9 +1122,9 @@ function wireDashboardEvents() {
     document.getElementById("chatSendBtn")?.addEventListener("click", sendChat);
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));
-    document.getElementById("prevBtnFilterByDepartments")?.addEventListener("click", () => changePageFilterByDepartment(-1));
-    document.getElementById("nextBtnFilterByDepartments")?.addEventListener("click", () => changePageFilterByDepartment(1));
-    document.getElementById("departmentSearchBtn")?.addEventListener("click", loadByDepartment);
+    document.getElementById("prevBtnFilterByProviders")?.addEventListener("click", () => changePageFilterByProvider(-1));
+    document.getElementById("nextBtnFilterByProviders")?.addEventListener("click", () => changePageFilterByProvider(1));
+    document.getElementById("providerSearchBtn")?.addEventListener("click", loadByProvider);
     document.getElementById("topLoadBtn")?.addEventListener("click", loadTopN);
     document.getElementById("exportRecordsBtn")?.addEventListener("click", exportRecordsCsv);
     document.getElementById("exportAlarmsBtn")?.addEventListener("click", exportAlarmsCsv);
@@ -1193,7 +1196,7 @@ async function tryLoadExistingDatasets() {
         hideWelcome();
 
         await loadPeriods();
-        await loadDepartments();
+        await loadProviders();
         await loadDatasetList();
         await populatePredictionDatasets();
 
@@ -1223,7 +1226,7 @@ async function populatePredictionDatasets() {
 
         const datasets = await res.json();
         const readyDatasets = datasets.filter(d => d.status === "READY");
-        
+
         readyDatasets.sort((a, b) => (a.billingPeriod || "").localeCompare(b.billingPeriod || ""));
 
         select.innerHTML = "";
@@ -1245,7 +1248,7 @@ async function generateForecast() {
     const wrapper = document.getElementById("predictionChartWrapper");
     const btn = document.getElementById("generateForecastBtn");
     const spinner = document.getElementById("forecastSpinner");
-    
+
     const selectedOptions = Array.from(select.selectedOptions);
     if (selectedOptions.length < 3) {
         errorMsg.classList.remove("d-none");
@@ -1253,9 +1256,9 @@ async function generateForecast() {
         return;
     }
     errorMsg.classList.add("d-none");
-    
+
     const datasetIds = selectedOptions.map(opt => opt.value);
-    
+
     btn.disabled = true;
     spinner.classList.remove("d-none");
 
@@ -1273,7 +1276,7 @@ async function generateForecast() {
         const data = await res.json();
         renderPredictionChart(data.predictions);
         wrapper.style.display = "block";
-        
+
         wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (e) {
         console.error("Forecast failed", e);
@@ -1289,12 +1292,12 @@ function renderPredictionChart(predictions) {
     if (predictionChartInstance) {
         predictionChartInstance.destroy();
     }
-    
+
     const labels = predictions.map(p => p.period);
     const dataPoints = predictions.map(p => p.charge);
-    
+
     const ctx = document.getElementById("predictionChart").getContext("2d");
-    
+
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, "rgba(37, 99, 235, 0.4)");
     gradient.addColorStop(1, "rgba(37, 99, 235, 0.0)");

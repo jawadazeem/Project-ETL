@@ -13,12 +13,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>blueprint</name>
 	<description>
-        This dashboard is a demonstration project for exploring how telecom billing data
-        can be displayed, summarized, and analyzed in a clean, modern interface. It shows how records
-        can be loaded, filtered, and ranked, and how overall charge patterns can be highlighted for insight.
+        A multi-cloud FinOps platform for ingesting, analyzing, and optimizing cloud billing data
+        across AWS, GCP, and Azure. It shows how cost records can be loaded, filtered, and ranked,
+        and how charge patterns can be highlighted for insight using AI-powered analytics.
     </description>
 
-    <url>https://telecom.jawadazeem.com/</url>
+    <url>https://blueprint.jawadazeem.com/</url>
 
     <licenses>
         <license>

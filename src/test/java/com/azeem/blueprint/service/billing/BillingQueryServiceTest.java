@@ -17,7 +17,6 @@ import com.azeem.blueprint.exception.web.QueryLimitExceededException;
 import com.azeem.blueprint.mapper.BillingRecordMapper;
 import com.azeem.blueprint.model.billing.BillingRecord;
 import com.azeem.blueprint.model.billing.BillingSummary;
-import com.azeem.blueprint.model.billing.Department;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import java.util.List;
 import java.util.UUID;
@@ -52,53 +51,57 @@ class BillingQueryServiceTest {
 
     entity1 = new BillingRecordEntity();
     entity1.setId(1L);
-    entity1.setDepartment(Department.IT.name());
+    entity1.setCloudProvider("AWS");
     entity1.setAccountName("Mark Wojick");
-    entity1.setEmployeeId("EMP4");
-    entity1.setPhoneNumber("7034305396");
+    entity1.setResourceId("i-0abc123");
     entity1.setBillingPeriod("2026-01");
-    entity1.setMinutesUsed(100);
-    entity1.setDataGbUsed(20);
-    entity1.setSmsCount(100);
+    entity1.setComputeHours(100.0);
+    entity1.setStorageGbUsed(20.0);
+    entity1.setApiRequests(100);
     entity1.setTotalCharge(70.00);
+    entity1.setServiceName("EC2");
+    entity1.setDescription("m5.large instance");
 
     domain1 =
         new BillingRecord(
             DATASET_ID,
             entity1.getAccountName(),
-            entity1.getEmployeeId(),
-            entity1.getDepartment(),
-            entity1.getPhoneNumber(),
+            entity1.getResourceId(),
+            entity1.getCloudProvider(),
             entity1.getBillingPeriod(),
-            entity1.getMinutesUsed(),
-            entity1.getDataGbUsed(),
-            entity1.getSmsCount(),
-            entity1.getTotalCharge());
+            entity1.getComputeHours(),
+            entity1.getStorageGbUsed(),
+            entity1.getApiRequests(),
+            entity1.getTotalCharge(),
+            entity1.getServiceName(),
+            entity1.getDescription());
 
     entity2 = new BillingRecordEntity();
     entity2.setId(2L);
-    entity2.setDepartment(Department.OPERATIONS.name());
+    entity2.setCloudProvider("GCP");
     entity2.setAccountName("Seth Alberts");
-    entity2.setEmployeeId("EMP5");
-    entity2.setPhoneNumber("2020397483");
+    entity2.setResourceId("proj-xyz-456");
     entity2.setBillingPeriod("2026-01");
-    entity2.setMinutesUsed(150);
-    entity2.setDataGbUsed(15);
-    entity2.setSmsCount(70);
+    entity2.setComputeHours(150.0);
+    entity2.setStorageGbUsed(15.0);
+    entity2.setApiRequests(70);
     entity2.setTotalCharge(80.00);
+    entity2.setServiceName("BigQuery");
+    entity2.setDescription("analytics query");
 
     domain2 =
         new BillingRecord(
             DATASET_ID,
             entity2.getAccountName(),
-            entity2.getEmployeeId(),
-            entity2.getDepartment(),
-            entity2.getPhoneNumber(),
+            entity2.getResourceId(),
+            entity2.getCloudProvider(),
             entity2.getBillingPeriod(),
-            entity2.getMinutesUsed(),
-            entity2.getDataGbUsed(),
-            entity2.getSmsCount(),
-            entity2.getTotalCharge());
+            entity2.getComputeHours(),
+            entity2.getStorageGbUsed(),
+            entity2.getApiRequests(),
+            entity2.getTotalCharge(),
+            entity2.getServiceName(),
+            entity2.getDescription());
   }
 
   @Test
@@ -128,7 +131,7 @@ class BillingQueryServiceTest {
 
     ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
     verify(repository).findByDatasetId(eq(DATASET_ID), captor.capture());
-    assertThat(captor.getValue().getSort()).isEqualTo(Sort.by("department").descending());
+    assertThat(captor.getValue().getSort()).isEqualTo(Sort.by("cloudProvider").descending());
     verify(mapper).mapToDomain(entity1);
   }
 
@@ -171,51 +174,52 @@ class BillingQueryServiceTest {
   }
 
   @Test
-  void shouldReturnRecordsByDepartmentCaseInsensitive() {
+  void shouldReturnRecordsByProviderCaseInsensitive() {
     Page<BillingRecordEntity> entityPage =
         new PageImpl<>(List.of(entity1), PageRequest.of(0, 5), 1);
-    when(repository.findByDatasetIdAndDepartmentIgnoreCase(
+    when(repository.findByDatasetIdAndCloudProviderIgnoreCase(
             eq(DATASET_ID), any(String.class), any(Pageable.class)))
         .thenReturn(entityPage);
 
-    service.getRecordsByDepartmentInDataset(DATASET_ID, "fInanCe", 0, 5);
+    service.getRecordsByProviderInDataset(DATASET_ID, "aws", 0, 5);
 
-    ArgumentCaptor<String> deptCaptor = ArgumentCaptor.forClass(String.class);
+    ArgumentCaptor<String> providerCaptor = ArgumentCaptor.forClass(String.class);
     verify(repository)
-        .findByDatasetIdAndDepartmentIgnoreCase(eq(DATASET_ID), deptCaptor.capture(), any());
-    assertThat(deptCaptor.getValue()).isEqualTo("fInanCe");
+        .findByDatasetIdAndCloudProviderIgnoreCase(
+            eq(DATASET_ID), providerCaptor.capture(), any());
+    assertThat(providerCaptor.getValue()).isEqualTo("aws");
     verify(mapper).mapToDomain(entity1);
   }
 
   @Test
-  void shouldReturnRecordsByDepartmentWithinBillingPeriod() {
+  void shouldReturnRecordsByProviderWithinBillingPeriod() {
     Page<BillingRecordEntity> entityPage =
         new PageImpl<>(List.of(entity1), PageRequest.of(0, 5), 1);
-    when(repository.findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
-            eq(DATASET_ID), eq("2026-01"), eq("IT"), any(Pageable.class)))
+    when(repository.findByDatasetIdAndBillingPeriodAndCloudProviderIgnoreCase(
+            eq(DATASET_ID), eq("2026-01"), eq("AWS"), any(Pageable.class)))
         .thenReturn(entityPage);
     when(mapper.mapToDomain(entity1)).thenReturn(domain1);
 
     Page<BillingRecord> result =
-        service.getRecordsByDepartmentInDatasetForPeriod(DATASET_ID, "2026-01", "IT", 0, 5);
+        service.getRecordsByProviderInDatasetForPeriod(DATASET_ID, "2026-01", "AWS", 0, 5);
 
     assertThat(result.getContent()).containsExactly(domain1);
     ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
     verify(repository)
-        .findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
-            eq(DATASET_ID), eq("2026-01"), eq("IT"), pageableCaptor.capture());
+        .findByDatasetIdAndBillingPeriodAndCloudProviderIgnoreCase(
+            eq(DATASET_ID), eq("2026-01"), eq("AWS"), pageableCaptor.capture());
     assertThat(pageableCaptor.getValue().getSort()).isEqualTo(Sort.by("totalCharge").descending());
   }
 
   @Test
-  void shouldReturnDistinctDepartmentsForDataset() {
-    when(repository.findDistinctDepartmentsByDatasetId(DATASET_ID))
-        .thenReturn(List.of("Finance", "IT"));
+  void shouldReturnDistinctProvidersForDataset() {
+    when(repository.findDistinctCloudProvidersByDatasetId(DATASET_ID))
+        .thenReturn(List.of("AWS", "GCP"));
 
-    List<String> departments = service.getDistinctDepartmentsInDataset(DATASET_ID);
+    List<String> providers = service.getDistinctProvidersInDataset(DATASET_ID);
 
-    assertThat(departments).containsExactly("Finance", "IT");
-    verify(repository).findDistinctDepartmentsByDatasetId(DATASET_ID);
+    assertThat(providers).containsExactly("AWS", "GCP");
+    verify(repository).findDistinctCloudProvidersByDatasetId(DATASET_ID);
   }
 
   @Test

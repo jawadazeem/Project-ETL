@@ -61,7 +61,7 @@ public class BillingIngestionService {
 
   @Transactional
   @CacheEvict(
-      value = {"billingSummaries", "billingPeriods", "departments", "alarms"},
+      value = {"billingSummaries", "billingPeriods", "providers", "alarms"},
       allEntries = true)
   public IngestionResult ingestData(@NotNull UUID datasetId, @NotNull InputStream inputStream) {
     int successCount = 0;

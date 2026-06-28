@@ -44,32 +44,7 @@ public class BillingRecordAssembler {
   public List<BillingRecord> assembleRecords(List<String[]> entries, UUID datasetId) {
     List<BillingRecord> records = new ArrayList<>();
     for (String[] entry : entries) {
-      // Expect the exact 9 fields BillingRecord uses
-      String accountName = entry[0];
-      String employeeId = entry[1];
-      String department = entry[2];
-      String phoneNumber = entry[3];
-      String billingPeriod = entry[4];
-
-      int minutesUsed = Integer.parseInt(entry[5]);
-      double dataGbUsed = Double.parseDouble(entry[6]);
-      int smsCount = Integer.parseInt(entry[7]);
-      double totalCharge = Double.parseDouble(entry[8]);
-
-      BillingRecord record =
-          new BillingRecord(
-              datasetId,
-              accountName,
-              employeeId,
-              department,
-              phoneNumber,
-              billingPeriod,
-              minutesUsed,
-              dataGbUsed,
-              smsCount,
-              totalCharge);
-
-      records.add(record);
+      records.add(assembleRecord(entry, datasetId));
     }
     log.info("Assembled {} BillingRecord instances from raw data.", records.size());
     return records;
@@ -77,26 +52,29 @@ public class BillingRecordAssembler {
 
   public BillingRecord assembleRecord(String[] entry, UUID datasetId) {
     String accountName = entry[0];
-    String employeeId = entry[1];
-    String department = entry[2];
-    String phoneNumber = entry[3];
-    String billingPeriod = entry[4];
+    String resourceId = entry[1];
+    String cloudProvider = entry[2];
+    String billingPeriod = entry[3];
 
-    int minutesUsed = Integer.parseInt(entry[5]);
-    double dataGbUsed = Double.parseDouble(entry[6]);
-    int smsCount = Integer.parseInt(entry[7]);
-    double totalCharge = Double.parseDouble(entry[8]);
+    double computeHours = Double.parseDouble(entry[4]);
+    double storageGbUsed = Double.parseDouble(entry[5]);
+    long apiRequests = Long.parseLong(entry[6]);
+    double totalCharge = Double.parseDouble(entry[7]);
+
+    String serviceName = entry[8];
+    String description = entry.length > 9 ? entry[9] : "";
 
     return new BillingRecord(
         datasetId,
         accountName,
-        employeeId,
-        department,
-        phoneNumber,
+        resourceId,
+        cloudProvider,
         billingPeriod,
-        minutesUsed,
-        dataGbUsed,
-        smsCount,
-        totalCharge);
+        computeHours,
+        storageGbUsed,
+        apiRequests,
+        totalCharge,
+        serviceName,
+        description);
   }
 }

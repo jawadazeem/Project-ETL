@@ -26,15 +26,16 @@ public class SchemaService {
             TABLE billing_records (
                 id BIGSERIAL PRIMARY KEY,
                 dataset_id UUID REFERENCES datasets(id),
-                department TEXT,
                 account_name TEXT,
-                employee_id TEXT,
-                phone_number TEXT,
+                resource_id TEXT,
+                cloud_provider TEXT,
                 billing_period TEXT,
-                minutes_used INT,
-                data_gb_used DOUBLE PRECISION,
-                sms_count INT,
-                total_charge DOUBLE PRECISION
+                compute_hours DOUBLE PRECISION,
+                storage_gb_used DOUBLE PRECISION,
+                api_requests BIGINT,
+                total_charge DOUBLE PRECISION,
+                service_name TEXT,
+                description TEXT
             );
 
             TABLE alarms (
@@ -47,9 +48,9 @@ public class SchemaService {
                 alarm_severity TEXT,
                 explanation TEXT,
                 timestamp TIMESTAMPTZ,
-                employee_id TEXT,
-                phone_number TEXT,
-                department TEXT
+                resource_id TEXT,
+                cloud_provider TEXT,
+                service_name TEXT
             );
             """;
   }

@@ -2,7 +2,7 @@ package com.azeem.blueprint.entity;
 
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
-import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
@@ -39,9 +39,9 @@ public class AlarmEntity {
   private @Enumerated(EnumType.STRING) AlarmSeverity alarmSeverity;
   private String explanation;
   private Instant timestamp;
-  private String employeeId;
-  private String phoneNumber;
-  private @Enumerated(EnumType.STRING) Department department;
+  private String resourceId;
+  private String serviceName;
+  private @Enumerated(EnumType.STRING) CloudProvider cloudProvider;
 
   public AlarmEntity() {}
 
@@ -61,28 +61,28 @@ public class AlarmEntity {
     this.alarmScope = alarmScope;
   }
 
-  public Department getDepartment() {
-    return department;
+  public CloudProvider getCloudProvider() {
+    return cloudProvider;
   }
 
-  public void setDepartment(Department department) {
-    this.department = department;
+  public void setCloudProvider(CloudProvider cloudProvider) {
+    this.cloudProvider = cloudProvider;
   }
 
-  public String getEmployeeId() {
-    return employeeId;
+  public String getResourceId() {
+    return resourceId;
   }
 
-  public void setEmployeeId(String employeeId) {
-    this.employeeId = employeeId;
+  public void setResourceId(String resourceId) {
+    this.resourceId = resourceId;
   }
 
-  public String getPhoneNumber() {
-    return phoneNumber;
+  public String getServiceName() {
+    return serviceName;
   }
 
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
+  public void setServiceName(String serviceName) {
+    this.serviceName = serviceName;
   }
 
   public String getBillingPeriod() {

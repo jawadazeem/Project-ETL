@@ -13,4 +13,6 @@
     <include file="db/changelog/006-create-corporate-info.xml"/>
     <include file="db/changelog/007-create-pdf-reports.xml"/>
     <include file="db/changelog/008-add-archived-to-datasets.xml"/>
+    <include file="db/changelog/009-transform-to-cloud-billing.xml"/>
+    <include file="db/changelog/010-transform-alarms-to-cloud.xml"/>
 </databaseChangeLog>

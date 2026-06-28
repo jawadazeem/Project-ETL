@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="010-transform-alarms-to-cloud" author="jawad">
+        <!-- Rename employee_id to resource_id -->
+        <renameColumn tableName="alarms"
+                      oldColumnName="employee_id"
+                      newColumnName="resource_id"
+                      columnDataType="varchar(100)"/>
+
+        <!-- Rename department to cloud_provider -->
+        <renameColumn tableName="alarms"
+                      oldColumnName="department"
+                      newColumnName="cloud_provider"
+                      columnDataType="varchar(100)"/>
+
+        <!-- Drop phone_number (no cloud equivalent) -->
+        <dropColumn tableName="alarms" columnName="phone_number"/>
+
+        <!-- Add service_name for resource-level alarms -->
+        <addColumn tableName="alarms">
+            <column name="service_name" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

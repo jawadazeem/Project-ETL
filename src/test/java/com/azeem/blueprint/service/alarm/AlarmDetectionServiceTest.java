@@ -12,7 +12,6 @@ import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
-import com.azeem.blueprint.model.billing.Department;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +29,9 @@ class AlarmDetectionServiceTest {
   void setUp() {
     AlarmConfig config = new AlarmConfig();
 
-    AlarmConfig.Department dept = new AlarmConfig.Department();
-    dept.setMonthlyLimit(7500.0);
-    config.setDepartment(dept);
+    AlarmConfig.Provider provider = new AlarmConfig.Provider();
+    provider.setMonthlyLimit(7500.0);
+    config.setProvider(provider);
 
     AlarmConfig.Individual individual = new AlarmConfig.Individual();
     individual.setLow(250.0);
@@ -48,18 +47,26 @@ class AlarmDetectionServiceTest {
     detectionService = new AlarmDetectionService(config);
   }
 
-  private BillingRecord record(String dept, String empId, String phone, double charge) {
+  private BillingRecord record(String cloudProvider, String resourceId, double charge) {
     return new BillingRecord(
-        DATASET_ID, "Acme Corp", empId, dept, phone, BILLING_PERIOD, 0, 0.0, 0, charge);
+        DATASET_ID,
+        "Acme Corp",
+        resourceId,
+        cloudProvider,
+        BILLING_PERIOD,
+        0,
+        0.0,
+        0,
+        charge,
+        "EC2",
+        "test resource");
   }
 
   @Test
   @DisplayName("No alarms when all charges are well within limits")
   void noAlarms_whenAllChargesAreNormal() {
     List<BillingRecord> records =
-        List.of(
-            record("ENGINEERING", "E1", "555-0001", 100.0),
-            record("SALES", "E2", "555-0002", 150.0));
+        List.of(record("AWS", "i-001", 100.0), record("GCP", "proj-002", 150.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
@@ -75,101 +82,95 @@ class AlarmDetectionServiceTest {
   }
 
   @Test
-  @DisplayName("Department alarm fired when department total exceeds monthly limit")
-  void departmentAlarm_whenDeptTotalExceedsMonthlyLimit() {
+  @DisplayName("Provider alarm fired when provider total exceeds monthly limit")
+  void providerAlarm_whenProviderTotalExceedsMonthlyLimit() {
     // 4000 + 4000 = 8000 > 7500
     List<BillingRecord> records =
-        List.of(
-            record("ENGINEERING", "E1", "555-0001", 4000.0),
-            record("ENGINEERING", "E2", "555-0002", 4000.0));
+        List.of(record("AWS", "i-001", 4000.0), record("AWS", "i-002", 4000.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    List<Alarm> deptAlarms =
-        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.DEPARTMENT).toList();
-    assertThat(deptAlarms).hasSize(1);
-    assertThat(deptAlarms.get(0).department()).isEqualTo(Department.ENGINEERING);
-    assertThat(deptAlarms.get(0).datasetId()).isEqualTo(DATASET_ID);
-    assertThat(deptAlarms.get(0).billingPeriod()).isEqualTo(BILLING_PERIOD);
+    List<Alarm> providerAlarms =
+        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.PROVIDER).toList();
+    assertThat(providerAlarms).hasSize(1);
+    assertThat(providerAlarms.get(0).datasetId()).isEqualTo(DATASET_ID);
+    assertThat(providerAlarms.get(0).billingPeriod()).isEqualTo(BILLING_PERIOD);
   }
 
   @Test
-  @DisplayName("No department alarm when total is below monthly limit")
-  void noDepartmentAlarm_whenTotalBelowLimit() {
+  @DisplayName("No provider alarm when total is below monthly limit")
+  void noProviderAlarm_whenTotalBelowLimit() {
     List<BillingRecord> records =
-        List.of(
-            record("ENGINEERING", "E1", "555-0001", 3000.0),
-            record("ENGINEERING", "E2", "555-0002", 3000.0));
+        List.of(record("AWS", "i-001", 3000.0), record("AWS", "i-002", 3000.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.DEPARTMENT).toList())
+    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.PROVIDER).toList())
         .isEmpty();
   }
 
   @Test
-  @DisplayName("Records with null department are skipped for department alarm check")
-  void recordWithNullDepartment_doesNotTriggerDeptAlarm() {
-    BillingRecord nullDeptRecord =
+  @DisplayName("Records with null cloud provider are skipped for provider alarm check")
+  void recordWithNullProvider_doesNotTriggerProviderAlarm() {
+    BillingRecord nullProviderRecord =
         new BillingRecord(
-            DATASET_ID, "Acme", "E1", null, "555-0001", BILLING_PERIOD, 0, 0.0, 0, 9000.0);
+            DATASET_ID, "Acme", "i-001", null, BILLING_PERIOD, 0, 0.0, 0, 9000.0, "EC2", "desc");
 
     List<Alarm> alarms =
-        detectionService.detectAlarms(DATASET_ID, List.of(nullDeptRecord), BILLING_PERIOD);
+        detectionService.detectAlarms(DATASET_ID, List.of(nullProviderRecord), BILLING_PERIOD);
 
-    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.DEPARTMENT).toList())
+    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.PROVIDER).toList())
         .isEmpty();
   }
 
   @Test
-  @DisplayName("Individual LOW alarm when charge is between 250 and 370")
-  void individualAlarm_lowSeverity_whenChargeInLowRange() {
-    List<BillingRecord> records = List.of(record("IT", "E1", "555-0001", 300.0));
+  @DisplayName("Resource LOW alarm when charge is between 250 and 370")
+  void resourceAlarm_lowSeverity_whenChargeInLowRange() {
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 300.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    List<Alarm> individualAlarms =
-        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.INDIVIDUAL).toList();
-    assertThat(individualAlarms).hasSize(1);
-    assertThat(individualAlarms.get(0).alarmSeverity()).isEqualTo(AlarmSeverity.LOW);
-    assertThat(individualAlarms.get(0).employeeId()).isEqualTo("E1");
-    assertThat(individualAlarms.get(0).phoneNumber()).isEqualTo("555-0001");
+    List<Alarm> resourceAlarms =
+        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.RESOURCE).toList();
+    assertThat(resourceAlarms).hasSize(1);
+    assertThat(resourceAlarms.get(0).alarmSeverity()).isEqualTo(AlarmSeverity.LOW);
+    assertThat(resourceAlarms.get(0).resourceId()).isEqualTo("i-001");
   }
 
   @Test
-  @DisplayName("Individual MEDIUM alarm when charge is between 370 and 500")
-  void individualAlarm_mediumSeverity_whenChargeInMediumRange() {
-    List<BillingRecord> records = List.of(record("IT", "E1", "555-0001", 400.0));
+  @DisplayName("Resource MEDIUM alarm when charge is between 370 and 500")
+  void resourceAlarm_mediumSeverity_whenChargeInMediumRange() {
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 400.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    List<Alarm> individualAlarms =
-        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.INDIVIDUAL).toList();
-    assertThat(individualAlarms).hasSize(1);
-    assertThat(individualAlarms.get(0).alarmSeverity()).isEqualTo(AlarmSeverity.MEDIUM);
+    List<Alarm> resourceAlarms =
+        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.RESOURCE).toList();
+    assertThat(resourceAlarms).hasSize(1);
+    assertThat(resourceAlarms.get(0).alarmSeverity()).isEqualTo(AlarmSeverity.MEDIUM);
   }
 
   @Test
-  @DisplayName("Individual HIGH alarm when charge is 500 or more")
-  void individualAlarm_highSeverity_whenChargeAboveHigh() {
-    List<BillingRecord> records = List.of(record("IT", "E1", "555-0001", 600.0));
+  @DisplayName("Resource HIGH alarm when charge is 500 or more")
+  void resourceAlarm_highSeverity_whenChargeAboveHigh() {
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 600.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    List<Alarm> individualAlarms =
-        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.INDIVIDUAL).toList();
-    assertThat(individualAlarms).hasSize(1);
-    assertThat(individualAlarms.get(0).alarmSeverity()).isEqualTo(AlarmSeverity.HIGH);
+    List<Alarm> resourceAlarms =
+        alarms.stream().filter(a -> a.alarmScope() == AlarmScope.RESOURCE).toList();
+    assertThat(resourceAlarms).hasSize(1);
+    assertThat(resourceAlarms.get(0).alarmSeverity()).isEqualTo(AlarmSeverity.HIGH);
   }
 
   @Test
-  @DisplayName("No individual alarm when charge is below low threshold")
-  void noIndividualAlarm_whenChargeBelowLow() {
-    List<BillingRecord> records = List.of(record("IT", "E1", "555-0001", 100.0));
+  @DisplayName("No resource alarm when charge is below low threshold")
+  void noResourceAlarm_whenChargeBelowLow() {
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 100.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.INDIVIDUAL).toList())
+    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.RESOURCE).toList())
         .isEmpty();
   }
 
@@ -177,7 +178,7 @@ class AlarmDetectionServiceTest {
   @DisplayName("Account LOW alarm when grand total is between 45000 and 60000")
   void accountAlarmLow_whenGrandTotalBetweenLowAndHigh() {
     // 50000 > 45000 && < 60000 → accountLow
-    List<BillingRecord> records = List.of(record("FINANCE", "E1", "555-0001", 50000.0));
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 50000.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
@@ -192,7 +193,7 @@ class AlarmDetectionServiceTest {
   @DisplayName("Account HIGH alarm when grand total is 60000 or more")
   void accountAlarmHigh_whenGrandTotalExceedsHigh() {
     // 70000 >= 60000 → accountHigh
-    List<BillingRecord> records = List.of(record("FINANCE", "E1", "555-0001", 70000.0));
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 70000.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
@@ -206,9 +207,7 @@ class AlarmDetectionServiceTest {
   @DisplayName("No account alarm when grand total is below low threshold")
   void noAccountAlarm_whenGrandTotalBelowLow() {
     List<BillingRecord> records =
-        List.of(
-            record("ENGINEERING", "E1", "555-0001", 100.0),
-            record("SALES", "E2", "555-0002", 200.0));
+        List.of(record("AWS", "i-001", 100.0), record("GCP", "proj-002", 200.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
@@ -219,16 +218,16 @@ class AlarmDetectionServiceTest {
   @Test
   @DisplayName("Multiple alarm types can be generated from a single run")
   void multipleAlarmTypes_generatedTogether() {
-    // dept total 8000 > 7500, individual 600 >= 500
+    // provider total 8000 > 7500, resource 600 >= 500
     List<BillingRecord> records =
         List.of(
-            record("ENGINEERING", "E1", "555-0001", 4000.0),
-            record("ENGINEERING", "E2", "555-0002", 4000.0),
-            record("SALES", "E3", "555-0003", 600.0));
+            record("AWS", "i-001", 4000.0),
+            record("AWS", "i-002", 4000.0),
+            record("GCP", "proj-003", 600.0));
 
     List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
 
-    assertThat(alarms.stream().anyMatch(a -> a.alarmScope() == AlarmScope.DEPARTMENT)).isTrue();
-    assertThat(alarms.stream().anyMatch(a -> a.alarmScope() == AlarmScope.INDIVIDUAL)).isTrue();
+    assertThat(alarms.stream().anyMatch(a -> a.alarmScope() == AlarmScope.PROVIDER)).isTrue();
+    assertThat(alarms.stream().anyMatch(a -> a.alarmScope() == AlarmScope.RESOURCE)).isTrue();
   }
 }

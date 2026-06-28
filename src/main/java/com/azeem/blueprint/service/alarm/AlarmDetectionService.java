@@ -9,7 +9,7 @@ import com.azeem.blueprint.config.AlarmConfig;
 import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
-import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import java.util.*;
 import org.springframework.stereotype.Service;
 
@@ -32,32 +32,32 @@ public class AlarmDetectionService {
 
   public List<Alarm> detectAlarms(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
-    List<Alarm> alarms = getDepartmentsOverLimit(datasetId, records, billingPeriod);
-    alarms.addAll(getIndividualChargesOverLimit(datasetId, records, billingPeriod));
+    List<Alarm> alarms = getProvidersOverLimit(datasetId, records, billingPeriod);
+    alarms.addAll(getResourceChargesOverLimit(datasetId, records, billingPeriod));
     Optional<Alarm> grandTotalAlarm = getGrandTotalOverLimit(datasetId, records, billingPeriod);
     grandTotalAlarm.ifPresent(alarms::add);
     return alarms;
   }
 
-  /** Detects individual alarms only — safe to call per-chunk since each record is independent. */
-  public List<Alarm> detectIndividualAlarms(
+  /** Detects resource alarms only — safe to call per-chunk since each record is independent. */
+  public List<Alarm> detectResourceAlarms(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
-    return getIndividualChargesOverLimit(datasetId, records, billingPeriod);
+    return getResourceChargesOverLimit(datasetId, records, billingPeriod);
   }
 
-  /** Detects department alarms from pre-computed totals (full dataset, not chunked). */
-  public List<Alarm> detectDepartmentAlarms(
-      UUID datasetId, Map<String, Double> departmentTotals, String billingPeriod) {
+  /** Detects provider alarms from pre-computed totals (full dataset, not chunked). */
+  public List<Alarm> detectProviderAlarms(
+      UUID datasetId, Map<String, Double> providerTotals, String billingPeriod) {
     List<Alarm> alarms = new ArrayList<>();
-    double deptLimit = alarmConfig.getDepartment().getMonthlyLimit();
+    double providerLimit = alarmConfig.getProvider().getMonthlyLimit();
 
-    for (Map.Entry<String, Double> entry : departmentTotals.entrySet()) {
-      if (entry.getValue() > deptLimit) {
+    for (Map.Entry<String, Double> entry : providerTotals.entrySet()) {
+      if (entry.getValue() > providerLimit) {
         try {
-          Department dept = Department.fromString(entry.getKey());
-          alarms.add(Alarm.department(datasetId, billingPeriod, dept));
+          CloudProvider provider = CloudProvider.fromString(entry.getKey());
+          alarms.add(Alarm.provider(datasetId, billingPeriod, provider));
         } catch (IllegalArgumentException ignored) {
-          // Unknown department name — skip
+          // Unknown provider name — skip
         }
       }
     }
@@ -79,21 +79,21 @@ public class AlarmDetectionService {
     return Optional.empty();
   }
 
-  private List<Alarm> getDepartmentsOverLimit(
+  private List<Alarm> getProvidersOverLimit(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
     List<Alarm> alarms = new ArrayList<>();
-    Map<Department, Double> totals = new HashMap<>();
+    Map<CloudProvider, Double> totals = new HashMap<>();
 
     for (BillingRecord r : records) {
-      if (r.department() == null) continue;
-      totals.merge(Department.fromString(r.department()), r.totalCharge(), Double::sum);
+      if (r.cloudProvider() == null) continue;
+      totals.merge(CloudProvider.fromString(r.cloudProvider()), r.totalCharge(), Double::sum);
     }
 
-    double deptLimit = alarmConfig.getDepartment().getMonthlyLimit();
+    double providerLimit = alarmConfig.getProvider().getMonthlyLimit();
 
-    for (Department d : totals.keySet()) {
-      if (totals.getOrDefault(d, 0.0) > deptLimit) {
-        Alarm alarm = Alarm.department(datasetId, billingPeriod, d);
+    for (CloudProvider p : totals.keySet()) {
+      if (totals.getOrDefault(p, 0.0) > providerLimit) {
+        Alarm alarm = Alarm.provider(datasetId, billingPeriod, p);
         alarms.add(alarm);
       }
     }
@@ -101,7 +101,7 @@ public class AlarmDetectionService {
     return alarms;
   }
 
-  private List<Alarm> getIndividualChargesOverLimit(
+  private List<Alarm> getResourceChargesOverLimit(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
     List<Alarm> alarms = new ArrayList<>();
 
@@ -124,12 +124,10 @@ public class AlarmDetectionService {
         severity = AlarmSeverity.HIGH;
         message = "Significantly exceeds Charge Limit (TAKE ACTION)";
       } else {
-        // No alarm
         continue;
       }
       Alarm alarm =
-          Alarm.individual(
-              datasetId, billingPeriod, severity, message, r.employeeId(), r.phoneNumber());
+          Alarm.resource(datasetId, billingPeriod, severity, message, r.resourceId(), r.serviceName());
       alarms.add(alarm);
     }
 

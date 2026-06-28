@@ -48,28 +48,30 @@ class BillingRecordMapperTest {
         new BillingRecord(
             DATASET_ID,
             "Acme Corporation",
-            "EMP-1001",
-            "FINANCE",
-            "+15551234567",
+            "i-0abc123def",
+            "AWS",
             "2026-01",
-            1240,
+            1240.0,
             18.75,
             320,
-            249.99);
+            249.99,
+            "EC2",
+            "m5.xlarge production instance");
 
     BillingRecordEntity result = billingRecordMapper.mapToEntity(record);
 
     assertThat(result).isNotNull();
     assertThat(result.getDataset()).isEqualTo(datasetEntity);
     assertThat(result.getAccountName()).isEqualTo("Acme Corporation");
-    assertThat(result.getEmployeeId()).isEqualTo("EMP-1001");
-    assertThat(result.getDepartment()).isEqualTo("FINANCE");
-    assertThat(result.getPhoneNumber()).isEqualTo("+15551234567");
+    assertThat(result.getResourceId()).isEqualTo("i-0abc123def");
+    assertThat(result.getCloudProvider()).isEqualTo("AWS");
     assertThat(result.getBillingPeriod()).isEqualTo("2026-01");
-    assertThat(result.getMinutesUsed()).isEqualTo(1240);
-    assertThat(result.getDataGbUsed()).isEqualTo(18.75);
-    assertThat(result.getSmsCount()).isEqualTo(320);
+    assertThat(result.getComputeHours()).isEqualTo(1240.0);
+    assertThat(result.getStorageGbUsed()).isEqualTo(18.75);
+    assertThat(result.getApiRequests()).isEqualTo(320);
     assertThat(result.getTotalCharge()).isEqualTo(249.99);
+    assertThat(result.getServiceName()).isEqualTo("EC2");
+    assertThat(result.getDescription()).isEqualTo("m5.xlarge production instance");
   }
 
   @Test
@@ -79,28 +81,30 @@ class BillingRecordMapperTest {
     entity.setId(1L);
     entity.setDataset(datasetEntity);
     entity.setAccountName("Acme Corporation");
-    entity.setEmployeeId("EMP-1001");
-    entity.setDepartment("FINANCE");
-    entity.setPhoneNumber("+15551234567");
+    entity.setResourceId("i-0abc123def");
+    entity.setCloudProvider("AWS");
     entity.setBillingPeriod("2026-01");
-    entity.setMinutesUsed(1240);
-    entity.setDataGbUsed(18.75);
-    entity.setSmsCount(320);
+    entity.setComputeHours(1240.0);
+    entity.setStorageGbUsed(18.75);
+    entity.setApiRequests(320);
     entity.setTotalCharge(249.99);
+    entity.setServiceName("EC2");
+    entity.setDescription("m5.xlarge production instance");
 
     BillingRecord result = billingRecordMapper.mapToDomain(entity);
 
     assertThat(result).isNotNull();
     assertThat(result.datasetId()).isEqualTo(DATASET_ID);
     assertThat(result.accountName()).isEqualTo("Acme Corporation");
-    assertThat(result.employeeId()).isEqualTo("EMP-1001");
-    assertThat(result.department()).isEqualTo("FINANCE");
-    assertThat(result.phoneNumber()).isEqualTo("+15551234567");
+    assertThat(result.resourceId()).isEqualTo("i-0abc123def");
+    assertThat(result.cloudProvider()).isEqualTo("AWS");
     assertThat(result.billingPeriod()).isEqualTo("2026-01");
-    assertThat(result.minutesUsed()).isEqualTo(1240);
-    assertThat(result.dataGbUsed()).isEqualTo(18.75);
-    assertThat(result.smsCount()).isEqualTo(320);
+    assertThat(result.computeHours()).isEqualTo(1240.0);
+    assertThat(result.storageGbUsed()).isEqualTo(18.75);
+    assertThat(result.apiRequests()).isEqualTo(320);
     assertThat(result.totalCharge()).isEqualTo(249.99);
+    assertThat(result.serviceName()).isEqualTo("EC2");
+    assertThat(result.description()).isEqualTo("m5.xlarge production instance");
   }
 
   @Test
@@ -109,23 +113,21 @@ class BillingRecordMapperTest {
     when(datasetRepository.getReferenceById(DATASET_ID)).thenReturn(datasetEntity);
 
     BillingRecord record =
-        new BillingRecord(DATASET_ID, null, null, null, null, "2026-01", 0, 0.0, 0, 0.0);
+        new BillingRecord(DATASET_ID, null, null, null, "2026-01", 0.0, 0.0, 0, 0.0, null, null);
 
     BillingRecordEntity entity = billingRecordMapper.mapToEntity(record);
 
     assertThat(entity.getAccountName()).isNull();
-    assertThat(entity.getEmployeeId()).isNull();
-    assertThat(entity.getDepartment()).isNull();
-    assertThat(entity.getPhoneNumber()).isNull();
+    assertThat(entity.getResourceId()).isNull();
+    assertThat(entity.getCloudProvider()).isNull();
 
     entity.setDataset(datasetEntity);
     BillingRecord mappedBack = billingRecordMapper.mapToDomain(entity);
 
     assertThat(mappedBack.datasetId()).isEqualTo(DATASET_ID);
     assertThat(mappedBack.accountName()).isNull();
-    assertThat(mappedBack.employeeId()).isNull();
-    assertThat(mappedBack.department()).isNull();
-    assertThat(mappedBack.phoneNumber()).isNull();
+    assertThat(mappedBack.resourceId()).isNull();
+    assertThat(mappedBack.cloudProvider()).isNull();
   }
 
   @Test
@@ -136,29 +138,30 @@ class BillingRecordMapperTest {
     BillingRecord record =
         new BillingRecord(
             DATASET_ID,
-            "Enterprise Telecom",
-            "EMP-9001",
-            "OPERATIONS",
-            "+15559876543",
+            "Enterprise Cloud",
+            "arn:aws:ec2:us-east-1:123456789:instance/i-9001",
+            "AWS",
             "2026-02",
-            99999,
+            99999.0,
             9999.99,
             50000,
-            123456.78);
+            123456.78,
+            "EC2",
+            "high-memory instance");
 
     BillingRecordEntity entity = billingRecordMapper.mapToEntity(record);
 
-    assertThat(entity.getMinutesUsed()).isEqualTo(99999);
-    assertThat(entity.getDataGbUsed()).isEqualTo(9999.99);
-    assertThat(entity.getSmsCount()).isEqualTo(50000);
+    assertThat(entity.getComputeHours()).isEqualTo(99999.0);
+    assertThat(entity.getStorageGbUsed()).isEqualTo(9999.99);
+    assertThat(entity.getApiRequests()).isEqualTo(50000);
     assertThat(entity.getTotalCharge()).isEqualTo(123456.78);
 
     entity.setDataset(datasetEntity);
     BillingRecord mappedBack = billingRecordMapper.mapToDomain(entity);
 
-    assertThat(mappedBack.minutesUsed()).isEqualTo(99999);
-    assertThat(mappedBack.dataGbUsed()).isEqualTo(9999.99);
-    assertThat(mappedBack.smsCount()).isEqualTo(50000);
+    assertThat(mappedBack.computeHours()).isEqualTo(99999.0);
+    assertThat(mappedBack.storageGbUsed()).isEqualTo(9999.99);
+    assertThat(mappedBack.apiRequests()).isEqualTo(50000);
     assertThat(mappedBack.totalCharge()).isEqualTo(123456.78);
   }
 }

@@ -93,7 +93,7 @@ public class BillingQueryService {
   }
 
   public Page<BillingRecord> getAllRecordsInDataset(UUID dataset, int page, int size) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by("department").descending());
+    Pageable pageable = PageRequest.of(page, size, Sort.by("cloudProvider").descending());
 
     Page<BillingRecord> records =
         repository.findByDatasetId(dataset, pageable).map(mapper::mapToDomain);
@@ -102,39 +102,38 @@ public class BillingQueryService {
     return records;
   }
 
-  public Page<BillingRecord> getRecordsByDepartmentInDataset(
-      UUID datasetId, @NotBlank String department, int page, int size) {
+  public Page<BillingRecord> getRecordsByProviderInDataset(
+      UUID datasetId, @NotBlank String provider, int page, int size) {
     Pageable pageRequest = PageRequest.of(page, size, Sort.by("totalCharge").descending());
     Page<BillingRecordEntity> entityPage =
-        repository.findByDatasetIdAndDepartmentIgnoreCase(datasetId, department, pageRequest);
-    log.info("Found {} records in DB for dept: {}", entityPage.getTotalElements(), department);
+        repository.findByDatasetIdAndCloudProviderIgnoreCase(datasetId, provider, pageRequest);
+    log.info("Found {} records in DB for provider: {}", entityPage.getTotalElements(), provider);
 
     return entityPage.map(mapper::mapToDomain);
   }
 
-  public Page<BillingRecord> getRecordsByDepartmentInDatasetForPeriod(
+  public Page<BillingRecord> getRecordsByProviderInDatasetForPeriod(
       UUID datasetId,
       @NotBlank String billingPeriod,
-      @NotBlank String department,
+      @NotBlank String provider,
       int page,
       int size) {
     Pageable pageRequest = PageRequest.of(page, size, Sort.by("totalCharge").descending());
     Page<BillingRecordEntity> entityPage =
-        repository.findByDatasetIdAndBillingPeriodAndDepartmentIgnoreCase(
-            datasetId, billingPeriod, department, pageRequest);
+        repository.findByDatasetIdAndBillingPeriodAndCloudProviderIgnoreCase(
+            datasetId, billingPeriod, provider, pageRequest);
     log.info(
-        "Found {} records in DB for dept: {} and period: {}",
+        "Found {} records in DB for provider: {} and period: {}",
         entityPage.getTotalElements(),
-        department,
+        provider,
         billingPeriod);
 
     return entityPage.map(mapper::mapToDomain);
   }
 
-  // DB-backed distinct departments
-  @Cacheable(value = "departments", key = "#datasetId")
-  public List<String> getDistinctDepartmentsInDataset(UUID datasetId) {
-    return repository.findDistinctDepartmentsByDatasetId(datasetId);
+  @Cacheable(value = "providers", key = "#datasetId")
+  public List<String> getDistinctProvidersInDataset(UUID datasetId) {
+    return repository.findDistinctCloudProvidersByDatasetId(datasetId);
   }
 
   public Page<BillingRecord> getTopNRecordsInDataset(UUID datasetId, @Min(1) int n) {

@@ -57,7 +57,7 @@ public class MartinService {
     Prompt explanationPrompt =
         new Prompt(
             List.of(
-                new SystemMessage("You are Martin, a billing analyst."),
+                new SystemMessage("You are Martin, a cloud cost analyst."),
                 new UserMessage("Question: " + promptText),
                 new UserMessage("SQL: " + sqlResponse.getSql()),
                 new UserMessage("Results: " + results)));

@@ -62,13 +62,13 @@ class BillingControllerTest {
   }
 
   @Test
-  void shouldReturnDepartments() throws Exception {
-    when(billingQueryService.getDistinctDepartmentsInDataset(any(UUID.class)))
-        .thenReturn(List.of("Finance", "IT"));
+  void shouldReturnProviders() throws Exception {
+    when(billingQueryService.getDistinctProvidersInDataset(any(UUID.class)))
+        .thenReturn(List.of("AWS", "GCP"));
 
-    mockMvc.perform(get(BASE + "/records/departments")).andExpect(status().isOk());
+    mockMvc.perform(get(BASE + "/records/providers")).andExpect(status().isOk());
 
-    verify(billingQueryService).getDistinctDepartmentsInDataset(any(UUID.class));
+    verify(billingQueryService).getDistinctProvidersInDataset(any(UUID.class));
   }
 
   @Test
@@ -105,38 +105,38 @@ class BillingControllerTest {
   }
 
   @Test
-  void defaultPageAndSize_shouldReturnRecordsByDepartment() throws Exception {
-    mockMvc.perform(get(BASE + "/records/departments/IT")).andExpect(status().isOk());
+  void defaultPageAndSize_shouldReturnRecordsByProvider() throws Exception {
+    mockMvc.perform(get(BASE + "/records/providers/AWS")).andExpect(status().isOk());
 
     verify(billingQueryService)
-        .getRecordsByDepartmentInDataset(any(UUID.class), eq("IT"), eq(0), eq(20));
+        .getRecordsByProviderInDataset(any(UUID.class), eq("AWS"), eq(0), eq(20));
   }
 
   @Test
-  void customPageAndSize_shouldReturnRecordsByDepartment() throws Exception {
+  void customPageAndSize_shouldReturnRecordsByProvider() throws Exception {
     mockMvc
-        .perform(get(BASE + "/records/departments/IT").param("page", "1").param("size", "20"))
+        .perform(get(BASE + "/records/providers/AWS").param("page", "1").param("size", "20"))
         .andExpect(status().isOk());
 
     verify(billingQueryService)
-        .getRecordsByDepartmentInDataset(any(UUID.class), eq("IT"), eq(1), eq(20));
+        .getRecordsByProviderInDataset(any(UUID.class), eq("AWS"), eq(1), eq(20));
   }
 
   @Test
-  void shouldReturnRecordsByDepartmentAndBillingPeriod() throws Exception {
+  void shouldReturnRecordsByProviderAndBillingPeriod() throws Exception {
     mockMvc
         .perform(
-            get(BASE + "/records/departments/IT")
+            get(BASE + "/records/providers/AWS")
                 .param("billingPeriod", "2026-01")
                 .param("page", "1")
                 .param("size", "20"))
         .andExpect(status().isOk());
 
     verify(billingQueryService)
-        .getRecordsByDepartmentInDatasetForPeriod(
-            any(UUID.class), eq("2026-01"), eq("IT"), eq(1), eq(20));
+        .getRecordsByProviderInDatasetForPeriod(
+            any(UUID.class), eq("2026-01"), eq("AWS"), eq(1), eq(20));
     verify(billingQueryService, never())
-        .getRecordsByDepartmentInDataset(any(UUID.class), anyString(), anyInt(), anyInt());
+        .getRecordsByProviderInDataset(any(UUID.class), anyString(), anyInt(), anyInt());
   }
 
   @Test

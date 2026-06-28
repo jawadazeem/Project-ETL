@@ -7,7 +7,7 @@ package com.azeem.blueprint.model.alarm;
 
 import static com.azeem.blueprint.model.alarm.AlarmSeverity.LOW;
 
-import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import jakarta.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -16,8 +16,8 @@ import java.util.UUID;
 /**
  * Alarm DTO
  *
- * <p>An Alarm object that represents an alarm for either the entire account, a department or an
- * individual
+ * <p>An Alarm object that represents an alarm for either the entire account, a cloud provider, or
+ * an individual resource.
  */
 public record Alarm(
     UUID id,
@@ -29,63 +29,64 @@ public record Alarm(
     AlarmSeverity alarmSeverity,
     String explanation,
     Instant timestamp,
-    @Nullable String employeeId,
-    @Nullable String phoneNumber,
-    @Nullable Department department) {
+    @Nullable String resourceId,
+    @Nullable String serviceName,
+    @Nullable CloudProvider cloudProvider) {
 
-  public static Alarm individual(
+  public static Alarm resource(
       UUID datasetId,
       String billingPeriod,
       AlarmSeverity severity,
       String message,
-      String employeeId,
-      String phoneNumber) {
+      String resourceId,
+      String serviceName) {
     return new Alarm(
-        null, // DB generates ID
+        null,
         datasetId,
         generateBusinessKey(
             datasetId,
             billingPeriod,
-            AlarmScope.DEPARTMENT.toString(),
+            AlarmScope.RESOURCE.toString(),
             severity.toString(),
-            employeeId,
+            resourceId,
             ""),
-        AlarmScope.INDIVIDUAL,
+        AlarmScope.RESOURCE,
         billingPeriod,
-        "Individual Charge Limit Exceeded",
+        "Resource Charge Limit Exceeded",
         severity,
         message,
         Instant.now(),
-        employeeId,
-        phoneNumber,
+        resourceId,
+        serviceName,
         null);
   }
 
-  public static Alarm department(UUID datasetId, String billingPeriod, Department department) {
+  public static Alarm provider(
+      UUID datasetId, String billingPeriod, CloudProvider cloudProvider) {
     return new Alarm(
-        null, // DB generates ID
+        null,
         datasetId,
         generateBusinessKey(
             datasetId,
             billingPeriod,
-            AlarmScope.DEPARTMENT.toString(),
+            AlarmScope.PROVIDER.toString(),
             AlarmSeverity.LOW.toString(),
             "",
-            department.toString()),
-        AlarmScope.DEPARTMENT,
+            cloudProvider.toString()),
+        AlarmScope.PROVIDER,
         billingPeriod,
-        "Department Charge Exceeded",
+        "Provider Spend Exceeded",
         LOW,
-        department + " department Exceeds Charge Limit",
+        cloudProvider + " cloud spend exceeds charge limit",
         Instant.now(),
         null,
         null,
-        department);
+        cloudProvider);
   }
 
   public static Alarm accountLow(UUID datasetId, String billingPeriod) {
     return new Alarm(
-        null, // DB generates PK ID
+        null,
         datasetId,
         generateBusinessKey(
             datasetId,
@@ -98,7 +99,7 @@ public record Alarm(
         billingPeriod,
         "Total Account Budget Exceeded: LOW",
         AlarmSeverity.LOW,
-        "Your account's telecom bill has slightly exceeded its monthly budget.",
+        "Your account's cloud spend has slightly exceeded its monthly budget.",
         Instant.now(),
         null,
         null,
@@ -107,7 +108,7 @@ public record Alarm(
 
   public static Alarm accountHigh(UUID datasetId, String billingPeriod) {
     return new Alarm(
-        null, // DB generates ID
+        null,
         datasetId,
         generateBusinessKey(
             datasetId,
@@ -120,7 +121,7 @@ public record Alarm(
         billingPeriod,
         "Total Account Budget Exceeded: HIGH",
         AlarmSeverity.HIGH,
-        "Your account's telecom bill has significantly exceeded its monthly budget.",
+        "Your account's cloud spend has significantly exceeded its monthly budget.",
         Instant.now(),
         null,
         null,
@@ -133,11 +134,11 @@ public record Alarm(
       String billingPeriod,
       String alarmScope,
       String alarmSeverity,
-      String employeeId,
-      String department) {
+      String resourceId,
+      String cloudProvider) {
 
     String fingerprint =
-        datasetId + billingPeriod + alarmScope + alarmSeverity + employeeId + department;
+        datasetId + billingPeriod + alarmScope + alarmSeverity + resourceId + cloudProvider;
 
     return UUID.nameUUIDFromBytes(fingerprint.getBytes(StandardCharsets.UTF_8));
   }

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
  * JPA entity representing a billing record stored in the database.
  *
  * <p>This class maps directly to the underlying billing_records table and contains the
- * persistence-level representation of a telecom billing entry. It is mutable and managed by
+ * persistence-level representation of a cloud billing entry. It is mutable and managed by
  * JPA/Hibernate as part of the persistence context.
  *
  * <p>This entity should not contain business logic. All transformations between this persistence
@@ -20,12 +20,13 @@ import jakarta.persistence.*;
       @Index(name = "idx_total_charge_desc", columnList = "totalCharge DESC"),
       @Index(name = "idx_billing_records_dataset_id", columnList = "dataset_id"),
       @Index(name = "idx_billing_records_dataset_period", columnList = "dataset_id, billingPeriod"),
-      @Index(name = "idx_billing_records_department", columnList = "department")
+      @Index(name = "idx_billing_records_cloud_provider", columnList = "cloudProvider"),
+      @Index(name = "idx_billing_records_service_name", columnList = "serviceName")
     })
 public class BillingRecordEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id; // Auto-generated primary key by DB
+  private long id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "dataset_id")
@@ -35,13 +36,16 @@ public class BillingRecordEntity {
   private String billingPeriod;
 
   private String accountName;
-  private String department;
-  private String employeeId;
-  private String phoneNumber;
-  private int minutesUsed;
-  private double dataGbUsed;
-  private int smsCount;
+  private String cloudProvider;
+  private String resourceId;
+  private double computeHours;
+  private double storageGbUsed;
+  private long apiRequests;
   private double totalCharge;
+  private String serviceName;
+
+  @Column(columnDefinition = "text")
+  private String description;
 
   public BillingRecordEntity() {}
 
@@ -53,28 +57,12 @@ public class BillingRecordEntity {
     this.id = id;
   }
 
-  public String getEmployeeId() {
-    return employeeId;
+  public DatasetEntity getDataset() {
+    return dataset;
   }
 
-  public void setEmployeeId(String employeeId) {
-    this.employeeId = employeeId;
-  }
-
-  public String getDepartment() {
-    return department;
-  }
-
-  public void setDepartment(String department) {
-    this.department = department;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
+  public void setDataset(DatasetEntity dataset) {
+    this.dataset = dataset;
   }
 
   public String getBillingPeriod() {
@@ -85,28 +73,52 @@ public class BillingRecordEntity {
     this.billingPeriod = billingPeriod;
   }
 
-  public int getMinutesUsed() {
-    return minutesUsed;
+  public String getAccountName() {
+    return accountName;
   }
 
-  public void setMinutesUsed(int minutesUsed) {
-    this.minutesUsed = minutesUsed;
+  public void setAccountName(String accountName) {
+    this.accountName = accountName;
   }
 
-  public double getDataGbUsed() {
-    return dataGbUsed;
+  public String getCloudProvider() {
+    return cloudProvider;
   }
 
-  public void setDataGbUsed(double dataGbUsed) {
-    this.dataGbUsed = dataGbUsed;
+  public void setCloudProvider(String cloudProvider) {
+    this.cloudProvider = cloudProvider;
   }
 
-  public int getSmsCount() {
-    return smsCount;
+  public String getResourceId() {
+    return resourceId;
   }
 
-  public void setSmsCount(int smsCount) {
-    this.smsCount = smsCount;
+  public void setResourceId(String resourceId) {
+    this.resourceId = resourceId;
+  }
+
+  public double getComputeHours() {
+    return computeHours;
+  }
+
+  public void setComputeHours(double computeHours) {
+    this.computeHours = computeHours;
+  }
+
+  public double getStorageGbUsed() {
+    return storageGbUsed;
+  }
+
+  public void setStorageGbUsed(double storageGbUsed) {
+    this.storageGbUsed = storageGbUsed;
+  }
+
+  public long getApiRequests() {
+    return apiRequests;
+  }
+
+  public void setApiRequests(long apiRequests) {
+    this.apiRequests = apiRequests;
   }
 
   public double getTotalCharge() {
@@ -117,19 +129,19 @@ public class BillingRecordEntity {
     this.totalCharge = totalCharge;
   }
 
-  public DatasetEntity getDataset() {
-    return dataset;
+  public String getServiceName() {
+    return serviceName;
   }
 
-  public void setDataset(DatasetEntity dataset) {
-    this.dataset = dataset;
+  public void setServiceName(String serviceName) {
+    this.serviceName = serviceName;
   }
 
-  public String getAccountName() {
-    return accountName;
+  public String getDescription() {
+    return description;
   }
 
-  public void setAccountName(String accountName) {
-    this.accountName = accountName;
+  public void setDescription(String description) {
+    this.description = description;
   }
 }

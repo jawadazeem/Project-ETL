@@ -48,7 +48,7 @@ management:
 info:
   app:
     name: Blueprint
-    description: Telecom Billing Intelligence Platform
+    description: Multi-Cloud FinOps & Cost Management Platform
     version: 1.0.0
 logging:
   file:
@@ -58,15 +58,15 @@ billing:
   charges:
     max-top-n: 100
 alarm:
-  department:
-    monthlyLimit: 7500
+  provider:
+    monthlyLimit: 25000
   individual:
-    low: 250
-    medium: 370
-    high: 500
+    low: 500
+    medium: 2000
+    high: 5000
   account:
-    low: 45000
-    high: 60000
+    low: 100000
+    high: 250000
 billing-reader:
   has-header: true
   batch-size: 1000

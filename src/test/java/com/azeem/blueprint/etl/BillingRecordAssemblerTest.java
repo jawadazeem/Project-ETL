@@ -24,7 +24,8 @@ public class BillingRecordAssemblerTest {
   @DisplayName("assembleRecord should convert a valid row into a BillingRecord")
   void assembleRecord_validRow_createsBillingRecord() {
     String[] row = {
-      "Acme Corp", "E12345", "Engineering", "555-0100", "2026-01", "120", "1.5", "10", "45.75"
+      "Acme Corp", "i-0abc123", "AWS", "2026-01", "120.5", "1.5", "10000", "45.75", "EC2",
+      "m5.xlarge instance"
     };
 
     BillingRecord record = assembler.assembleRecord(row, DATASET_ID);
@@ -32,14 +33,15 @@ public class BillingRecordAssemblerTest {
     assertAll(
         () -> assertEquals(DATASET_ID, record.datasetId()),
         () -> assertEquals("Acme Corp", record.accountName()),
-        () -> assertEquals("E12345", record.employeeId()),
-        () -> assertEquals("Engineering", record.department()),
-        () -> assertEquals("555-0100", record.phoneNumber()),
+        () -> assertEquals("i-0abc123", record.resourceId()),
+        () -> assertEquals("AWS", record.cloudProvider()),
         () -> assertEquals("2026-01", record.billingPeriod()),
-        () -> assertEquals(120, record.minutesUsed()),
-        () -> assertEquals(1.5, record.dataGbUsed(), 1e-9),
-        () -> assertEquals(10, record.smsCount()),
-        () -> assertEquals(45.75, record.totalCharge(), 1e-9));
+        () -> assertEquals(120.5, record.computeHours(), 1e-9),
+        () -> assertEquals(1.5, record.storageGbUsed(), 1e-9),
+        () -> assertEquals(10000, record.apiRequests()),
+        () -> assertEquals(45.75, record.totalCharge(), 1e-9),
+        () -> assertEquals("EC2", record.serviceName()),
+        () -> assertEquals("m5.xlarge instance", record.description()));
   }
 
   @Test
@@ -47,15 +49,20 @@ public class BillingRecordAssemblerTest {
   void assembleRecords_multipleRows_returnsList() {
     List<String[]> rows =
         List.of(
-            new String[] {"A", "id1", "DeptA", "111", "2026-01", "10", "0.1", "1", "2.5"},
-            new String[] {"B", "id2", "DeptB", "222", "2026-02", "20", "0.2", "2", "5.0"});
+            new String[] {
+              "A", "i-001", "AWS", "2026-01", "10", "0.1", "100", "2.5", "EC2", "test instance"
+            },
+            new String[] {
+              "B", "proj-002", "GCP", "2026-02", "20", "0.2", "200", "5.0", "BigQuery",
+              "analytics query"
+            });
 
     List<BillingRecord> records = assembler.assembleRecords(rows, DATASET_ID);
 
     assertEquals(2, records.size());
     assertEquals(DATASET_ID, records.get(0).datasetId());
-    assertEquals("id1", records.get(0).employeeId());
-    assertEquals("DeptB", records.get(1).department());
+    assertEquals("i-001", records.get(0).resourceId());
+    assertEquals("GCP", records.get(1).cloudProvider());
   }
 
   @Nested
@@ -75,7 +82,7 @@ public class BillingRecordAssemblerTest {
     @DisplayName("assembleRecord should throw NumberFormatException for invalid numeric fields")
     void assembleRecord_invalidNumber_throws() {
       String[] badNumbers = {
-        "Acme", "E1", "D", "000", "2026-01", "not-a-number", "0.0", "0", "0.0"
+        "Acme", "i-001", "AWS", "2026-01", "not-a-number", "0.0", "0", "0.0", "EC2", "desc"
       };
       assertThrows(
           NumberFormatException.class, () -> assembler.assembleRecord(badNumbers, DATASET_ID));

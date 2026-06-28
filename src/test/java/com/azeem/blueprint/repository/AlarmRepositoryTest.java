@@ -11,7 +11,7 @@ import com.azeem.blueprint.entity.AlarmEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
-import com.azeem.blueprint.model.billing.Department;
+import com.azeem.blueprint.model.billing.CloudProvider;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,27 +43,27 @@ class AlarmRepositoryTest {
 
     persistAlarm(
         UUID.fromString("b7a9f830-4e5a-4e2b-a8e9-40c26b9a896a"),
-        AlarmScope.DEPARTMENT,
+        AlarmScope.PROVIDER,
         "2026-02",
-        "Department Charge Exceeded",
+        "Provider Spend Exceeded",
         AlarmSeverity.HIGH,
-        "IT department Exceeds Charge Limit",
+        "AWS cloud spend exceeds charge limit",
         Instant.now(),
         null,
         null,
-        Department.IT);
+        CloudProvider.AWS);
 
     persistAlarm(
         UUID.fromString("46c50bdf-6029-474e-8dad-16a7bf14691b"),
-        AlarmScope.INDIVIDUAL,
+        AlarmScope.RESOURCE,
         "2026-01",
-        "Individual Charge Exceeded",
+        "Resource Charge Limit Exceeded",
         AlarmSeverity.LOW,
-        "Slightly Exceeds Charge Limit",
+        "Slightly exceeds charge limit",
         Instant.now(),
-        "EMP192",
-        "2028402810",
-        Department.OPERATIONS);
+        "i-0abc123",
+        "EC2",
+        CloudProvider.AWS);
 
     persistAlarm(
         UUID.fromString("c560fd65-9e49-48fa-8f5c-f479e60ce264"),
@@ -88,9 +88,9 @@ class AlarmRepositoryTest {
       AlarmSeverity severity,
       String explanation,
       Instant timestamp,
-      String employeeId,
-      String phoneNumber,
-      Department dept) {
+      String resourceId,
+      String serviceName,
+      CloudProvider cloudProvider) {
     AlarmEntity alarm = new AlarmEntity();
     alarm.setDataset(dataset);
     alarm.setBusinessKey(businessKey);
@@ -100,9 +100,9 @@ class AlarmRepositoryTest {
     alarm.setAlarmSeverity(severity);
     alarm.setExplanation(explanation);
     alarm.setTimestamp(timestamp);
-    alarm.setEmployeeId(employeeId);
-    alarm.setPhoneNumber(phoneNumber);
-    alarm.setDepartment(dept);
+    alarm.setResourceId(resourceId);
+    alarm.setServiceName(serviceName);
+    alarm.setCloudProvider(cloudProvider);
     entityManager.persist(alarm);
     alarms.add(alarm);
   }
@@ -131,7 +131,7 @@ class AlarmRepositoryTest {
 
     assertThat(
             alarmRepository.findByDatasetIdAndBillingPeriodAndAlarmScope(
-                datasetId, "2026-01", AlarmScope.INDIVIDUAL))
+                datasetId, "2026-01", AlarmScope.RESOURCE))
         .containsExactly(alarms.get(1));
     assertThat(
             alarmRepository.findByDatasetIdAndBillingPeriodAndAlarmScope(

@@ -26,13 +26,14 @@ public class SummaryBuilderTest {
     LinkedList<BillingRecord> records = new LinkedList<>();
     records.add(
         new BillingRecord(
-            DATASET_ID, "Acme", "E1", "Engineering", "555-0001", "2026-01", 100, 1.5, 10, 45.50));
+            DATASET_ID, "Acme", "i-001", "AWS", "2026-01", 100, 1.5, 10, 45.50, "EC2", "desc"));
     records.add(
         new BillingRecord(
-            DATASET_ID, "Beta", "E2", "Sales", "555-0002", "2026-01", 50, 0.5, 5, 10.00));
+            DATASET_ID, "Beta", "proj-002", "GCP", "2026-01", 50, 0.5, 5, 10.00, "BigQuery",
+            "desc"));
     records.add(
         new BillingRecord(
-            DATASET_ID, "Acme", "E3", "Engineering", "555-0003", "2026-01", 10, 0.1, 1, 5.25));
+            DATASET_ID, "Acme", "i-003", "AWS", "2026-01", 10, 0.1, 1, 5.25, "S3", "desc"));
 
     BillingSummary summary = new SummaryBuilder(records).build();
 
@@ -43,10 +44,10 @@ public class SummaryBuilderTest {
     assertEquals(45.50, summary.getHighestChargeRecord().totalCharge(), 1e-9);
     assertEquals(20.25, summary.getAverageCharge(), 1e-9);
 
-    Map<String, Double> byDept = summary.getChargesByDepartment();
-    assertEquals(2, byDept.size());
-    assertEquals(50.75, byDept.get("Engineering"), 1e-9);
-    assertEquals(10.00, byDept.get("Sales"), 1e-9);
+    Map<String, Double> byProvider = summary.getChargesByProvider();
+    assertEquals(2, byProvider.size());
+    assertEquals(50.75, byProvider.get("AWS"), 1e-9);
+    assertEquals(10.00, byProvider.get("GCP"), 1e-9);
   }
 
   @Test
@@ -60,7 +61,7 @@ public class SummaryBuilderTest {
     assertEquals(0, summary.getTotalRecords());
     assertEquals(0.0, summary.getTotalCharges(), 1e-9);
     assertEquals(0.0, summary.getAverageCharge(), 1e-9);
-    assertTrue(summary.getChargesByDepartment().isEmpty());
+    assertTrue(summary.getChargesByProvider().isEmpty());
     assertNull(summary.getHighestChargeRecord());
   }
 
@@ -73,31 +74,37 @@ public class SummaryBuilderTest {
     void tiesForHighestCharge_selectsFirstEncountered() {
       LinkedList<BillingRecord> records = new LinkedList<>();
       records.add(
-          new BillingRecord(DATASET_ID, "A", "id1", "D1", "p1", "2026-01", 1, 0.0, 0, 100.00));
+          new BillingRecord(
+              DATASET_ID, "A", "i-001", "AWS", "2026-01", 1, 0.0, 0, 100.00, "EC2", "desc"));
       records.add(
-          new BillingRecord(DATASET_ID, "B", "id2", "D2", "p2", "2026-01", 1, 0.0, 0, 100.00));
+          new BillingRecord(
+              DATASET_ID, "B", "proj-002", "GCP", "2026-01", 1, 0.0, 0, 100.00, "BigQuery",
+              "desc"));
 
       BillingSummary summary = new SummaryBuilder(records).build();
 
       assertNotNull(summary.getHighestChargeRecord());
-      assertEquals("id1", summary.getHighestChargeRecord().employeeId());
+      assertEquals("i-001", summary.getHighestChargeRecord().resourceId());
     }
 
     @Test
-    @DisplayName("aggregate charges by department with single record per department")
-    void chargesByDepartment_singleRecordEach() {
+    @DisplayName("aggregate charges by provider with single record per provider")
+    void chargesByProvider_singleRecordEach() {
       LinkedList<BillingRecord> records = new LinkedList<>();
       records.add(
-          new BillingRecord(DATASET_ID, "A", "id1", "D1", "p1", "2026-01", 1, 0.0, 0, 1.00));
+          new BillingRecord(
+              DATASET_ID, "A", "i-001", "AWS", "2026-01", 1, 0.0, 0, 1.00, "EC2", "desc"));
       records.add(
-          new BillingRecord(DATASET_ID, "B", "id2", "D2", "p2", "2026-01", 1, 0.0, 0, 2.50));
+          new BillingRecord(
+              DATASET_ID, "B", "vm-002", "AZURE", "2026-01", 1, 0.0, 0, 2.50, "Virtual Machines",
+              "desc"));
 
       BillingSummary summary = new SummaryBuilder(records).build();
 
-      Map<String, Double> byDept = summary.getChargesByDepartment();
-      assertEquals(2, byDept.size());
-      assertEquals(1.00, byDept.get("D1"), 1e-9);
-      assertEquals(2.50, byDept.get("D2"), 1e-9);
+      Map<String, Double> byProvider = summary.getChargesByProvider();
+      assertEquals(2, byProvider.size());
+      assertEquals(1.00, byProvider.get("AWS"), 1e-9);
+      assertEquals(2.50, byProvider.get("AZURE"), 1e-9);
     }
   }
 }

@@ -1,7 +1,7 @@
-# Blueprint: Telecom Billing Intelligence
+# Blueprint: Multi-Cloud FinOps & Cost Management
 
 ### Author: Jawad Azeem
-This is a Spring Boot application that performs a full ETL workflow on large telecom billing datasets. It transforms raw CSV data into structured intelligence, leveraging Autonomous AI Agents to bridge the gap between raw data and natural language insights.
+This is a Spring Boot application that performs a full ETL workflow on multi-cloud cost/billing datasets from AWS, GCP, and Azure. It transforms raw CSV data into structured intelligence, leveraging Autonomous AI Agents to bridge the gap between raw data and natural language insights.
 A live version of the API is hosted on AWS.
 
 ### Access the Live API at: 
