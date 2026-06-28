@@ -817,6 +817,18 @@ function hideTypingIndicator() {
     if (el) el.remove();
 }
 
+function setMartinPrompt(prompt) {
+    const input = document.getElementById("chatInput");
+    if (!input) return;
+
+    input.value = prompt;
+    input.focus();
+}
+
+function showBackendPlaceholder(featureName) {
+    showToast(`${featureName} is a frontend placeholder until the backend workflow is implemented.`, "info");
+}
+
 async function sendChat() {
     if (!currentDatasetId) return;
     const input = document.getElementById("chatInput");
@@ -1349,6 +1361,10 @@ function wireDashboardEvents() {
     document.getElementById("logoutBtn")?.addEventListener("click", window.Blueprint.endSession);
     document.getElementById("loadDummyBtn")?.addEventListener("click", loadDummyData);
     document.getElementById("chatSendBtn")?.addEventListener("click", sendChat);
+    document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
+        showBackendPlaceholder("Cost optimization analysis");
+        setMartinPrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
+    });
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));
     document.getElementById("prevBtnFilterByProviders")?.addEventListener("click", () => changePageFilterByProvider(-1));
@@ -1374,6 +1390,21 @@ function wireDashboardEvents() {
 
     document.querySelectorAll(".data-tab").forEach(button => {
         button.addEventListener("click", () => setActiveDataTab(button.dataset.tab));
+    });
+
+    document.querySelectorAll(".finops-question-btn").forEach(button => {
+        button.addEventListener("click", () => setMartinPrompt(button.dataset.prompt || ""));
+    });
+
+    document.querySelectorAll(".audit-action-btn").forEach(button => {
+        button.addEventListener("click", () => {
+            const action = button.dataset.auditAction || "audit";
+            showBackendPlaceholder(`Audit action: ${action}`);
+
+            if (action === "explain-findings") {
+                setMartinPrompt("Explain the latest audit findings, including evidence, severity, confidence, and recommended next actions.");
+            }
+        });
     });
 
     document.getElementById("welcomeUploadBtn")?.addEventListener("click", () => {
@@ -1460,49 +1491,14 @@ async function tryLoadExistingDatasets() {
 let predictionChartInstance = null;
 
 async function populatePredictionDatasets() {
-    const select = document.getElementById("predictionDatasetsSelect");
-    if (!select) return;
-
-    try {
-        const res = await fetch("/datasets", {
-            headers: { "X-User-Id": GUEST_USER_ID }
-        });
-        if (!res.ok) return;
-
-        const datasets = await res.json();
-        const readyDatasets = datasets.filter(d => d.status === "READY");
-
-        readyDatasets.sort((a, b) => (a.billingPeriod || "").localeCompare(b.billingPeriod || ""));
-
-        select.innerHTML = "";
-        readyDatasets.forEach(ds => {
-            if (!ds.billingPeriod) return;
-            const opt = document.createElement("option");
-            opt.value = ds.id;
-            opt.textContent = `Period: ${ds.billingPeriod} (${ds.sourceFilename})`;
-            select.appendChild(opt);
-        });
-    } catch (e) {
-        console.error("Failed to populate prediction datasets", e);
-    }
+    // Manual forecast dataset selection was removed from the UI. The backend will own
+    // eligible dataset selection for forecasting.
 }
 
 async function generateForecast() {
-    const select = document.getElementById("predictionDatasetsSelect");
-    const errorMsg = document.getElementById("predictionError");
     const wrapper = document.getElementById("predictionChartWrapper");
     const btn = document.getElementById("generateForecastBtn");
     const spinner = document.getElementById("forecastSpinner");
-
-    const selectedOptions = Array.from(select.selectedOptions);
-    if (selectedOptions.length < 3) {
-        errorMsg.classList.remove("d-none");
-        wrapper.style.display = "none";
-        return;
-    }
-    errorMsg.classList.add("d-none");
-
-    const datasetIds = selectedOptions.map(opt => opt.value);
 
     btn.disabled = true;
     spinner.classList.remove("d-none");
@@ -1511,7 +1507,11 @@ async function generateForecast() {
         const res = await fetch("/api/predictions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datasetIds)
+            body: JSON.stringify({
+                datasetId: currentDatasetId,
+                billingPeriod: currentPeriod,
+                selectionMode: "AUTO"
+            })
         });
 
         if (!res.ok) {
@@ -1525,7 +1525,7 @@ async function generateForecast() {
         wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (e) {
         console.error("Forecast failed", e);
-        showToast("Failed to generate forecast. Ensure datasets have valid charges.");
+        showToast("Forecast backend is not wired for auto-selection yet.", "info");
         wrapper.style.display = "none";
     } finally {
         btn.disabled = false;

@@ -255,16 +255,31 @@
     <div class="card-header">Blueprint Bot Analytics</div>
     <div class="card-body">
         <div id="chatbotModule" class="row g-3">
-            <div class="col-12">
+            <div class="col-lg-8">
                 <div class="card p-3 chat-window" id="chatWindow">
                     <div id="chatEmpty" class="text-muted">Ask Martin questions about cloud billing data, e.g. "Which cloud provider has the highest total spend?" or "Show me the top 5 most expensive services"</div>
                 </div>
             </div>
 
-            <div class="col-9">
+            <div class="col-lg-4">
+                <div class="finops-question-panel">
+                    <div class="panel-eyebrow">FinOps Agent</div>
+                    <h3>Questions Martin should answer</h3>
+                    <div class="finops-question-list">
+                        <button class="finops-question-btn" type="button" data-prompt="Where did cloud spend increase the most this period, and why?">Explain spend increase</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Which services or resources are the best cost optimization candidates?">Find savings opportunities</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Which teams, accounts, or providers are driving cost growth?">Identify cost drivers</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Compare this period against expected company policies and contract context.">Check policy and contract fit</button>
+                        <button class="finops-question-btn" type="button" data-prompt="Create an executive FinOps summary for the current billing period.">Generate executive summary</button>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-3" id="runOptimizationBtn" type="button">Run Cost Optimization Analysis</button>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
                 <input id="chatInput" class="form-control" placeholder="Ask Martin about cloud costs..." aria-label="Chat input" />
             </div>
-            <div class="col-3 d-flex align-items-start">
+            <div class="col-lg-3 d-flex align-items-start">
                 <button class="btn btn-primary w-100" id="chatSendBtn" type="button">Send</button>
             </div>
         </div>
@@ -443,38 +458,69 @@
     </aside>
 </div>
 
-<div class="card mb-4 premium-card predictions-section" id="predictionsSection">
-    <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
-        <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
-    </div>
-    <div class="card-body glass-panel">
-        <p class="text-muted">Select at least 3 datasets representing adjacent or near-adjacent months to forecast future costs.</p>
+<div class="row mb-4 finops-intelligence-row">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="card h-100 premium-card predictions-section" id="predictionsSection">
+            <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
+                <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
+            </div>
+            <div class="card-body glass-panel">
+                <p class="text-muted">Forecasting will automatically use the most relevant ready datasets once the backend selection logic is implemented.</p>
 
-        <div class="row mb-3 align-items-end">
-            <div class="col-md-8">
-                <label class="form-label fw-bold">Select Datasets for Training Data:</label>
-                <select id="predictionDatasetsSelect" class="form-select form-select-lg prediction-multi-select" multiple size="4">
-                    <!-- Options populated via JS -->
-                </select>
-                <div class="form-text text-danger d-none mt-2" id="predictionError">
-                    Please select at least 3 datasets.
+                <div class="auto-model-summary mb-3">
+                    <div>
+                        <span class="panel-eyebrow">Auto-selected training data</span>
+                        <strong>Latest eligible billing periods</strong>
+                        <small>Backend placeholder: no manual dataset selection required.</small>
+                    </div>
+                    <button class="btn btn-primary generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
+                        <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
+                        <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 12px;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
+                    <hr class="my-4 subtle-hr">
+                    <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
+                    <div class="chart-box premium-chart-box">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <button class="btn btn-primary btn-lg w-100 generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
-                    <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
-                    <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 14px;">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </button>
-            </div>
         </div>
+    </div>
 
-        <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
-            <hr class="my-4 subtle-hr">
-            <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
-            <div class="chart-box premium-chart-box">
-                <canvas id="predictionChart"></canvas>
+    <div class="col-lg-6">
+        <div class="card h-100 audit-card" id="auditModule">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-shield-alt"></i> Audit Engine</span>
+                <span class="audit-status">Scheduled placeholder</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Martin to explain and prioritize.</p>
+
+                <div class="audit-action-grid">
+                    <button class="audit-action-btn" type="button" data-audit-action="run-audit">
+                        <strong>Run Audit</strong>
+                        <span>Scan billing records for anomalies, duplicates, and policy issues.</span>
+                    </button>
+                    <button class="audit-action-btn" type="button" data-audit-action="review-findings">
+                        <strong>Review Findings</strong>
+                        <span>Open the latest evidence-backed audit results.</span>
+                    </button>
+                    <button class="audit-action-btn" type="button" data-audit-action="explain-findings">
+                        <strong>Ask Martin to Explain</strong>
+                        <span>Summarize audit findings in business language.</span>
+                    </button>
+                </div>
+
+                <div class="audit-placeholder-list mt-3">
+                    <div><span>Duplicate charge detection</span><strong>Planned</strong></div>
+                    <div><span>Spend spike analysis</span><strong>Planned</strong></div>
+                    <div><span>Contract/policy variance checks</span><strong>Planned</strong></div>
+                </div>
             </div>
         </div>
     </div>
