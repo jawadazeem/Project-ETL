@@ -47,6 +47,12 @@ public class BillingS3Service {
     }
   }
 
+  /**
+   * @deprecated This method is deprecated and scheduled for removal. Please transition to using
+   *     direct integration with cloud service provider APIs or direct parsing from cloud storage
+   *     for billing data retrieval.
+   */
+  @Deprecated
   public void uploadUserFile(String bucketName, Dataset dataset, MultipartFile file) {
     try {
       String key = buildS3KeyForFile(dataset, file);

@@ -6,9 +6,7 @@
 package com.azeem.blueprint.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
 @ConfigurationProperties(prefix = "alarm")
 public class AlarmConfig {
 
