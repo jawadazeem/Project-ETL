@@ -23,6 +23,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
+/**
+ * Not organization specific. This is for general playbook knowledge, defining Martin's behavior for
+ * common requests
+ */
 @Service
 public class MartinKnowledgeS3Service {
   private static final Logger log = LoggerFactory.getLogger(MartinKnowledgeS3Service.class);

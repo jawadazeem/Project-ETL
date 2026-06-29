@@ -18,6 +18,19 @@ services:
       retries: 5
       start_period: 10s
 
+  pgvector:
+    image: pgvector/pgvector:pg17
+    container_name: blueprint-org-context
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_DB=blueprint_org-context
+      - POSTGRES_USER=blueprint
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   localstack:
     image: localstack/localstack:3.0.0
     container_name: billing-s3-mock
@@ -60,6 +73,8 @@ services:
       - AWS_SECRET_KEY=test
       - SPRING_AI_GOOGLE_GENAI_API_KEY=${GOOGLE_GENAI_API_KEY}
       - SPRING_AI_GOOGLE_GENAI_PROJECT_ID=${GOOGLE_PROJECT_ID}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   aws-cli-setup:
     image: amazon/aws-cli
@@ -108,3 +123,5 @@ services:
 
 volumes:
   postgres_data:
+  pgvector-data:
+  ollama-data:

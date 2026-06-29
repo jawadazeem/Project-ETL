@@ -22,6 +22,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 
+// TODO: Completely redesign how this functions. It must use OrgContext and playbooks to operate
 @Service
 public class MartinService {
   private static final Logger log = LoggerFactory.getLogger(MartinService.class);

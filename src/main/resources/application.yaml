@@ -25,6 +25,15 @@ spring:
           options:
             model: "gemini-2.5-flash"
             temperature: 0.1
+    ollama:
+      base-url: "http://host.docker.internal:11434"
+      embedding:
+          model: nomic-embed-text
+      init:
+        pull-model-strategy: "WHEN_MISSING"
+    vectorstore:
+      pgvector:
+        initialize-schema: true
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
 server:
@@ -78,6 +87,9 @@ martin-knowledge:
     - executive-summary.md
     - policy-and-contract-fit.md
     - overview.md
+org-context:
+  bucket-name: cloud-billing
+  max-files: 5
 notification:
   service:
     url: ${NOTIFICATION_SERVICE_URL:http://localhost:3001}
