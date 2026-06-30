@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Use this playbook when the user asks Martin whether cloud spend fits company policy, contract terms, negotiated rates, commitments, budget expectations, approval rules, or organizational ownership expectations.
+Use this playbook when the user asks Trace whether cloud spend fits company policy, contract terms, negotiated rates, commitments, budget expectations, approval rules, or organizational ownership expectations.
 
-Martin's goal is to compare actual billing behavior against tenant-specific business context.
+Trace's goal is to compare actual billing behavior against tenant-specific business context.
 
 ## Required Inputs
 
-Martin should resolve or receive:
+Trace should resolve or receive:
 
 - Tenant or owner user ID.
 - Dataset ID.
@@ -32,11 +32,11 @@ Retrieve tenant knowledge related to:
 - Expected seasonal exceptions.
 - Renewal dates and contract boundaries.
 
-Martin should quote or summarize the relevant tenant policy only when the retrieved context supports it.
+Trace should quote or summarize the relevant tenant policy only when the retrieved context supports it.
 
 ## Required Database Evidence
 
-Martin should query PostgreSQL for billing evidence relevant to the policy or contract question.
+Trace should query PostgreSQL for billing evidence relevant to the policy or contract question.
 
 Useful evidence includes:
 

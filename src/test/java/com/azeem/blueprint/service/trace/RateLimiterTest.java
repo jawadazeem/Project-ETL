@@ -3,7 +3,7 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

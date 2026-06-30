@@ -3,15 +3,15 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.model.martin;
+package com.azeem.blueprint.model.trace;
 
-/** Martin Response DTO */
-public class MartinResponse {
+/** Trace Response DTO */
+public class TraceResponse {
   public String answer;
   public String sql;
   public String reasoning;
 
-  public MartinResponse(String answer, String sql, String reasoning) {
+  public TraceResponse(String answer, String sql, String reasoning) {
     this.answer = answer;
     this.sql = sql;
     this.reasoning = reasoning;

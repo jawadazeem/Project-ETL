@@ -3,10 +3,10 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
-import com.azeem.blueprint.exception.core.MartinResponseInvalidException;
-import com.azeem.blueprint.model.martin.SqlResponse;
+import com.azeem.blueprint.exception.core.TraceResponseInvalidException;
+import com.azeem.blueprint.model.trace.SqlResponse;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -38,8 +38,8 @@ public class SqlValidationService {
     try {
       statement = CCJSqlParserUtil.parse(sql);
     } catch (JSQLParserException e) {
-      log.error("Could not validate Martin's SQL: {}", e.getMessage());
-      throw new MartinResponseInvalidException(e.getMessage(), e);
+      log.error("Could not validate Trace's SQL: {}", e.getMessage());
+      throw new TraceResponseInvalidException(e.getMessage(), e);
     }
 
     return statement instanceof PlainSelect;

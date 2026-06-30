@@ -817,7 +817,7 @@ function hideTypingIndicator() {
     if (el) el.remove();
 }
 
-function setMartinPrompt(prompt) {
+function setTracePrompt(prompt) {
     const input = document.getElementById("chatInput");
     if (!input) return;
 
@@ -842,7 +842,7 @@ async function sendChat() {
     showTypingIndicator();
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/martin`, {
+        const res = await fetch(`/datasets/${currentDatasetId}/trace`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: text, period: currentPeriod })
@@ -866,7 +866,7 @@ async function sendChat() {
         hideTypingIndicator();
         console.error("Chat send failed", e);
         appendChatMessage("bot", "Failed to send message — the chat service may be unavailable.");
-        showToast("Martin is unavailable. Check the connection.");
+        showToast("Trace is unavailable. Check the connection.");
     } finally {
         sendBtn.disabled = false;
     }
@@ -1428,7 +1428,7 @@ function wireDashboardEvents() {
     document.getElementById("billingQueryBtn")?.addEventListener("click", runBillingQueryPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
         showBackendPlaceholder("Cost optimization analysis");
-        setMartinPrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
+        setTracePrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
     });
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));
@@ -1458,7 +1458,7 @@ function wireDashboardEvents() {
     });
 
     document.querySelectorAll(".finops-question-btn").forEach(button => {
-        button.addEventListener("click", () => setMartinPrompt(button.dataset.prompt || ""));
+        button.addEventListener("click", () => setTracePrompt(button.dataset.prompt || ""));
     });
 
     document.querySelectorAll(".audit-action-btn").forEach(button => {
@@ -1467,7 +1467,7 @@ function wireDashboardEvents() {
             showBackendPlaceholder(`Audit action: ${action}`);
 
             if (action === "explain-findings") {
-                setMartinPrompt("Explain the latest audit findings, including evidence, severity, confidence, and recommended next actions.");
+                setTracePrompt("Explain the latest audit findings, including evidence, severity, confidence, and recommended next actions.");
             }
         });
     });

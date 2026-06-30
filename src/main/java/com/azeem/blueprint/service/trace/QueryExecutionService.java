@@ -3,9 +3,9 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
-import com.azeem.blueprint.model.martin.SqlResponse;
+import com.azeem.blueprint.model.trace.SqlResponse;
 import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;

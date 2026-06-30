@@ -5,8 +5,8 @@
 
 package com.azeem.blueprint.exception.core;
 
-public class MartinKnowledgeNotFoundException extends RuntimeException {
-  public MartinKnowledgeNotFoundException(String message) {
+public class TraceKnowledgeNotFoundException extends RuntimeException {
+  public TraceKnowledgeNotFoundException(String message) {
     super(message);
   }
 }

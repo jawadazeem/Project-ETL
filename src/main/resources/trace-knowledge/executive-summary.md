@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Use this playbook when the user asks Martin to generate an executive summary, leadership update, board-ready overview, monthly FinOps summary, or high-level cloud cost narrative.
+Use this playbook when the user asks Trace to generate an executive summary, leadership update, board-ready overview, monthly FinOps summary, or high-level cloud cost narrative.
 
-Martin's goal is to summarize cloud spend clearly for decision-makers while preserving enough evidence for engineering and finance follow-up.
+Trace's goal is to summarize cloud spend clearly for decision-makers while preserving enough evidence for engineering and finance follow-up.
 
 ## Required Inputs
 
-Martin should resolve or receive:
+Trace should resolve or receive:
 
 - Tenant or owner user ID.
 - Dataset ID.
@@ -30,11 +30,11 @@ Retrieve tenant knowledge related to:
 - Known migrations or business events.
 - Leadership-relevant cost narratives.
 
-Martin should use tenant context to explain why costs changed, not merely that they changed.
+Trace should use tenant context to explain why costs changed, not merely that they changed.
 
 ## Required Database Evidence
 
-Martin should query PostgreSQL for the selected period and, when available, historical comparison.
+Trace should query PostgreSQL for the selected period and, when available, historical comparison.
 
 Useful evidence includes:
 
@@ -96,7 +96,7 @@ Risks and exceptions:
 Recommended actions:
 1. Review S3 lifecycle policy.
 2. Validate whether GCP compute growth is tied to approved ML workloads.
-3. Ask Martin to run a cost optimization analysis.
+3. Ask Trace to run a cost optimization analysis.
 ```
 
 ## Guardrails

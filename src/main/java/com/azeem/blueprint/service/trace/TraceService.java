@@ -3,11 +3,11 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
-import com.azeem.blueprint.exception.core.MartinResponseInvalidException;
-import com.azeem.blueprint.model.martin.MartinResponse;
-import com.azeem.blueprint.model.martin.SqlResponse;
+import com.azeem.blueprint.exception.core.TraceResponseInvalidException;
+import com.azeem.blueprint.model.trace.TraceResponse;
+import com.azeem.blueprint.model.trace.SqlResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -26,17 +26,17 @@ import org.springframework.stereotype.Service;
 // TODO: Completely redesign how this functions. It must use OrgContext and playbooks to operate.
 //       Should be delegating tasks to each smaller service, which then retrieves its respective
 // playbook
-//       and crafts a prompt for Martin, which this service consumes and sends to his API via SDK
+//       and crafts a prompt for Trace, which this service consumes and sends to his API via SDK
 @Service
-public class MartinService {
-  private static final Logger log = LoggerFactory.getLogger(MartinService.class);
+public class TraceService {
+  private static final Logger log = LoggerFactory.getLogger(TraceService.class);
   private final ChatModel chatModel;
   private final SchemaService schemaService;
   private final QueryExecutionService queryExecutionService;
   private final SqlValidationService sqlValidationService;
   private final ObjectMapper objectMapper;
 
-  public MartinService(
+  public TraceService(
       @Qualifier("ollamaChatModel") ChatModel chatModel,
       SchemaService schemaService,
       QueryExecutionService queryExecutionService,
@@ -49,12 +49,12 @@ public class MartinService {
     this.objectMapper = objectMapper;
   }
 
-  public MartinResponse ask(String promptText, UUID datasetId, String currentPeriod) {
+  public TraceResponse ask(String promptText, UUID datasetId, String currentPeriod) {
 
     SqlResponse sqlResponse = generateResponse(promptText, datasetId, currentPeriod);
 
     if (!sqlValidationService.isValidSql(sqlResponse)) {
-      throw new MartinResponseInvalidException("Unsafe SQL detected");
+      throw new TraceResponseInvalidException("Unsafe SQL detected");
     }
 
     List<Map<String, Object>> results = queryExecutionService.executeQuery(sqlResponse);
@@ -62,19 +62,19 @@ public class MartinService {
     Prompt explanationPrompt =
         new Prompt(
             List.of(
-                new SystemMessage("You are Martin, a cloud cost analyst."),
+                new SystemMessage("You are Trace, a cloud cost analyst."),
                 new UserMessage("Question: " + promptText),
                 new UserMessage("SQL: " + sqlResponse.getSql()),
                 new UserMessage("Results: " + results)));
 
-    return new MartinResponse(
+    return new TraceResponse(
         chatModel.call(explanationPrompt).getResult().getOutput().getText(),
         sqlResponse.getSql(),
         sqlResponse.getReasoning());
   }
 
   /**
-   * @param promptText The prompt the user submits to Martin
+   * @param promptText The prompt the user submits to Trace
    * @return SqlResponse object
    */
   private SqlResponse generateResponse(String promptText, UUID datasetId, String currentPeriod) {
@@ -89,14 +89,14 @@ public class MartinService {
       sqlResponse = objectMapper.readValue(json, SqlResponse.class);
     } catch (JsonProcessingException e) {
       log.error(
-          "There was a data format error with the Martin's response. Here was "
-              + "Martin's response: {}",
+          "There was a data format error with the Trace's response. Here was "
+              + "Trace's response: {}",
           json);
-      throw new MartinResponseInvalidException(
-          "There was a data format error with the Martin's response.");
+      throw new TraceResponseInvalidException(
+          "There was a data format error with the Trace's response.");
     }
 
-    log.info("Martin generated: {}", sqlResponse);
+    log.info("Trace generated: {}", sqlResponse);
     return sqlResponse;
   }
 

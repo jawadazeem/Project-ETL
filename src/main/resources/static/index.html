@@ -286,14 +286,14 @@
         <div id="chatbotModule" class="row g-3">
             <div class="col-lg-8">
                 <div class="card p-3 chat-window" id="chatWindow">
-                    <div id="chatEmpty" class="text-muted">Ask Martin questions about cloud billing data, e.g. "Which cloud provider has the highest total spend?" or "Show me the top 5 most expensive services"</div>
+                    <div id="chatEmpty" class="text-muted">Ask Trace questions about cloud billing data, e.g. "Which cloud provider has the highest total spend?" or "Show me the top 5 most expensive services"</div>
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="finops-question-panel">
                     <div class="panel-eyebrow">FinOps Agent</div>
-                    <h3>Questions Martin should answer</h3>
+                    <h3>Questions Trace should answer</h3>
                     <div class="finops-question-list">
                         <button class="finops-question-btn" type="button" data-prompt="Where did cloud spend increase the most this period, and why?">Explain spend increase</button>
                         <button class="finops-question-btn" type="button" data-prompt="Which services or resources are the best cost optimization candidates?">Find savings opportunities</button>
@@ -306,7 +306,7 @@
             </div>
 
             <div class="col-lg-7">
-                <input id="chatInput" class="form-control" placeholder="Ask Martin about cloud costs..." aria-label="Chat input" />
+                <input id="chatInput" class="form-control" placeholder="Ask Trace about cloud costs..." aria-label="Chat input" />
             </div>
             <div class="col-lg-2 d-flex align-items-start">
                 <button class="btn btn-primary w-100" id="chatSendBtn" type="button">Send</button>
@@ -396,7 +396,7 @@
                 <span class="audit-status">Scheduled placeholder</span>
             </div>
             <div class="card-body">
-                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Martin to explain and prioritize.</p>
+                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Trace to explain and prioritize.</p>
 
                 <div class="audit-action-grid">
                     <button class="audit-action-btn" type="button" data-audit-action="run-audit">
@@ -408,7 +408,7 @@
                         <span>Open the latest evidence-backed audit results.</span>
                     </button>
                     <button class="audit-action-btn" type="button" data-audit-action="explain-findings">
-                        <strong>Ask Martin to Explain</strong>
+                        <strong>Ask Trace to Explain</strong>
                         <span>Summarize audit findings in business language.</span>
                     </button>
                 </div>

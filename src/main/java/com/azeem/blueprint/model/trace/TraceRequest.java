@@ -3,12 +3,12 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.model.martin;
+package com.azeem.blueprint.model.trace;
 
 import jakarta.validation.constraints.NotBlank;
 
-/** Martin Request DTO */
-public class MartinRequest {
+/** Trace Request DTO */
+public class TraceRequest {
 
   @NotBlank(message = "Prompt must not be blank")
   private String prompt;
@@ -16,9 +16,9 @@ public class MartinRequest {
   @NotBlank(message = "Billing period must not be blank")
   private String period;
 
-  public MartinRequest() {}
+  public TraceRequest() {}
 
-  public MartinRequest(String prompt, String period) {
+  public TraceRequest(String prompt, String period) {
     this.prompt = prompt;
     this.period = period;
   }

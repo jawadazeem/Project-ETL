@@ -3,15 +3,15 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.azeem.blueprint.exception.core.MartinResponseInvalidException;
-import com.azeem.blueprint.model.martin.MartinResponse;
+import com.azeem.blueprint.exception.core.TraceResponseInvalidException;
+import com.azeem.blueprint.model.trace.TraceResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +27,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.Prompt;
 
 @ExtendWith(MockitoExtension.class)
-class MartinServiceTest {
+class TraceServiceTest {
 
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private ChatModel chatModel;
@@ -38,7 +38,7 @@ class MartinServiceTest {
 
   @Spy private ObjectMapper objectMapper = new ObjectMapper();
 
-  @InjectMocks private MartinService martinService;
+  @InjectMocks private TraceService traceService;
 
   private static final UUID DATASET_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
   private static final String BILLING_PERIOD = "2026-01";
@@ -47,7 +47,7 @@ class MartinServiceTest {
           + "\"reasoning\":\"Fetching all records for dataset\"}";
 
   @Test
-  @DisplayName("ask() returns MartinResponse when SQL is valid and query executes")
+  @DisplayName("ask() returns TraceResponse when SQL is valid and query executes")
   void ask_validInput_returnsResponse() {
     when(schemaService.getSchema()).thenReturn("billing_records(id, dataset_id, ...)");
     when(chatModel.call(any(Prompt.class)).getResult().getOutput().getText())
@@ -56,8 +56,8 @@ class MartinServiceTest {
     when(sqlValidationService.isValidSql(any())).thenReturn(true);
     when(queryExecutionService.executeQuery(any())).thenReturn(List.of());
 
-    MartinResponse response =
-        martinService.ask("How much did we spend?", DATASET_ID, BILLING_PERIOD);
+    TraceResponse response =
+        traceService.ask("How much did we spend?", DATASET_ID, BILLING_PERIOD);
 
     assertThat(response).isNotNull();
     assertThat(response.answer).isEqualTo("Your account spent $500 in January.");
@@ -66,26 +66,26 @@ class MartinServiceTest {
   }
 
   @Test
-  @DisplayName("ask() throws MartinResponseInvalidException when SQL fails validation")
-  void ask_invalidSql_throwsMartinResponseInvalidException() {
+  @DisplayName("ask() throws TraceResponseInvalidException when SQL fails validation")
+  void ask_invalidSql_throwsTraceResponseInvalidException() {
     when(schemaService.getSchema()).thenReturn("schema");
     when(chatModel.call(any(Prompt.class)).getResult().getOutput().getText())
         .thenReturn(VALID_SQL_JSON);
     when(sqlValidationService.isValidSql(any())).thenReturn(false);
 
-    assertThatThrownBy(() -> martinService.ask("Drop all tables", DATASET_ID, BILLING_PERIOD))
-        .isInstanceOf(MartinResponseInvalidException.class)
+    assertThatThrownBy(() -> traceService.ask("Drop all tables", DATASET_ID, BILLING_PERIOD))
+        .isInstanceOf(TraceResponseInvalidException.class)
         .hasMessageContaining("Unsafe SQL");
   }
 
   @Test
-  @DisplayName("ask() throws MartinResponseInvalidException when model returns malformed JSON")
-  void ask_malformedJson_throwsMartinResponseInvalidException() {
+  @DisplayName("ask() throws TraceResponseInvalidException when model returns malformed JSON")
+  void ask_malformedJson_throwsTraceResponseInvalidException() {
     when(schemaService.getSchema()).thenReturn("schema");
     when(chatModel.call(any(Prompt.class)).getResult().getOutput().getText())
         .thenReturn("this is not json at all");
 
-    assertThatThrownBy(() -> martinService.ask("Show me records", DATASET_ID, BILLING_PERIOD))
-        .isInstanceOf(MartinResponseInvalidException.class);
+    assertThatThrownBy(() -> traceService.ask("Show me records", DATASET_ID, BILLING_PERIOD))
+        .isInstanceOf(TraceResponseInvalidException.class);
   }
 }

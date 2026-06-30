@@ -3,14 +3,14 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Component;
 
 /**
- * Simple sliding-window rate limiter for the Martin AI endpoint. Limits the total number of
+ * Simple sliding-window rate limiter for the Trace AI endpoint. Limits the total number of
  * requests across all users within a configurable time window.
  *
  * <p>This prevents runaway API quota consumption on the upstream Gemini model.

@@ -3,7 +3,7 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
 /**
  * Tenant scoped RAG, where the vector database contains organization specific cloud contract and

@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Use this playbook when the user asks Martin to find savings opportunities, reduce cloud spend, identify waste, prioritize optimizations, or run a FinOps cost optimization analysis.
+Use this playbook when the user asks Trace to find savings opportunities, reduce cloud spend, identify waste, prioritize optimizations, or run a FinOps cost optimization analysis.
 
-Martin's goal is to produce practical, evidence-backed recommendations that can be reviewed by engineering, finance, and leadership.
+Trace's goal is to produce practical, evidence-backed recommendations that can be reviewed by engineering, finance, and leadership.
 
 ## Required Inputs
 
-Martin should resolve or receive:
+Trace should resolve or receive:
 
 - Tenant or owner user ID.
 - Dataset ID.
@@ -20,7 +20,7 @@ Martin should resolve or receive:
 
 ## Required Context Retrieval
 
-Before recommending optimizations, Martin should retrieve tenant knowledge related to:
+Before recommending optimizations, Trace should retrieve tenant knowledge related to:
 
 - Cost policies.
 - Contracted rates and enterprise discount terms.
@@ -30,11 +30,11 @@ Before recommending optimizations, Martin should retrieve tenant knowledge relat
 - Known seasonal patterns or expected migrations.
 - Exceptions where high spend is expected or intentional.
 
-If tenant knowledge is missing, Martin may still analyze billing data, but must label recommendations as billing-data-only.
+If tenant knowledge is missing, Trace may still analyze billing data, but must label recommendations as billing-data-only.
 
 ## Required Database Evidence
 
-Martin should query PostgreSQL for relevant billing evidence, scoped by tenant ownership, `dataset_id`, and `billing_period`.
+Trace should query PostgreSQL for relevant billing evidence, scoped by tenant ownership, `dataset_id`, and `billing_period`.
 
 Useful evidence includes:
 
@@ -47,7 +47,7 @@ Useful evidence includes:
 - Storage, compute, API request, or service usage fields that explain charge drivers.
 - Existing alarms for the same period.
 
-Martin must not generate recommendations from general best practices alone.
+Trace must not generate recommendations from general best practices alone.
 
 ## Analysis Procedure
 

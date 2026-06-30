@@ -6,10 +6,10 @@
 package com.azeem.blueprint.controller;
 
 import com.azeem.blueprint.exception.web.QueryLimitExceededException;
-import com.azeem.blueprint.model.martin.MartinRequest;
-import com.azeem.blueprint.model.martin.MartinResponse;
-import com.azeem.blueprint.service.martin.MartinService;
-import com.azeem.blueprint.service.martin.RateLimiter;
+import com.azeem.blueprint.model.trace.TraceRequest;
+import com.azeem.blueprint.model.trace.TraceResponse;
+import com.azeem.blueprint.service.trace.TraceService;
+import com.azeem.blueprint.service.trace.RateLimiter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,26 +24,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/datasets/{datasetId}")
 @Tag(name = "AI Assistant", description = "Natural language billing queries")
-public class MartinController {
-  private static final Logger log = LoggerFactory.getLogger(MartinController.class);
-  private final MartinService martinService;
+public class TraceController {
+  private static final Logger log = LoggerFactory.getLogger(TraceController.class);
+  private final TraceService traceService;
   private final RateLimiter rateLimiter;
 
-  public MartinController(MartinService martinService, RateLimiter rateLimiter) {
-    this.martinService = martinService;
+  public TraceController(TraceService traceService, RateLimiter rateLimiter) {
+    this.traceService = traceService;
     this.rateLimiter = rateLimiter;
   }
 
   @Operation(summary = "Ask a natural language question about billing data")
-  @PostMapping("/martin")
-  public ResponseEntity<MartinResponse> chat(
-      @PathVariable String datasetId, @Valid @RequestBody MartinRequest request) {
+  @PostMapping("/trace")
+  public ResponseEntity<TraceResponse> chat(
+      @PathVariable String datasetId, @Valid @RequestBody TraceRequest request) {
     if (!rateLimiter.tryAcquire()) {
       throw new QueryLimitExceededException(
           "AI query rate limit exceeded. Please wait a moment before trying again.");
     }
-    MartinResponse response =
-        martinService.ask(request.getPrompt(), UUID.fromString(datasetId), request.getPeriod());
+    TraceResponse response =
+        traceService.ask(request.getPrompt(), UUID.fromString(datasetId), request.getPeriod());
     return ResponseEntity.ok(response);
   }
 }

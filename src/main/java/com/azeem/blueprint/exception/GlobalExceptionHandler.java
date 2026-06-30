@@ -48,11 +48,11 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  // Handle MartinResponseInvalidException
-  @ExceptionHandler(MartinResponseInvalidException.class)
-  public ResponseEntity<ErrorResponse> handleMartinResponseNotValidException(
-      MartinResponseInvalidException ex) {
-    logger.error("Martin's Response was invalid.", ex);
+  // Handle TraceResponseInvalidException
+  @ExceptionHandler(TraceResponseInvalidException.class)
+  public ResponseEntity<ErrorResponse> handleTraceResponseNotValidException(
+      TraceResponseInvalidException ex) {
+    logger.error("Trace's Response was invalid.", ex);
     ErrorResponse response =
         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

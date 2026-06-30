@@ -3,8 +3,8 @@ package com.azeem.blueprint.config;
 import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "martin-knowledge")
-public class MartinKnowledgeS3Config {
+@ConfigurationProperties(prefix = "trace-knowledge")
+public class TraceKnowledgeS3Config {
   private String folderPath;
   private String bucketName;
   private List<String> keys;

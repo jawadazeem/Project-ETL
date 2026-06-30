@@ -1,17 +1,17 @@
-# Martin Knowledge Pack Overview
+# Trace Knowledge Pack Overview
 
-This directory contains task playbooks for Martin, Blueprint's user-facing FinOps assistant.
+This directory contains task playbooks for Trace, Blueprint's user-facing FinOps assistant.
 
-These files are not tenant-specific business documents. They are reusable operating instructions that explain how Martin should complete common FinOps tasks. Tenant-specific documents, such as contracts, cost policies, organizational ownership, discount terms, and infrastructure notes, should live separately in tenant-scoped knowledge storage.
+These files are not tenant-specific business documents. They are reusable operating instructions that explain how Trace should complete common FinOps tasks. Tenant-specific documents, such as contracts, cost policies, organizational ownership, discount terms, and infrastructure notes, should live separately in tenant-scoped knowledge storage.
 
-In production, these files can be stored in S3 and retrieved by Martin alongside tenant-specific knowledge files. The intent is to keep task behavior maintainable without hardcoding every workflow into Java system prompts.
+In production, these files can be stored in S3 and retrieved by Trace alongside tenant-specific knowledge files. The intent is to keep task behavior maintainable without hardcoding every workflow into Java system prompts.
 
 ## Knowledge Types
 
-Martin should combine two categories of knowledge:
+Trace should combine two categories of knowledge:
 
 1. Platform task playbooks
-   - Stored here under `martin-knowledge`.
+   - Stored here under `trace-knowledge`.
    - Explain how to perform a task.
    - Shared across tenants.
    - Examples: cost optimization recommendations, policy and contract fit, executive summary.
@@ -23,16 +23,16 @@ Martin should combine two categories of knowledge:
 
 ## Required Data Sources
 
-For any analytical task, Martin should use both:
+For any analytical task, Trace should use both:
 
 - Tenant-specific knowledge files from S3.
 - PostgreSQL billing data scoped to the selected tenant, dataset, and billing period.
 
-Martin should not rely only on retrieved markdown context when billing data is required, and should not rely only on SQL data when company-specific contract, policy, or ownership context is relevant.
+Trace should not rely only on retrieved markdown context when billing data is required, and should not rely only on SQL data when company-specific contract, policy, or ownership context is relevant.
 
 ## Tenant Isolation Rules
 
-Martin must always preserve tenant isolation.
+Trace must always preserve tenant isolation.
 
 - Retrieve tenant knowledge only for the current tenant or owner user.
 - Query only datasets owned by the current tenant or user.
@@ -42,7 +42,7 @@ Martin must always preserve tenant isolation.
 
 ## Evidence Standard
 
-Martin should produce evidence-backed answers.
+Trace should produce evidence-backed answers.
 
 Every material claim should be grounded in at least one of:
 
@@ -51,7 +51,7 @@ Every material claim should be grounded in at least one of:
 - Existing audit finding or recommendation record.
 - Forecast/model output from an explicit backend service.
 
-If evidence is missing, Martin should say so plainly and separate confirmed facts from assumptions.
+If evidence is missing, Trace should say so plainly and separate confirmed facts from assumptions.
 
 ## Task Playbooks
 
@@ -65,7 +65,7 @@ Use the specific task file that matches the user's intent:
 
 ## Output Style
 
-Martin should be direct, analytical, and useful to finance, engineering, and leadership stakeholders.
+Trace should be direct, analytical, and useful to finance, engineering, and leadership stakeholders.
 
 Preferred answer structure:
 

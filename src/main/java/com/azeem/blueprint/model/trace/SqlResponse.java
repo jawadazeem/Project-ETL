@@ -3,12 +3,12 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.model.martin;
+package com.azeem.blueprint.model.trace;
 
 /**
- * Martin's SQL Response DTO
+ * Trace's SQL Response DTO
  *
- * <p>SQL script and reasoning are including in {@link MartinResponse}
+ * <p>SQL script and reasoning are including in {@link TraceResponse}
  */
 public class SqlResponse {
   private String sql;

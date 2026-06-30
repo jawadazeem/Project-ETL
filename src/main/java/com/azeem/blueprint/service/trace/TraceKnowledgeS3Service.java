@@ -3,10 +3,10 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.martin;
+package com.azeem.blueprint.service.trace;
 
-import com.azeem.blueprint.config.MartinKnowledgeS3Config;
-import com.azeem.blueprint.exception.core.MartinKnowledgeNotFoundException;
+import com.azeem.blueprint.config.TraceKnowledgeS3Config;
+import com.azeem.blueprint.exception.core.TraceKnowledgeNotFoundException;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 import java.io.IOException;
@@ -24,24 +24,24 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 /**
- * Not organization specific. This is for general playbook knowledge, defining Martin's behavior for
+ * Not organization specific. This is for general playbook knowledge, defining Trace's behavior for
  * common requests
  */
 @Service
-public class MartinKnowledgeS3Service {
-  private static final Logger log = LoggerFactory.getLogger(MartinKnowledgeS3Service.class);
+public class TraceKnowledgeS3Service {
+  private static final Logger log = LoggerFactory.getLogger(TraceKnowledgeS3Service.class);
   private final S3Template s3Template;
-  private final MartinKnowledgeS3Config props;
+  private final TraceKnowledgeS3Config props;
 
-  public MartinKnowledgeS3Service(S3Template s3Template, MartinKnowledgeS3Config props) {
+  public TraceKnowledgeS3Service(S3Template s3Template, TraceKnowledgeS3Config props) {
     this.s3Template = s3Template;
     this.props = props;
   }
 
   /** Aggregates multiple Markdown playbooks from S3 into a single continuous stream. */
-  public InputStream getMartinKnowledgeDataStream() {
+  public InputStream getTraceKnowledgeDataStream() {
     log.info(
-        "Fetching Martin's playbooks from bucket: {} | Keys: {}",
+        "Fetching Trace's playbooks from bucket: {} | Keys: {}",
         props.getBucketName(),
         props.getKeys());
 
@@ -51,8 +51,8 @@ public class MartinKnowledgeS3Service {
                 key -> {
                   S3Resource resource = s3Template.download(props.getBucketName(), key);
                   if (!resource.exists()) {
-                    throw new MartinKnowledgeNotFoundException(
-                        "Martin's data missing in S3: " + key);
+                    throw new TraceKnowledgeNotFoundException(
+                        "Trace's data missing in S3: " + key);
                   }
                   try {
                     return resource.getInputStream();
@@ -68,11 +68,11 @@ public class MartinKnowledgeS3Service {
 
   @EventListener(ApplicationReadyEvent.class)
   public void loadKnowledgeIntoS3() {
-    log.info("Starting initial load of Martin knowledge to S3...");
+    log.info("Starting initial load of Trace knowledge to S3...");
     PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
     for (String fileName : props.getKeys()) {
-      // Locates the file in classpath:martin-knowledge/filename.md
+      // Locates the file in classpath:trace-knowledge/filename.md
       String path = "classpath:" + props.getFolderPath() + "/" + fileName;
       Resource resource = resolver.getResource(path);
 
