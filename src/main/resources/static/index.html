@@ -116,6 +116,35 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="org-context-overlay">
+    <div class="alarm-modal org-context-modal">
+        <div class="modal-header">
+            <h3>Organization Context</h3>
+            <button class="modal-close" id="org-context-close" type="button">&#10005;</button>
+        </div>
+
+        <div class="modal-body">
+            <p class="text-muted mb-3">
+                Add markdown files that describe contracts, cost policies, team ownership, and other organization-specific cloud context.
+            </p>
+            <div class="org-context-dropzone">
+                <label class="form-label fw-bold" for="orgContextFiles">Organization context files</label>
+                <input id="orgContextFiles" class="form-control" type="file" accept=".md,text/markdown,text/plain" multiple />
+                <small class="text-muted d-block mt-2">Backend upload is not wired yet. This only stages files in the UI.</small>
+            </div>
+
+            <ul class="org-context-file-list" id="orgContextFileList">
+                <li class="text-muted">No files selected.</li>
+            </ul>
+
+            <div class="mt-3 d-flex gap-2 flex-wrap">
+                <button class="btn btn-primary" id="orgContextStageBtn" type="button">Stage Files</button>
+                <button class="btn btn-outline-secondary" id="orgContextCancelBtn" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="notifications-overlay">
     <div class="alarm-modal" style="max-width: 900px;">
         <div class="modal-header">
@@ -276,11 +305,14 @@
                 </div>
             </div>
 
-            <div class="col-lg-9">
+            <div class="col-lg-7">
                 <input id="chatInput" class="form-control" placeholder="Ask Martin about cloud costs..." aria-label="Chat input" />
             </div>
-            <div class="col-lg-3 d-flex align-items-start">
+            <div class="col-lg-2 d-flex align-items-start">
                 <button class="btn btn-primary w-100" id="chatSendBtn" type="button">Send</button>
+            </div>
+            <div class="col-lg-3 d-flex align-items-start">
+                <button class="btn btn-outline-primary w-100" id="orgContextBtn" type="button">Organization Context</button>
             </div>
         </div>
     </div>
@@ -319,6 +351,88 @@
                     Shows how many alarms are Low / Medium / High for the currently selected billing period.
                 </small>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4 finops-intelligence-row">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="card h-100 premium-card predictions-section" id="predictionsSection">
+            <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
+                <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
+            </div>
+            <div class="card-body glass-panel">
+                <p class="text-muted">Forecasting will automatically use the most relevant ready datasets once the backend selection logic is implemented.</p>
+
+                <div class="auto-model-summary mb-3">
+                    <div>
+                        <span class="panel-eyebrow">Auto-selected training data</span>
+                        <strong>Latest eligible billing periods</strong>
+                        <small>Backend placeholder: no manual dataset selection required.</small>
+                    </div>
+                    <button class="btn btn-primary generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
+                        <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
+                        <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 12px;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
+                    <hr class="my-4 subtle-hr">
+                    <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
+                    <div class="chart-box premium-chart-box">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card h-100 audit-card" id="auditModule">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-shield-alt"></i> Audit Engine</span>
+                <span class="audit-status">Scheduled placeholder</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Martin to explain and prioritize.</p>
+
+                <div class="audit-action-grid">
+                    <button class="audit-action-btn" type="button" data-audit-action="run-audit">
+                        <strong>Run Audit</strong>
+                        <span>Scan billing records for anomalies, duplicates, and policy issues.</span>
+                    </button>
+                    <button class="audit-action-btn" type="button" data-audit-action="review-findings">
+                        <strong>Review Findings</strong>
+                        <span>Open the latest evidence-backed audit results.</span>
+                    </button>
+                    <button class="audit-action-btn" type="button" data-audit-action="explain-findings">
+                        <strong>Ask Martin to Explain</strong>
+                        <span>Summarize audit findings in business language.</span>
+                    </button>
+                </div>
+
+                <div class="audit-placeholder-list mt-3">
+                    <div><span>Duplicate charge detection</span><strong>Planned</strong></div>
+                    <div><span>Spend spike analysis</span><strong>Planned</strong></div>
+                    <div><span>Contract/policy variance checks</span><strong>Planned</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4 query-module" id="billingQueryModule">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Query Billing Data</span>
+        <span class="query-status">Athena placeholder</span>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">Future workflow: submit governed analytical queries against billing data through AWS Athena.</p>
+        <div class="query-compose">
+            <textarea id="billingQueryInput" class="form-control" rows="3" placeholder="Example: Show total AWS S3 spend by account for the current billing period"></textarea>
+            <button class="btn btn-primary" id="billingQueryBtn" type="button">Run Query</button>
         </div>
     </div>
 </div>
@@ -456,74 +570,6 @@
             </div>
         </dl>
     </aside>
-</div>
-
-<div class="row mb-4 finops-intelligence-row">
-    <div class="col-lg-6 mb-4 mb-lg-0">
-        <div class="card h-100 premium-card predictions-section" id="predictionsSection">
-            <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
-                <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
-            </div>
-            <div class="card-body glass-panel">
-                <p class="text-muted">Forecasting will automatically use the most relevant ready datasets once the backend selection logic is implemented.</p>
-
-                <div class="auto-model-summary mb-3">
-                    <div>
-                        <span class="panel-eyebrow">Auto-selected training data</span>
-                        <strong>Latest eligible billing periods</strong>
-                        <small>Backend placeholder: no manual dataset selection required.</small>
-                    </div>
-                    <button class="btn btn-primary generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
-                        <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
-                        <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 12px;">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </button>
-                </div>
-
-                <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
-                    <hr class="my-4 subtle-hr">
-                    <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
-                    <div class="chart-box premium-chart-box">
-                        <canvas id="predictionChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6">
-        <div class="card h-100 audit-card" id="auditModule">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-shield-alt"></i> Audit Engine</span>
-                <span class="audit-status">Scheduled placeholder</span>
-            </div>
-            <div class="card-body">
-                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Martin to explain and prioritize.</p>
-
-                <div class="audit-action-grid">
-                    <button class="audit-action-btn" type="button" data-audit-action="run-audit">
-                        <strong>Run Audit</strong>
-                        <span>Scan billing records for anomalies, duplicates, and policy issues.</span>
-                    </button>
-                    <button class="audit-action-btn" type="button" data-audit-action="review-findings">
-                        <strong>Review Findings</strong>
-                        <span>Open the latest evidence-backed audit results.</span>
-                    </button>
-                    <button class="audit-action-btn" type="button" data-audit-action="explain-findings">
-                        <strong>Ask Martin to Explain</strong>
-                        <span>Summarize audit findings in business language.</span>
-                    </button>
-                </div>
-
-                <div class="audit-placeholder-list mt-3">
-                    <div><span>Duplicate charge detection</span><strong>Planned</strong></div>
-                    <div><span>Spend spike analysis</span><strong>Planned</strong></div>
-                    <div><span>Contract/policy variance checks</span><strong>Planned</strong></div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <footer class="app-footer mt-5">

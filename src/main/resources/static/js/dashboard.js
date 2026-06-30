@@ -886,6 +886,65 @@ function openInfo() {
     window.Blueprint.openInfoPopup();
 }
 
+function openOrgContextModal() {
+    document.getElementById("org-context-overlay").style.display = "flex";
+    renderOrgContextFileList();
+}
+
+function closeOrgContextModal() {
+    document.getElementById("org-context-overlay").style.display = "none";
+}
+
+function formatFileSize(bytes) {
+    if (!bytes) return "0 KB";
+    const sizeInKb = bytes / 1024;
+    if (sizeInKb < 1024) {
+        return `${sizeInKb.toFixed(1)} KB`;
+    }
+    return `${(sizeInKb / 1024).toFixed(1)} MB`;
+}
+
+function renderOrgContextFileList() {
+    const input = document.getElementById("orgContextFiles");
+    const list = document.getElementById("orgContextFileList");
+    if (!input || !list) return;
+
+    const files = Array.from(input.files || []);
+    if (!files.length) {
+        list.innerHTML = '<li class="text-muted">No files selected.</li>';
+        return;
+    }
+
+    list.innerHTML = files.map(file => `
+        <li>
+            <strong>${escapeForHtml(file.name)}</strong>
+            <span>${formatFileSize(file.size)}</span>
+        </li>
+    `).join("");
+}
+
+function stageOrgContextFiles() {
+    const input = document.getElementById("orgContextFiles");
+    const files = Array.from(input?.files || []);
+    if (!files.length) {
+        showToast("Choose one or more organization context files first.", "info");
+        return;
+    }
+
+    showBackendPlaceholder(`Organization context upload (${files.length} file${files.length === 1 ? "" : "s"})`);
+    closeOrgContextModal();
+}
+
+function runBillingQueryPlaceholder() {
+    const query = document.getElementById("billingQueryInput")?.value.trim();
+    if (!query) {
+        showToast("Enter a billing query first.", "info");
+        return;
+    }
+
+    showBackendPlaceholder("Athena billing query");
+}
+
 // ── Upload & demo load ────────────────────────────────────────────────────
 
 async function uploadFile() {
@@ -1361,6 +1420,12 @@ function wireDashboardEvents() {
     document.getElementById("logoutBtn")?.addEventListener("click", window.Blueprint.endSession);
     document.getElementById("loadDummyBtn")?.addEventListener("click", loadDummyData);
     document.getElementById("chatSendBtn")?.addEventListener("click", sendChat);
+    document.getElementById("orgContextBtn")?.addEventListener("click", openOrgContextModal);
+    document.getElementById("org-context-close")?.addEventListener("click", closeOrgContextModal);
+    document.getElementById("orgContextCancelBtn")?.addEventListener("click", closeOrgContextModal);
+    document.getElementById("orgContextFiles")?.addEventListener("change", renderOrgContextFileList);
+    document.getElementById("orgContextStageBtn")?.addEventListener("click", stageOrgContextFiles);
+    document.getElementById("billingQueryBtn")?.addEventListener("click", runBillingQueryPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
         showBackendPlaceholder("Cost optimization analysis");
         setMartinPrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");

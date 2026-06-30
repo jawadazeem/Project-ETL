@@ -20,6 +20,8 @@ public class OrgContextDatabaseIngestionService {
   private final OrgContextS3Service orgContextS3Service;
   private final OrgContextProps props;
 
+  // TODO: Rename to make known it is for PGVector, add delete methods too. OrgContextQueryService
+  // is a facade for S3, pSQL, and PGVector, maintaining records and integrity across the board
   public OrgContextDatabaseIngestionService(
       VectorStore vectorStore, OrgContextS3Service orgContextS3Service, OrgContextProps props) {
     this.vectorStore = vectorStore;

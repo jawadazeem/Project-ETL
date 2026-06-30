@@ -9,4 +9,6 @@ package com.azeem.blueprint.service.martin;
  * Tenant scoped RAG, where the vector database contains organization specific cloud contract and
  * spend context
  */
-public class OrgKnowledgeRetrievalService {}
+public class OrgKnowledgeRetrievalService {
+  // TODO: How to get a specific tenants org info?
+}

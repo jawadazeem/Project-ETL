@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-/** Enables the retrieval and deletion of OrgContext markdown files. */
+/**
+ * Enables the retrieval and deletion of OrgContext markdown files. A facade for S3, Postgres
+ * relational database, and PGVector database, maintaining records and integrity across the board
+ */
 @Service
 public class OrgContextQueryService {
   private final OrgContextS3Service orgContextS3Service;
@@ -37,6 +40,7 @@ public class OrgContextQueryService {
     this.orgContextDocumentMapper = orgContextDocumentMapper;
   }
 
+  // TODO: Ingest and Delete from the PGVector Database too
   @Transactional
   public OrgContextDocument ingestDocuments(UUID ownerUserId, MultipartFile multipartFile) {
     long currentFileCount = orgContextDocumentRepository.countByOwnerUserId(ownerUserId);

@@ -99,6 +99,13 @@ prediction:
   service:
     url: ${PREDICTION_SERVICE_URL:http://prediction-service:5000}
 
+# Database config
+database-config:
+  vector-db:
+    jdbc-url: jdbc:postgresql://pgvector:5432/blueprint_org-context
+    username: blueprint
+    password: ${DB_PASSWORD}
+
 ---
 # Configuration for the 'dev' profile only
 spring:
@@ -106,8 +113,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/billingdb}
+    username: ${SPRING_DATASOURCE_USERNAME:billing_app}
     password: ${SPRING_DATASOURCE_PASSWORD}
     hikari:
       initialization-fail-timeout: 0

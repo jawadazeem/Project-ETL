@@ -20,9 +20,13 @@ import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-// TODO: Completely redesign how this functions. It must use OrgContext and playbooks to operate
+// TODO: Completely redesign how this functions. It must use OrgContext and playbooks to operate.
+//       Should be delegating tasks to each smaller service, which then retrieves its respective
+// playbook
+//       and crafts a prompt for Martin, which this service consumes and sends to his API via SDK
 @Service
 public class MartinService {
   private static final Logger log = LoggerFactory.getLogger(MartinService.class);
@@ -33,7 +37,7 @@ public class MartinService {
   private final ObjectMapper objectMapper;
 
   public MartinService(
-      ChatModel chatModel,
+      @Qualifier("ollamaChatModel") ChatModel chatModel,
       SchemaService schemaService,
       QueryExecutionService queryExecutionService,
       SqlValidationService sqlValidationService,
