@@ -11,6 +11,7 @@ let activeDataTab = "all";
 let currentRecordsPage = [];
 let currentProviderPage = [];
 let currentTopRecords = [];
+let currentOrgContextDocuments = [];
 const pageSize = 20;
 
 const numberFormatter = new Intl.NumberFormat(undefined);
@@ -889,6 +890,7 @@ function openInfo() {
 function openOrgContextModal() {
     document.getElementById("org-context-overlay").style.display = "flex";
     renderOrgContextFileList();
+    loadOrgContextDocuments();
 }
 
 function closeOrgContextModal() {
@@ -923,16 +925,143 @@ function renderOrgContextFileList() {
     `).join("");
 }
 
-function stageOrgContextFiles() {
+function renderOrgContextDocumentList() {
+    const list = document.getElementById("orgContextDocumentList");
+    if (!list) return;
+
+    if (!currentOrgContextDocuments.length) {
+        list.innerHTML = '<li class="text-muted">No organization context files uploaded yet.</li>';
+        return;
+    }
+
+    list.innerHTML = currentOrgContextDocuments.map(doc => {
+        const uploadedAt = doc.uploadedAt ? new Date(doc.uploadedAt).toLocaleString() : "Uploaded";
+        return `
+            <li>
+                <div>
+                    <strong>${escapeForHtml(doc.sourceFilename || "Untitled context file")}</strong>
+                    <span>${escapeForHtml(uploadedAt)}</span>
+                </div>
+                <button class="btn btn-sm btn-outline-danger org-context-delete-btn" type="button" data-document-id="${escapeForHtml(doc.id)}">
+                    Delete
+                </button>
+            </li>
+        `;
+    }).join("");
+}
+
+async function loadOrgContextDocuments() {
+    const list = document.getElementById("orgContextDocumentList");
+    if (list) {
+        list.innerHTML = '<li class="text-muted">Loading uploaded files...</li>';
+    }
+
+    try {
+        const res = await fetch("/org-contexts", {
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) {
+            throw new Error(`Org context list failed: ${res.status}`);
+        }
+
+        currentOrgContextDocuments = await res.json();
+        renderOrgContextDocumentList();
+    } catch (e) {
+        console.error("Failed to load organization context documents", e);
+        currentOrgContextDocuments = [];
+        if (list) {
+            list.innerHTML = '<li class="text-muted">Could not load uploaded files.</li>';
+        }
+        showToast("Could not load organization context files.");
+    }
+}
+
+async function uploadOrgContextFiles() {
     const input = document.getElementById("orgContextFiles");
+    const uploadBtn = document.getElementById("orgContextStageBtn");
+    const status = document.getElementById("orgContextUploadStatus");
     const files = Array.from(input?.files || []);
+
     if (!files.length) {
         showToast("Choose one or more organization context files first.", "info");
         return;
     }
 
-    showBackendPlaceholder(`Organization context upload (${files.length} file${files.length === 1 ? "" : "s"})`);
-    closeOrgContextModal();
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Uploading...";
+    if (status) {
+        status.textContent = `Uploading ${files.length} file${files.length === 1 ? "" : "s"}...`;
+    }
+
+    let uploadedCount = 0;
+
+    try {
+        for (const file of files) {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const res = await fetch("/org-contexts", {
+                method: "POST",
+                headers: { "X-User-Id": GUEST_USER_ID },
+                body: formData
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(errorText || `Upload failed with status ${res.status}`);
+            }
+
+            uploadedCount++;
+            if (status) {
+                status.textContent = `Uploaded ${uploadedCount} of ${files.length} file${files.length === 1 ? "" : "s"}...`;
+            }
+        }
+
+        input.value = "";
+        renderOrgContextFileList();
+        await loadOrgContextDocuments();
+        showToast(`Uploaded ${uploadedCount} organization context file${uploadedCount === 1 ? "" : "s"}.`, "success");
+        if (status) {
+            status.textContent = "Upload complete.";
+        }
+    } catch (e) {
+        console.error("Organization context upload failed", e);
+        showToast(`Organization context upload failed: ${e.message || "Unknown error"}`);
+        if (status) {
+            status.textContent = "Upload failed.";
+        }
+    } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = "Upload Files";
+    }
+}
+
+async function deleteOrgContextDocument(documentId) {
+    if (!documentId) return;
+
+    if (!confirm("Delete this organization context file?")) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`/org-contexts/${encodeURIComponent(documentId)}`, {
+            method: "DELETE",
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(errorText || `Delete failed with status ${res.status}`);
+        }
+
+        currentOrgContextDocuments = currentOrgContextDocuments.filter(doc => doc.id !== documentId);
+        renderOrgContextDocumentList();
+        showToast("Organization context file deleted.", "success");
+    } catch (e) {
+        console.error("Organization context delete failed", e);
+        showToast("Could not delete organization context file.");
+    }
 }
 
 function runBillingQueryPlaceholder() {
@@ -943,6 +1072,24 @@ function runBillingQueryPlaceholder() {
     }
 
     showBackendPlaceholder("Athena billing query");
+}
+
+function setPatternExample(pattern) {
+    const input = document.getElementById("patternSearchInput");
+    if (!input) return;
+
+    input.value = pattern;
+    input.focus();
+}
+
+function runPatternSearchPlaceholder() {
+    const pattern = document.getElementById("patternSearchInput")?.value.trim();
+    if (!pattern) {
+        showToast("Enter a Ptern pattern first.", "info");
+        return;
+    }
+
+    showBackendPlaceholder("Advanced Ptern pattern search");
 }
 
 // ── Upload & demo load ────────────────────────────────────────────────────
@@ -1424,8 +1571,15 @@ function wireDashboardEvents() {
     document.getElementById("org-context-close")?.addEventListener("click", closeOrgContextModal);
     document.getElementById("orgContextCancelBtn")?.addEventListener("click", closeOrgContextModal);
     document.getElementById("orgContextFiles")?.addEventListener("change", renderOrgContextFileList);
-    document.getElementById("orgContextStageBtn")?.addEventListener("click", stageOrgContextFiles);
+    document.getElementById("orgContextStageBtn")?.addEventListener("click", uploadOrgContextFiles);
+    document.getElementById("orgContextRefreshBtn")?.addEventListener("click", loadOrgContextDocuments);
+    document.getElementById("orgContextDocumentList")?.addEventListener("click", event => {
+        const btn = event.target.closest(".org-context-delete-btn");
+        if (!btn) return;
+        deleteOrgContextDocument(btn.dataset.documentId);
+    });
     document.getElementById("billingQueryBtn")?.addEventListener("click", runBillingQueryPlaceholder);
+    document.getElementById("patternSearchBtn")?.addEventListener("click", runPatternSearchPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
         showBackendPlaceholder("Cost optimization analysis");
         setTracePrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
@@ -1459,6 +1613,10 @@ function wireDashboardEvents() {
 
     document.querySelectorAll(".finops-question-btn").forEach(button => {
         button.addEventListener("click", () => setTracePrompt(button.dataset.prompt || ""));
+    });
+
+    document.querySelectorAll(".pattern-example-btn").forEach(button => {
+        button.addEventListener("click", () => setPatternExample(button.dataset.pattern || ""));
     });
 
     document.querySelectorAll(".audit-action-btn").forEach(button => {

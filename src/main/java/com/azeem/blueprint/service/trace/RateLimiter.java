@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Component;
 
 /**
- * Simple sliding-window rate limiter for the Trace AI endpoint. Limits the total number of
- * requests across all users within a configurable time window.
+ * Simple sliding-window rate limiter for the Trace AI endpoint. Limits the total number of requests
+ * across all users within a configurable time window.
  *
  * <p>This prevents runaway API quota consumption on the upstream Gemini model.
  */

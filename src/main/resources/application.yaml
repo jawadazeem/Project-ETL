@@ -102,9 +102,9 @@ prediction:
 # Database config
 database-config:
   vector-db:
-    jdbc-url: jdbc:postgresql://pgvector:5432/blueprint_org-context
-    username: blueprint
-    password: ${DB_PASSWORD}
+    url: ${VECTOR_DB_URL:jdbc:postgresql://pgvector:5432/blueprint_org-context}
+    username: ${VECTOR_DB_USERNAME:blueprint}
+    password: ${VECTOR_DB_PASSWORD:${DB_PASSWORD:${SPRING_DATASOURCE_PASSWORD:}}}
 
 ---
 # Configuration for the 'dev' profile only

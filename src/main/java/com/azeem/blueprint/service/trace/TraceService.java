@@ -6,8 +6,8 @@
 package com.azeem.blueprint.service.trace;
 
 import com.azeem.blueprint.exception.core.TraceResponseInvalidException;
-import com.azeem.blueprint.model.trace.TraceResponse;
 import com.azeem.blueprint.model.trace.SqlResponse;
+import com.azeem.blueprint.model.trace.TraceResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

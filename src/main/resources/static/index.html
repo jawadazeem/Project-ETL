@@ -130,17 +130,28 @@
             <div class="org-context-dropzone">
                 <label class="form-label fw-bold" for="orgContextFiles">Organization context files</label>
                 <input id="orgContextFiles" class="form-control" type="file" accept=".md,text/markdown,text/plain" multiple />
-                <small class="text-muted d-block mt-2">Backend upload is not wired yet. This only stages files in the UI.</small>
+                <small class="text-muted d-block mt-2">Upload markdown files used by Trace for company-specific policy, contract, and ownership context.</small>
             </div>
+
+            <div id="orgContextUploadStatus" class="text-muted small mt-2"></div>
 
             <ul class="org-context-file-list" id="orgContextFileList">
                 <li class="text-muted">No files selected.</li>
             </ul>
 
             <div class="mt-3 d-flex gap-2 flex-wrap">
-                <button class="btn btn-primary" id="orgContextStageBtn" type="button">Stage Files</button>
+                <button class="btn btn-primary" id="orgContextStageBtn" type="button">Upload Files</button>
                 <button class="btn btn-outline-secondary" id="orgContextCancelBtn" type="button">Cancel</button>
             </div>
+
+            <hr class="my-4" />
+            <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                <h4 class="h6 mb-0">Uploaded Context</h4>
+                <button class="btn btn-sm btn-outline-secondary" id="orgContextRefreshBtn" type="button">Refresh</button>
+            </div>
+            <ul class="org-context-file-list" id="orgContextDocumentList">
+                <li class="text-muted">Loading uploaded files...</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -433,6 +444,38 @@
         <div class="query-compose">
             <textarea id="billingQueryInput" class="form-control" rows="3" placeholder="Example: Show total AWS S3 spend by account for the current billing period"></textarea>
             <button class="btn btn-primary" id="billingQueryBtn" type="button">Run Query</button>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4 pattern-search-module" id="advancedPatternSearchModule">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Advanced Pattern Search</span>
+        <span class="pattern-status">Ptern placeholder</span>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">
+            Future workflow: use readable Ptern patterns to find records that match naming conventions, resource ID shapes, or account formats.
+        </p>
+        <div class="pattern-search-layout">
+            <div>
+                <label class="form-label fw-bold" for="patternFieldSelect">Field</label>
+                <select class="form-select" id="patternFieldSelect">
+                    <option value="resourceId">Resource ID</option>
+                    <option value="accountName">Account Name</option>
+                    <option value="serviceName">Service Name</option>
+                    <option value="description">Description</option>
+                </select>
+            </div>
+            <div class="pattern-input-block">
+                <label class="form-label fw-bold" for="patternSearchInput">Ptern pattern</label>
+                <textarea id="patternSearchInput" class="form-control" rows="4" placeholder="Example: prefix = 's3-'; hex = %HexDigit * 6; {prefix} {hex} as resourceSuffix"></textarea>
+            </div>
+            <div class="pattern-actions">
+                <button class="btn btn-primary" id="patternSearchBtn" type="button">Run Pattern Search</button>
+                <button class="btn btn-outline-secondary pattern-example-btn" type="button" data-pattern="prefix = 's3-'; hex = %HexDigit * 6; {prefix} {hex} as resourceSuffix">S3 Resource Pattern</button>
+                <button class="btn btn-outline-secondary pattern-example-btn" type="button" data-pattern="team = %Letter+; '-' env = 'prod' | 'dev' | 'qa'; {team} {env}">Account Naming Pattern</button>
+            </div>
         </div>
     </div>
 </div>
