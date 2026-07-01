@@ -117,7 +117,7 @@ services:
       "
 
   prediction-service:
-    build: ./prediction-service
+    build: comp/prediction-service
     container_name: prediction-service
     restart: always
 
