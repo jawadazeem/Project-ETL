@@ -56,8 +56,7 @@ class TraceServiceTest {
     when(sqlValidationService.isValidSql(any())).thenReturn(true);
     when(queryExecutionService.executeQuery(any())).thenReturn(List.of());
 
-    TraceResponse response =
-        traceService.ask("How much did we spend?", DATASET_ID, BILLING_PERIOD);
+    TraceResponse response = traceService.ask("How much did we spend?", DATASET_ID, BILLING_PERIOD);
 
     assertThat(response).isNotNull();
     assertThat(response.answer).isEqualTo("Your account spent $500 in January.");

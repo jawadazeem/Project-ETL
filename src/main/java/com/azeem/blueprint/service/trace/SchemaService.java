@@ -7,6 +7,7 @@ package com.azeem.blueprint.service.trace;
 
 import org.springframework.stereotype.Service;
 
+// TODO: Redo to include PgVector and MD dataset relational database.
 @Service
 public class SchemaService {
   public String getSchema() {

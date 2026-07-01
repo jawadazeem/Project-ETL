@@ -51,8 +51,7 @@ public class TraceKnowledgeS3Service {
                 key -> {
                   S3Resource resource = s3Template.download(props.getBucketName(), key);
                   if (!resource.exists()) {
-                    throw new TraceKnowledgeNotFoundException(
-                        "Trace's data missing in S3: " + key);
+                    throw new TraceKnowledgeNotFoundException("Trace's data missing in S3: " + key);
                   }
                   try {
                     return resource.getInputStream();

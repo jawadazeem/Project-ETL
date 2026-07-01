@@ -6,4 +6,6 @@
 package com.azeem.blueprint.service.trace;
 
 /** Trace offer cost optimization advice tailored to the organization's cloud needs and usages */
-public class CostOptimizationService {}
+public class CostOptimizationService {
+  // TODO: Adjust the prompts for cost optimizations, pull the playbook.
+}

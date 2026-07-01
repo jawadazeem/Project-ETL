@@ -15,8 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.azeem.blueprint.config.SecurityConfig;
 import com.azeem.blueprint.model.trace.TraceRequest;
 import com.azeem.blueprint.model.trace.TraceResponse;
-import com.azeem.blueprint.service.trace.TraceService;
 import com.azeem.blueprint.service.trace.RateLimiter;
+import com.azeem.blueprint.service.trace.TraceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
