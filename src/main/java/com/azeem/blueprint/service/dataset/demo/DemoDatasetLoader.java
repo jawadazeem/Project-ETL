@@ -39,7 +39,7 @@ public class DemoDatasetLoader {
     this.datasetRepository = datasetRepository;
   }
 
-  public void loadDemoData() {
+  public synchronized void loadDemoData() {
     if (isLoaded()) {
       markDatasetReady();
       log.info("Demo data already loaded, cannot load again.");

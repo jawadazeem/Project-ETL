@@ -25,6 +25,15 @@ spring:
           options:
             model: "gemini-2.5-flash"
             temperature: 0.1
+    ollama:
+      base-url: "http://host.docker.internal:11434"
+      embedding:
+          model: nomic-embed-text
+      init:
+        pull-model-strategy: "WHEN_MISSING"
+    vectorstore:
+      pgvector:
+        initialize-schema: true
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
 server:
@@ -70,14 +79,17 @@ alarm:
 billing-reader:
   has-header: true
   batch-size: 1000
-martin-knowledge:
-  folder-path: /martin-knowledge
-  bucket-name: martin-knowledge
+trace-knowledge:
+  folder-path: /trace-knowledge
+  bucket-name: trace-knowledge
   keys:
     - cost-optimization-recommendations.md
     - executive-summary.md
     - policy-and-contract-fit.md
     - overview.md
+org-context:
+  bucket-name: cloud-billing
+  max-files: 5
 notification:
   service:
     url: ${NOTIFICATION_SERVICE_URL:http://localhost:3001}
@@ -87,6 +99,13 @@ prediction:
   service:
     url: ${PREDICTION_SERVICE_URL:http://prediction-service:5000}
 
+# Database config
+database-config:
+  vector-db:
+    jdbc-url: jdbc:postgresql://pgvector:5432/blueprint_org-context
+    username: blueprint
+    password: ${DB_PASSWORD}
+
 ---
 # Configuration for the 'dev' profile only
 spring:
@@ -94,8 +113,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/billingdb}
+    username: ${SPRING_DATASOURCE_USERNAME:billing_app}
     password: ${SPRING_DATASOURCE_PASSWORD}
     hikari:
       initialization-fail-timeout: 0

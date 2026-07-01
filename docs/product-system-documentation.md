@@ -6,13 +6,13 @@ Last updated: June 25, 2026
 
 ## Project Overview
 
-Blueprint is a multi-cloud FinOps cost management platform. It helps users ingest cloud billing CSV data from AWS, GCP, and Azure, store it in PostgreSQL, inspect records by period and cloud provider, summarize charges, surface budget alarms, generate PDF reports, forecast future costs, and ask natural-language billing questions through an AI assistant named Martin.
+Blueprint is a multi-cloud FinOps cost management platform. It helps users ingest cloud billing CSV data from AWS, GCP, and Azure, store it in PostgreSQL, inspect records by period and cloud provider, summarize charges, surface budget alarms, generate PDF reports, forecast future costs, and ask natural-language billing questions through an AI assistant named Trace.
 
 The system consists of three services:
 
 1. **Monolith** — a full-stack Spring Boot application with:
    - A static HTML/CSS/JavaScript frontend served directly by Spring Boot.
-   - REST APIs for dataset management, records, summaries, cloud providers, periods, alarms, demo loading, PDF reports, predictions, notifications, corporate info, CSV export, and Martin chat. All data APIs are scoped to a dataset ID.
+   - REST APIs for dataset management, records, summaries, cloud providers, periods, alarms, demo loading, PDF reports, predictions, notifications, corporate info, CSV export, and Trace chat. All data APIs are scoped to a dataset ID.
    - PostgreSQL persistence through Spring Data JPA, with schema managed by Liquibase.
    - CSV ingestion through OpenCSV and raw JDBC batch writes for performance.
    - Event-driven upload processing through S3 object-created events delivered to SQS.
@@ -34,7 +34,7 @@ The system consists of three services:
    - Performs linear regression forecasting using scikit-learn.
    - Returns predicted charges for future billing periods.
 
-Current maturity: functional demo with real ETL, persistence, dataset lifecycle (archive/restore/delete), alarms with notification dispatch, multi-dataset management, Liquibase-managed schema, PDF report generation, billing predictions, CSV export, complete test coverage, and AI query execution. Remaining gaps: no real authentication, Martin SQL validation is string-based.
+Current maturity: functional demo with real ETL, persistence, dataset lifecycle (archive/restore/delete), alarms with notification dispatch, multi-dataset management, Liquibase-managed schema, PDF report generation, billing predictions, CSV export, complete test coverage, and AI query execution. Remaining gaps: no real authentication, Trace SQL validation is string-based.
 
 ## Target Users
 
@@ -63,7 +63,7 @@ flowchart TD
     I --> L["View charge and alarm charts"]
     I --> M["Filter by cloud provider"]
     I --> N["Top N charge lookup"]
-    I --> O["Ask Martin"]
+    I --> O["Ask Trace"]
     I --> P2["Generate PDF report"]
     I --> P3["Run billing predictions"]
     I --> P4["View notification history"]
@@ -84,7 +84,7 @@ flowchart LR
     Controllers --> DatasetService["DatasetService"]
     Controllers --> BillingService["BillingQueryService"]
     Controllers --> AlarmService["AlarmService"]
-    Controllers --> MartinService["MartinService"]
+    Controllers --> TraceService["TraceService"]
     Controllers --> PdfService["PdfReportService"]
     Controllers --> PredService["PredictionService"]
     Controllers --> NotifProxy["NotificationProxyController"]
@@ -101,8 +101,8 @@ flowchart LR
     NotifProxy --> NotifClient
     PredService --> PredMicro["prediction-service\n(Python/Flask)"]
     PdfService --> S3
-    MartinService --> JDBC["JdbcTemplate"]
-    MartinService --> Gemini["Google Gemini via Spring AI"]
+    TraceService --> JDBC["JdbcTemplate"]
+    TraceService --> Gemini["Google Gemini via Spring AI"]
     Repository --> DB["PostgreSQL\n(Liquibase schema)"]
     JDBC --> DB
 ```
@@ -117,7 +117,7 @@ The frontend in `src/main/resources/static` is responsible for:
 - Calling backend REST APIs with `fetch`, including an `X-User-Id` header for dataset-scoped requests.
 - Rendering Chart.js charts (cloud provider charges, alarm severity, billing predictions).
 - Showing skeleton loaders during async fetches and toast notifications on errors.
-- Handling client-side page interactions: period selection, pagination, upload, dataset switching, modal open/close, Martin chat, notifications, archive/restore.
+- Handling client-side page interactions: period selection, pagination, upload, dataset switching, modal open/close, Trace chat, notifications, archive/restore.
 - Dataset lifecycle actions: delete (with confirmation), archive, view archived, restore.
 - PDF report generation and download.
 - Notification history modal with delivery stats.
@@ -135,7 +135,7 @@ The Spring Boot app is responsible for:
 - Parsing and ingesting CSV records into the correct dataset.
 - Persisting billing records and alarms, scoped by dataset.
 - Serving analytics queries scoped to a dataset.
-- Generating AI SQL and explanations through Martin.
+- Generating AI SQL and explanations through Trace.
 - Dispatching individual alarm notifications to the notification microservice after persistence.
 - Proxying notification history queries to the notification microservice.
 - Proxying billing prediction requests to the prediction microservice.
@@ -189,7 +189,7 @@ blueprint/
 │   │   ├── CorporateInfoController.java
 │   │   ├── DatasetController.java
 │   │   ├── DemoController.java
-│   │   ├── MartinController.java
+│   │   ├── TraceController.java
 │   │   ├── NotificationProxyController.java
 │   │   ├── PdfController.java
 │   │   └── PredictionController.java
@@ -217,7 +217,7 @@ blueprint/
 │   │   │   ├── BillingException.java
 │   │   │   ├── CorporateInfoNotFoundException.java
 │   │   │   ├── CloudProviderNotFoundException.java
-│   │   │   ├── MartinResponseInvalidException.java
+│   │   │   ├── TraceResponseInvalidException.java
 │   │   │   ├── PdfGenerationException.java
 │   │   │   └── PdfReportNotFoundException.java
 │   │   ├── infra/
@@ -248,9 +248,9 @@ blueprint/
 │   │   │   └── IngestionResult.java
 │   │   ├── dataset/
 │   │   │   └── Dataset.java
-│   │   ├── martin/
-│   │   │   ├── MartinRequest.java
-│   │   │   ├── MartinResponse.java
+│   │   ├── trace/
+│   │   │   ├── TraceRequest.java
+│   │   │   ├── TraceResponse.java
 │   │   │   └── SqlResponse.java
 │   │   ├── prediction/
 │   │   │   ├── DataPoint.java
@@ -283,8 +283,8 @@ blueprint/
 │   │   │   ├── DatasetService.java
 │   │   │   └── demo/
 │   │   │       └── DemoDatasetLoader.java
-│   │   ├── martin/
-│   │   │   ├── MartinService.java
+│   │   ├── trace/
+│   │   │   ├── TraceService.java
 │   │   │   ├── QueryExecutionService.java
 │   │   │   ├── RateLimiter.java
 │   │   │   ├── SchemaService.java
@@ -583,7 +583,7 @@ Known implementation caveats:
 - Alarm detection is chunked by 1,000 records. Provider totals and account totals are computed per chunk, not per full dataset-period. This can produce false negatives or duplicates for datasets larger than one chunk. There is a TODO in `AlarmService` for this.
 - Provider detection maps cloud provider strings via the `CloudProvider` enum (`AWS`, `GCP`, `AZURE`, `OTHER`). Free-form provider strings that do not map to an enum value are skipped for provider-scoped alarms.
 
-### 6. Martin AI Analytics
+### 6. Trace AI Analytics
 
 Purpose: let users ask natural-language questions about billing data scoped to the active dataset.
 
@@ -592,35 +592,35 @@ Backend flow:
 ```mermaid
 sequenceDiagram
     participant UI
-    participant MartinController
+    participant TraceController
     participant RateLimiter
-    participant MartinService
+    participant TraceService
     participant Gemini
     participant SQLValidator
     participant DB
-    UI->>MartinController: POST /datasets/{datasetId}/martin {prompt, period}
-    MartinController->>RateLimiter: check rate limit
-    MartinController->>MartinService: ask(prompt, datasetId, period)
-    MartinService->>Gemini: generate JSON SQL response
-    Gemini-->>MartinService: {"sql": "...", "reasoning": "..."}
-    MartinService->>SQLValidator: isValidSql(sql)
-    MartinService->>DB: JdbcTemplate.queryForList(sql)
-    MartinService->>Gemini: explain question, SQL, results
-    Gemini-->>MartinService: answer text
-    MartinService-->>UI: {answer, sql, reasoning}
+    UI->>TraceController: POST /datasets/{datasetId}/trace {prompt, period}
+    TraceController->>RateLimiter: check rate limit
+    TraceController->>TraceService: ask(prompt, datasetId, period)
+    TraceService->>Gemini: generate JSON SQL response
+    Gemini-->>TraceService: {"sql": "...", "reasoning": "..."}
+    TraceService->>SQLValidator: isValidSql(sql)
+    TraceService->>DB: JdbcTemplate.queryForList(sql)
+    TraceService->>Gemini: explain question, SQL, results
+    Gemini-->>TraceService: answer text
+    TraceService-->>UI: {answer, sql, reasoning}
 ```
 
 Important files:
 
 | File | Role |
 |---|---|
-| `MartinController.java` | Exposes `POST /datasets/{datasetId}/martin`. |
-| `MartinService.java` | Prompting, Gemini calls, validation orchestration, explanation generation. |
+| `TraceController.java` | Exposes `POST /datasets/{datasetId}/trace`. |
+| `TraceService.java` | Prompting, Gemini calls, validation orchestration, explanation generation. |
 | `SchemaService.java` | Hardcoded schema string provided to Gemini. |
 | `SqlValidationService.java` | Lightweight SQL safety check. |
 | `QueryExecutionService.java` | Executes generated SQL with `JdbcTemplate`. |
-| `RateLimiter.java` | Rate limiting for Martin queries. |
-| `MartinRequest.java`, `MartinResponse.java`, `SqlResponse.java` | Request/response models. |
+| `RateLimiter.java` | Rate limiting for Trace queries. |
+| `TraceRequest.java`, `TraceResponse.java`, `SqlResponse.java` | Request/response models. |
 
 Prompt behavior:
 
@@ -893,13 +893,13 @@ Status: entity and mapper exist; `AppUserService` is scaffolded for OAuth provis
 | `PredictionRequest` | `historicalData`, `periodsToPredict` | Request to prediction microservice. |
 | `PredictionResponse` | `predictions`, `historicalData`, `model` | Response with forecasted values. |
 
-### Martin Models
+### Trace Models
 
 | Model | Fields | Role |
 |---|---|---|
-| `MartinRequest` | `prompt`, `period` | Request body from frontend. |
+| `TraceRequest` | `prompt`, `period` | Request body from frontend. |
 | `SqlResponse` | `sql`, `reasoning` | Expected Gemini JSON response for SQL generation. |
-| `MartinResponse` | `answer`, `sql`, `reasoning` | Response returned to frontend. |
+| `TraceResponse` | `answer`, `sql`, `reasoning` | Response returned to frontend. |
 
 ## API Documentation
 
@@ -951,10 +951,10 @@ OpenAPI/Swagger documentation is available via springdoc-openapi at `/swagger-ui
 | `GET` | `/alarms/{billingPeriod}/resource` | `List<Alarm>` |
 | `GET` | `/alarms/{billingPeriod}/account` | `List<Alarm>` |
 
-### Martin Route
+### Trace Route
 
 ```http
-POST /datasets/{datasetId}/martin
+POST /datasets/{datasetId}/trace
 Content-Type: application/json
 
 {
@@ -1010,8 +1010,8 @@ AI provider:
 
 AI-controlled logic:
 
-- Martin generates SQL scoped to a dataset ID.
-- Martin generates an explanation based on prompt, generated SQL, and query results.
+- Trace generates SQL scoped to a dataset ID.
+- Trace generates an explanation based on prompt, generated SQL, and query results.
 
 Deterministic logic:
 
@@ -1048,7 +1048,7 @@ Safety boundaries:
 | File | Purpose |
 |---|---|
 | `js/main.js` | Shared navigation helpers on `window.Blueprint`. |
-| `js/dashboard.js` | Dashboard state, backend calls, chart rendering, modals, upload, demo load, Martin chat, toast system, skeleton helpers, welcome overlay, dataset switcher, notifications, archive/restore/delete, predictions. |
+| `js/dashboard.js` | Dashboard state, backend calls, chart rendering, modals, upload, demo load, Trace chat, toast system, skeleton helpers, welcome overlay, dataset switcher, notifications, archive/restore/delete, predictions. |
 | `js/login.js` | Login and guest redirect behavior. |
 | `js/info.js` | Open dashboard button. |
 | `js/error.js` | Go home button. |
@@ -1088,7 +1088,7 @@ No frontend framework, no router, no stores, and no build-time types exist.
 | `DemoController` | `/demo-dataset` | Demo data loading. |
 | `BillingController` | `/datasets/{datasetId}` | Records, summary, top N. |
 | `AlarmController` | `/datasets/{datasetId}` | Alarm retrieval by scope and period. |
-| `MartinController` | `/datasets/{datasetId}` | AI chat endpoint. |
+| `TraceController` | `/datasets/{datasetId}` | AI chat endpoint. |
 | `PdfController` | `/datasets/{datasetId}/reports` | PDF generation and download. |
 | `CorporateInfoController` | `/users/{userId}/corporate-info` | Corporate branding management. |
 | `PredictionController` | `/api/predictions` | Billing trend predictions. |
@@ -1107,11 +1107,11 @@ No frontend framework, no router, no stores, and no build-time types exist.
 | `CsvExportService` | CSV export of billing data. |
 | `AlarmDetectionService` | Pure alarm detection rules. |
 | `AlarmService` | Alarm persistence, deduplication, read APIs, notification dispatch. |
-| `MartinService` | Gemini prompt orchestration, validation, SQL execution, explanation. |
+| `TraceService` | Gemini prompt orchestration, validation, SQL execution, explanation. |
 | `QueryExecutionService` | SQL execution through `JdbcTemplate`. |
 | `SchemaService` | Hardcoded schema string for AI prompts. |
 | `SqlValidationService` | Lightweight SQL validation. |
-| `RateLimiter` | Rate limiting for Martin queries. |
+| `RateLimiter` | Rate limiting for Trace queries. |
 | `PredictionService` | Proxies billing data to the Python prediction microservice. |
 | `PdfReportService` | PDF report generation orchestration. |
 | `LocalJavaPdfRenderer` | Pure Java PDF rendering (implements `PdfRenderer`). |
@@ -1132,7 +1132,7 @@ No frontend framework, no router, no stores, and no build-time types exist.
 ### Persistence Layer
 
 - Spring Data JPA repositories for `app_users`, `datasets`, `billing_records`, `alarms`, `corporate_info`, and `pdf_reports`.
-- `JdbcTemplate` for AI-generated SQL execution (Martin queries only).
+- `JdbcTemplate` for AI-generated SQL execution (Trace queries only).
 - `JdbcBillingBatchWriter` for high-performance raw JDBC batch inserts during ingestion.
 - Schema managed by **Liquibase** with ordered changesets:
 
@@ -1256,8 +1256,8 @@ docker compose -f docker-compose.dev.yml logs aws-cli-setup
 |---|---|
 | Auth | Login is client-only demo behavior. Backend has `SecurityConfig` but permits all. `AppUserEntity` scaffolding exists but is not wired to any auth flow. |
 | AI SQL validation | String-based validation is not sufficient for robust SQL safety. Code contains TODO for AST parser (JSQLParser). |
-| Martin prompt | Period value is injected into the prompt via string concatenation without quoting or escaping. |
-| Martin query limits | No hard result limit is enforced for generated SQL. |
+| Trace prompt | Period value is injected into the prompt via string concatenation without quoting or escaping. |
+| Trace query limits | No hard result limit is enforced for generated SQL. |
 | Alarm detection chunking | Provider and account totals are computed per 1,000-record chunk, not per full dataset. Large datasets can produce false negatives. TODO exists in `AlarmService`. |
 | CloudProvider enum mismatch | Billing records store free-form cloud provider strings, but provider alarms support only enum values in the `CloudProvider` enum (AWS, GCP, AZURE, OTHER). |
 | Dataset status transitions | There is no `FAILED` status or error recovery flow exposed to the user. |

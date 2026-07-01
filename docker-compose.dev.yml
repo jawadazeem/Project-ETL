@@ -18,6 +18,19 @@ services:
       retries: 5
       start_period: 10s
 
+  pgvector:
+    image: pgvector/pgvector:pg17
+    container_name: blueprint-org-context
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_DB=blueprint_org-context
+      - POSTGRES_USER=blueprint
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   localstack:
     image: localstack/localstack:3.0.0
     container_name: billing-s3-mock
@@ -60,6 +73,8 @@ services:
       - AWS_SECRET_KEY=test
       - SPRING_AI_GOOGLE_GENAI_API_KEY=${GOOGLE_GENAI_API_KEY}
       - SPRING_AI_GOOGLE_GENAI_PROJECT_ID=${GOOGLE_PROJECT_ID}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   aws-cli-setup:
     image: amazon/aws-cli
@@ -89,14 +104,14 @@ services:
       
       echo 'Configuring S3 Buckets...';
       aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://cloud-billing;
-      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://martin-knowledge;
+      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://trace-knowledge;
       
       echo 'Linking S3 to SQS...';
       # Link Billing
       aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket cloud-billing --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:billing-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
       
       # Link Knowledge
-      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket martin-knowledge --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:knowledge-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
+      aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket trace-knowledge --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:knowledge-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
       
       echo 'Infrastructure configuration complete.'
       "
@@ -108,3 +123,5 @@ services:
 
 volumes:
   postgres_data:
+  pgvector-data:
+  ollama-data:

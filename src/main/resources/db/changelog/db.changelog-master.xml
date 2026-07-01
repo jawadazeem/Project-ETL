@@ -15,4 +15,5 @@
     <include file="db/changelog/008-add-archived-to-datasets.xml"/>
     <include file="db/changelog/009-transform-to-cloud-billing.xml"/>
     <include file="db/changelog/010-transform-alarms-to-cloud.xml"/>
+    <include file="db/changelog/011-create-org-context-documents.xml"/>
 </databaseChangeLog>

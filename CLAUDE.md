@@ -7,7 +7,7 @@ This file provides guidance to AI coding agents (specifically Claude Code, but a
 ## Project Overview
 
 Blueprint is a Spring Boot application that performs ETL on multi-cloud cost/billing datasets and exposes
-the results through a REST API. It includes an autonomous AI agent ("Martin") that translates
+the results through a REST API. It includes an autonomous AI agent ("Trace") that translates
 natural language questions into validated PostgreSQL queries and returns plain-English answers.
 
 The system consists of three services:
@@ -102,7 +102,7 @@ blueprint/
     │   ├── alarm/       # Alarm detection and persistence
     │   ├── billing/     # Ingestion, S3 handling, querying
     │   ├── dataset/     # Dataset management, archiving, demo loading
-    │   ├── martin/      # AI agent: SQL generation, validation, execution
+    │   ├── trace/      # AI agent: SQL generation, validation, execution
     │   ├── prediction/  # Client for Python prediction microservice
     │   └── report/      # PDF generation, corporate info, storage
     ├── util/            # Shared utilities
@@ -124,7 +124,7 @@ alarms, and PDF reports via foreign key constraints.
 resource charges, and account-level grand totals. Alarms are scoped by dataset and billing period.
 Detected alarms are dispatched to the notification microservice on a best-effort basis.
 
-**Martin (AI Agent)** — receives a natural language question, generates a validated read-only SQL
+**Trace (AI Agent)** — receives a natural language question, generates a validated read-only SQL
 query using Gemini, executes it against the database, and returns a plain-English answer alongside
 the SQL and its reasoning.
 

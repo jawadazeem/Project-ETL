@@ -817,7 +817,7 @@ function hideTypingIndicator() {
     if (el) el.remove();
 }
 
-function setMartinPrompt(prompt) {
+function setTracePrompt(prompt) {
     const input = document.getElementById("chatInput");
     if (!input) return;
 
@@ -842,7 +842,7 @@ async function sendChat() {
     showTypingIndicator();
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/martin`, {
+        const res = await fetch(`/datasets/${currentDatasetId}/trace`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: text, period: currentPeriod })
@@ -866,7 +866,7 @@ async function sendChat() {
         hideTypingIndicator();
         console.error("Chat send failed", e);
         appendChatMessage("bot", "Failed to send message — the chat service may be unavailable.");
-        showToast("Martin is unavailable. Check the connection.");
+        showToast("Trace is unavailable. Check the connection.");
     } finally {
         sendBtn.disabled = false;
     }
@@ -884,6 +884,65 @@ function openHelpModal() {
 
 function openInfo() {
     window.Blueprint.openInfoPopup();
+}
+
+function openOrgContextModal() {
+    document.getElementById("org-context-overlay").style.display = "flex";
+    renderOrgContextFileList();
+}
+
+function closeOrgContextModal() {
+    document.getElementById("org-context-overlay").style.display = "none";
+}
+
+function formatFileSize(bytes) {
+    if (!bytes) return "0 KB";
+    const sizeInKb = bytes / 1024;
+    if (sizeInKb < 1024) {
+        return `${sizeInKb.toFixed(1)} KB`;
+    }
+    return `${(sizeInKb / 1024).toFixed(1)} MB`;
+}
+
+function renderOrgContextFileList() {
+    const input = document.getElementById("orgContextFiles");
+    const list = document.getElementById("orgContextFileList");
+    if (!input || !list) return;
+
+    const files = Array.from(input.files || []);
+    if (!files.length) {
+        list.innerHTML = '<li class="text-muted">No files selected.</li>';
+        return;
+    }
+
+    list.innerHTML = files.map(file => `
+        <li>
+            <strong>${escapeForHtml(file.name)}</strong>
+            <span>${formatFileSize(file.size)}</span>
+        </li>
+    `).join("");
+}
+
+function stageOrgContextFiles() {
+    const input = document.getElementById("orgContextFiles");
+    const files = Array.from(input?.files || []);
+    if (!files.length) {
+        showToast("Choose one or more organization context files first.", "info");
+        return;
+    }
+
+    showBackendPlaceholder(`Organization context upload (${files.length} file${files.length === 1 ? "" : "s"})`);
+    closeOrgContextModal();
+}
+
+function runBillingQueryPlaceholder() {
+    const query = document.getElementById("billingQueryInput")?.value.trim();
+    if (!query) {
+        showToast("Enter a billing query first.", "info");
+        return;
+    }
+
+    showBackendPlaceholder("Athena billing query");
 }
 
 // ── Upload & demo load ────────────────────────────────────────────────────
@@ -1361,9 +1420,15 @@ function wireDashboardEvents() {
     document.getElementById("logoutBtn")?.addEventListener("click", window.Blueprint.endSession);
     document.getElementById("loadDummyBtn")?.addEventListener("click", loadDummyData);
     document.getElementById("chatSendBtn")?.addEventListener("click", sendChat);
+    document.getElementById("orgContextBtn")?.addEventListener("click", openOrgContextModal);
+    document.getElementById("org-context-close")?.addEventListener("click", closeOrgContextModal);
+    document.getElementById("orgContextCancelBtn")?.addEventListener("click", closeOrgContextModal);
+    document.getElementById("orgContextFiles")?.addEventListener("change", renderOrgContextFileList);
+    document.getElementById("orgContextStageBtn")?.addEventListener("click", stageOrgContextFiles);
+    document.getElementById("billingQueryBtn")?.addEventListener("click", runBillingQueryPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
         showBackendPlaceholder("Cost optimization analysis");
-        setMartinPrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
+        setTracePrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
     });
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));
@@ -1393,7 +1458,7 @@ function wireDashboardEvents() {
     });
 
     document.querySelectorAll(".finops-question-btn").forEach(button => {
-        button.addEventListener("click", () => setMartinPrompt(button.dataset.prompt || ""));
+        button.addEventListener("click", () => setTracePrompt(button.dataset.prompt || ""));
     });
 
     document.querySelectorAll(".audit-action-btn").forEach(button => {
@@ -1402,7 +1467,7 @@ function wireDashboardEvents() {
             showBackendPlaceholder(`Audit action: ${action}`);
 
             if (action === "explain-findings") {
-                setMartinPrompt("Explain the latest audit findings, including evidence, severity, confidence, and recommended next actions.");
+                setTracePrompt("Explain the latest audit findings, including evidence, severity, confidence, and recommended next actions.");
             }
         });
     });

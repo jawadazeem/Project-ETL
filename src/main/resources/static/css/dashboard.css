@@ -571,6 +571,19 @@
         flex-direction: column;
     }
 
+    .query-compose {
+        grid-template-columns: 1fr;
+    }
+
+    .org-context-file-list li {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .org-context-file-list span {
+        white-space: normal;
+    }
+
     .upload-control .btn-modern {
         margin-left: 0 !important;
     }
@@ -783,6 +796,48 @@
     transform: translateY(-1px);
 }
 
+.org-context-modal {
+    max-width: 640px;
+}
+
+.org-context-dropzone {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.org-context-file-list {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+}
+
+.org-context-file-list li {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 10px 12px;
+}
+
+.org-context-file-list strong {
+    color: #1e293b;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.org-context-file-list span {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
 .chat-message {
     margin-bottom: 0.75rem;
 }
@@ -872,6 +927,33 @@
 .dashboard-page .app-footer {
     margin-top: 60px;
     padding-top: 15px;
+}
+
+/* ── Query module ───────────────────────────────────────────────────────── */
+
+.query-module {
+    border-radius: var(--radius);
+}
+
+.query-status {
+    background: #eef2ff;
+    border-radius: 999px;
+    color: #4338ca;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 6px 10px;
+}
+
+.query-compose {
+    align-items: stretch;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.query-compose textarea {
+    min-height: 86px;
+    resize: vertical;
 }
 
 /* ── Predictions Section (Premium UI) ─────────────────────────────────────── */

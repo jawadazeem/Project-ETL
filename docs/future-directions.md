@@ -118,11 +118,11 @@ This registry enables the Multi-Cloud Ingestion Pipeline to know which providers
 
 ### Tenant-Scoped RAG Knowledge Base
 
-**Mission:** Let each tenant upload organizational context (contracts, policies, team structures) that Martin uses alongside billing data to produce grounded, business-aware answers.
+**Mission:** Let each tenant upload organizational context (contracts, policies, team structures) that Trace uses alongside billing data to produce grounded, business-aware answers.
 
 #### The Problem
 
-Martin currently answers questions using only the billing data in PostgreSQL. It can tell you "S3 costs are $12,000 this month" but it can't tell you "S3 costs are 40% above your contracted rate" — because it doesn't know your contracted rate. The missing layer is tenant-specific business context that lives outside the billing records.
+Trace currently answers questions using only the billing data in PostgreSQL. It can tell you "S3 costs are $12,000 this month" but it can't tell you "S3 costs are 40% above your contracted rate" — because it doesn't know your contracted rate. The missing layer is tenant-specific business context that lives outside the billing records.
 
 #### What Tenants Upload
 
@@ -157,16 +157,16 @@ This follows the same `ownerUserId`-scoped pattern used for billing CSV uploads 
 
 Same controller pattern as the existing `CorporateInfoController` and `DatasetController`.
 
-#### Martin Integration
+#### Trace Integration
 
-When Martin receives a question:
+When Trace receives a question:
 
 1. Resolve `tenantId` from the dataset's `ownerUserId`.
 2. Pull the tenant's knowledge files from S3.
 3. Chunk and embed the markdown content (vector store — pgvector in PostgreSQL, or a lightweight in-memory index for demo scale).
 4. Retrieve chunks relevant to the user's question via similarity search.
-5. Inject retrieved context into Martin's Gemini prompt alongside the database schema and billing period.
-6. Martin's answers are now grounded in both the billing data *and* the tenant's business context.
+5. Inject retrieved context into Trace's Gemini prompt alongside the database schema and billing period.
+6. Trace's answers are now grounded in both the billing data *and* the tenant's business context.
 
 #### Example Impact
 
@@ -260,7 +260,7 @@ BillingIngestionService
 - Enforce table and column allowlists.
 - Enforce `billing_period` predicate programmatically.
 - Add query timeout and row limit.
-- Consider a read-only DB user for Martin queries.
+- Consider a read-only DB user for Trace queries.
 
 ### Add Real Authentication
 
@@ -270,12 +270,12 @@ Steps when the time comes:
 - Wire an OAuth 2.0 provider (Google is the natural fit given the existing Gemini/Spring AI dependency).
 - Replace the hardcoded `X-User-Id` header with a resolved principal from the security context.
 - Remove credential logging from `login.js`.
-- Protect upload, Martin, and delete endpoints before public exposure.
+- Protect upload, Trace, and delete endpoints before public exposure.
 
 ### Splunk SIEM Integration
 
 - Ship structured application logs to Splunk via the HTTP Event Collector (HEC).
-- Define log schemas for key pipeline events: ingestion start/end, row counts, Martin query execution, and AI response latency.
+- Define log schemas for key pipeline events: ingestion start/end, row counts, Trace query execution, and AI response latency.
 - Create Splunk alerts for anomalous ingestion volumes, query failures, and slow retrieval times.
 - Tag all events with `billing_period`, `cloud_provider`, and `resource_id` where applicable for correlation across dashboards.
 - Explore Splunk SOAR integration to trigger automated responses on detected pipeline anomalies or security events.
