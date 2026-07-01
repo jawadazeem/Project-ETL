@@ -196,17 +196,6 @@
     min-width: 0;
 }
 
-.upload-control {
-    align-items: center;
-    display: flex;
-    min-width: 0;
-}
-
-.file-input {
-    width: 200px;
-    max-width: 100%;
-}
-
 .session-badge {
     color: #555;
     font-size: 13px;
@@ -488,15 +477,6 @@
         align-items: stretch;
     }
 
-    .upload-control {
-        flex: 1 1 260px;
-    }
-
-    .file-input {
-        flex: 1 1 auto;
-        width: auto;
-    }
-
     #datasetSwitcherContainer {
         flex: 1 1 320px;
         min-width: 0;
@@ -558,13 +538,11 @@
 
     .dashboard-toolbar > .btn-modern,
     .dashboard-toolbar > select,
-    .upload-control,
     #datasetSwitcherContainer,
     #restore-dataset-btn {
         width: 100%;
     }
 
-    .upload-control,
     #datasetSwitcherContainer {
         align-items: stretch !important;
         flex-direction: column;
@@ -586,10 +564,6 @@
 
     .org-context-file-list span {
         white-space: normal;
-    }
-
-    .upload-control .btn-modern {
-        margin-left: 0 !important;
     }
 
     .data-module-header,

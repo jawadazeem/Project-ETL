@@ -23,10 +23,9 @@
     <div class="welcome-card">
         <h2 class="welcome-title">Blueprint</h2>
         <p class="welcome-sub">Multi-Cloud FinOps Platform</p>
-        <p class="welcome-hint">Upload a CSV file or load the demo dataset to get started.</p>
+        <p class="welcome-hint">Load the demo dataset to get started.</p>
         <div class="welcome-actions">
-            <button id="welcomeUploadBtn" class="btn btn-primary btn-lg">Upload CSV</button>
-            <button id="welcomeDemoBtn" class="btn btn-outline-secondary btn-lg">Load Demo Data</button>
+            <button id="welcomeDemoBtn" class="btn btn-primary btn-lg">Load Demo Data</button>
         </div>
     </div>
 </div>
@@ -46,11 +45,6 @@
         <div class="dashboard-toolbar">
             <span id="sessionBadge" class="session-badge"></span>
             <button id="logoutBtn" class="btn-modern" type="button">Sign Out</button>
-
-            <div class="upload-control bg-light p-1 rounded-3 border">
-                <input type="file" id="fileInput" class="form-control form-control-sm file-input" accept=".csv">
-                <button class="btn-modern btn-modern-primary ms-2" id="uploadBtn" type="button">Upload</button>
-            </div>
 
             <button class="btn-modern" id="generate-pdf-btn" type="button">Generate PDF</button>
             <button class="btn-modern btn-modern-danger" id="delete-dataset-btn" type="button">Delete Dataset</button>
@@ -98,10 +92,9 @@
         </div>
 
         <div class="modal-body">
-            <p>Welcome to the Blueprint Cloud FinOps Portal. Use the controls in the top-right to upload CSV files, select a billing period, and explore the analytics.</p>
+            <p>Welcome to the Blueprint Cloud FinOps Portal. Use the controls in the top-right to select a billing period and explore the analytics.</p>
             <ul>
                 <li>Demo: click "Load Dummy Data" to see Blueprint in action using sample cloud billing data.</li>
-                <li>Upload: choose a CSV and click Upload to ingest cloud cost data.</li>
                 <li>Periods: select a billing period to filter the dashboard.</li>
                 <li>Filter by Provider: view records for a particular cloud provider.</li>
                 <li>Top N: load the top N largest charges.</li>

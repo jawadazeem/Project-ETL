@@ -1092,56 +1092,7 @@ function runPatternSearchPlaceholder() {
     showBackendPlaceholder("Advanced Ptern pattern search");
 }
 
-// ── Upload & demo load ────────────────────────────────────────────────────
-
-async function uploadFile() {
-    const fileInput = document.getElementById("fileInput");
-    const uploadBtn = document.getElementById("uploadBtn");
-
-    if (fileInput.files.length === 0) {
-        alert("Please select a CSV file first.");
-        return;
-    }
-
-    const file = fileInput.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-
-    uploadBtn.disabled = true;
-    uploadBtn.textContent = "Uploading...";
-
-    try {
-        const response = await fetch("/datasets", {
-            method: "POST",
-            headers: { "X-User-Id": GUEST_USER_ID },
-            body: formData
-        });
-
-        if (response.ok) {
-            const dataset = await response.json();
-            currentDatasetId = dataset.id;
-            fileInput.value = "";
-            hideWelcome();
-
-            setTimeout(async () => {
-                await waitForDataReady();
-                await loadPeriods();
-                await loadProviders();
-                await loadDatasetList();
-                changePeriod();
-            }, 2000);
-        } else {
-            const errorText = await response.text();
-            showToast(`Upload failed: ${errorText || response.status}`);
-        }
-    } catch (error) {
-        console.error("Upload error:", error);
-        showToast("Upload failed. Check your connection and try again.");
-    } finally {
-        uploadBtn.disabled = false;
-        uploadBtn.textContent = "Upload";
-    }
-}
+// ── Demo load ─────────────────────────────────────────────────────────────
 
 async function loadDummyData() {
     const btn = document.getElementById("loadDummyBtn");
@@ -1552,12 +1503,6 @@ async function onRestoreDatasetClick() {
 function wireDashboardEvents() {
     document.getElementById("periodSelect")?.addEventListener("change", changePeriod);
     document.getElementById("datasetSelect")?.addEventListener("change", switchDataset);
-    document.getElementById("uploadBtn")?.addEventListener("click", uploadFile);
-    document.getElementById("fileInput")?.addEventListener("change", () => {
-        if (isWelcomeVisible()) {
-            uploadFile();
-        }
-    });
     document.getElementById("alarms-btn")?.addEventListener("click", onAlarmsClick);
     document.getElementById("alarms-close")?.addEventListener("click", closeAlarmsModal);
     document.getElementById("helpBtn")?.addEventListener("click", openHelpModal);
@@ -1630,9 +1575,6 @@ function wireDashboardEvents() {
         });
     });
 
-    document.getElementById("welcomeUploadBtn")?.addEventListener("click", () => {
-        document.getElementById("fileInput").click();
-    });
     document.getElementById("welcomeDemoBtn")?.addEventListener("click", loadDummyData);
 
     const chatInput = document.getElementById("chatInput");
