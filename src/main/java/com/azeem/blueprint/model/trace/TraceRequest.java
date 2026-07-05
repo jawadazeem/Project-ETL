@@ -1,41 +1,30 @@
-/*
- * (C) Copyright 2026 Jawad Azeem
- * Apache 2.0 License
- */
-
 package com.azeem.blueprint.model.trace;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.util.UUID;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /** Trace Request DTO */
+@Getter
+@Setter
+@NoArgsConstructor
 public class TraceRequest {
 
   @NotBlank(message = "Prompt must not be blank")
   private String prompt;
 
   @NotBlank(message = "Billing period must not be blank")
-  private String period;
+  private String currentPeriod;
 
-  public TraceRequest() {}
+  @NotNull(message = "Owner ID must not be null")
+  private UUID ownerUserId;
 
-  public TraceRequest(String prompt, String period) {
+  public TraceRequest(String prompt, UUID ownerUserId, String currentPeriod) {
     this.prompt = prompt;
-    this.period = period;
-  }
-
-  public String getPrompt() {
-    return prompt;
-  }
-
-  public void setPrompt(String prompt) {
-    this.prompt = prompt;
-  }
-
-  public String getPeriod() {
-    return period;
-  }
-
-  public void setPeriod(String period) {
-    this.period = period;
+    this.ownerUserId = ownerUserId;
+    this.currentPeriod = currentPeriod;
   }
 }

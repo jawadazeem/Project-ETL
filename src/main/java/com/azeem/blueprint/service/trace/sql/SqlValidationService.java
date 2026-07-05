@@ -3,7 +3,7 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.trace;
+package com.azeem.blueprint.service.trace.sql;
 
 import com.azeem.blueprint.exception.core.TraceResponseInvalidException;
 import com.azeem.blueprint.model.trace.SqlResponse;

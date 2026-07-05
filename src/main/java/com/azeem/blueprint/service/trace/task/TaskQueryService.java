@@ -7,19 +7,21 @@ package com.azeem.blueprint.service.trace.task;
 
 import com.azeem.blueprint.config.TraceKnowledgeS3Config;
 import com.azeem.blueprint.exception.core.TraceKnowledgeIncompleteException;
-import com.azeem.blueprint.exception.core.UnrecognizedPromptException;
 import com.azeem.blueprint.model.trace.TaskType;
 import com.azeem.blueprint.service.trace.TraceKnowledgeS3Service;
+import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 /** TraceService calls uses this class to send Trace the correct playbook for a given task */
 @Service
 public class TaskQueryService {
   private static final Logger log = LoggerFactory.getLogger(TaskQueryService.class);
-  private Map<TaskType, String> playbooks;
+  private Map<TaskType, String> playbooks = new HashMap<>();
   private final TraceKnowledgeS3Service traceKnowledgeS3Service;
   private final TraceKnowledgeS3Config props;
 
@@ -40,11 +42,13 @@ public class TaskQueryService {
       case "Check policy and contract fit" ->
           playbook = getPlaybook(TaskType.POLICY_AND_CONTRACT_FIT);
       case "Explain the latest audit findings" -> playbook = getPlaybook(TaskType.AUDIT);
-      default ->
-          throw new UnrecognizedPromptException(
-              "Cannot find playbook for prompt: " + prompt + " since it is unrecognized");
+      default -> {
+        playbook = getPlaybook(TaskType.GENERAL);
+        log.info(
+            "No playbook for given prompt {} found. Resorting to not using a playbook", prompt);
+        return playbook;
+      }
     }
-
     log.info("Retrieved playbook for prompt {}", prompt);
     return playbook;
   }
@@ -58,6 +62,7 @@ public class TaskQueryService {
    * "Predetermined prompts" are prompts hardcoded directly into the application. These serve as the
    * foundational playbooks that Trace uses to execute specific tasks.
    */
+  @EventListener(ApplicationReadyEvent.class)
   public void loadTaskPlaybooks() {
     Map<String, String> playbookDocuments = traceKnowledgeS3Service.getTraceKnowledgePlaybooks();
 

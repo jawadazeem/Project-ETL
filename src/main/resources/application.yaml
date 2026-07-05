@@ -87,8 +87,8 @@ trace-knowledge:
     - cost-optimization-recommendations.md
     - executive-summary.md
     - policy-and-contract-fit.md
-    - overview.md
     - explain-spend-increase.md
+    - general.md
 org-context:
   bucket-name: cloud-billing
   max-files: 5

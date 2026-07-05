@@ -149,4 +149,12 @@ public class DatasetService {
         billingRecordRepository.deleteByDatasetIdAndBillingPeriod(datasetId, billingPeriod);
     log.info("Successfully dropped {} orphaned billing records.", deletedCount);
   }
+
+  public UUID getOwnerId(UUID datasetId) {
+    return datasetRepository
+        .findById(datasetId)
+        .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()))
+        .getOwnerUser()
+        .getId();
+  }
 }

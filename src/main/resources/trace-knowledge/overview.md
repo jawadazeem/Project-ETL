@@ -1,5 +1,7 @@
 # Trace Knowledge Pack Overview
 
+_**Note**: Unlike the others, this overview file is NOT referenced by Trace. This is a guide for developers who would like to create more playbooks for Trace, not Trace itself._
+
 These files are shared Trace playbooks: compact operating instructions for repeatable FinOps tasks.
 They are not tenant-specific business documents.
 

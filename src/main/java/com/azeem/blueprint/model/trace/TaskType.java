@@ -10,7 +10,8 @@ public enum TaskType {
   AUDIT("audit.md"),
   POLICY_AND_CONTRACT_FIT("policy-and-contract-fit.md"),
   EXPLAIN_SPEND_INCREASE("explain-spend-increase.md"),
-  EXECUTIVE_SUMMARY("executive-summary.md");
+  EXECUTIVE_SUMMARY("executive-summary.md"),
+  GENERAL("general.md");
 
   private final String filename;
 

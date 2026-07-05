@@ -5,14 +5,14 @@
 
 package com.azeem.blueprint.service.trace;
 
-import com.azeem.blueprint.model.orgcontext.OrgContextDocument;
 import com.azeem.blueprint.service.orgcontext.OrgContextVectorDatabaseService;
 import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.filter.Filter;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.stereotype.Service;
 
@@ -27,28 +27,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrgKnowledgeRetrievalService {
   private static final Logger log = LoggerFactory.getLogger(OrgKnowledgeRetrievalService.class);
-  private final OrgContextVectorDatabaseService orgContextVectorDatabaseService;
+  private final VectorStore vectorStore;
 
   public OrgKnowledgeRetrievalService(
-      OrgContextVectorDatabaseService orgContextVectorDatabaseService) {
-    this.orgContextVectorDatabaseService = orgContextVectorDatabaseService;
+      VectorStore vectorStore, OrgContextVectorDatabaseService orgContextVectorDatabaseService) {
+    this.vectorStore = vectorStore;
   }
 
   /**
-   * Filters using the org context documents' owner id
+   * Filters by the owner user id, upholding tenant scoped lookup.
    *
+   * @return List of tenant scoped user uploaded documents.
    */
-  public List<Document> retrieveFilteredDocuments(List<OrgContextDocument> docs) {
-    UUID uuid = docs.getFirst().ownerUserId();
-
-    for (OrgContextDocument doc : docs) {
-      if (!doc.ownerUserId().equals(uuid)) {
-        throw new IllegalArgumentException(
-            "Fatal Error: Trying to filter using documents that belong to more than one user.");
-      }
-    }
-
+  public List<Document> retrieveFilteredDocuments(UUID ownerUserId) {
     FilterExpressionBuilder b = new FilterExpressionBuilder();
-    Filter.Expression filterExpression = b.field("ownerUserId").eq(uuid);
+    SearchRequest request =
+        SearchRequest.builder().filterExpression(b.eq("ownerUserId", ownerUserId).build()).build();
+
+    return this.vectorStore.similaritySearch(request);
   }
 }

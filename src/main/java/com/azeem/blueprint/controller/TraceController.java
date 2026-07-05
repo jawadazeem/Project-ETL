@@ -8,8 +8,8 @@ package com.azeem.blueprint.controller;
 import com.azeem.blueprint.exception.web.QueryLimitExceededException;
 import com.azeem.blueprint.model.trace.TraceRequest;
 import com.azeem.blueprint.model.trace.TraceResponse;
+import com.azeem.blueprint.service.trace.AiExecutionGateway;
 import com.azeem.blueprint.service.trace.RateLimiter;
-import com.azeem.blueprint.service.trace.TraceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "AI Assistant", description = "Natural language billing queries")
 public class TraceController {
   private static final Logger log = LoggerFactory.getLogger(TraceController.class);
-  private final TraceService traceService;
+  private final AiExecutionGateway aiExecutionGateway;
   private final RateLimiter rateLimiter;
 
-  public TraceController(TraceService traceService, RateLimiter rateLimiter) {
-    this.traceService = traceService;
+  public TraceController(AiExecutionGateway aiExecutionGateway, RateLimiter rateLimiter) {
+    this.aiExecutionGateway = aiExecutionGateway;
     this.rateLimiter = rateLimiter;
   }
 
@@ -43,7 +43,8 @@ public class TraceController {
           "AI query rate limit exceeded. Please wait a moment before trying again.");
     }
     TraceResponse response =
-        traceService.ask(request.getPrompt(), UUID.fromString(datasetId), request.getPeriod());
+        aiExecutionGateway.ask(
+            request.getPrompt(), UUID.fromString(datasetId), request.getCurrentPeriod());
     return ResponseEntity.ok(response);
   }
 }
