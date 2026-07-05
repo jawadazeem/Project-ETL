@@ -1,121 +1,78 @@
+---
+task_type: COST_OPTIMIZATION
+version: 1
+canonical_source: s3_full_document
+tenant_context_required: true
+billing_data_required: true
+output_format: structured_markdown
+---
+
 # Cost Optimization Recommendations
 
-## Purpose
+## Goal
 
-Use this playbook when the user asks Trace to find savings opportunities, reduce cloud spend, identify waste, prioritize optimizations, or run a FinOps cost optimization analysis.
+Produce prioritized, evidence-backed cloud cost optimization recommendations.
 
-Trace's goal is to produce practical, evidence-backed recommendations that can be reviewed by engineering, finance, and leadership.
+## Use When
+
+The user asks to reduce spend, find waste, identify savings opportunities, rank optimizations, or run a FinOps cost optimization analysis.
 
 ## Required Inputs
-
-Trace should resolve or receive:
 
 - Tenant or owner user ID.
 - Dataset ID.
 - Billing period.
-- Optional cloud provider filter.
-- Optional service, account, team, or resource filter.
-- Tenant-specific knowledge files from S3.
-- PostgreSQL billing records for the selected dataset and period.
+- Optional provider, service, account, team, or resource filter.
 
-## Required Context Retrieval
+## Required Sources
 
-Before recommending optimizations, Trace should retrieve tenant knowledge related to:
+1. Tenant context: contracts, cost policies, ownership maps, approved services, commitments, seasonal exceptions.
+2. Billing data: spend by provider, service, account, resource, usage fields, current period, historical periods if available.
+3. Supporting data: alarms, forecasts, audit findings, prior recommendations when available.
 
-- Cost policies.
-- Contracted rates and enterprise discount terms.
-- Reserved instance, savings plan, or committed-use commitments.
-- Team and account ownership.
-- Approved service usage.
-- Known seasonal patterns or expected migrations.
-- Exceptions where high spend is expected or intentional.
+## Procedure
 
-If tenant knowledge is missing, Trace may still analyze billing data, but must label recommendations as billing-data-only.
-
-## Required Database Evidence
-
-Trace should query PostgreSQL for relevant billing evidence, scoped by tenant ownership, `dataset_id`, and `billing_period`.
-
-Useful evidence includes:
-
-- Total spend by cloud provider.
-- Total spend by service.
-- Top resources by charge.
-- Accounts or teams with the highest spend.
-- Service-level spend compared with previous periods, if historical datasets are available.
-- Resources with recurring high charges.
-- Storage, compute, API request, or service usage fields that explain charge drivers.
-- Existing alarms for the same period.
-
-Trace must not generate recommendations from general best practices alone.
-
-## Analysis Procedure
-
-1. Identify the largest spend areas for the selected period.
-2. Compare current spend against tenant policy, contracts, and ownership context.
-3. Separate optimization candidates from expected or justified spend.
-4. Estimate potential savings only when there is enough evidence.
-5. Rank recommendations by financial impact, confidence, and implementation effort.
-6. Identify the responsible owner or team when tenant knowledge provides ownership mappings.
-7. Explain why each recommendation is actionable.
-
-## Recommendation Categories
-
-Use these categories when applicable:
-
-- Rightsizing opportunity.
-- Idle or underused resource.
-- Storage lifecycle or retention issue.
-- Contract or discount mismatch.
-- Reserved commitment or savings plan opportunity.
-- Provider or service consolidation opportunity.
-- Unowned or poorly tagged spend.
-- Unexpected cost growth.
-- Policy violation.
+1. Identify the largest cost drivers for the selected period.
+2. Retrieve tenant context relevant to those drivers.
+3. Separate expected spend from suspicious or optimizable spend.
+4. Detect candidate categories:
+   - rightsizing
+   - idle or underused resource
+   - storage lifecycle
+   - discount or commitment mismatch
+   - unowned or poorly tagged spend
+   - provider or service consolidation
+   - unexpected growth
+   - policy violation
+5. Estimate savings only when evidence supports it.
+6. Rank by impact, confidence, and implementation effort.
+7. Assign owner or team only when tenant context supports it.
 
 ## Output Contract
 
-Return recommendations in a structured format.
+Return:
 
-Each recommendation should include:
+1. Short answer.
+2. Ranked recommendations.
+3. Evidence summary.
+4. Next actions.
+5. Gaps and assumptions.
 
-- Title.
-- Category.
-- Provider.
-- Service.
-- Account or team owner, if known.
-- Resources affected, if known.
-- Estimated monthly savings, if supportable.
-- Estimated annual savings, if supportable.
-- Confidence: `LOW`, `MEDIUM`, or `HIGH`.
-- Evidence from PostgreSQL.
-- Evidence from tenant knowledge.
-- Recommended next action.
-- Caveats or missing information.
+Each recommendation must include:
 
-## Example Answer Shape
-
-```text
-Short answer:
-The strongest optimization opportunity is S3 storage lifecycle review for the Customer Portal account.
-
-Recommendations:
-1. Review S3 lifecycle policy for Customer Portal
-   - Category: Storage lifecycle
-   - Estimated savings: $4,200/month
-   - Confidence: MEDIUM
-   - Evidence: S3 spend is the highest storage charge this period; tenant policy says logs should move to cheaper storage after 90 days.
-   - Next action: Ask the owning team to verify lifecycle rules for the affected buckets.
-
-Gaps:
-- No utilization telemetry is available, so compute rightsizing confidence is limited.
-```
+- title
+- category
+- provider/service/account/resource when known
+- estimated savings when supportable
+- confidence: `LOW`, `MEDIUM`, or `HIGH`
+- billing evidence
+- tenant context evidence
+- recommended next action
 
 ## Guardrails
 
-- Do not claim guaranteed savings unless the data supports it.
-- Do not recommend deleting resources without human review.
-- Do not invent negotiated rates, account owners, or budget thresholds.
-- Do not mix tenant knowledge across tenants.
-- Do not present model predictions as facts.
-- If utilization metrics are unavailable, say that rightsizing recommendations are preliminary.
+- Do not claim guaranteed savings.
+- Do not recommend deletion without human review.
+- Do not invent owners, contract rates, budgets, or thresholds.
+- Do not treat forecasts as facts.
+- If utilization data is missing, label rightsizing as preliminary.

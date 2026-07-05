@@ -25,8 +25,8 @@ import org.springframework.stereotype.Service;
 
 // TODO: Completely redesign how this functions. It must use OrgContext and playbooks to operate.
 //       Should be delegating tasks to each smaller service, which then retrieves its respective
-// playbook
-//       and crafts a prompt for Trace, which this service consumes and sends to his API via SDK
+//        playbook and crafts a prompt for Trace, which this service consumes and sends to his API
+// via SDK
 @Service
 public class TraceService {
   private static final Logger log = LoggerFactory.getLogger(TraceService.class);

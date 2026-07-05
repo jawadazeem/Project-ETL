@@ -1,121 +1,83 @@
-# Policy and Contract Fit Analysis
+---
+task_type: POLICY_AND_CONTRACT_FIT
+version: 1
+canonical_source: s3_full_document
+tenant_context_required: true
+billing_data_required: true
+output_format: structured_assessment
+---
 
-## Purpose
+# Policy and Contract Fit
 
-Use this playbook when the user asks Trace whether cloud spend fits company policy, contract terms, negotiated rates, commitments, budget expectations, approval rules, or organizational ownership expectations.
+## Goal
 
-Trace's goal is to compare actual billing behavior against tenant-specific business context.
+Compare actual cloud billing behavior against tenant-specific policies, contracts, commitments, budgets, and ownership expectations.
+
+## Use When
+
+The user asks whether spend complies with policy, fits a contract, matches negotiated terms, violates budget rules, or aligns with ownership and tagging expectations.
 
 ## Required Inputs
-
-Trace should resolve or receive:
 
 - Tenant or owner user ID.
 - Dataset ID.
 - Billing period.
 - Optional provider, service, account, team, or resource filter.
-- Tenant-specific contracts and policies from S3.
-- PostgreSQL billing records for the selected dataset and period.
 
-## Required Context Retrieval
+## Required Sources
 
-Retrieve tenant knowledge related to:
+1. Tenant context: contracts, rate terms, discount programs, budgets, approvals, tagging rules, chargeback rules, renewal dates.
+2. Billing data: spend, usage, provider, service, account, resource, period totals, historical comparison if available.
+3. Supporting data: alarms or audit findings for the same period when available.
 
-- Negotiated rates.
-- Volume discount tiers.
-- Enterprise discount programs.
-- Reserved instance, savings plan, or committed-use commitments.
-- Team budgets.
-- Approval thresholds.
-- Tagging and ownership policies.
-- Chargeback or cost center rules.
-- Expected seasonal exceptions.
-- Renewal dates and contract boundaries.
+## Procedure
 
-Trace should quote or summarize the relevant tenant policy only when the retrieved context supports it.
-
-## Required Database Evidence
-
-Trace should query PostgreSQL for billing evidence relevant to the policy or contract question.
-
-Useful evidence includes:
-
-- Spend by provider and service.
-- Spend by account name.
-- Top charged resources.
-- Usage fields such as compute hours, storage GB used, and API requests.
-- Current period totals.
-- Historical comparison, if prior datasets are available.
-- Existing alarms tied to the same dataset and period.
-
-SQL must be scoped by tenant ownership, `dataset_id`, and `billing_period`.
-
-## Analysis Procedure
-
-1. Identify the contract or policy rule being evaluated.
-2. Retrieve the matching tenant-specific policy or contract context.
-3. Query actual billing records for the selected period.
-4. Compare actual billing behavior to the documented expectation.
-5. Classify each result:
+1. Identify the specific policy or contract area being evaluated.
+2. Retrieve matching tenant context.
+3. Query scoped billing evidence.
+4. Compare actual behavior to documented expectation.
+5. Classify each finding:
    - `COMPLIANT`
    - `POTENTIAL_ISSUE`
    - `NON_COMPLIANT`
    - `INSUFFICIENT_CONTEXT`
-6. Explain the evidence behind the classification.
+6. Explain the classification using billing and tenant evidence.
 7. Recommend follow-up actions.
 
 ## Common Checks
 
-Apply these checks when supported by tenant knowledge:
-
-- Actual service rate appears above contracted rate.
-- Spend exceeds team or account budget threshold.
-- Service usage violates approved service policy.
-- Resource/account ownership is missing or unclear.
-- Spend increase is expected due to documented seasonal pattern.
-- Spend increase conflicts with a documented migration or decommissioning plan.
+- Spend exceeds budget or approval threshold.
+- Usage appears outside approved service policy.
+- Actual charges appear inconsistent with negotiated terms.
 - Discounts, credits, or commitments appear missing.
-- Required tagging or cost center mapping is absent from available data.
+- Ownership, tags, or cost centers are absent or unclear.
+- Growth conflicts with a documented migration or decommissioning plan.
+- Growth matches a documented seasonal or business exception.
 
 ## Output Contract
 
-Return a structured assessment.
+Return:
 
-Each assessment should include:
+1. Short answer.
+2. Policy or contract assessments.
+3. Financial impact when supportable.
+4. Recommended actions.
+5. Missing context.
 
-- Policy or contract area.
-- Classification.
-- Provider, service, account, or team.
-- Billing evidence.
-- Tenant knowledge evidence.
-- Financial impact, if supportable.
-- Explanation.
-- Recommended next action.
-- Missing context.
+Each assessment must include:
 
-## Example Answer Shape
-
-```text
-Short answer:
-S3 spend appears to be a potential contract fit issue for the selected period.
-
-Assessment:
-1. S3 contracted rate comparison
-   - Classification: POTENTIAL_ISSUE
-   - Evidence from billing: S3 storage spend was $12,000 for the period.
-   - Evidence from tenant knowledge: contracts.md lists an expected S3 rate of $0.021/GB.
-   - Interpretation: Actual spend appears higher than expected for the reported storage usage.
-   - Next action: Validate whether the affected storage class is covered by the negotiated rate.
-
-Missing context:
-- The billing data does not expose every pricing dimension needed to prove a billing error.
-```
+- area evaluated
+- classification
+- provider/service/account/team when known
+- billing evidence
+- tenant context evidence
+- interpretation
+- next action
 
 ## Guardrails
 
-- Do not declare a legal contract breach.
-- Use "potential issue" unless the evidence is complete.
-- Do not invent contract terms or policy thresholds.
-- Do not assume all services are covered by a negotiated rate.
+- Do not declare a legal breach.
+- Prefer `POTENTIAL_ISSUE` unless evidence is complete.
+- Do not invent contract terms or thresholds.
 - Do not treat missing data as non-compliance.
-- Clearly separate billing evidence from tenant policy evidence.
+- Separate billing facts from policy interpretation.

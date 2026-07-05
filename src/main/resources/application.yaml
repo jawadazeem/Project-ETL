@@ -83,10 +83,12 @@ trace-knowledge:
   folder-path: /trace-knowledge
   bucket-name: trace-knowledge
   keys:
+    - audit.md
     - cost-optimization-recommendations.md
     - executive-summary.md
     - policy-and-contract-fit.md
     - overview.md
+    - explain-spend-increase.md
 org-context:
   bucket-name: cloud-billing
   max-files: 5

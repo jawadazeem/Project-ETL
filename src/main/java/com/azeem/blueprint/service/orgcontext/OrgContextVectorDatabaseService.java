@@ -5,7 +5,6 @@
 
 package com.azeem.blueprint.service.orgcontext;
 
-import com.azeem.blueprint.config.OrgContextProps;
 import com.azeem.blueprint.model.orgcontext.OrgContextDocument;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +19,9 @@ import org.springframework.stereotype.Service;
 public class OrgContextVectorDatabaseService {
   private static final Logger log = LoggerFactory.getLogger(OrgContextVectorDatabaseService.class);
   private final VectorStore vectorStore;
-  private final OrgContextS3Service orgContextS3Service;
-  private final OrgContextProps props;
 
-  public OrgContextVectorDatabaseService(
-      VectorStore vectorStore, OrgContextS3Service orgContextS3Service, OrgContextProps props) {
+  public OrgContextVectorDatabaseService(VectorStore vectorStore) {
     this.vectorStore = vectorStore;
-    this.orgContextS3Service = orgContextS3Service;
-    this.props = props;
   }
 
   public void ingestDocument(OrgContextDocument doc, String content) {
