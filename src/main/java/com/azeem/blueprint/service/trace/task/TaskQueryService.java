@@ -30,7 +30,7 @@ public class TaskQueryService {
     this.traceKnowledgeS3Service = traceKnowledgeS3Service;
     this.props = props;
   }
-
+// TODO: Have this use an LLM for routing.
   /** Returns a playbook based on a user's given prompt */
   public String getPlaybook(String prompt) {
     String playbook;
