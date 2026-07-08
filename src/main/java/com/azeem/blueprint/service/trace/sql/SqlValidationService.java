@@ -10,7 +10,7 @@ import com.azeem.blueprint.model.trace.SqlResponse;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,6 +42,6 @@ public class SqlValidationService {
       throw new TraceResponseInvalidException(e.getMessage(), e);
     }
 
-    return statement instanceof PlainSelect;
+    return statement instanceof Select;
   }
 }

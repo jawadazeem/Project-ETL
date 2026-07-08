@@ -1,8 +1,6 @@
 package com.azeem.blueprint.model.trace;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,12 +17,8 @@ public class TraceRequest {
   @NotBlank(message = "Billing period must not be blank")
   private String currentPeriod;
 
-  @NotNull(message = "Owner ID must not be null")
-  private UUID ownerUserId;
-
-  public TraceRequest(String prompt, UUID ownerUserId, String currentPeriod) {
+  public TraceRequest(String prompt, String currentPeriod) {
     this.prompt = prompt;
-    this.ownerUserId = ownerUserId;
     this.currentPeriod = currentPeriod;
   }
 }

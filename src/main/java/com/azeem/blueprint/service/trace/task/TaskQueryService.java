@@ -9,7 +9,7 @@ import com.azeem.blueprint.config.TraceKnowledgeS3Config;
 import com.azeem.blueprint.exception.core.TraceKnowledgeIncompleteException;
 import com.azeem.blueprint.model.trace.TaskType;
 import com.azeem.blueprint.service.trace.TraceKnowledgeS3Service;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskQueryService {
   private static final Logger log = LoggerFactory.getLogger(TaskQueryService.class);
-  private Map<TaskType, String> playbooks = new HashMap<>();
+  private final Map<TaskType, String> playbooks = new EnumMap<>(TaskType.class);
   private final TraceKnowledgeS3Service traceKnowledgeS3Service;
   private final TraceKnowledgeS3Config props;
 
@@ -30,32 +30,15 @@ public class TaskQueryService {
     this.traceKnowledgeS3Service = traceKnowledgeS3Service;
     this.props = props;
   }
-// TODO: Have this use an LLM for routing.
-  /** Returns a playbook based on a user's given prompt */
-  public String getPlaybook(String prompt) {
-    String playbook;
 
-    switch (prompt) {
-      case "Generate executive summary" -> playbook = getPlaybook(TaskType.EXECUTIVE_SUMMARY);
-      case "Explain spend increase" -> playbook = getPlaybook(TaskType.EXPLAIN_SPEND_INCREASE);
-      case "Run a cost optimization analysis" -> playbook = getPlaybook(TaskType.COST_OPTIMIZATION);
-      case "Check policy and contract fit" ->
-          playbook = getPlaybook(TaskType.POLICY_AND_CONTRACT_FIT);
-      case "Explain the latest audit findings" -> playbook = getPlaybook(TaskType.AUDIT);
-      default -> {
-        playbook = getPlaybook(TaskType.GENERAL);
-        log.info(
-            "No playbook for given prompt {} found. Resorting to not using a playbook", prompt);
-        return playbook;
-      }
+  public String getPlaybook(TaskType taskType) {
+    TaskType resolvedTaskType = taskType == null ? TaskType.GENERAL : taskType;
+    String playbook = playbooks.get(resolvedTaskType);
+    if (playbook == null || playbook.isBlank()) {
+      throw new TraceKnowledgeIncompleteException(
+          "Fatal Error: Trace playbook was not loaded for task " + resolvedTaskType);
     }
-    log.info("Retrieved playbook for prompt {}", prompt);
     return playbook;
-  }
-
-  /** Reads prompt and matches it to a TaskType enum */
-  private String getPlaybook(TaskType taskType) {
-    return playbooks.get(taskType);
   }
 
   /**
@@ -78,8 +61,11 @@ public class TaskQueryService {
     log.info("Successfully loaded all task playbooks");
   }
 
-  /** Sanity check to ensure all playbooks are loaded successfully */
+  /** Sanity check to ensure all configured playbooks are loaded successfully */
   private boolean allTaskPlaybooksLoaded(Map<String, String> playbookDocuments) {
-    return props.getKeys().stream().distinct().allMatch(playbookDocuments::containsKey);
+    return props.getKeys().stream().distinct().allMatch(playbookDocuments::containsKey)
+        && java.util.Arrays.stream(TaskType.values())
+            .map(TaskType::getFilename)
+            .allMatch(playbookDocuments::containsKey);
   }
 }

@@ -39,10 +39,14 @@ public class OrgKnowledgeRetrievalService {
    *
    * @return List of tenant scoped user uploaded documents.
    */
-  public List<Document> retrieveFilteredDocuments(UUID ownerUserId) {
+  public List<Document> retrieveFilteredDocuments(UUID ownerUserId, String query) {
     FilterExpressionBuilder b = new FilterExpressionBuilder();
     SearchRequest request =
-        SearchRequest.builder().filterExpression(b.eq("ownerUserId", ownerUserId).build()).build();
+        SearchRequest.builder()
+            .query(query == null || query.isBlank() ? "cloud billing context" : query)
+            .topK(5)
+            .filterExpression(b.eq("ownerUserId", ownerUserId.toString()).build())
+            .build();
 
     return this.vectorStore.similaritySearch(request);
   }

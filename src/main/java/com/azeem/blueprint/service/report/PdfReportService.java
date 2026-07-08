@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO: Turn this into an AI first report. This should be a summary of the AI's findings and
+// re-generate every 10 minutes,
+//  Or on Runtime, whatever comes first.
 @Service
 public class PdfReportService {
   private static final Logger log = LoggerFactory.getLogger(PdfReportService.class);

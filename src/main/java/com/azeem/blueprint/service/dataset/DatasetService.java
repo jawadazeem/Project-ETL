@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class DatasetService {
   private static final Logger log = LoggerFactory.getLogger(DatasetService.class);
+  private static final UUID GUEST_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
   private final DatasetRepository datasetRepository;
   private final BillingRecordRepository billingRecordRepository;
@@ -151,10 +152,19 @@ public class DatasetService {
   }
 
   public UUID getOwnerId(UUID datasetId) {
-    return datasetRepository
-        .findById(datasetId)
-        .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()))
-        .getOwnerUser()
-        .getId();
+    DatasetEntity dataset =
+        datasetRepository
+            .findById(datasetId)
+            .orElseThrow(() -> new DatasetNotFoundException(datasetId.toString()));
+
+    if (dataset.getOwnerUser() == null) {
+      log.warn(
+          "Dataset {} has no owner_user_id. Falling back to guest user for legacy/demo data.",
+          datasetId);
+      appUserService.findOrCreateGuest(GUEST_USER_ID);
+      return GUEST_USER_ID;
+    }
+
+    return dataset.getOwnerUser().getId();
   }
 }
