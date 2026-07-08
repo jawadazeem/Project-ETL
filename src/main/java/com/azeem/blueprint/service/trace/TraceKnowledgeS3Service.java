@@ -6,15 +6,13 @@
 package com.azeem.blueprint.service.trace;
 
 import com.azeem.blueprint.config.TraceKnowledgeS3Config;
-import com.azeem.blueprint.exception.core.TraceKnowledgeNotFoundException;
+import com.azeem.blueprint.exception.core.TraceKnowledgeIncompleteException;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -38,31 +36,30 @@ public class TraceKnowledgeS3Service {
     this.props = props;
   }
 
-  /** Aggregates multiple Markdown playbooks from S3 into a single continuous stream. */
-  public InputStream getTraceKnowledgeDataStream() {
+  /**
+   * Aggregates multiple Markdown playbooks from S3 into a Map of their file names and content in
+   * the form of a string.
+   */
+  public Map<String, String> getTraceKnowledgePlaybooks() {
     log.info(
         "Fetching Trace's playbooks from bucket: {} | Keys: {}",
         props.getBucketName(),
         props.getKeys());
 
-    List<InputStream> inputStreams =
-        props.getKeys().stream()
-            .map(
-                key -> {
-                  S3Resource resource = s3Template.download(props.getBucketName(), key);
-                  if (!resource.exists()) {
-                    throw new TraceKnowledgeNotFoundException("Trace's data missing in S3: " + key);
-                  }
-                  try {
-                    return resource.getInputStream();
-                  } catch (IOException e) {
-                    throw new RuntimeException("Failed to open stream for key: " + key, e);
-                  }
-                })
-            .collect(Collectors.toList());
+    Map<String, String> filenamesAndContent = new HashMap<String, String>();
 
-    // SequenceInputStream concatenates multiple input streams into one sequential stream
-    return new SequenceInputStream(Collections.enumeration(inputStreams));
+    for (String key : props.getKeys()) {
+      S3Resource resource = s3Template.download(props.getBucketName(), key);
+      try {
+        filenamesAndContent.put(
+            resource.getFilename(), resource.getContentAsString(StandardCharsets.UTF_8));
+      } catch (IOException e) {
+        throw new TraceKnowledgeIncompleteException(
+            "Fatal Error: Could not load Trace knowledge from S3");
+      }
+    }
+
+    return filenamesAndContent;
   }
 
   @EventListener(ApplicationReadyEvent.class)

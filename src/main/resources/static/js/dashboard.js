@@ -836,6 +836,11 @@ async function sendChat() {
     const sendBtn = document.getElementById("chatSendBtn");
     const text = input.value.trim();
     if (!text) return;
+    if (!currentPeriod) {
+        appendChatMessage("bot", "Load billing data and select a billing period before asking Trace a question.");
+        showToast("Select a billing period before messaging Trace.");
+        return;
+    }
 
     appendChatMessage("user", text);
     input.value = "";
@@ -846,13 +851,20 @@ async function sendChat() {
         const res = await fetch(`/datasets/${currentDatasetId}/trace`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: text, period: currentPeriod })
+            body: JSON.stringify({ prompt: text, currentPeriod })
         });
 
         hideTypingIndicator();
 
         if (!res.ok) {
-            appendChatMessage("bot", `Server error: ${res.status}`);
+            let errorMessage = `Server error: ${res.status}`;
+            try {
+                const errorBody = await res.json();
+                errorMessage = errorBody.message || errorMessage;
+            } catch (parseError) {
+                console.warn("Trace error response was not JSON", parseError);
+            }
+            appendChatMessage("bot", errorMessage);
             return;
         }
 

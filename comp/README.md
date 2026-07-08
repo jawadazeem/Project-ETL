@@ -1,0 +1,2 @@
+This folder contains various backend microservices that run in separate Docker containers or even separate machines
+The services are designed to be modular and can be deployed independently. Each service has its own responsibilities and can communicate with other services as needed.

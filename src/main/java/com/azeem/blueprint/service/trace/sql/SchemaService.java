@@ -3,11 +3,15 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.service.trace;
+package com.azeem.blueprint.service.trace.sql;
 
 import org.springframework.stereotype.Service;
 
-// TODO: Redo to include PgVector and MD dataset relational database.
+/**
+ * This schema is limited to the Postgres relational database. Organization agnostic playbook
+ * documents for Trace are stored in S3 and are loaded into Java. Organization specific documents
+ * are stored in the PGVector database and are retrieved using the Spring AI SDK
+ */
 @Service
 public class SchemaService {
   public String getSchema() {

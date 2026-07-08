@@ -1,67 +1,47 @@
-# Executive FinOps Summary
+---
+task_type: EXECUTIVE_SUMMARY
+version: 1
+canonical_source: s3_full_document
+tenant_context_required: true
+billing_data_required: true
+output_format: executive_markdown
+---
 
-## Purpose
+# Executive Summary
 
-Use this playbook when the user asks Trace to generate an executive summary, leadership update, board-ready overview, monthly FinOps summary, or high-level cloud cost narrative.
+## Goal
 
-Trace's goal is to summarize cloud spend clearly for decision-makers while preserving enough evidence for engineering and finance follow-up.
+Create a concise leadership-ready FinOps summary that explains spend, drivers, risks, and decisions needed.
+
+## Use When
+
+The user asks for an executive summary, leadership update, board-ready overview, monthly FinOps summary, or high-level cost narrative.
 
 ## Required Inputs
-
-Trace should resolve or receive:
 
 - Tenant or owner user ID.
 - Dataset ID.
 - Billing period.
 - Optional audience or tone.
-- Tenant-specific knowledge files from S3.
-- PostgreSQL billing records for the selected dataset and period.
-- Existing alarms, audit findings, recommendations, or forecasts when available.
 
-## Required Context Retrieval
+## Required Sources
 
-Retrieve tenant knowledge related to:
+1. Tenant context: org structure, budgets, ownership, contracts, known migrations, business events, seasonal patterns.
+2. Billing data: total spend, provider/service/account breakdowns, highest charges, historical comparison when available.
+3. Supporting data: alarms, audits, forecasts, recommendations when available.
 
-- Organizational structure.
-- Cost center and team ownership.
-- Budget policies.
-- Contract and discount context.
-- Expected seasonal patterns.
-- Known migrations or business events.
-- Leadership-relevant cost narratives.
+## Procedure
 
-Trace should use tenant context to explain why costs changed, not merely that they changed.
-
-## Required Database Evidence
-
-Trace should query PostgreSQL for the selected period and, when available, historical comparison.
-
-Useful evidence includes:
-
-- Total cloud spend.
-- Spend by provider.
-- Spend by service.
-- Highest charge records.
-- Largest cost drivers.
-- Existing alarms by severity.
-- Forecasted spend from the prediction service, if available.
-- Audit findings or optimization recommendations, if available.
-
-SQL must be scoped by tenant ownership, `dataset_id`, and `billing_period`.
-
-## Analysis Procedure
-
-1. Establish total spend for the selected period.
-2. Identify the top cost drivers.
-3. Explain provider and service-level changes.
-4. Bring in tenant context: contracts, budgets, ownership, known events, and seasonal expectations.
-5. Highlight risks, anomalies, or audit findings.
-6. Highlight optimization opportunities.
-7. Summarize recommended leadership decisions or follow-ups.
+1. Establish total spend for the period.
+2. Identify the top drivers and material changes.
+3. Use tenant context to explain why changes may have happened.
+4. Highlight risks, exceptions, policy concerns, or audit findings.
+5. Highlight the strongest optimization opportunities.
+6. Recommend leadership decisions or follow-ups.
 
 ## Output Contract
 
-Return a concise executive summary with the following sections:
+Return exactly these sections:
 
 1. Executive takeaway.
 2. Spend overview.
@@ -71,39 +51,17 @@ Return a concise executive summary with the following sections:
 6. Recommended actions.
 7. Data gaps or assumptions.
 
-Use numbers where available. Avoid vague language such as "significant" unless paired with an amount, percentage, or ranking.
+## Style Rules
 
-## Example Answer Shape
-
-```text
-Executive takeaway:
-Cloud spend for the selected period was $450,000, led by AWS storage and GCP compute. The strongest action item is reviewing S3 lifecycle policy for Customer Portal.
-
-Spend overview:
-- AWS: $280,000
-- GCP: $120,000
-- Azure: $50,000
-
-Primary cost drivers:
-1. AWS S3 storage in Customer Portal.
-2. GCP compute growth in ML Training.
-3. API request growth in Partner Integration.
-
-Risks and exceptions:
-- S3 spend may be above the tenant's documented contracted rate.
-- ML Training growth may be expected if tenant knowledge confirms an active training cycle.
-
-Recommended actions:
-1. Review S3 lifecycle policy.
-2. Validate whether GCP compute growth is tied to approved ML workloads.
-3. Ask Trace to run a cost optimization analysis.
-```
+- Keep it concise.
+- Use numbers where available.
+- Avoid raw SQL.
+- Avoid vague terms like "significant" unless paired with amount, percentage, or ranking.
+- Make the recommended actions decision-oriented.
 
 ## Guardrails
 
-- Do not overstate certainty.
+- Do not invent business events, owners, budgets, or contract terms.
 - Do not hide missing context.
-- Do not invent business events, budgets, or owners.
-- Do not include raw SQL unless the user asks for it.
-- Do not produce a long technical report unless the user asks for detail.
-- Keep leadership summaries crisp, but evidence-backed.
+- Do not overstate certainty.
+- Do not turn the response into a technical report unless asked.

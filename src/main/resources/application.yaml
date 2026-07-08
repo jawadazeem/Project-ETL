@@ -15,8 +15,13 @@ spring:
         access-key: ${AWS_ACCESS_KEY:test}
         secret-key: ${AWS_SECRET_KEY:test}
   ai:
+    model:
+      chat: ${BLUEPRINT_AI_PROVIDER:google-genai}
+      embedding: ${BLUEPRINT_AI_PROVIDER:google-genai}
+      embedding.text: ${BLUEPRINT_AI_PROVIDER:google-genai}
     google:
       genai:
+        api-key: ${GOOGLE_GENAI_API_KEY}
         project-id: ${GOOGLE_PROJECT_ID}
         location: "us-central1"
         credentials:
@@ -25,10 +30,20 @@ spring:
           options:
             model: "gemini-2.5-flash"
             temperature: 0.1
+        embedding:
+          api-key: ${GOOGLE_GENAI_API_KEY}
+          project-id: ${GOOGLE_PROJECT_ID}
+          location: "us-central1"
+          text:
+            options:
+              model: gemini-embedding-001
+              dimensions: 768
     ollama:
       base-url: "http://host.docker.internal:11434"
+      chat:
+        model: ${OLLAMA_CHAT_MODEL:llama3.2}
       embedding:
-          model: nomic-embed-text
+          model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
       init:
         pull-model-strategy: "WHEN_MISSING"
     vectorstore:
@@ -83,10 +98,12 @@ trace-knowledge:
   folder-path: /trace-knowledge
   bucket-name: trace-knowledge
   keys:
+    - audit.md
     - cost-optimization-recommendations.md
     - executive-summary.md
     - policy-and-contract-fit.md
-    - overview.md
+    - explain-spend-increase.md
+    - general.md
 org-context:
   bucket-name: cloud-billing
   max-files: 5
