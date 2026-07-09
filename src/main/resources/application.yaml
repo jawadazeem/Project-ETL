@@ -115,6 +115,9 @@ notification:
 prediction:
   service:
     url: ${PREDICTION_SERVICE_URL:http://prediction-service:5000}
+audit:
+  service:
+    url: ${AUDIT_SERVICE_URL:http://audit-service:5001}
 
 # Database config
 database-config:

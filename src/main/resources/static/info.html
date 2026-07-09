@@ -18,7 +18,7 @@
 <div class="hero">
     <div>
         <h1>Blueprint</h1>
-        <p>Multi-Cloud FinOps Platform: Fast, scalable cost analytics for enterprise cloud billing.</p>
+        <p>AI-Powered Multi-Cloud FinOps: Autonomous SQL generation, predictive forecasting, and anomaly detection for enterprise cloud billing.</p>
     </div>
 
     <div class="hero-cta">
@@ -34,7 +34,7 @@
         <div class="info-card">
             <div class="section-title">Overview</div>
             <p class="text-muted-copy">
-                Blueprint is evolving into a cloud billing intelligence workspace. The dashboard combines billing analytics, Trace-assisted FinOps investigation, organization-specific context files, predictive modeling, audit workflows, and planned Athena-style querying for deeper cost analysis.
+                Blueprint is an AI-powered cloud billing intelligence platform. It combines autonomous SQL generation via Google Gemini, scikit-learn cost forecasting, automated anomaly detection, and retrieval-augmented generation (RAG) with organization context to turn raw multi-cloud billing data into actionable insights.
             </p>
 
             <hr />
@@ -42,19 +42,19 @@
             <ul class="feature-list">
                 <li class="feature-item">
                     <div class="feature-dot feature-dot-chat">●</div>
-                    <div><b>Trace FinOps assistant</b><div class="text-muted-copy">Ask billing questions, explore optimization prompts, and connect answers to company context.</div></div>
-                </li>
-                <li class="feature-item">
-                    <div class="feature-dot feature-dot-data">●</div>
-                    <div><b>Organization Context</b><div class="text-muted-copy">Upload markdown files for contracts, policies, ownership, and tenant-specific FinOps guidance.</div></div>
+                    <div><b>Trace AI Agent</b><div class="text-muted-copy">Autonomous natural language to SQL pipeline powered by Google Gemini. Ask questions in plain English and get validated PostgreSQL queries, executed results, and AI-generated answers.</div></div>
                 </li>
                 <li class="feature-item">
                     <div class="feature-dot feature-dot-period">●</div>
-                    <div><b>Forecasting &amp; Audit Engine</b><div class="text-muted-copy">Predictive cost estimates and audit actions are surfaced directly in the dashboard.</div></div>
+                    <div><b>Predictive Cost Forecasting</b><div class="text-muted-copy">scikit-learn LinearRegression models trained on historical billing periods to forecast future cloud spend with trend visualization.</div></div>
                 </li>
                 <li class="feature-item">
                     <div class="feature-dot feature-dot-filter">●</div>
-                    <div><b>Athena-ready query workflow</b><div class="text-muted-copy">The UI is prepared for governed analytical queries over billing data, beyond fixed filters.</div></div>
+                    <div><b>Automated Audit Engine</b><div class="text-muted-copy">Python-based anomaly detection microservice that scans billing records for duplicate charges and cost irregularities across cloud providers.</div></div>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-dot feature-dot-data">●</div>
+                    <div><b>Organization Context (RAG)</b><div class="text-muted-copy">Upload contracts, policies, and ownership documents as markdown. Trace uses PGVector embeddings to ground its answers in your organization's specific context.</div></div>
                 </li>
             </ul>
         </div>
@@ -62,13 +62,11 @@
         <div class="info-card">
             <div class="section-title">Quickstart</div>
             <ol class="quickstart-list">
-                <li>
-                    Open the <strong>Dashboard</strong> and select <strong>help</strong> on the top left for guidance.
-                </li>
-                <li>Next, select <strong>Load Dummy Data</strong>. This loads a predefined cloud billing CSV dataset.</li>
-                <li>Ask <strong>Trace</strong> about cost drivers, policy fit, savings opportunities, or executive summaries.</li>
-                <li>Add <strong>Organization Context</strong> markdown files so Trace can reason from tenant-specific knowledge.</li>
-                <li>Review predictions, audit actions, and the planned <strong>Query Billing Data</strong> module for deeper analysis.</li>
+                <li>Open the <strong>Dashboard</strong> and click <strong>Load Dummy Data</strong> to ingest a multi-cloud billing dataset spanning three billing periods.</li>
+                <li>Ask <strong>Trace</strong> a question like "What are the top 5 most expensive services?" and watch it generate, validate, and execute SQL autonomously.</li>
+                <li>Run <strong>Predictive Forecasting</strong> to see historical charges and ML-generated cost projections.</li>
+                <li>Trigger the <strong>Audit Engine</strong> to scan for duplicate charges and billing anomalies.</li>
+                <li>Upload <strong>Organization Context</strong> documents so Trace can reason with your contracts, policies, and team ownership data.</li>
             </ol>
         </div>
     </div>
@@ -106,6 +104,13 @@
                 <div class="tech-badge tech-badge-pred">scikit-learn</div>
                 <div class="tech-badge tech-badge-pred">NumPy</div>
                 <div class="tech-badge tech-badge-pred">Pandas</div>
+            </div>
+
+            <div class="tech-section-label">Audit Microservice</div>
+            <div class="tech-list">
+                <div class="tech-badge tech-badge-pred">Python</div>
+                <div class="tech-badge tech-badge-pred">FastAPI</div>
+                <div class="tech-badge tech-badge-pred">Pydantic</div>
             </div>
 
             <hr />

@@ -30,14 +30,20 @@
     <marker id="arr-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
       <path d="M0,0 L8,3 L0,6 Z" fill="#4FC3F7"/>
     </marker>
-    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="#81C784"/>
+    <marker id="arr-indigo" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7986CB"/>
     </marker>
-    <marker id="arr-pink" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="#F48FB1"/>
+    <marker id="arr-teal" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#26A69A"/>
     </marker>
-    <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <path d="M0,0 L8,3 L0,6 Z" fill="#CE93D8"/>
+    <marker id="arr-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#FFB300"/>
+    </marker>
+    <marker id="arr-coral" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#EF5350"/>
+    </marker>
+    <marker id="arr-gray" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#8B949E"/>
     </marker>
 
     <!-- Filters -->
@@ -61,84 +67,100 @@
   <rect width="1600" height="960" fill="url(#dots)"/>
 
   <!-- Faint column separators -->
-  <line x1="346" y1="88" x2="346" y2="860" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.06"/>
-  <line x1="706" y1="88" x2="706" y2="860" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.06"/>
-  <line x1="1060" y1="88" x2="1060" y2="860" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.06"/>
+  <line x1="346" y1="88" x2="346" y2="560" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.06"/>
+  <line x1="706" y1="88" x2="706" y2="560" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.06"/>
+  <line x1="1016" y1="88" x2="1016" y2="560" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.06"/>
 
   <!-- ── TITLE ────────────────────────────────────────────────────── -->
   <text x="800" y="44" text-anchor="middle" font-size="23" font-weight="700"
-        fill="#F0F4FF" letter-spacing="0.4">Telecom Billing Intelligence Platform — Architecture</text>
+        fill="#F0F4FF" letter-spacing="0.4">Blueprint — Cloud FinOps Intelligence Platform · Architecture</text>
   <text x="800" y="66" text-anchor="middle" font-size="11.5" fill="#4A637D" letter-spacing="0.4">
-    Blueprint · AWS Cloud · Spring Boot 3 · TypeScript Microservices · SIEM
+    Spring Boot 3.5 · Java 25 · FastAPI Microservices · Google Gemini AI · AWS
   </text>
-  <line x1="360" y1="76" x2="1240" y2="76" stroke="#FFFFFF" stroke-width="0.3" stroke-opacity="0.12"/>
+  <line x1="300" y1="76" x2="1300" y2="76" stroke="#FFFFFF" stroke-width="0.3" stroke-opacity="0.12"/>
 
 
   <!-- ══════════════════════════════════════════════════════════════ -->
   <!--  ARROWS  (drawn before cards so cards sit on top)            -->
   <!-- ══════════════════════════════════════════════════════════════ -->
 
-  <!-- S3 → SQS (vertical) -->
-  <line x1="187" y1="248" x2="187" y2="297"
+  <!-- 1. S3 → SQS (vertical) -->
+  <line x1="187" y1="248" x2="187" y2="277"
         stroke="#FF9900" stroke-width="1.8" marker-end="url(#arr-orange)"/>
 
-  <!-- SQS → ECS (curved right) -->
-  <path d="M316,368 C348,368 356,356 372,356"
+  <!-- 2. SQS → Spring Boot (curved right) -->
+  <path d="M316,348 C348,348 356,336 372,336"
         stroke="#FF9900" stroke-width="1.8" fill="none" marker-end="url(#arr-orange)"/>
 
-  <!-- ECS → RDS (diagonal up-right) -->
-  <line x1="676" y1="218" x2="757" y2="176"
+  <!-- 3. Spring Boot → PostgreSQL (right) -->
+  <line x1="676" y1="180" x2="732" y2="180"
         stroke="#4FC3F7" stroke-width="1.8" marker-end="url(#arr-blue)"/>
 
-  <!-- ECS → TypeScript Notification (horizontal) -->
-  <line x1="676" y1="401" x2="757" y2="401"
-        stroke="#4FC3F7" stroke-width="1.8" marker-end="url(#arr-blue)"/>
+  <!-- 4. Spring Boot → PGVector (right) -->
+  <line x1="676" y1="340" x2="732" y2="340"
+        stroke="#7986CB" stroke-width="1.8" marker-end="url(#arr-indigo)"/>
 
-  <!-- TypeScript → Delivery (horizontal) -->
-  <line x1="1011" y1="401" x2="1072" y2="401"
-        stroke="#4FC3F7" stroke-width="1.8" marker-end="url(#arr-blue)"/>
+  <!-- 5. Spring Boot → Notification Service (right, via databases) -->
+  <path d="M986,180 Q1010,180 1042,180"
+        stroke="#4FC3F7" stroke-width="1.8" fill="none" marker-end="url(#arr-blue)"/>
 
-  <!-- ECS → CloudWatch (slightly angled down) -->
-  <line x1="520" y1="572" x2="500" y2="632"
-        stroke="#81C784" stroke-width="1.8" marker-end="url(#arr-green)"/>
+  <!-- 6. Notification → Delivery Channels (down) -->
+  <line x1="1170" y1="285" x2="1170" y2="307"
+        stroke="#26A69A" stroke-width="1.8" marker-end="url(#arr-teal)"/>
 
-  <!-- CloudWatch → SNS (horizontal) -->
-  <line x1="626" y1="713" x2="682" y2="713"
-        stroke="#F48FB1" stroke-width="1.8" marker-end="url(#arr-pink)"/>
+  <!-- 7. Spring Boot → Prediction (down) -->
+  <line x1="440" y1="545" x2="440" y2="597"
+        stroke="#FFB300" stroke-width="1.8" marker-end="url(#arr-amber)"/>
 
-  <!-- CloudWatch → SIEM (dashed, horizontal) -->
-  <line x1="626" y1="737" x2="970" y2="737"
-        stroke="#CE93D8" stroke-width="1.8" stroke-dasharray="6,3"
-        marker-end="url(#arr-purple)"/>
+  <!-- 8. Spring Boot → Audit (down) -->
+  <line x1="560" y1="545" x2="560" y2="597"
+        stroke="#EF5350" stroke-width="1.8" marker-end="url(#arr-coral)"/>
+
+  <!-- 9. CI/CD → Spring Boot (dashed, left) -->
+  <path d="M798,680 C740,680 700,520 676,500"
+        stroke="#8B949E" stroke-width="1.8" stroke-dasharray="6,3" fill="none"
+        marker-end="url(#arr-gray)"/>
 
 
   <!-- ══════════════════════════════════════════════════════════════ -->
   <!--  ARROW LABELS                                                 -->
   <!-- ══════════════════════════════════════════════════════════════ -->
 
-  <rect x="150" y="259" width="74" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="187" y="271" text-anchor="middle" font-size="9" fill="#FF9900">S3 Event</text>
+  <!-- 1. S3 → SQS -->
+  <rect x="150" y="253" width="74" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="187" y="265" text-anchor="middle" font-size="9" fill="#FF9900">S3 Event</text>
 
-  <rect x="302" y="337" width="90" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="347" y="349" text-anchor="middle" font-size="9" fill="#FF9900">@SqsListener</text>
+  <!-- 2. SQS → Spring Boot -->
+  <rect x="302" y="321" width="90" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="347" y="333" text-anchor="middle" font-size="9" fill="#FF9900">@SqsListener</text>
 
-  <rect x="678" y="183" width="76" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="716" y="195" text-anchor="middle" font-size="9" fill="#4FC3F7">JPA / Liquibase</text>
+  <!-- 3. Spring Boot → PostgreSQL -->
+  <rect x="678" y="167" width="76" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="716" y="179" text-anchor="middle" font-size="9" fill="#4FC3F7">JPA / Liquibase</text>
 
-  <rect x="678" y="384" width="68" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="712" y="396" text-anchor="middle" font-size="9" fill="#4FC3F7">POST /notify</text>
+  <!-- 4. Spring Boot → PGVector -->
+  <rect x="678" y="327" width="74" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="715" y="339" text-anchor="middle" font-size="9" fill="#7986CB">Embeddings</text>
 
-  <rect x="1012" y="384" width="48" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="1036" y="396" text-anchor="middle" font-size="9" fill="#4FC3F7">Deliver</text>
+  <!-- 5. PostgreSQL → Notification -->
+  <rect x="988" y="167" width="74" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="1025" y="179" text-anchor="middle" font-size="9" fill="#4FC3F7">POST /notify</text>
 
-  <rect x="460" y="592" width="88" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="504" y="604" text-anchor="middle" font-size="9" fill="#81C784">Logs &amp; Metrics</text>
+  <!-- 6. Notification → Delivery -->
+  <rect x="1132" y="289" width="52" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="1158" y="301" text-anchor="middle" font-size="9" fill="#26A69A">Deliver</text>
 
-  <rect x="626" y="695" width="60" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="656" y="707" text-anchor="middle" font-size="9" fill="#F48FB1">CW Alarm</text>
+  <!-- 7. Spring Boot → Prediction -->
+  <rect x="390" y="560" width="100" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="440" y="572" text-anchor="middle" font-size="9" fill="#FFB300">Historical Data</text>
 
-  <rect x="724" y="720" width="76" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
-  <text x="762" y="732" text-anchor="middle" font-size="9" font-style="italic" fill="#CE93D8">Log Export</text>
+  <!-- 8. Spring Boot → Audit -->
+  <rect x="510" y="560" width="100" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="560" y="572" text-anchor="middle" font-size="9" fill="#EF5350">Billing Records</text>
+
+  <!-- 9. CI/CD → Spring Boot -->
+  <rect x="700" y="587" width="96" height="17" rx="3" fill="#080F1E" fill-opacity="0.85"/>
+  <text x="748" y="599" text-anchor="middle" font-size="9" fill="#8B949E">Deploy → ECS</text>
 
 
   <!-- ══════════════════════════════════════════════════════════════ -->
@@ -151,166 +173,197 @@
           fill="url(#card)" stroke="#FF9900" stroke-width="0.8" stroke-opacity="0.35"/>
     <rect x="62" y="100" width="5" height="143" rx="2.5" fill="#FF9900"/>
     <text x="82" y="125" font-size="9"   fill="#FF9900" font-weight="600" letter-spacing="1.2">AWS S3</text>
-    <text x="82" y="148" font-size="14.5" fill="#F5F5F5" font-weight="700">S3 Bucket</text>
-    <text x="82" y="166" font-size="10"  fill="#607D8B">telecom-billing-ingest-bucket</text>
+    <text x="82" y="148" font-size="14.5" fill="#F5F5F5" font-weight="700">S3 Buckets</text>
+    <text x="82" y="166" font-size="10"  fill="#607D8B">cloud-billing · trace-knowledge</text>
     <line x1="82" y1="177" x2="304" y2="177" stroke="#FF9900" stroke-width="0.4" stroke-opacity="0.25"/>
-    <text x="82" y="194" font-size="10.5" fill="#90A4AE">Billing company uploads CSV via</text>
-    <text x="82" y="211" font-size="10.5" fill="#90A4AE">pre-signed URL — no creds needed</text>
+    <text x="82" y="194" font-size="10.5" fill="#90A4AE">CSV billing datasets (pre-signed URL)</text>
+    <text x="82" y="211" font-size="10.5" fill="#90A4AE">PDF report storage · Knowledge files</text>
     <text x="82" y="233" font-size="8.5" fill="#FF9900" opacity="0.6">aws.amazon.com/s3</text>
   </g>
 
-  <!-- ── SQS Queue ─────────────────────────────────────────────── -->
+  <!-- ── SQS Queues ─────────────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="62" y="300" width="252" height="143" rx="10"
+    <rect x="62" y="280" width="252" height="135" rx="10"
           fill="url(#card)" stroke="#FF9900" stroke-width="0.8" stroke-opacity="0.35"/>
-    <rect x="62" y="300" width="5" height="143" rx="2.5" fill="#FF9900"/>
-    <text x="82" y="325" font-size="9"   fill="#FF9900" font-weight="600" letter-spacing="1.2">AWS SQS</text>
-    <text x="82" y="348" font-size="14.5" fill="#F5F5F5" font-weight="700">SQS Queue</text>
-    <text x="82" y="366" font-size="10"  fill="#607D8B">Task Buffer / Message Queue</text>
-    <line x1="82" y1="377" x2="304" y2="377" stroke="#FF9900" stroke-width="0.4" stroke-opacity="0.25"/>
-    <text x="82" y="394" font-size="10.5" fill="#90A4AE">S3 triggers message containing</text>
-    <text x="82" y="411" font-size="10.5" fill="#90A4AE">S3 object key for the new file</text>
-    <text x="82" y="433" font-size="8.5" fill="#FF9900" opacity="0.6">aws.amazon.com/sqs</text>
+    <rect x="62" y="280" width="5" height="135" rx="2.5" fill="#FF9900"/>
+    <text x="82" y="305" font-size="9"   fill="#FF9900" font-weight="600" letter-spacing="1.2">AWS SQS</text>
+    <text x="82" y="328" font-size="14.5" fill="#F5F5F5" font-weight="700">SQS Queues</text>
+    <text x="82" y="346" font-size="10"  fill="#607D8B">Event-Driven Message Buffer</text>
+    <line x1="82" y1="357" x2="304" y2="357" stroke="#FF9900" stroke-width="0.4" stroke-opacity="0.25"/>
+    <text x="82" y="374" font-size="10.5" fill="#90A4AE">billing-event-queue → CSV ingestion</text>
+    <text x="82" y="391" font-size="10.5" fill="#90A4AE">knowledge-event-queue → RAG sync</text>
+    <text x="82" y="407" font-size="8.5" fill="#FF9900" opacity="0.6">aws.amazon.com/sqs</text>
   </g>
 
-  <!-- ── ECS / Spring Boot (highlighted main card) ────────────── -->
+  <!-- ── Spring Boot Application (main card with glow) ────────── -->
   <g filter="url(#ecsGlow)">
-    <rect x="372" y="152" width="304" height="420" rx="10"
+    <rect x="372" y="100" width="304" height="440" rx="10"
           fill="url(#ecsCard)" stroke="#6DB33F" stroke-width="1.6" stroke-opacity="0.65"/>
-    <!-- outer soft glow ring -->
-    <rect x="372" y="152" width="304" height="420" rx="10"
+    <rect x="372" y="100" width="304" height="440" rx="10"
           fill="none" stroke="#6DB33F" stroke-width="8" stroke-opacity="0.07"/>
-    <rect x="372" y="152" width="5" height="420" rx="2.5" fill="#6DB33F"/>
+    <rect x="372" y="100" width="5" height="440" rx="2.5" fill="#6DB33F"/>
 
-    <text x="393" y="179" font-size="9" fill="#6DB33F" font-weight="600" letter-spacing="1.1">AWS FARGATE ECS · SERVERLESS COMPUTE</text>
-    <text x="393" y="203" font-size="15.5" fill="#F5F5F5" font-weight="700">Spring Boot Application</text>
-    <text x="393" y="221" font-size="10.5" fill="#81C784">Java 21 · Spring Boot 3 · JPA · Liquibase</text>
-    <line x1="393" y1="234" x2="662" y2="234" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
+    <text x="393" y="127" font-size="9" fill="#6DB33F" font-weight="600" letter-spacing="1.1">AWS ECS · CONTAINERIZED COMPUTE</text>
+    <text x="393" y="151" font-size="15.5" fill="#F5F5F5" font-weight="700">Spring Boot Application</text>
+    <text x="393" y="169" font-size="10.5" fill="#81C784">Java 25 · Spring Boot 3.5 · JPA · Liquibase</text>
+    <line x1="393" y1="182" x2="662" y2="182" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
 
-    <text x="393" y="256" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">INGESTION PIPELINE</text>
-    <text x="393" y="275" font-size="10.5" fill="#B0BEC5">• @SqsListener consumes S3 key</text>
-    <text x="393" y="293" font-size="10.5" fill="#B0BEC5">• Streams CSV directly via S3Client</text>
-    <text x="393" y="311" font-size="10.5" fill="#B0BEC5">• ETL — Extract → Transform → Load</text>
-    <text x="393" y="329" font-size="10.5" fill="#B0BEC5">• Persists BillingRecords to RDS</text>
+    <text x="393" y="204" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">INGESTION PIPELINE</text>
+    <text x="393" y="223" font-size="10.5" fill="#B0BEC5">• @SqsListener consumes S3 key</text>
+    <text x="393" y="241" font-size="10.5" fill="#B0BEC5">• Streams CSV directly via S3Client</text>
+    <text x="393" y="259" font-size="10.5" fill="#B0BEC5">• ETL — Extract → Transform → Load</text>
+    <text x="393" y="277" font-size="10.5" fill="#B0BEC5">• Persists BillingRecords to RDS</text>
 
-    <line x1="393" y1="345" x2="662" y2="345" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
-    <text x="393" y="366" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">ALARM DETECTION ENGINE</text>
-    <text x="393" y="385" font-size="10.5" fill="#B0BEC5">• Dept / Individual / Account thresholds</text>
-    <text x="393" y="403" font-size="10.5" fill="#B0BEC5">• Deduplication via deterministic key</text>
-    <text x="393" y="421" font-size="10.5" fill="#B0BEC5">• Persists new alarms to RDS</text>
-    <text x="393" y="439" font-size="10.5" fill="#B0BEC5">• POST /notify → Notification Service</text>
+    <line x1="393" y1="293" x2="662" y2="293" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
+    <text x="393" y="314" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">ALARM DETECTION ENGINE</text>
+    <text x="393" y="333" font-size="10.5" fill="#B0BEC5">• Provider / Individual / Account thresholds</text>
+    <text x="393" y="351" font-size="10.5" fill="#B0BEC5">• Deduplication via deterministic key</text>
+    <text x="393" y="369" font-size="10.5" fill="#B0BEC5">• POST /notify → Notification Service</text>
 
-    <line x1="393" y1="455" x2="662" y2="455" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
-    <text x="393" y="476" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">MARTIN — AI BILLING ANALYST</text>
-    <text x="393" y="495" font-size="10.5" fill="#B0BEC5">• Natural language → SQL (Gemini 2.5 Flash)</text>
-    <text x="393" y="513" font-size="10.5" fill="#B0BEC5">• Read-only validated query execution</text>
-    <text x="393" y="531" font-size="10.5" fill="#B0BEC5">• Explainability layer over billing data</text>
+    <line x1="393" y1="385" x2="662" y2="385" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
+    <text x="393" y="406" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">TRACE — AI FINOPS AGENT</text>
+    <text x="393" y="425" font-size="10.5" fill="#B0BEC5">• Natural language → SQL (Gemini 2.5 Flash)</text>
+    <text x="393" y="443" font-size="10.5" fill="#B0BEC5">• JSQLParser validation · read-only execution</text>
+    <text x="393" y="461" font-size="10.5" fill="#B0BEC5">• RAG with org context via PGVector</text>
+    <text x="393" y="479" font-size="10.5" fill="#B0BEC5">• Explainability layer over billing data</text>
 
-    <line x1="393" y1="548" x2="662" y2="548" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
-    <text x="393" y="563" font-size="8.5" fill="#6DB33F" opacity="0.6">spring.io · aws.amazon.com/fargate · Secrets Manager</text>
+    <line x1="393" y1="496" x2="662" y2="496" stroke="#6DB33F" stroke-width="0.4" stroke-opacity="0.35"/>
+    <text x="393" y="516" font-size="9" fill="#4CAF50" font-weight="600" letter-spacing="0.8">ROUTING</text>
+    <text x="393" y="532" font-size="8.5" fill="#6DB33F" opacity="0.6">Cloudflare Tunnel → blueprint.jawadazeem.com</text>
   </g>
 
-  <!-- ── RDS PostgreSQL ─────────────────────────────────────────── -->
+  <!-- ── PostgreSQL Database ─────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="757" y="100" width="252" height="158" rx="10"
+    <rect x="734" y="100" width="252" height="150" rx="10"
           fill="url(#card)" stroke="#527FFF" stroke-width="0.8" stroke-opacity="0.35"/>
-    <rect x="757" y="100" width="5" height="158" rx="2.5" fill="#527FFF"/>
-    <text x="777" y="125" font-size="9"   fill="#7986CB" font-weight="600" letter-spacing="1.2">AWS RDS</text>
-    <text x="777" y="148" font-size="14.5" fill="#F5F5F5" font-weight="700">PostgreSQL Database</text>
-    <text x="777" y="166" font-size="10"  fill="#607D8B">Managed Relational Database</text>
-    <line x1="777" y1="177" x2="999" y2="177" stroke="#527FFF" stroke-width="0.4" stroke-opacity="0.25"/>
-    <text x="777" y="194" font-size="10.5" fill="#90A4AE">Datasets · BillingRecords · Alarms</text>
-    <text x="777" y="211" font-size="10.5" fill="#90A4AE">AppUsers · schema via Liquibase</text>
-    <text x="777" y="231" font-size="10.5" fill="#90A4AE">Credentials → AWS Secrets Manager</text>
-    <text x="777" y="249" font-size="8.5" fill="#7986CB" opacity="0.6">aws.amazon.com/rds</text>
+    <rect x="734" y="100" width="5" height="150" rx="2.5" fill="#527FFF"/>
+    <text x="754" y="125" font-size="9"   fill="#7986CB" font-weight="600" letter-spacing="1.2">AWS RDS</text>
+    <text x="754" y="148" font-size="14.5" fill="#F5F5F5" font-weight="700">PostgreSQL Database</text>
+    <text x="754" y="166" font-size="10"  fill="#607D8B">Managed Relational Database</text>
+    <line x1="754" y1="177" x2="976" y2="177" stroke="#527FFF" stroke-width="0.4" stroke-opacity="0.25"/>
+    <text x="754" y="194" font-size="10.5" fill="#90A4AE">Datasets · BillingRecords · Alarms</text>
+    <text x="754" y="211" font-size="10.5" fill="#90A4AE">Schema versioned via Liquibase</text>
+    <text x="754" y="228" font-size="10.5" fill="#90A4AE">Credentials via Secrets Manager</text>
+    <text x="754" y="242" font-size="8.5" fill="#7986CB" opacity="0.6">aws.amazon.com/rds</text>
   </g>
 
-  <!-- ── TypeScript Notification Service ───────────────────────── -->
+  <!-- ── PGVector ──────────────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="757" y="316" width="254" height="190" rx="10"
-          fill="url(#card)" stroke="#3178C6" stroke-width="0.8" stroke-opacity="0.45"/>
-    <rect x="757" y="316" width="5" height="190" rx="2.5" fill="#3178C6"/>
-    <!-- TS badge pill -->
-    <rect x="960" y="325" width="40" height="20" rx="5" fill="#3178C6"/>
-    <text x="980" y="339" text-anchor="middle" font-size="10.5" font-weight="700" fill="#FFFFFF">TS</text>
+    <rect x="734" y="280" width="252" height="130" rx="10"
+          fill="url(#card)" stroke="#7986CB" stroke-width="0.8" stroke-opacity="0.35"/>
+    <rect x="734" y="280" width="5" height="130" rx="2.5" fill="#7986CB"/>
+    <text x="754" y="305" font-size="9"   fill="#7986CB" font-weight="600" letter-spacing="1.2">VECTOR DATABASE</text>
+    <text x="754" y="328" font-size="14.5" fill="#F5F5F5" font-weight="700">PGVector</text>
+    <text x="754" y="346" font-size="10"  fill="#607D8B">Embedding Store for RAG</text>
+    <line x1="754" y1="357" x2="976" y2="357" stroke="#7986CB" stroke-width="0.4" stroke-opacity="0.25"/>
+    <text x="754" y="374" font-size="10.5" fill="#90A4AE">Org context document embeddings</text>
+    <text x="754" y="391" font-size="10.5" fill="#90A4AE">Gemini embedding-001 (768 dims)</text>
+    <text x="754" y="403" font-size="8.5" fill="#7986CB" opacity="0.6">pgvector · postgresql extension</text>
+  </g>
 
-    <text x="777" y="342" font-size="9"   fill="#64B5F6" font-weight="600" letter-spacing="1.2">NODE.JS MICROSERVICE</text>
-    <text x="777" y="365" font-size="14.5" fill="#F5F5F5" font-weight="700">Notification Service</text>
-    <text x="777" y="383" font-size="10"  fill="#607D8B">Express · TypeScript · AWS SES</text>
-    <line x1="777" y1="394" x2="1001" y2="394" stroke="#3178C6" stroke-width="0.4" stroke-opacity="0.3"/>
-    <text x="777" y="411" font-size="10.5" fill="#90A4AE">• POST /notify — receives alarm payload</text>
-    <text x="777" y="429" font-size="10.5" fill="#90A4AE">• Routes: Email (SES), Slack, SMS</text>
-    <text x="777" y="447" font-size="10.5" fill="#90A4AE">• Notification history &amp; retry logic</text>
-    <text x="777" y="465" font-size="10.5" fill="#90A4AE">• Typed contract: AlarmNotificationPayload</text>
-    <text x="777" y="496" font-size="8.5" fill="#64B5F6" opacity="0.6">repo: blueprint-notifications</text>
+  <!-- ── Notification Service ───────────────────────────────────── -->
+  <g filter="url(#shadow)">
+    <rect x="1044" y="100" width="254" height="180" rx="10"
+          fill="url(#card)" stroke="#3178C6" stroke-width="0.8" stroke-opacity="0.45"/>
+    <rect x="1044" y="100" width="5" height="180" rx="2.5" fill="#3178C6"/>
+    <!-- TS badge pill -->
+    <rect x="1247" y="109" width="40" height="20" rx="5" fill="#3178C6"/>
+    <text x="1267" y="123" text-anchor="middle" font-size="10.5" font-weight="700" fill="#FFFFFF">TS</text>
+
+    <text x="1064" y="126" font-size="9"   fill="#64B5F6" font-weight="600" letter-spacing="1.2">NODE.JS MICROSERVICE</text>
+    <text x="1064" y="149" font-size="14.5" fill="#F5F5F5" font-weight="700">Notification Service</text>
+    <text x="1064" y="167" font-size="10"  fill="#607D8B">Express · TypeScript · MongoDB · SES</text>
+    <line x1="1064" y1="178" x2="1288" y2="178" stroke="#3178C6" stroke-width="0.4" stroke-opacity="0.3"/>
+    <text x="1064" y="195" font-size="10.5" fill="#90A4AE">• POST /notify — alarm payload</text>
+    <text x="1064" y="213" font-size="10.5" fill="#90A4AE">• Routes: Email (SES), Slack</text>
+    <text x="1064" y="231" font-size="10.5" fill="#90A4AE">• Notification history &amp; retry (Mongo)</text>
+    <text x="1064" y="249" font-size="10.5" fill="#90A4AE">• Typed: AlarmNotificationPayload</text>
+    <text x="1064" y="272" font-size="8.5" fill="#64B5F6" opacity="0.6">comp/notification-service</text>
   </g>
 
   <!-- ── Delivery Channels ─────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="1072" y="316" width="210" height="190" rx="10"
+    <rect x="1044" y="310" width="254" height="100" rx="10"
           fill="url(#card)" stroke="#26A69A" stroke-width="0.8" stroke-opacity="0.35"/>
-    <rect x="1072" y="316" width="5" height="190" rx="2.5" fill="#26A69A"/>
-    <text x="1092" y="342" font-size="9"   fill="#4DB6AC" font-weight="600" letter-spacing="1.2">DELIVERY CHANNELS</text>
-    <text x="1092" y="365" font-size="14.5" fill="#F5F5F5" font-weight="700">Notifications</text>
-    <line x1="1092" y1="378" x2="1272" y2="378" stroke="#26A69A" stroke-width="0.4" stroke-opacity="0.3"/>
-    <text x="1096" y="402" font-size="12.5" fill="#B0BEC5">📧  Email Alerts</text>
-    <text x="1096" y="427" font-size="12.5" fill="#B0BEC5">💬  Slack Webhooks</text>
-    <text x="1096" y="452" font-size="12.5" fill="#B0BEC5">📱  SMS (optional)</text>
-    <text x="1092" y="476" font-size="10.5" fill="#90A4AE">Severity · scope · employee</text>
-    <text x="1092" y="493" font-size="10.5" fill="#90A4AE">department · explanation</text>
+    <rect x="1044" y="310" width="5" height="100" rx="2.5" fill="#26A69A"/>
+    <text x="1064" y="336" font-size="9"   fill="#4DB6AC" font-weight="600" letter-spacing="1.2">DELIVERY CHANNELS</text>
+    <text x="1064" y="359" font-size="14.5" fill="#F5F5F5" font-weight="700">Notifications</text>
+    <line x1="1064" y1="370" x2="1288" y2="370" stroke="#26A69A" stroke-width="0.4" stroke-opacity="0.3"/>
+    <text x="1068" y="390" font-size="11" fill="#B0BEC5">Email Alerts (SES) · Slack Webhooks</text>
+    <text x="1064" y="404" font-size="8.5" fill="#4DB6AC" opacity="0.6">Severity · scope · department</text>
   </g>
 
-  <!-- ── CloudWatch ─────────────────────────────────────────────── -->
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!--  BOTTOM ROW — Python Microservices + CI/CD                    -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <!-- Faint horizontal separator -->
+  <line x1="62" y1="580" x2="1298" y2="580" stroke="#FFFFFF" stroke-width="0.3" stroke-opacity="0.08"/>
+
+  <!-- ── Prediction Service ─────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="374" y="632" width="252" height="168" rx="10"
-          fill="url(#card)" stroke="#E7157B" stroke-width="0.8" stroke-opacity="0.35"/>
-    <rect x="374" y="632" width="5" height="168" rx="2.5" fill="#E7157B"/>
-    <text x="394" y="658" font-size="9"   fill="#F48FB1" font-weight="600" letter-spacing="1.2">AWS CLOUDWATCH</text>
-    <text x="394" y="681" font-size="14.5" fill="#F5F5F5" font-weight="700">Logs &amp; Metrics</text>
-    <text x="394" y="699" font-size="10"  fill="#607D8B">Observability Platform</text>
-    <line x1="394" y1="710" x2="616" y2="710" stroke="#E7157B" stroke-width="0.4" stroke-opacity="0.25"/>
-    <text x="394" y="727" font-size="10.5" fill="#90A4AE">Real-time metrics &amp; dashboards</text>
-    <text x="394" y="745" font-size="10.5" fill="#90A4AE">Log retention &amp; alarm triggers</text>
-    <text x="394" y="763" font-size="10.5" fill="#90A4AE">Exports log streams → SIEM</text>
-    <text x="394" y="790" font-size="8.5" fill="#F48FB1" opacity="0.6">aws.amazon.com/cloudwatch</text>
+    <rect x="62" y="600" width="310" height="168" rx="10"
+          fill="url(#card)" stroke="#FFB300" stroke-width="0.8" stroke-opacity="0.45"/>
+    <rect x="62" y="600" width="5" height="168" rx="2.5" fill="#FFB300"/>
+    <!-- Python badge -->
+    <rect x="326" y="609" width="36" height="20" rx="5" fill="#FFB300"/>
+    <text x="344" y="623" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">PY</text>
+
+    <text x="82" y="626" font-size="9"   fill="#FFB300" font-weight="600" letter-spacing="1.2">PYTHON MICROSERVICE</text>
+    <text x="82" y="649" font-size="14.5" fill="#F5F5F5" font-weight="700">Prediction Service</text>
+    <text x="82" y="667" font-size="10"  fill="#607D8B">FastAPI · scikit-learn · NumPy · Pandas</text>
+    <line x1="82" y1="678" x2="362" y2="678" stroke="#FFB300" stroke-width="0.4" stroke-opacity="0.3"/>
+    <text x="82" y="695" font-size="10.5" fill="#90A4AE">• POST /predict — billing → forecast</text>
+    <text x="82" y="713" font-size="10.5" fill="#90A4AE">• LinearRegression over billing periods</text>
+    <text x="82" y="731" font-size="10.5" fill="#90A4AE">• Projects future spend (3 periods)</text>
+    <text x="82" y="758" font-size="8.5" fill="#FFB300" opacity="0.6">comp/prediction-service · port 5000</text>
   </g>
 
-  <!-- ── AWS SNS ─────────────────────────────────────────────────── -->
+  <!-- ── Audit Service ──────────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="682" y="632" width="232" height="168" rx="10"
-          fill="url(#card)" stroke="#FF9900" stroke-width="0.8" stroke-opacity="0.35"/>
-    <rect x="682" y="632" width="5" height="168" rx="2.5" fill="#FF9900"/>
-    <text x="702" y="658" font-size="9"   fill="#FF9900" font-weight="600" letter-spacing="1.2">AWS SNS</text>
-    <text x="702" y="681" font-size="14.5" fill="#F5F5F5" font-weight="700">Notifications</text>
-    <text x="702" y="699" font-size="10"  fill="#607D8B">Infrastructure Alerting</text>
-    <line x1="702" y1="710" x2="904" y2="710" stroke="#FF9900" stroke-width="0.4" stroke-opacity="0.25"/>
-    <text x="702" y="727" font-size="10.5" fill="#90A4AE">CloudWatch alarm → email ops team</text>
-    <text x="702" y="745" font-size="10.5" fill="#90A4AE">CPU / memory / error rate alerts</text>
-    <text x="702" y="763" font-size="10.5" fill="#90A4AE">Infra-level alerting pipeline</text>
-    <text x="702" y="790" font-size="8.5" fill="#FF9900" opacity="0.6">aws.amazon.com/sns</text>
+    <rect x="430" y="600" width="310" height="168" rx="10"
+          fill="url(#card)" stroke="#EF5350" stroke-width="0.8" stroke-opacity="0.45"/>
+    <rect x="430" y="600" width="5" height="168" rx="2.5" fill="#EF5350"/>
+    <!-- Python badge -->
+    <rect x="694" y="609" width="36" height="20" rx="5" fill="#EF5350"/>
+    <text x="712" y="623" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFFFF">PY</text>
+
+    <text x="450" y="626" font-size="9"   fill="#EF5350" font-weight="600" letter-spacing="1.2">PYTHON MICROSERVICE</text>
+    <text x="450" y="649" font-size="14.5" fill="#F5F5F5" font-weight="700">Audit Service</text>
+    <text x="450" y="667" font-size="10"  fill="#607D8B">FastAPI · Pydantic</text>
+    <line x1="450" y1="678" x2="730" y2="678" stroke="#EF5350" stroke-width="0.4" stroke-opacity="0.3"/>
+    <text x="450" y="695" font-size="10.5" fill="#90A4AE">• POST /audit — scans billing records</text>
+    <text x="450" y="713" font-size="10.5" fill="#90A4AE">• Duplicate charge detection (Counter)</text>
+    <text x="450" y="731" font-size="10.5" fill="#90A4AE">• Returns findings + severity + excess $</text>
+    <text x="450" y="758" font-size="8.5" fill="#EF5350" opacity="0.6">comp/audit-service · port 5001</text>
   </g>
 
-  <!-- ── SIEM ───────────────────────────────────────────────────── -->
+  <!-- ── CI/CD Pipeline ─────────────────────────────────────────── -->
   <g filter="url(#shadow)">
-    <rect x="970" y="632" width="260" height="168" rx="10"
-          fill="url(#card)" stroke="#7C3AED" stroke-width="0.8" stroke-opacity="0.45"/>
-    <rect x="970" y="632" width="5" height="168" rx="2.5" fill="#7C3AED"/>
-    <text x="990" y="658" font-size="9"   fill="#CE93D8" font-weight="600" letter-spacing="1.2">SECURITY · SIEM</text>
-    <text x="990" y="681" font-size="14.5" fill="#F5F5F5" font-weight="700">Log Aggregation</text>
-    <text x="990" y="699" font-size="10"  fill="#607D8B">Splunk · OpenSearch · Security Lake</text>
-    <line x1="990" y1="710" x2="1220" y2="710" stroke="#7C3AED" stroke-width="0.4" stroke-opacity="0.3"/>
-    <text x="990" y="727" font-size="10.5" fill="#90A4AE">Ingests structured CloudWatch logs</text>
-    <text x="990" y="745" font-size="10.5" fill="#90A4AE">Threat detection &amp; correlation</text>
-    <text x="990" y="763" font-size="10.5" fill="#90A4AE">Audit trail · compliance reports</text>
-    <text x="990" y="790" font-size="8.5" fill="#CE93D8" opacity="0.6">via CW Subscription / Kinesis Firehose</text>
+    <rect x="798" y="600" width="310" height="168" rx="10"
+          fill="url(#card)" stroke="#8B949E" stroke-width="0.8" stroke-opacity="0.45"/>
+    <rect x="798" y="600" width="5" height="168" rx="2.5" fill="#8B949E"/>
+    <!-- GH badge -->
+    <rect x="1062" y="609" width="36" height="20" rx="5" fill="#8B949E"/>
+    <text x="1080" y="623" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFFFF">GH</text>
+
+    <text x="818" y="626" font-size="9"   fill="#8B949E" font-weight="600" letter-spacing="1.2">GITHUB ACTIONS</text>
+    <text x="818" y="649" font-size="14.5" fill="#F5F5F5" font-weight="700">CI/CD Pipeline</text>
+    <text x="818" y="667" font-size="10"  fill="#607D8B">Automated Build &amp; Deploy</text>
+    <line x1="818" y1="678" x2="1098" y2="678" stroke="#8B949E" stroke-width="0.4" stroke-opacity="0.3"/>
+    <text x="818" y="695" font-size="10.5" fill="#90A4AE">• Push to main → Actions trigger</text>
+    <text x="818" y="713" font-size="10.5" fill="#90A4AE">• Docker image build → registry</text>
+    <text x="818" y="731" font-size="10.5" fill="#90A4AE">• Deploy to AWS ECS (rolling update)</text>
+    <text x="818" y="758" font-size="8.5" fill="#8B949E" opacity="0.6">.github/workflows/docker-pipeline.yml</text>
   </g>
 
 
   <!-- ── FOOTER ────────────────────────────────────────────────── -->
-  <line x1="200" y1="868" x2="1400" y2="868"
+  <line x1="200" y1="840" x2="1400" y2="840"
         stroke="#FFFFFF" stroke-width="0.3" stroke-opacity="0.08"/>
-  <text x="800" y="892" text-anchor="middle" font-size="10.5" fill="#2E4057">
-    © 2025–2026 Jawad Azeem · Blueprint — Telecom Billing Intelligence Platform
+  <text x="800" y="864" text-anchor="middle" font-size="10.5" fill="#2E4057">
+    © 2025–2026 Jawad Azeem · Blueprint — Cloud FinOps Intelligence Platform
   </text>
 
 </svg>

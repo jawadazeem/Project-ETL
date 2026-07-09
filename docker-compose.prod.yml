@@ -124,6 +124,14 @@ services:
       - default
       - proxy-net
 
+  audit-service:
+    build: comp/audit-service
+    container_name: audit-service
+    restart: always
+    networks:
+      - default
+      - proxy-net
+
 networks:
   proxy-net:
     external: true

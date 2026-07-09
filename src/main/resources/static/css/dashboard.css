@@ -502,10 +502,6 @@
         width: 100%;
     }
 
-    .pattern-search-layout {
-        grid-template-columns: 1fr;
-    }
-
     .description-panel {
         position: static;
     }
@@ -551,10 +547,6 @@
     .auto-model-summary {
         align-items: stretch;
         flex-direction: column;
-    }
-
-    .query-compose {
-        grid-template-columns: 1fr;
     }
 
     .org-context-file-list li {
@@ -907,70 +899,6 @@
     padding-top: 15px;
 }
 
-/* ── Query module ───────────────────────────────────────────────────────── */
-
-.query-module {
-    border-radius: var(--radius);
-}
-
-.query-status {
-    background: #eef2ff;
-    border-radius: 999px;
-    color: #4338ca;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 6px 10px;
-}
-
-.query-compose {
-    align-items: stretch;
-    display: grid;
-    gap: 12px;
-    grid-template-columns: minmax(0, 1fr) auto;
-}
-
-.query-compose textarea {
-    min-height: 86px;
-    resize: vertical;
-}
-
-/* ── Advanced pattern search ────────────────────────────────────────────── */
-
-.pattern-search-module {
-    border-radius: var(--radius);
-}
-
-.pattern-status {
-    background: #ecfdf5;
-    border-radius: 999px;
-    color: #047857;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 6px 10px;
-}
-
-.pattern-search-layout {
-    display: grid;
-    gap: 12px;
-    grid-template-columns: 220px minmax(0, 1fr) 220px;
-    align-items: end;
-}
-
-.pattern-input-block textarea {
-    font-family: "Courier New", monospace;
-    min-height: 112px;
-    resize: vertical;
-}
-
-.pattern-actions {
-    display: grid;
-    gap: 8px;
-}
-
-.pattern-example-btn {
-    font-size: 13px;
-    text-align: left;
-}
 
 /* ── Predictions Section (Premium UI) ─────────────────────────────────────── */
 
