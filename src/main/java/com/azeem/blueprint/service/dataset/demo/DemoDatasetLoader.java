@@ -73,7 +73,7 @@ public class DemoDatasetLoader {
   private DatasetEntity createDemoDataset() {
     DatasetEntity demo = new DatasetEntity();
     demo.setId(DUMMY_DATA_DATASET_ID);
-    demo.setBillingPeriod("dummy-data");
+    demo.setBillingPeriod("2026-06");
     demo.setSourceFilename("dummy-data.csv");
     demo.setS3ObjectKey("classpath:dummy-data.csv");
     demo.setStatus("LOADING");
@@ -105,6 +105,6 @@ public class DemoDatasetLoader {
 
   private boolean isLoaded() {
     return billingRecordRepository.existsByDatasetIdAndBillingPeriod(
-        DUMMY_DATA_DATASET_ID, "dummy-data");
+        DUMMY_DATA_DATASET_ID, "2026-06");
   }
 }

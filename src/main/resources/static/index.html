@@ -92,14 +92,14 @@
         </div>
 
         <div class="modal-body">
-            <p>Welcome to the Blueprint Cloud FinOps Portal. Use the controls in the top-right to select a billing period and explore the analytics.</p>
+            <p>Blueprint is an AI-powered multi-cloud FinOps platform that combines ETL-driven billing analytics with autonomous AI agents.</p>
             <ul>
-                <li>Demo: click "Load Dummy Data" to see Blueprint in action using sample cloud billing data.</li>
-                <li>Periods: select a billing period to filter the dashboard.</li>
-                <li>Filter by Provider: view records for a particular cloud provider.</li>
-                <li>Top N: load the top N largest charges.</li>
+                <li><strong>Trace AI Agent:</strong> Ask natural language questions about your cloud spend. Trace autonomously generates validated SQL queries using Google Gemini and returns plain-English answers.</li>
+                <li><strong>Predictive Forecasting:</strong> Generate cost forecasts using a scikit-learn linear regression model trained on your historical billing periods.</li>
+                <li><strong>Audit Engine:</strong> Run automated anomaly detection powered by a dedicated microservice that scans for duplicate charges across billing records.</li>
+                <li><strong>Organization Context (RAG):</strong> Upload markdown files describing contracts, policies, and team ownership so Trace can reason with company-specific knowledge via vector embeddings.</li>
             </ul>
-            <p>For more details, open the <a href="/info.html" target="_blank" rel="noopener">info page</a>.</p>
+            <p>For the full architecture and technology breakdown, open the <a href="/info.html" target="_blank" rel="noopener">info page</a>.</p>
 
             <div class="mt-3 d-flex gap-2">
                 <button id="loadDummyBtn" class="btn btn-lg btn-primary" type="button">Load Dummy Data</button>
@@ -363,19 +363,18 @@
     <div class="col-lg-6 mb-4 mb-lg-0">
         <div class="card h-100 premium-card predictions-section" id="predictionsSection">
             <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
-                <span><i class="fas fa-chart-line"></i> Predictive Cost Estimates</span>
+                <span>Predictive Cost Estimates</span>
+                <span class="badge bg-light text-dark" style="font-size: 11px;">scikit-learn</span>
             </div>
             <div class="card-body glass-panel">
-                <p class="text-muted">Forecasting will automatically use the most relevant ready datasets once the backend selection logic is implemented.</p>
-
                 <div class="auto-model-summary mb-3">
                     <div>
-                        <span class="panel-eyebrow">Auto-selected training data</span>
-                        <strong>Latest eligible billing periods</strong>
-                        <small>Backend placeholder: no manual dataset selection required.</small>
+                        <span class="panel-eyebrow">Linear Regression Model</span>
+                        <strong>Forecast from historical billing periods</strong>
+                        <small>Uses all available periods in this dataset for training data.</small>
                     </div>
                     <button class="btn btn-primary generate-forecast-btn position-relative" id="generateForecastBtn" type="button">
-                        <span class="btn-text">Generate Forecast <i class="fas fa-arrow-right"></i></span>
+                        <span class="btn-text">Generate Forecast</span>
                         <div class="spinner-border spinner-border-sm text-light position-absolute d-none" role="status" id="forecastSpinner" style="right: 15px; top: 12px;">
                             <span class="visually-hidden">Loading...</span>
                         </div>
@@ -384,7 +383,7 @@
 
                 <div class="prediction-chart-container" style="display: none;" id="predictionChartWrapper">
                     <hr class="my-4 subtle-hr">
-                    <h5 class="mb-3 text-premium">Forecasted Total Charges</h5>
+                    <h5 class="mb-3 text-premium">Historical &amp; Forecasted Charges</h5>
                     <div class="chart-box premium-chart-box">
                         <canvas id="predictionChart"></canvas>
                     </div>
@@ -396,82 +395,35 @@
     <div class="col-lg-6">
         <div class="card h-100 audit-card" id="auditModule">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-shield-alt"></i> Audit Engine</span>
-                <span class="audit-status">Scheduled placeholder</span>
+                <span>Audit Engine</span>
+                <span class="audit-status" id="auditStatusBadge">Ready</span>
             </div>
             <div class="card-body">
-                <p class="text-muted">Daily and ingestion-triggered audits will produce durable findings for Trace to explain and prioritize.</p>
-
                 <div class="audit-action-grid">
-                    <button class="audit-action-btn" type="button" data-audit-action="run-audit">
+                    <button class="audit-action-btn" type="button" id="runAuditBtn">
                         <strong>Run Audit</strong>
-                        <span>Scan billing records for anomalies, duplicates, and policy issues.</span>
+                        <span>Scan billing records for duplicate charges.</span>
                     </button>
-                    <button class="audit-action-btn" type="button" data-audit-action="review-findings">
+                    <button class="audit-action-btn" type="button" id="reviewFindingsBtn" disabled>
                         <strong>Review Findings</strong>
-                        <span>Open the latest evidence-backed audit results.</span>
-                    </button>
-                    <button class="audit-action-btn" type="button" data-audit-action="explain-findings">
-                        <strong>Ask Trace to Explain</strong>
-                        <span>Summarize audit findings in business language.</span>
+                        <span>View the latest audit results below.</span>
                     </button>
                 </div>
 
                 <div class="audit-placeholder-list mt-3">
-                    <div><span>Duplicate charge detection</span><strong>Planned</strong></div>
-                    <div><span>Spend spike analysis</span><strong>Planned</strong></div>
-                    <div><span>Contract/policy variance checks</span><strong>Planned</strong></div>
+                    <div><span>Duplicate charge detection</span><strong>Active</strong></div>
+                </div>
+
+                <div id="auditResultsPanel" class="mt-3" style="display: none;">
+                    <hr class="my-3">
+                    <h6 class="fw-bold mb-2">Audit Results</h6>
+                    <div id="auditResultsContent"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="card mb-4 query-module" id="billingQueryModule">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Query Billing Data</span>
-        <span class="query-status">Athena placeholder</span>
-    </div>
-    <div class="card-body">
-        <p class="text-muted">Future workflow: submit governed analytical queries against billing data through AWS Athena.</p>
-        <div class="query-compose">
-            <textarea id="billingQueryInput" class="form-control" rows="3" placeholder="Example: Show total AWS S3 spend by account for the current billing period"></textarea>
-            <button class="btn btn-primary" id="billingQueryBtn" type="button">Run Query</button>
-        </div>
-    </div>
-</div>
-
-<div class="card mb-4 pattern-search-module" id="advancedPatternSearchModule">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Advanced Pattern Search</span>
-        <span class="pattern-status">Ptern placeholder</span>
-    </div>
-    <div class="card-body">
-        <p class="text-muted">
-            Future workflow: use readable Ptern patterns to find records that match naming conventions, resource ID shapes, or account formats.
-        </p>
-        <div class="pattern-search-layout">
-            <div>
-                <label class="form-label fw-bold" for="patternFieldSelect">Field</label>
-                <select class="form-select" id="patternFieldSelect">
-                    <option value="resourceId">Resource ID</option>
-                    <option value="accountName">Account Name</option>
-                    <option value="serviceName">Service Name</option>
-                    <option value="description">Description</option>
-                </select>
-            </div>
-            <div class="pattern-input-block">
-                <label class="form-label fw-bold" for="patternSearchInput">Ptern pattern</label>
-                <textarea id="patternSearchInput" class="form-control" rows="4" placeholder="Example: prefix = 's3-'; hex = %HexDigit * 6; {prefix} {hex} as resourceSuffix"></textarea>
-            </div>
-            <div class="pattern-actions">
-                <button class="btn btn-primary" id="patternSearchBtn" type="button">Run Pattern Search</button>
-                <button class="btn btn-outline-secondary pattern-example-btn" type="button" data-pattern="prefix = 's3-'; hex = %HexDigit * 6; {prefix} {hex} as resourceSuffix">S3 Resource Pattern</button>
-                <button class="btn btn-outline-secondary pattern-example-btn" type="button" data-pattern="team = %Letter+; '-' env = 'prod' | 'dev' | 'qa'; {team} {env}">Account Naming Pattern</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="data-workspace mb-4">
     <div class="data-module">

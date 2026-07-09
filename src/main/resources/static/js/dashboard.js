@@ -1076,32 +1076,95 @@ async function deleteOrgContextDocument(documentId) {
     }
 }
 
-function runBillingQueryPlaceholder() {
-    const query = document.getElementById("billingQueryInput")?.value.trim();
-    if (!query) {
-        showToast("Enter a billing query first.", "info");
+
+// ── Audit ─────────────────────────────────────────────────────────────────
+
+let lastAuditResults = null;
+
+async function runAudit() {
+    if (!currentDatasetId || !currentPeriod) {
+        showToast("Select a dataset and billing period first.", "info");
         return;
     }
 
-    showBackendPlaceholder("Athena billing query");
+    const btn = document.getElementById("runAuditBtn");
+    const statusBadge = document.getElementById("auditStatusBadge");
+    const resultsPanel = document.getElementById("auditResultsPanel");
+    const resultsContent = document.getElementById("auditResultsContent");
+    const reviewBtn = document.getElementById("reviewFindingsBtn");
+
+    btn.querySelector("strong").textContent = "Running...";
+    btn.disabled = true;
+    statusBadge.textContent = "Scanning...";
+
+    try {
+        const res = await fetch(
+            `/api/audit/${currentDatasetId}?billingPeriod=${encodeURIComponent(currentPeriod)}`,
+            { method: "POST" }
+        );
+
+        if (!res.ok) {
+            throw new Error(`Audit failed: ${res.status}`);
+        }
+
+        const data = await res.json();
+        lastAuditResults = data;
+
+        statusBadge.textContent = data.findings.length ? `${data.findings.length} finding(s)` : "Clean";
+        reviewBtn.disabled = false;
+
+        resultsContent.innerHTML = renderAuditFindings(data);
+        resultsPanel.style.display = "block";
+        resultsPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+        showToast(`Audit complete: scanned ${data.totalRecordsScanned} records.`, "success");
+    } catch (e) {
+        console.error("Audit failed", e);
+        showToast("Audit service unavailable. Ensure the audit service is running.", "info");
+        statusBadge.textContent = "Error";
+    } finally {
+        btn.querySelector("strong").textContent = "Run Audit";
+        btn.disabled = false;
+    }
 }
 
-function setPatternExample(pattern) {
-    const input = document.getElementById("patternSearchInput");
-    if (!input) return;
-
-    input.value = pattern;
-    input.focus();
-}
-
-function runPatternSearchPlaceholder() {
-    const pattern = document.getElementById("patternSearchInput")?.value.trim();
-    if (!pattern) {
-        showToast("Enter a Ptern pattern first.", "info");
-        return;
+function renderAuditFindings(data) {
+    if (!data.findings || data.findings.length === 0) {
+        return `<p class="text-muted">No anomalies detected across ${data.totalRecordsScanned} records.</p>`;
     }
 
-    showBackendPlaceholder("Advanced Ptern pattern search");
+    return data.findings.map(finding => {
+        const dupRows = (finding.duplicates || []).map(d =>
+            `<tr>
+                <td>${escapeForHtml(d.serviceName || "--")}</td>
+                <td>${escapeForHtml(d.cloudProvider || "--")}</td>
+                <td>${formatCurrency(d.totalCharge)}</td>
+                <td>${escapeForHtml(d.accountName || "--")}</td>
+                <td><strong>${d.count}x</strong></td>
+            </tr>`
+        ).join("");
+
+        return `
+            <div class="audit-finding mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>${escapeForHtml(finding.type)}</strong>
+                    <span class="badge high">${escapeForHtml(finding.severity)}</span>
+                </div>
+                <p class="text-muted small mb-2">${escapeForHtml(finding.description)}</p>
+                <div class="table-container" style="max-height: 200px;">
+                    <table class="table table-sm mb-0">
+                        <thead><tr><th>Service</th><th>Provider</th><th>Charge</th><th>Account</th><th>Count</th></tr></thead>
+                        <tbody>${dupRows}</tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function scrollToAuditResults() {
+    const panel = document.getElementById("auditResultsPanel");
+    if (panel) panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 // ── Demo load ─────────────────────────────────────────────────────────────
@@ -1535,8 +1598,6 @@ function wireDashboardEvents() {
         if (!btn) return;
         deleteOrgContextDocument(btn.dataset.documentId);
     });
-    document.getElementById("billingQueryBtn")?.addEventListener("click", runBillingQueryPlaceholder);
-    document.getElementById("patternSearchBtn")?.addEventListener("click", runPatternSearchPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
         showBackendPlaceholder("Cost optimization analysis");
         setTracePrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
@@ -1572,20 +1633,9 @@ function wireDashboardEvents() {
         button.addEventListener("click", () => setTracePrompt(button.dataset.prompt || ""));
     });
 
-    document.querySelectorAll(".pattern-example-btn").forEach(button => {
-        button.addEventListener("click", () => setPatternExample(button.dataset.pattern || ""));
-    });
 
-    document.querySelectorAll(".audit-action-btn").forEach(button => {
-        button.addEventListener("click", () => {
-            const action = button.dataset.auditAction || "audit";
-            showBackendPlaceholder(`Audit action: ${action}`);
-
-            if (action === "explain-findings") {
-                setTracePrompt("Explain the latest audit findings, including evidence, severity, confidence, and recommended next actions.");
-            }
-        });
-    });
+    document.getElementById("runAuditBtn")?.addEventListener("click", runAudit);
+    document.getElementById("reviewFindingsBtn")?.addEventListener("click", scrollToAuditResults);
 
     document.getElementById("welcomeDemoBtn")?.addEventListener("click", loadDummyData);
 
@@ -1668,11 +1718,12 @@ async function tryLoadExistingDatasets() {
 let predictionChartInstance = null;
 
 async function populatePredictionDatasets() {
-    // Manual forecast dataset selection was removed from the UI. The backend will own
-    // eligible dataset selection for forecasting.
+    // Auto-prediction uses all periods in the current dataset — no manual selection needed.
 }
 
 async function generateForecast() {
+    if (!currentDatasetId) return;
+
     const wrapper = document.getElementById("predictionChartWrapper");
     const btn = document.getElementById("generateForecastBtn");
     const spinner = document.getElementById("forecastSpinner");
@@ -1681,14 +1732,8 @@ async function generateForecast() {
     spinner.classList.remove("d-none");
 
     try {
-        const res = await fetch("/api/predictions", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                datasetId: currentDatasetId,
-                billingPeriod: currentPeriod,
-                selectionMode: "AUTO"
-            })
+        const res = await fetch(`/api/predictions/auto/${currentDatasetId}`, {
+            method: "POST"
         });
 
         if (!res.ok) {
@@ -1696,13 +1741,12 @@ async function generateForecast() {
         }
 
         const data = await res.json();
-        renderPredictionChart(data.predictions);
+        renderPredictionChart(data.historical || [], data.forecasts || []);
         wrapper.style.display = "block";
-
         wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (e) {
         console.error("Forecast failed", e);
-        showToast("Forecast backend is not wired for auto-selection yet.", "info");
+        showToast("Could not generate forecast. Ensure the prediction service is running.", "info");
         wrapper.style.display = "none";
     } finally {
         btn.disabled = false;
@@ -1710,57 +1754,96 @@ async function generateForecast() {
     }
 }
 
-function renderPredictionChart(predictions) {
+function renderPredictionChart(historical, forecasts) {
     if (predictionChartInstance) {
         predictionChartInstance.destroy();
     }
 
-    const labels = predictions.map(p => p.period);
-    const dataPoints = predictions.map(p => p.charge);
+    const histLabels = historical.map(p => p.period);
+    const histData = historical.map(p => p.charge);
+    const forecastLabels = forecasts.map(p => p.period);
+    const forecastData = forecasts.map(p => p.charge);
+
+    const allLabels = [...histLabels, ...forecastLabels];
+
+    // Historical dataset: values for historical periods, null for forecast periods
+    const histValues = [...histData, ...forecastData.map(() => null)];
+
+    // Forecast dataset: null for all but the last historical point (bridge) + forecast points
+    const forecastValues = [
+        ...histData.slice(0, -1).map(() => null),
+        histData[histData.length - 1],
+        ...forecastData
+    ];
 
     const ctx = document.getElementById("predictionChart").getContext("2d");
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, "rgba(37, 99, 235, 0.4)");
-    gradient.addColorStop(1, "rgba(37, 99, 235, 0.0)");
+    const histGradient = ctx.createLinearGradient(0, 0, 0, 300);
+    histGradient.addColorStop(0, "rgba(37, 99, 235, 0.3)");
+    histGradient.addColorStop(1, "rgba(37, 99, 235, 0.0)");
+
+    const forecastGradient = ctx.createLinearGradient(0, 0, 0, 300);
+    forecastGradient.addColorStop(0, "rgba(245, 158, 11, 0.25)");
+    forecastGradient.addColorStop(1, "rgba(245, 158, 11, 0.0)");
 
     predictionChartInstance = new Chart(ctx, {
         type: "line",
         data: {
-            labels: labels,
-            datasets: [{
-                label: "Forecasted Total Charge ($)",
-                data: dataPoints,
-                borderColor: "#2563eb",
-                backgroundColor: gradient,
-                borderWidth: 3,
-                pointBackgroundColor: "#ffffff",
-                pointBorderColor: "#2563eb",
-                pointBorderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7,
-                fill: true,
-                tension: 0.4
-            }]
+            labels: allLabels,
+            datasets: [
+                {
+                    label: "Historical ($)",
+                    data: histValues,
+                    borderColor: "#2563eb",
+                    backgroundColor: histGradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: "#ffffff",
+                    pointBorderColor: "#2563eb",
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4,
+                    spanGaps: false
+                },
+                {
+                    label: "Forecast ($)",
+                    data: forecastValues,
+                    borderColor: "#f59e0b",
+                    backgroundColor: forecastGradient,
+                    borderWidth: 3,
+                    borderDash: [8, 4],
+                    pointBackgroundColor: "#ffffff",
+                    pointBorderColor: "#f59e0b",
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4,
+                    spanGaps: true
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false },
+                legend: { display: true, position: "top" },
                 tooltip: {
                     backgroundColor: "rgba(30, 41, 59, 0.9)",
                     titleFont: { size: 14 },
                     bodyFont: { size: 14, weight: 'bold' },
                     padding: 12,
                     callbacks: {
-                        label: ctx => `$${ctx.raw.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
+                        label: ctx => ctx.raw != null
+                            ? `${ctx.dataset.label}: $${ctx.raw.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
+                            : null
                     }
                 }
             },
             scales: {
                 y: {
-                    beginAtZero: true,
+                    beginAtZero: false,
                     grid: { color: "#f1f5f9" },
                     ticks: {
                         callback: v => `$${v.toLocaleString()}`,

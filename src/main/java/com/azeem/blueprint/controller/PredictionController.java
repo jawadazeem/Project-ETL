@@ -1,5 +1,6 @@
 package com.azeem.blueprint.controller;
 
+import com.azeem.blueprint.model.prediction.AutoPredictionResponse;
 import com.azeem.blueprint.model.prediction.PredictionResponse;
 import com.azeem.blueprint.service.prediction.PredictionService;
 import java.util.List;
@@ -17,13 +18,19 @@ public class PredictionController {
     this.predictionService = predictionService;
   }
 
+  @PostMapping("/auto/{datasetId}")
+  public ResponseEntity<AutoPredictionResponse> autoPredict(@PathVariable UUID datasetId) {
+    AutoPredictionResponse response = predictionService.autoPrediction(datasetId);
+    return ResponseEntity.ok(response);
+  }
+
   @PostMapping
   public ResponseEntity<PredictionResponse> getPredictions(@RequestBody List<UUID> datasetIds) {
     try {
       PredictionResponse response = predictionService.predict(datasetIds);
       return ResponseEntity.ok(response);
     } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().build(); // Basic error handling
+      return ResponseEntity.badRequest().build();
     } catch (Exception e) {
       return ResponseEntity.internalServerError().build();
     }

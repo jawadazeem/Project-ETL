@@ -1,27 +1,48 @@
-# Blueprint: Multi-Cloud FinOps & Cost Management
+# Blueprint: AI-Powered Multi-Cloud FinOps Platform
 
 ### Author: Jawad Azeem
-This is a Spring Boot application that performs a full ETL workflow on multi-cloud cost/billing datasets from AWS, GCP, and Azure. It transforms raw CSV data into structured intelligence, leveraging Autonomous AI Agents to bridge the gap between raw data and natural language insights.
-A live version of the API is hosted on AWS.
 
-### Access the Live API at: 
-- ### https://blueprint.jawadazeem.com
+Blueprint is a microservices-based cloud billing intelligence platform that combines autonomous AI agents, machine learning forecasting, and automated anomaly detection to turn raw multi-cloud cost data into actionable insights.
 
-## Functionality
-- **Autonomous SQL Generation:** Utilizes Google Gemini to translate natural language questions into validated PostgreSQL queries for real-time data exploration.
-- **ETL Workflow:** High-performance ingestion of CSV datasets into structured BillingRecord entities.
-- **Event-Driven Processing:** SQS-triggered ingestion and S3-based file handling for high-concurrency environments.
-- **REST API:** Secure exposure of both deterministic analytics and AI-generated insights.
+### Live API: https://blueprint.jawadazeem.com
 
-## Technologies Used
-- Java 25
-- Spring Boot (Web, AI, Security, Data)
-- AWS (ECS, RDS, CloudWatch, SQS, SNS, S3)
-- Google Gemini GenAI
-- Docker
-- JUnit 5 & Mockito
-- PostgreSQL & Liquibase
+---
 
-## Cloud Architecture
-![Architectural Bluprint](images/architecture.svg)
-Version: **v1.0.0 General Availability**
+## Architecture
+
+![Blueprint Architecture](images/architecture.svg)
+
+Four containerized services orchestrated with Docker Compose, deployed on AWS ECS behind a Cloudflare tunnel:
+
+| Service | Stack | Purpose |
+|---------|-------|---------|
+| **Monolith** | Java 25, Spring Boot 3.5, PostgreSQL | ETL pipeline, REST API, Trace AI Agent |
+| **Prediction** | Python, FastAPI, scikit-learn | Linear regression cost forecasting |
+| **Audit** | Python, FastAPI, Pydantic | Duplicate charge and anomaly detection |
+| **Notification** | TypeScript, Express, MongoDB | Alarm delivery via SES and Slack |
+
+## AI & ML Capabilities
+
+- **Trace AI Agent** — Natural language to validated PostgreSQL via Google Gemini. Generates, validates (JSQLParser), executes read-only queries, and returns plain-English answers.
+- **Predictive Forecasting** — scikit-learn LinearRegression trained on historical billing periods to project future cloud spend.
+- **Audit Engine** — Automated detection of duplicate charges and billing anomalies across multi-cloud datasets.
+- **Organization Context (RAG)** — PGVector embeddings over uploaded contracts, policies, and ownership documents. Trace grounds its answers in organization-specific knowledge.
+
+## Cloud & Infrastructure
+
+- **AWS**: ECS (hosting), RDS (PostgreSQL), S3 (file storage), SQS (event-driven ingestion), SNS, SES
+- **LocalStack**: Simulates S3/SQS for cost-free local and staging environments
+- **Cloudflare Tunnel**: Secure routing to the deployment without exposing ports
+- **GitHub Actions**: CI/CD pipeline — builds Docker images and deploys to ECS on push to main
+- **Liquibase**: Database schema migrations with full version control
+
+## Getting Started
+
+```bash
+mvn clean package        # Build
+mvn test                 # Run tests
+mvn spotless:apply       # Format (Google Java Format)
+./scripts/docker/dev.sh  # Run locally with Docker
+```
+
+Version: **v2.0.0**

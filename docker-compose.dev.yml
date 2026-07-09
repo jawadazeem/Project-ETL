@@ -124,6 +124,11 @@ services:
     container_name: prediction-service
     restart: always
 
+  audit-service:
+    build: comp/audit-service
+    container_name: audit-service
+    restart: always
+
 volumes:
   postgres_data:
   pgvector-data:
