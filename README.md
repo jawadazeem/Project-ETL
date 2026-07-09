@@ -10,6 +10,8 @@ Blueprint is a microservices-based cloud billing intelligence platform that comb
 
 ## Architecture
 
+![Blueprint Architecture](images/architecture.svg)
+
 Four containerized services orchestrated with Docker Compose, deployed on AWS ECS behind a Cloudflare tunnel:
 
 | Service | Stack | Purpose |
