@@ -5,9 +5,11 @@
 
 package com.azeem.blueprint.service.dataset.demo;
 
+import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.service.appuser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingIngestionService;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,15 +30,19 @@ public class DemoDatasetLoader {
   private final BillingIngestionService billingIngestionService;
   private final BillingRecordRepository billingRecordRepository;
   private final DatasetRepository datasetRepository;
+  private final AppUserService appUserService;
   private final UUID DUMMY_DATA_DATASET_ID = new UUID(0L, 0L);
+  private static final UUID GUEST_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
   public DemoDatasetLoader(
       BillingIngestionService billingIngestionService,
       BillingRecordRepository billingRecordRepository,
-      DatasetRepository datasetRepository) {
+      DatasetRepository datasetRepository,
+      AppUserService appUserService) {
     this.billingIngestionService = billingIngestionService;
     this.billingRecordRepository = billingRecordRepository;
     this.datasetRepository = datasetRepository;
+    this.appUserService = appUserService;
   }
 
   public synchronized void loadDemoData() {
@@ -67,12 +73,16 @@ public class DemoDatasetLoader {
   }
 
   private DatasetEntity ensureDatasetRowExists() {
-    return datasetRepository.findById(DUMMY_DATA_DATASET_ID).orElseGet(this::createDemoDataset);
+    return datasetRepository
+        .findById(DUMMY_DATA_DATASET_ID)
+        .map(this::ensureDemoDatasetOwner)
+        .orElseGet(this::createDemoDataset);
   }
 
   private DatasetEntity createDemoDataset() {
     DatasetEntity demo = new DatasetEntity();
     demo.setId(DUMMY_DATA_DATASET_ID);
+    demo.setOwnerUser(getGuestOwner());
     demo.setBillingPeriod("2026-06");
     demo.setSourceFilename("dummy-data.csv");
     demo.setS3ObjectKey("classpath:dummy-data.csv");
@@ -81,6 +91,21 @@ public class DemoDatasetLoader {
     DatasetEntity savedDemo = datasetRepository.save(demo);
     log.info("Created demo dataset row with ID: {}", DUMMY_DATA_DATASET_ID);
     return savedDemo;
+  }
+
+  private DatasetEntity ensureDemoDatasetOwner(DatasetEntity dataset) {
+    if (dataset.getOwnerUser() != null) {
+      return dataset;
+    }
+
+    dataset.setOwnerUser(getGuestOwner());
+    DatasetEntity savedDataset = datasetRepository.save(dataset);
+    log.info("Assigned guest owner {} to existing demo dataset.", GUEST_USER_ID);
+    return savedDataset;
+  }
+
+  private AppUserEntity getGuestOwner() {
+    return appUserService.findOrCreateGuest(GUEST_USER_ID);
   }
 
   private void markDatasetReady() {

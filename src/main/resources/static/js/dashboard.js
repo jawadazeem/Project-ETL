@@ -830,6 +830,24 @@ function showBackendPlaceholder(featureName) {
     showToast(`${featureName} is a frontend placeholder until the backend workflow is implemented.`, "info");
 }
 
+function setPatternExample(pattern) {
+    const input = document.getElementById("patternSearchInput");
+    if (!input) return;
+
+    input.value = pattern;
+    input.focus();
+}
+
+function runPatternSearchPlaceholder() {
+    const pattern = document.getElementById("patternSearchInput")?.value.trim();
+    if (!pattern) {
+        showToast("Enter a Ptern pattern first.", "info");
+        return;
+    }
+
+    showBackendPlaceholder("Advanced Ptern pattern search");
+}
+
 async function sendChat() {
     if (!currentDatasetId) return;
     const input = document.getElementById("chatInput");
@@ -1075,7 +1093,6 @@ async function deleteOrgContextDocument(documentId) {
         showToast("Could not delete organization context file.");
     }
 }
-
 
 // ── Audit ─────────────────────────────────────────────────────────────────
 
@@ -1598,6 +1615,7 @@ function wireDashboardEvents() {
         if (!btn) return;
         deleteOrgContextDocument(btn.dataset.documentId);
     });
+    document.getElementById("patternSearchBtn")?.addEventListener("click", runPatternSearchPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
         showBackendPlaceholder("Cost optimization analysis");
         setTracePrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
@@ -1633,6 +1651,9 @@ function wireDashboardEvents() {
         button.addEventListener("click", () => setTracePrompt(button.dataset.prompt || ""));
     });
 
+    document.querySelectorAll(".pattern-example-btn").forEach(button => {
+        button.addEventListener("click", () => setPatternExample(button.dataset.pattern || ""));
+    });
 
     document.getElementById("runAuditBtn")?.addEventListener("click", runAudit);
     document.getElementById("reviewFindingsBtn")?.addEventListener("click", scrollToAuditResults);

@@ -161,7 +161,9 @@ public class DatasetService {
       log.warn(
           "Dataset {} has no owner_user_id. Falling back to guest user for legacy/demo data.",
           datasetId);
-      appUserService.findOrCreateGuest(GUEST_USER_ID);
+      AppUserEntity guestUser = appUserService.findOrCreateGuest(GUEST_USER_ID);
+      dataset.setOwnerUser(guestUser);
+      datasetRepository.save(dataset);
       return GUEST_USER_ID;
     }
 

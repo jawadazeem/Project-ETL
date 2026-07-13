@@ -55,11 +55,13 @@ public class PredictionService {
     }
 
     historicalData.sort(Comparator.comparing(DataPoint::getPeriod));
-    log.info("Auto-prediction using {} historical periods for dataset {}", periods.size(), datasetId);
+    log.info(
+        "Auto-prediction using {} historical periods for dataset {}", periods.size(), datasetId);
 
     PredictionRequest request = new PredictionRequest(historicalData, 3);
     String url = predictionServiceUrl + "/predict";
-    PredictionResponse response = restTemplate.postForObject(url, request, PredictionResponse.class);
+    PredictionResponse response =
+        restTemplate.postForObject(url, request, PredictionResponse.class);
 
     List<DataPoint> forecasts = response != null ? response.getPredictions() : List.of();
     return new AutoPredictionResponse(historicalData, forecasts);

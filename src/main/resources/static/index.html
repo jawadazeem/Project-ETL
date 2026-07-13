@@ -364,7 +364,6 @@
         <div class="card h-100 premium-card predictions-section" id="predictionsSection">
             <div class="card-header d-flex justify-content-between align-items-center bg-gradient-premium text-white">
                 <span>Predictive Cost Estimates</span>
-                <span class="badge bg-light text-dark" style="font-size: 11px;">scikit-learn</span>
             </div>
             <div class="card-body glass-panel">
                 <div class="auto-model-summary mb-3">
@@ -419,6 +418,38 @@
                     <h6 class="fw-bold mb-2">Audit Results</h6>
                     <div id="auditResultsContent"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4 pattern-search-module" id="advancedPatternSearchModule">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Advanced Pattern Search</span>
+        <span class="pattern-status">Ptern placeholder</span>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">
+            Use readable Ptern patterns to find records that match naming conventions, resource ID shapes, or account formats.
+        </p>
+        <div class="pattern-search-layout">
+            <div>
+                <label class="form-label fw-bold" for="patternFieldSelect">Field</label>
+                <select id="patternFieldSelect" class="form-select">
+                    <option value="resourceId">Resource ID</option>
+                    <option value="accountName">Account Name</option>
+                    <option value="serviceName">Service Name</option>
+                    <option value="description">Description</option>
+                </select>
+            </div>
+            <div class="pattern-input-block">
+                <label class="form-label fw-bold" for="patternSearchInput">Ptern pattern</label>
+                <textarea id="patternSearchInput" class="form-control" rows="4" placeholder="Example: prefix = 's3-'; hex = %HexDigit * 6; {prefix} {hex} as resourceSuffix"></textarea>
+            </div>
+            <div class="pattern-actions">
+                <button class="btn btn-primary" id="patternSearchBtn" type="button">Run Pattern Search</button>
+                <button class="btn btn-outline-secondary pattern-example-btn" type="button" data-pattern="prefix = 's3-'; hex = %HexDigit * 6; {prefix} {hex} as resourceSuffix">S3 Resource Pattern</button>
+                <button class="btn btn-outline-secondary pattern-example-btn" type="button" data-pattern="team = %Letter+; '-' env = 'prod' | 'dev' | 'qa'; {team} {env}">Account Naming Pattern</button>
             </div>
         </div>
     </div>
