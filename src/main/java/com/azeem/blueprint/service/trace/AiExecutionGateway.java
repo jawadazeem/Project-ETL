@@ -26,7 +26,9 @@ import org.springframework.stereotype.Service;
 
 /**
  * This class is the orchestrator of validating and sending a prompt, as well as validating and
- * retrieving the result to Trace, the LLM
+ * retrieving the result to Trace, the LLM.
+ *
+ * <p>This enables the usage of both the chat and the agentic capabilities Trace offers
  */
 @Service
 public class AiExecutionGateway {

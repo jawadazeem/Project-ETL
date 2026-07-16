@@ -18,6 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 
+/**
+ * This context is limited to the OrgKnowledge and database data. It does not call other services to
+ * create new knowledge by running tools. That is an agentic workflow handled by <code>AgenticLoop
+ * </code>
+ */
 @Service
 public class ContextAggregatorService {
   private static final Logger log = LoggerFactory.getLogger(ContextAggregatorService.class);

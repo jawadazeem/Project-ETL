@@ -1,1 +1,0 @@
-This will be a Python based data ingestion service running in a seperate container. Its responsibility will be to ingest billing data from AWS, Azure, and GCP multiple times a day, and forward it to the main application.
