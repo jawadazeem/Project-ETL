@@ -5,5 +5,4 @@
 
 package com.azeem.blueprint.service.trace.agentic;
 
-public class BLUFReportGenerator {
-}
+public class BLUFReportGenerator {}

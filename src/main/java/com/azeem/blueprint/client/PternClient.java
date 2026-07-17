@@ -5,6 +5,4 @@
 
 package com.azeem.blueprint.client;
 
-@FeignClient
-public class PternClient {
-}
+public class PternClient {}

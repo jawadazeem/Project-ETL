@@ -7,6 +7,7 @@ package com.azeem.blueprint.service.dataset.demo;
 
 import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
+import com.azeem.blueprint.exception.core.BillingDataIngestionException;
 import com.azeem.blueprint.repository.BillingRecordRepository;
 import com.azeem.blueprint.repository.DatasetRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
@@ -14,6 +15,10 @@ import com.azeem.blueprint.service.billing.BillingIngestionService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +36,14 @@ public class DemoDatasetLoader {
   private final BillingRecordRepository billingRecordRepository;
   private final DatasetRepository datasetRepository;
   private final AppUserService appUserService;
-  private final UUID DUMMY_DATA_DATASET_ID = new UUID(0L, 0L);
+  private final Map<UUID, String> DUMMY_DATA_DATASET_IDS =
+      Map.of(
+          new UUID(0L, 0L),
+          "2026-04",
+          UUID.fromString("00000000-0000-0000-0000-000000000001"),
+          "2026-05",
+          UUID.fromString("00000000-0000-0000-0000-000000000002"),
+          "2026-06");
   private static final UUID GUEST_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
   public DemoDatasetLoader(
@@ -47,70 +59,84 @@ public class DemoDatasetLoader {
 
   public synchronized void loadDemoData() {
     if (isLoaded()) {
-      markDatasetReady();
+      DUMMY_DATA_DATASET_IDS.keySet().forEach(this::markDatasetReady);
       log.info("Demo data already loaded, cannot load again.");
       return;
     }
 
-    DatasetEntity demo = ensureDatasetRowExists();
-    demo.setStatus("LOADING");
-    datasetRepository.save(demo);
+    ensureDatasetRowsExistAndSetLoading();
 
-    ClassPathResource resource = new ClassPathResource("dummy-data.csv");
-    try (InputStream is = resource.getInputStream()) {
-      log.info("Loading demo data from: {}", resource.getFilename());
-      billingIngestionService.ingestData(DUMMY_DATA_DATASET_ID, is);
-      markDatasetReady();
-    } catch (IOException e) {
-      markDatasetFailed();
-      log.error("Demo data ingestion failed: {}", e.getMessage());
-      throw new IllegalStateException("Demo data ingestion failed", e);
-    } catch (RuntimeException e) {
-      markDatasetFailed();
-      log.error("Demo data ingestion failed: {}", e.getMessage(), e);
-      throw e;
-    }
+    List<ClassPathResource> resources =
+        List.of(
+            new ClassPathResource("2026-04.csv"),
+            new ClassPathResource("2026-05.csv"),
+            new ClassPathResource("2026-06.csv"));
+    resources.forEach(
+        r -> {
+          String filename = r.getFilename();
+          String period = filename.substring(0, filename.length() - 4);
+          Optional<UUID> key =
+              DUMMY_DATA_DATASET_IDS.entrySet().stream()
+                  .filter(entry -> Objects.equals(entry.getValue(), period))
+                  .map(Map.Entry::getKey)
+                  .findFirst();
+          UUID result =
+              key.orElseThrow(
+                  () ->
+                      new BillingDataIngestionException(
+                          "Could not load demo data: invalid filename/period"));
+          try (InputStream is = r.getInputStream()) {
+            log.info("Loading demo data from: {}", filename);
+            billingIngestionService.ingestData(result, is);
+            markDatasetReady(result);
+          } catch (IOException e) {
+            markDatasetFailed(result);
+            log.error("Demo data ingestion failed: {}", e.getMessage());
+            throw new IllegalStateException("Demo data ingestion failed", e);
+          } catch (RuntimeException e) {
+            markDatasetFailed(result);
+            log.error("Demo data ingestion failed: {}", e.getMessage(), e);
+            throw e;
+          }
+        });
   }
 
-  private DatasetEntity ensureDatasetRowExists() {
-    return datasetRepository
-        .findById(DUMMY_DATA_DATASET_ID)
-        .map(this::ensureDemoDatasetOwner)
-        .orElseGet(this::createDemoDataset);
-  }
+  private void ensureDatasetRowsExistAndSetLoading() {
+    AppUserEntity guestOwner = getGuestOwner();
 
-  private DatasetEntity createDemoDataset() {
-    DatasetEntity demo = new DatasetEntity();
-    demo.setId(DUMMY_DATA_DATASET_ID);
-    demo.setOwnerUser(getGuestOwner());
-    demo.setBillingPeriod("2026-06");
-    demo.setSourceFilename("dummy-data.csv");
-    demo.setS3ObjectKey("classpath:dummy-data.csv");
-    demo.setStatus("LOADING");
-    demo.setUploadedAt(Instant.now());
-    DatasetEntity savedDemo = datasetRepository.save(demo);
-    log.info("Created demo dataset row with ID: {}", DUMMY_DATA_DATASET_ID);
-    return savedDemo;
-  }
-
-  private DatasetEntity ensureDemoDatasetOwner(DatasetEntity dataset) {
-    if (dataset.getOwnerUser() != null) {
-      return dataset;
-    }
-
-    dataset.setOwnerUser(getGuestOwner());
-    DatasetEntity savedDataset = datasetRepository.save(dataset);
-    log.info("Assigned guest owner {} to existing demo dataset.", GUEST_USER_ID);
-    return savedDataset;
+    DUMMY_DATA_DATASET_IDS.forEach(
+        (id, period) -> {
+          datasetRepository
+              .findById(id)
+              .ifPresentOrElse(
+                  existingEntity -> {
+                    existingEntity.setStatus("LOADING");
+                    if (existingEntity.getOwnerUser() == null) {
+                      existingEntity.setOwnerUser(guestOwner);
+                    }
+                    datasetRepository.save(existingEntity);
+                  },
+                  () -> {
+                    DatasetEntity demo = new DatasetEntity();
+                    demo.setId(id);
+                    demo.setOwnerUser(guestOwner);
+                    demo.setBillingPeriod(period);
+                    demo.setSourceFilename(period + ".csv");
+                    demo.setS3ObjectKey("classpath:" + period + ".csv");
+                    demo.setStatus("LOADING");
+                    demo.setUploadedAt(Instant.now());
+                    datasetRepository.save(demo);
+                  });
+        });
   }
 
   private AppUserEntity getGuestOwner() {
     return appUserService.findOrCreateGuest(GUEST_USER_ID);
   }
 
-  private void markDatasetReady() {
+  private void markDatasetReady(UUID datasetId) {
     datasetRepository
-        .findById(DUMMY_DATA_DATASET_ID)
+        .findById(datasetId)
         .ifPresent(
             dataset -> {
               dataset.setStatus("READY");
@@ -118,9 +144,9 @@ public class DemoDatasetLoader {
             });
   }
 
-  private void markDatasetFailed() {
+  private void markDatasetFailed(UUID datasetId) {
     datasetRepository
-        .findById(DUMMY_DATA_DATASET_ID)
+        .findById(datasetId)
         .ifPresent(
             dataset -> {
               dataset.setStatus("FAILED");
@@ -129,7 +155,8 @@ public class DemoDatasetLoader {
   }
 
   private boolean isLoaded() {
-    return billingRecordRepository.existsByDatasetIdAndBillingPeriod(
-        DUMMY_DATA_DATASET_ID, "2026-06");
+    long existingCount =
+        billingRecordRepository.countByDatasetIdIn((DUMMY_DATA_DATASET_IDS.keySet()));
+    return existingCount == DUMMY_DATA_DATASET_IDS.size();
   }
 }

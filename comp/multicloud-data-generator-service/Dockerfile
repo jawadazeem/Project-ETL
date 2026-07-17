@@ -6,6 +6,7 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Do fix
 COPY app.py .
 
 EXPOSE 5000

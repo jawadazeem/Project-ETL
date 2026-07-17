@@ -6,6 +6,7 @@
 package com.azeem.blueprint.repository;
 
 import com.azeem.blueprint.entity.BillingRecordEntity;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
@@ -71,6 +72,8 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
       UUID datasetId, String billingPeriod, String cloudProvider, Pageable pageable);
 
   long countByDatasetId(UUID datasetId);
+
+  long countByDatasetIdIn(Collection<UUID> datasetIds);
 
   @Query(
       """

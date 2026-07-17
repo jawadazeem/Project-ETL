@@ -18,6 +18,7 @@ public class PredictionController {
     this.predictionService = predictionService;
   }
 
+  // TODO: This needs to be USER scoped, not datasetID scoped. Later we established one DatasetID gets ONE billing period. This wasn't the case before.
   @PostMapping("/auto/{datasetId}")
   public ResponseEntity<AutoPredictionResponse> autoPredict(@PathVariable UUID datasetId) {
     AutoPredictionResponse response = predictionService.autoPrediction(datasetId);

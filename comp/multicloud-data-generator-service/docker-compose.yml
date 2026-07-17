@@ -1,0 +1,40 @@
+# These containers run on a separate network from the main application.
+# The application shouldn't know if the billing data is being generated from here or if it is
+# coming from real BLOB storages.
+
+services:
+  azeem-corp-aws-storage:
+      image: localstack/localstack:3.0.0
+      container_name: azeem-corp-aws
+      ports:
+        - "4567:4566"
+      environment:
+        - SERVICES=s3,sqs
+        - DEFAULT_REGION=us-east-1
+      volumes:
+        - "./azeem_corp_localstack_data:/var/lib/localstack"
+      healthcheck:
+        test: [ "CMD", "curl", "-f", "http://localhost:4567/_localstack/health" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 15s
+
+  azeem-corp-azure-storage:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azeem-corp-azure
+    ports:
+      - "10000:10000"
+    command: azurite-blob --silent --location /data
+    volumes:
+      - "./azeem_corp_azure_blob_data:/data"
+
+  azeem-corp-gcp-storage:
+    image: fsouza/fake-gcs-server:latest
+    container_name: azeem-corp-gcp
+    ports:
+      - "4443:4443"
+    command: -scheme http -port 4443 -backend memory
+    volumes:
+      - "./azeem_corp_gcp_blob_data:/data"
+  

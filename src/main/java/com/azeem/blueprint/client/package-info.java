@@ -3,7 +3,5 @@
  * Apache 2.0 License
  */
 
-/**
- * Contains client classes to interface with Blueprint's microservices
- */
+/** Contains client classes to interface with Blueprint's microservices */
 package com.azeem.blueprint.client;
