@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;

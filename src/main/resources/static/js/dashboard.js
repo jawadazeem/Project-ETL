@@ -1108,7 +1108,6 @@ async function runAudit() {
     const statusBadge = document.getElementById("auditStatusBadge");
     const resultsPanel = document.getElementById("auditResultsPanel");
     const resultsContent = document.getElementById("auditResultsContent");
-    const reviewBtn = document.getElementById("reviewFindingsBtn");
 
     btn.querySelector("strong").textContent = "Running...";
     btn.disabled = true;
@@ -1128,7 +1127,6 @@ async function runAudit() {
         lastAuditResults = data;
 
         statusBadge.textContent = data.findings.length ? `${data.findings.length} finding(s)` : "Clean";
-        reviewBtn.disabled = false;
 
         resultsContent.innerHTML = renderAuditFindings(data);
         resultsPanel.style.display = "block";
@@ -1177,11 +1175,6 @@ function renderAuditFindings(data) {
             </div>
         `;
     }).join("");
-}
-
-function scrollToAuditResults() {
-    const panel = document.getElementById("auditResultsPanel");
-    if (panel) panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 // ── Demo load ─────────────────────────────────────────────────────────────
@@ -1656,7 +1649,6 @@ function wireDashboardEvents() {
     });
 
     document.getElementById("runAuditBtn")?.addEventListener("click", runAudit);
-    document.getElementById("reviewFindingsBtn")?.addEventListener("click", scrollToAuditResults);
 
     document.getElementById("welcomeDemoBtn")?.addEventListener("click", loadDummyData);
 
@@ -1753,8 +1745,9 @@ async function generateForecast() {
     spinner.classList.remove("d-none");
 
     try {
-        const res = await fetch(`/api/predictions/auto/${currentDatasetId}`, {
-            method: "POST"
+        const res = await fetch(`/api/predictions/auto`, {
+            method: "POST",
+            headers: { "X-User-Id": GUEST_USER_ID }
         });
 
         if (!res.ok) {

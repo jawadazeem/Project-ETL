@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.repository.BillingRecordRepository;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import com.azeem.blueprint.service.billing.BillingIngestionService;
 import java.io.InputStream;
 import java.util.Optional;

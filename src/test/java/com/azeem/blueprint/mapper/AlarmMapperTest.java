@@ -14,7 +14,7 @@ import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.CloudProvider;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;

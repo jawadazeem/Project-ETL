@@ -9,7 +9,7 @@ import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.exception.core.BillingDataIngestionException;
 import com.azeem.blueprint.repository.BillingRecordRepository;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingIngestionService;
 import java.io.IOException;

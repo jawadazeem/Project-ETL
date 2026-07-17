@@ -1,6 +1,6 @@
 # These containers run on a separate network from the main application.
-# The application shouldn't know if the billing data is being generated from here or if it is
-# coming from real BLOB storages.
+# These are for demo purposes and belong to a fictional entity: Azeem Corp.
+# This implementation is easily swappable with real cloud BLOB storages
 
 services:
   azeem-corp-aws-storage:

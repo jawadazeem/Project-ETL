@@ -3,7 +3,7 @@
  * Apache 2.0 License
  */
 
-package com.azeem.blueprint.repository;
+package com.azeem.blueprint.repository.dataset;
 
 import com.azeem.blueprint.entity.DatasetEntity;
 import java.util.List;
@@ -16,6 +16,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface DatasetRepository extends JpaRepository<DatasetEntity, UUID> {
+
+  @Query(
+      """
+    SELECT d.id AS id, d.billingPeriod AS billingPeriod
+    FROM DatasetEntity d
+    WHERE d.ownerUser.id = :userId
+    """)
+  List<DatasetBillingPeriodProjection> findBillingPeriodsByOwnerUserId(
+      @Param("userId") UUID userId);
+
   Optional<DatasetEntity> findByIdAndOwnerUserId(UUID datasetId, UUID ownerUserId);
 
   List<DatasetEntity> findByOwnerUserId(UUID ownerUserId);

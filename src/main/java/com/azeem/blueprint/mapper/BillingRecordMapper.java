@@ -8,7 +8,7 @@ package com.azeem.blueprint.mapper;
 import com.azeem.blueprint.entity.BillingRecordEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.billing.BillingRecord;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import org.springframework.stereotype.Component;
 
 /**

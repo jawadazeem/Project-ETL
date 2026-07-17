@@ -11,12 +11,15 @@ import com.azeem.blueprint.exception.infra.DatasetNotFoundException;
 import com.azeem.blueprint.mapper.DatasetMapper;
 import com.azeem.blueprint.model.dataset.Dataset;
 import com.azeem.blueprint.repository.BillingRecordRepository;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetBillingPeriodProjection;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -168,5 +171,20 @@ public class DatasetService {
     }
 
     return dataset.getOwnerUser().getId();
+  }
+
+  /**
+   * It might seem unusual to have billing-specific retrieval logic in the DatasetService class when
+   * there is already a dedicated service layer for BillingRecord DTOs. However, the billing period
+   * is a field shared by both Dataset and BillingRecord. The retrieval logic belongs here because a
+   * BillingRecord does not have knowledge of the associated user in the same way that a Dataset
+   * does.
+   */
+  public Map<UUID, String> getBillingPeriods(UUID userId) {
+    return datasetRepository.findBillingPeriodsByOwnerUserId(userId).stream()
+        .collect(
+            Collectors.toMap(
+                DatasetBillingPeriodProjection::getId,
+                DatasetBillingPeriodProjection::getBillingPeriod));
   }
 }

@@ -8,10 +8,7 @@ import com.azeem.blueprint.model.prediction.PredictionRequest;
 import com.azeem.blueprint.model.prediction.PredictionResponse;
 import com.azeem.blueprint.service.billing.BillingQueryService;
 import com.azeem.blueprint.service.dataset.DatasetService;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,24 +36,26 @@ public class PredictionService {
     this.predictionServiceUrl = predictionServiceUrl;
   }
 
-  public AutoPredictionResponse autoPrediction(UUID datasetId) {
-    List<String> periods = billingQueryService.getDistinctBillingPeriodsById(datasetId);
+  public AutoPredictionResponse autoPrediction(String userId) {
+    Map<UUID, String> DatasetIdsAndPeriods =
+        datasetService.getBillingPeriods(UUID.fromString(userId));
 
-    if (periods.size() < 3) {
+    if (DatasetIdsAndPeriods.size() < 3) {
       throw new IllegalArgumentException(
           "At least 3 billing periods are required for forecasting.");
     }
 
     List<DataPoint> historicalData = new ArrayList<>();
-    for (String period : periods) {
-      BillingSummary summary =
-          billingQueryService.generateSummaryForPeriodInDataset(datasetId, period);
-      historicalData.add(new DataPoint(period, summary.getTotalCharges()));
-    }
+
+    DatasetIdsAndPeriods.forEach(
+        (id, period) -> {
+          BillingSummary summary =
+              billingQueryService.generateSummaryForPeriodInDataset(id, period);
+          historicalData.add(new DataPoint(period, summary.getTotalCharges()));
+        });
 
     historicalData.sort(Comparator.comparing(DataPoint::getPeriod));
-    log.info(
-        "Auto-prediction using {} historical periods for dataset {}", periods.size(), datasetId);
+    log.info("Auto-prediction using {} historical periods", DatasetIdsAndPeriods.size());
 
     PredictionRequest request = new PredictionRequest(historicalData, 3);
     String url = predictionServiceUrl + "/predict";

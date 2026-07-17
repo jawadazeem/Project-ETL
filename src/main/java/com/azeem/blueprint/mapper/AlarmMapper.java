@@ -8,7 +8,7 @@ package com.azeem.blueprint.mapper;
 import com.azeem.blueprint.entity.AlarmEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.alarm.Alarm;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import org.springframework.stereotype.Component;
 
 /** Mapper class to convert between Alarm domain model and AlarmEntity database entity. */

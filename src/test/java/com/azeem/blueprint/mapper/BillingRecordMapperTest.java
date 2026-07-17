@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 import com.azeem.blueprint.entity.BillingRecordEntity;
 import com.azeem.blueprint.entity.DatasetEntity;
 import com.azeem.blueprint.model.billing.BillingRecord;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -15,7 +15,7 @@ import com.azeem.blueprint.exception.infra.DatasetNotFoundException;
 import com.azeem.blueprint.mapper.DatasetMapper;
 import com.azeem.blueprint.model.dataset.Dataset;
 import com.azeem.blueprint.repository.BillingRecordRepository;
-import com.azeem.blueprint.repository.DatasetRepository;
+import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
 import java.time.Instant;
