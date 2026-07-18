@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="012-create-alarm-threshold-preferences" author="jawad">
+        <createTable tableName="alarm_threshold_preferences">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_user_id" type="uuid">
+                <constraints nullable="false" unique="true"
+                             uniqueConstraintName="uq_alarm_threshold_preferences_owner_user"/>
+            </column>
+            <column name="provider_monthly_limit" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="individual_low" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="individual_medium" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="individual_high" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_low" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_high" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="alarm_threshold_preferences"
+            baseColumnNames="owner_user_id"
+            constraintName="fk_alarm_threshold_preferences_owner_user"
+            referencedTableName="app_users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

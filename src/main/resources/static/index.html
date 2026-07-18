@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/dashboard.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script defer src="/js/main.js"></script>
     <script defer src="/js/dashboard.js"></script>
 </head>
@@ -29,6 +30,11 @@
         </div>
     </div>
 </div>
+
+<nav class="page-switcher" aria-label="Primary pages">
+    <button class="page-switch-btn active" id="analyzePageBtn" type="button" data-page="analyze" aria-current="page">Analyze</button>
+    <button class="page-switch-btn" id="agenticWorkflowPageBtn" type="button" data-page="agentic">Agentic Workflow</button>
+</nav>
 
 <header class="dashboard-title mb-3" role="banner">
     <h1>Blueprint</h1>
@@ -68,15 +74,41 @@
 </nav>
 
 <div class="modal-overlay" id="alarms-overlay">
-    <div class="alarm-modal">
+    <div class="alarm-modal alarms-preferences-modal">
         <div class="modal-header">
             <h3 id="alarms-title">Alarms</h3>
             <button class="modal-close" id="alarms-close" type="button">&#10005;</button>
         </div>
 
-        <div class="modal-body">
-            <div id="alarms-empty">No alarms found.</div>
-            <ul class="alarms-list" id="alarms-list"></ul>
+        <div class="modal-body alarms-modal-body">
+            <aside class="alarm-preferences-panel">
+                <h4>Preferences</h4>
+                <form id="alarm-preferences-form" class="alarm-preferences-form">
+                    <label for="alarm-provider-monthly-limit">Provider Monthly Limit</label>
+                    <input id="alarm-provider-monthly-limit" class="form-control form-control-sm" min="0" step="0.01" type="number">
+
+                    <label for="alarm-individual-low">Individual Low</label>
+                    <input id="alarm-individual-low" class="form-control form-control-sm" min="0" step="0.01" type="number">
+
+                    <label for="alarm-individual-medium">Individual Medium</label>
+                    <input id="alarm-individual-medium" class="form-control form-control-sm" min="0" step="0.01" type="number">
+
+                    <label for="alarm-individual-high">Individual High</label>
+                    <input id="alarm-individual-high" class="form-control form-control-sm" min="0" step="0.01" type="number">
+
+                    <label for="alarm-account-low">Account Low</label>
+                    <input id="alarm-account-low" class="form-control form-control-sm" min="0" step="0.01" type="number">
+
+                    <label for="alarm-account-high">Account High</label>
+                    <input id="alarm-account-high" class="form-control form-control-sm" min="0" step="0.01" type="number">
+
+                    <button class="btn-modern alarm-preferences-save" id="alarmPreferencesSaveBtn" type="submit">Save &amp; Recompute</button>
+                </form>
+            </aside>
+            <section class="alarms-results-panel">
+                <div id="alarms-empty">No alarms found.</div>
+                <ul class="alarms-list" id="alarms-list"></ul>
+            </section>
         </div>
         <div class="modal-footer" style="padding: 12px 24px; text-align: right;">
             <button class="btn btn-sm btn-outline-secondary" id="exportAlarmsBtn" type="button">Export CSV</button>
@@ -244,6 +276,7 @@
     </div>
 </div>
 
+<main class="dashboard-view active" id="analyzePage" data-page="analyze">
 <div class="card mb-4">
     <div class="card-header">Latest Period's Summary</div>
     <div class="card-body">
@@ -586,6 +619,17 @@
         </dl>
     </aside>
 </div>
+</main>
+
+<main class="dashboard-view" id="agenticWorkflowPage" data-page="agentic">
+    <section class="agentic-workflow-card selected-workflow-card" aria-label="Prepare Executive Spend Briefing workflow">
+        <div class="workflow-card-label">Prepare Executive Spend Briefing</div>
+        <div class="agentic-mermaid" id="agenticWorkflowDiagram"></div>
+    </section>
+    <section class="agentic-workflow-card planned-workflows-card" aria-label="More planned workflows">
+        <div class="planned-workflows-label">More Agentic Workflows Planned</div>
+    </section>
+</main>
 
 <footer class="app-footer mt-5">
     <div class="container text-center py-3">

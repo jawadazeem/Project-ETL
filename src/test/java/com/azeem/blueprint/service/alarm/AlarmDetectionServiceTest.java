@@ -6,45 +6,42 @@
 package com.azeem.blueprint.service.alarm;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-import com.azeem.blueprint.config.AlarmConfig;
 import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmScope;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
+import com.azeem.blueprint.model.preference.AlarmThresholdPreference;
+import com.azeem.blueprint.service.dataset.DatasetService;
+import com.azeem.blueprint.service.preference.AlarmPreferenceQueryService;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class AlarmDetectionServiceTest {
 
   private AlarmDetectionService detectionService;
 
   private static final UUID DATASET_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
+  private static final UUID OWNER_USER_ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
   private static final String BILLING_PERIOD = "2026-01";
+
+  @Mock private AlarmPreferenceQueryService alarmPreferenceQueryService;
+  @Mock private DatasetService datasetService;
 
   @BeforeEach
   void setUp() {
-    AlarmConfig config = new AlarmConfig();
+    when(datasetService.getOwnerId(DATASET_ID)).thenReturn(OWNER_USER_ID);
+    when(alarmPreferenceQueryService.getPreference(OWNER_USER_ID)).thenReturn(preference());
 
-    AlarmConfig.Provider provider = new AlarmConfig.Provider();
-    provider.setMonthlyLimit(7500.0);
-    config.setProvider(provider);
-
-    AlarmConfig.Individual individual = new AlarmConfig.Individual();
-    individual.setLow(250.0);
-    individual.setMedium(370.0);
-    individual.setHigh(500.0);
-    config.setIndividual(individual);
-
-    AlarmConfig.Account account = new AlarmConfig.Account();
-    account.setLow(45000.0);
-    account.setHigh(60000.0);
-    config.setAccount(account);
-
-    detectionService = new AlarmDetectionService(config);
+    detectionService = new AlarmDetectionService(alarmPreferenceQueryService, datasetService);
   }
 
   private BillingRecord record(String cloudProvider, String resourceId, double charge) {
@@ -216,6 +213,17 @@ class AlarmDetectionServiceTest {
   }
 
   @Test
+  @DisplayName("No account alarm when grand total is exactly the low threshold")
+  void noAccountAlarm_whenGrandTotalEqualsLow() {
+    List<BillingRecord> records = List.of(record("AWS", "i-001", 45000.0));
+
+    List<Alarm> alarms = detectionService.detectAlarms(DATASET_ID, records, BILLING_PERIOD);
+
+    assertThat(alarms.stream().filter(a -> a.alarmScope() == AlarmScope.ACCOUNT).toList())
+        .isEmpty();
+  }
+
+  @Test
   @DisplayName("Multiple alarm types can be generated from a single run")
   void multipleAlarmTypes_generatedTogether() {
     // provider total 8000 > 7500, resource 600 >= 500
@@ -229,5 +237,14 @@ class AlarmDetectionServiceTest {
 
     assertThat(alarms.stream().anyMatch(a -> a.alarmScope() == AlarmScope.PROVIDER)).isTrue();
     assertThat(alarms.stream().anyMatch(a -> a.alarmScope() == AlarmScope.RESOURCE)).isTrue();
+  }
+
+  private AlarmThresholdPreference preference() {
+    return new AlarmThresholdPreference(
+        null,
+        OWNER_USER_ID,
+        new AlarmThresholdPreference.Provider(7500),
+        new AlarmThresholdPreference.Individual(250, 370, 500),
+        new AlarmThresholdPreference.Account(45000, 60000));
   }
 }

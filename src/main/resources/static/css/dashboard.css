@@ -150,6 +150,58 @@
     background-color: #f5f6fa;
 }
 
+.page-switcher {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 8px;
+    width: 100%;
+}
+
+.page-switch-btn {
+    background: #f1f5f9;
+    border: 0;
+    border-radius: 8px;
+    color: #475569;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    min-height: 44px;
+    padding: 10px 18px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.page-switch-btn:first-child {
+    flex: 0 1 50%;
+}
+
+.page-switch-btn:last-child {
+    flex: 1 1 auto;
+}
+
+.page-switch-btn:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.page-switch-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.dashboard-view {
+    display: none;
+}
+
+.dashboard-view.active {
+    display: block;
+}
+
 .dashboard-page h1 {
     font-weight: 600;
     margin-bottom: 30px;
@@ -220,6 +272,93 @@
     border-bottom: 1px solid var(--border);
     border-radius: var(--radius) var(--radius) 0 0;
     letter-spacing: -0.2px;
+}
+
+.agentic-workflow-card {
+    background: rgba(255, 255, 255, 0.45);
+    border: 2px solid #dbe3ef;
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    padding: 28px;
+}
+
+.selected-workflow-card {
+    border-color: var(--accent);
+    box-shadow: 0 12px 32px rgba(37, 99, 235, 0.12);
+}
+
+.workflow-card-label {
+    background: var(--accent);
+    border-radius: 8px;
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    padding: 14px 18px;
+}
+
+.planned-workflows-card {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 128px;
+}
+
+.planned-workflows-label {
+    color: #475569;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.agentic-mermaid {
+    align-items: center;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    min-height: 360px;
+    overflow-x: auto;
+    text-align: center;
+}
+
+.agentic-mermaid svg {
+    height: auto;
+    min-width: 980px;
+}
+
+.agentic-mermaid .node rect,
+.agentic-mermaid .node polygon {
+    filter: drop-shadow(0 5px 10px rgba(15, 23, 42, 0.08));
+}
+
+.agentic-mermaid .cluster rect {
+    rx: 14px;
+    ry: 14px;
+}
+
+@media (max-width: 640px) {
+    .page-switcher {
+        flex-direction: column;
+    }
+
+    .page-switch-btn:first-child,
+    .page-switch-btn:last-child {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+
+    .workflow-card-label {
+        display: flex;
+        font-size: 22px;
+    }
+
+    .planned-workflows-label {
+        font-size: 20px;
+    }
 }
 
 .btn-modern {
@@ -614,6 +753,10 @@
     overflow: hidden;
 }
 
+.alarms-preferences-modal {
+    width: min(1080px, 96vw);
+}
+
 .modal-header {
     display: flex;
     align-items: center;
@@ -639,6 +782,44 @@
     padding: 12px 16px 16px 16px;
     overflow: auto;
     max-height: calc(80vh - 56px);
+}
+
+.alarms-modal-body {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+    gap: 16px;
+}
+
+.alarm-preferences-panel {
+    border-right: 1px solid #eee;
+    padding-right: 16px;
+}
+
+.alarm-preferences-panel h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+}
+
+.alarm-preferences-form {
+    display: grid;
+    gap: 8px;
+}
+
+.alarm-preferences-form label {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.alarm-preferences-save {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.alarms-results-panel {
+    min-width: 0;
 }
 
 /* ── Alarms list ─────────────────────────────────────────────────────────── */
@@ -701,6 +882,19 @@
 .badge.high {
     background: #fee2e2;
     color: #991b1b;
+}
+
+@media (max-width: 760px) {
+    .alarms-modal-body {
+        grid-template-columns: 1fr;
+    }
+
+    .alarm-preferences-panel {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-right: 0;
+        padding-bottom: 16px;
+    }
 }
 
 /* ── Charts ──────────────────────────────────────────────────────────────── */

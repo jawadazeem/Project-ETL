@@ -5,12 +5,19 @@
 
 package com.azeem.blueprint.service.alarm;
 
-import com.azeem.blueprint.config.AlarmConfig;
 import com.azeem.blueprint.model.alarm.Alarm;
 import com.azeem.blueprint.model.alarm.AlarmSeverity;
 import com.azeem.blueprint.model.billing.BillingRecord;
 import com.azeem.blueprint.model.billing.CloudProvider;
-import java.util.*;
+import com.azeem.blueprint.model.preference.AlarmThresholdPreference;
+import com.azeem.blueprint.service.dataset.DatasetService;
+import com.azeem.blueprint.service.preference.AlarmPreferenceQueryService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,10 +31,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AlarmDetectionService {
-  private final AlarmConfig alarmConfig;
+  private final AlarmPreferenceQueryService alarmPreferenceQueryService;
+  private final DatasetService datasetService;
 
-  public AlarmDetectionService(AlarmConfig alarmConfig) {
-    this.alarmConfig = alarmConfig;
+  public AlarmDetectionService(
+      AlarmPreferenceQueryService alarmPreferenceQueryService, DatasetService datasetService) {
+    this.alarmPreferenceQueryService = alarmPreferenceQueryService;
+    this.datasetService = datasetService;
   }
 
   public List<Alarm> detectAlarms(
@@ -48,8 +58,9 @@ public class AlarmDetectionService {
   /** Detects provider alarms from pre-computed totals (full dataset, not chunked). */
   public List<Alarm> detectProviderAlarms(
       UUID datasetId, Map<String, Double> providerTotals, String billingPeriod) {
+    AlarmThresholdPreference preference = getPreferenceFromDataset(datasetId);
     List<Alarm> alarms = new ArrayList<>();
-    double providerLimit = alarmConfig.getProvider().getMonthlyLimit();
+    double providerLimit = preference.provider().monthlyLimit();
 
     for (Map.Entry<String, Double> entry : providerTotals.entrySet()) {
       if (entry.getValue() > providerLimit) {
@@ -68,8 +79,9 @@ public class AlarmDetectionService {
   /** Detects account-level alarm from the pre-computed grand total (full dataset, not chunked). */
   public Optional<Alarm> detectAccountAlarm(
       UUID datasetId, double grandTotal, String billingPeriod) {
-    double accountLow = alarmConfig.getAccount().getLow();
-    double accountHigh = alarmConfig.getAccount().getHigh();
+    AlarmThresholdPreference preference = getPreferenceFromDataset(datasetId);
+    double accountLow = preference.account().low();
+    double accountHigh = preference.account().high();
 
     if (grandTotal >= accountHigh) {
       return Optional.of(Alarm.accountHigh(datasetId, billingPeriod));
@@ -81,6 +93,7 @@ public class AlarmDetectionService {
 
   private List<Alarm> getProvidersOverLimit(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
+    AlarmThresholdPreference preference = getPreferenceFromDataset(datasetId);
     List<Alarm> alarms = new ArrayList<>();
     Map<CloudProvider, Double> totals = new HashMap<>();
 
@@ -89,7 +102,7 @@ public class AlarmDetectionService {
       totals.merge(CloudProvider.fromString(r.cloudProvider()), r.totalCharge(), Double::sum);
     }
 
-    double providerLimit = alarmConfig.getProvider().getMonthlyLimit();
+    double providerLimit = preference.provider().monthlyLimit();
 
     for (CloudProvider p : totals.keySet()) {
       if (totals.getOrDefault(p, 0.0) > providerLimit) {
@@ -103,11 +116,12 @@ public class AlarmDetectionService {
 
   private List<Alarm> getResourceChargesOverLimit(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
+    AlarmThresholdPreference preference = getPreferenceFromDataset(datasetId);
     List<Alarm> alarms = new ArrayList<>();
 
-    double low = alarmConfig.getIndividual().getLow();
-    double medium = alarmConfig.getIndividual().getMedium();
-    double high = alarmConfig.getIndividual().getHigh();
+    double low = preference.individual().low();
+    double medium = preference.individual().medium();
+    double high = preference.individual().high();
 
     for (BillingRecord r : records) {
       double charge = r.totalCharge();
@@ -137,19 +151,25 @@ public class AlarmDetectionService {
 
   private Optional<Alarm> getGrandTotalOverLimit(
       UUID datasetId, List<BillingRecord> records, String billingPeriod) {
+    AlarmThresholdPreference preference = getPreferenceFromDataset(datasetId);
     double grandTotal = 0;
-    double accountLow = alarmConfig.getAccount().getLow();
-    double accountHigh = alarmConfig.getAccount().getHigh();
+    double accountLow = preference.account().low();
+    double accountHigh = preference.account().high();
 
     for (BillingRecord r : records) {
       grandTotal += r.totalCharge();
     }
 
-    if (grandTotal > accountLow && grandTotal < accountHigh) {
-      return Optional.of(Alarm.accountLow(datasetId, billingPeriod));
-    } else if (grandTotal >= accountLow) {
+    if (grandTotal >= accountHigh) {
       return Optional.of(Alarm.accountHigh(datasetId, billingPeriod));
+    } else if (grandTotal > accountLow) {
+      return Optional.of(Alarm.accountLow(datasetId, billingPeriod));
     }
     return Optional.empty();
+  }
+
+  private AlarmThresholdPreference getPreferenceFromDataset(UUID datasetId) {
+    UUID ownerId = datasetService.getOwnerId(datasetId);
+    return alarmPreferenceQueryService.getPreference(ownerId);
   }
 }

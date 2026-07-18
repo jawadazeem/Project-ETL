@@ -7,6 +7,11 @@ package com.azeem.blueprint.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * These pre-selected values are defaults that go well with the demo dataset. For other datasets,
+ * the user can and should update these threshold preferences, since this is a core business
+ * feature.
+ */
 @ConfigurationProperties(prefix = "alarm")
 public class AlarmConfig {
 

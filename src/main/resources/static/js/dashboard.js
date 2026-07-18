@@ -12,6 +12,7 @@ let currentRecordsPage = [];
 let currentProviderPage = [];
 let currentTopRecords = [];
 let currentOrgContextDocuments = [];
+let mermaidWorkflowInitialized = false;
 const pageSize = 20;
 
 const numberFormatter = new Intl.NumberFormat(undefined);
@@ -72,6 +73,84 @@ function showSkeleton(id) {
 function hideSkeleton(id) {
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
+}
+
+// ── Page switcher ─────────────────────────────────────────────────────────
+
+function setActiveDashboardPage(page) {
+    document.querySelectorAll(".dashboard-view").forEach(view => {
+        view.classList.toggle("active", view.dataset.page === page);
+    });
+
+    document.querySelectorAll(".page-switch-btn").forEach(button => {
+        const isActive = button.dataset.page === page;
+        button.classList.toggle("active", isActive);
+        if (isActive) {
+            button.setAttribute("aria-current", "page");
+        } else {
+            button.removeAttribute("aria-current");
+        }
+    });
+
+    if (page === "agentic") {
+        renderAgenticWorkflow();
+    }
+}
+
+function initializeMermaid() {
+    if (!window.mermaid || mermaidWorkflowInitialized) return;
+    window.mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "strict",
+        theme: "base",
+        themeVariables: {
+            primaryColor: "#ffffff",
+            primaryTextColor: "#1f2937",
+            primaryBorderColor: "#cbd5e1",
+            lineColor: "#64748b",
+            clusterBkg: "#f8fafc",
+            clusterBorder: "#dbe3ef",
+            fontFamily: "Montserrat, sans-serif"
+        }
+    });
+    mermaidWorkflowInitialized = true;
+}
+
+async function renderAgenticWorkflow() {
+    initializeMermaid();
+    const diagram = document.getElementById("agenticWorkflowDiagram");
+    if (!diagram || diagram.dataset.rendered === "true") return;
+
+    if (!window.mermaid) {
+        diagram.textContent = "Agentic workflow diagram could not be loaded.";
+        return;
+    }
+
+    const graph = `
+flowchart LR
+    A["On Data Ingestion"]
+    B["Run Audit Report"]
+    C["Run Predictive Cost Estimates"]
+    D["Run Natural Language Analyses using Org Knowledge"]
+    E["Internet Search About AWS, Azure, and GCP"]
+    F["Generate New Executive Report"]
+    G["Email Report to Stakeholders"]
+    H["Email Back and Forth with Leadership"]
+
+    A --> B --> C --> D --> E --> F --> G --> H
+
+    classDef workflowNode fill:#ffffff,stroke:#cbd5e1,stroke-width:1px,color:#1f2937;
+    class A,B,C,D,E,F,G,H workflowNode;
+`;
+
+    try {
+        const { svg } = await window.mermaid.render("agenticWorkflowMermaid", graph);
+        diagram.innerHTML = svg;
+        diagram.dataset.rendered = "true";
+    } catch (e) {
+        console.error("Failed to render agentic workflow diagram", e);
+        diagram.textContent = "Agentic workflow diagram could not be rendered.";
+    }
 }
 
 // ── Dataset switcher ──────────────────────────────────────────────────────
@@ -629,6 +708,85 @@ function renderAlarms(alarms) {
     }
 }
 
+async function fetchAlarmPreferences() {
+    const res = await fetch("/preferences/alarm-threshold/me", {
+        headers: { "X-User-Id": GUEST_USER_ID }
+    });
+    if (!res.ok) throw new Error(`Alarm preferences fetch failed: ${res.status}`);
+    return res.json();
+}
+
+function numberFromInput(id) {
+    return Number(document.getElementById(id).value || 0);
+}
+
+function readAlarmPreferencesForm() {
+    return {
+        provider: {
+            monthlyLimit: numberFromInput("alarm-provider-monthly-limit")
+        },
+        individual: {
+            low: numberFromInput("alarm-individual-low"),
+            medium: numberFromInput("alarm-individual-medium"),
+            high: numberFromInput("alarm-individual-high")
+        },
+        account: {
+            low: numberFromInput("alarm-account-low"),
+            high: numberFromInput("alarm-account-high")
+        }
+    };
+}
+
+function setAlarmPreferenceInput(id, value) {
+    const input = document.getElementById(id);
+    if (input) input.value = Number(value || 0);
+}
+
+function renderAlarmPreferences(preferences) {
+    setAlarmPreferenceInput("alarm-provider-monthly-limit", preferences?.provider?.monthlyLimit);
+    setAlarmPreferenceInput("alarm-individual-low", preferences?.individual?.low);
+    setAlarmPreferenceInput("alarm-individual-medium", preferences?.individual?.medium);
+    setAlarmPreferenceInput("alarm-individual-high", preferences?.individual?.high);
+    setAlarmPreferenceInput("alarm-account-low", preferences?.account?.low);
+    setAlarmPreferenceInput("alarm-account-high", preferences?.account?.high);
+}
+
+async function loadAlarmPreferences() {
+    try {
+        renderAlarmPreferences(await fetchAlarmPreferences());
+    } catch (e) {
+        console.error("Failed to load alarm preferences", e);
+        showToast("Could not load alarm preferences.");
+    }
+}
+
+async function saveAlarmPreferences(event) {
+    event.preventDefault();
+    const btn = document.getElementById("alarmPreferencesSaveBtn");
+    btn.disabled = true;
+
+    try {
+        const res = await fetch("/preferences/alarm-threshold/me/recompute", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-User-Id": GUEST_USER_ID
+            },
+            body: JSON.stringify(readAlarmPreferencesForm())
+        });
+
+        if (!res.ok) throw new Error(`Alarm preferences save failed: ${res.status}`);
+
+        renderAlarmPreferences(await res.json());
+        showToast("Alarm preferences saved.", "success");
+    } catch (e) {
+        console.error("Failed to save alarm preferences", e);
+        showToast("Could not save alarm preferences.");
+    } finally {
+        btn.disabled = false;
+    }
+}
+
 function openAlarmsModal() {
     document.getElementById("alarms-overlay").style.display = "flex";
 }
@@ -640,6 +798,7 @@ function closeAlarmsModal() {
 async function onAlarmsClick() {
     openAlarmsModal();
     try {
+        await loadAlarmPreferences();
         const alarms = await fetchAlarms();
         document.getElementById("alarms-title").textContent = `Alarms (${alarms.length})`;
         renderAlarms(alarms);
@@ -1586,10 +1745,14 @@ async function onRestoreDatasetClick() {
 // ── Event wiring ──────────────────────────────────────────────────────────
 
 function wireDashboardEvents() {
+    document.querySelectorAll(".page-switch-btn").forEach(button => {
+        button.addEventListener("click", () => setActiveDashboardPage(button.dataset.page));
+    });
     document.getElementById("periodSelect")?.addEventListener("change", changePeriod);
     document.getElementById("datasetSelect")?.addEventListener("change", switchDataset);
     document.getElementById("alarms-btn")?.addEventListener("click", onAlarmsClick);
     document.getElementById("alarms-close")?.addEventListener("click", closeAlarmsModal);
+    document.getElementById("alarm-preferences-form")?.addEventListener("submit", saveAlarmPreferences);
     document.getElementById("helpBtn")?.addEventListener("click", openHelpModal);
     document.getElementById("learnMoreBtn")?.addEventListener("click", openInfo);
     document.getElementById("help-close")?.addEventListener("click", closeHelpModal);

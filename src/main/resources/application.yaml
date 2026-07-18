@@ -85,12 +85,12 @@ alarm:
   provider:
     monthlyLimit: 25000
   individual:
-    low: 500
+    low: 1000
     medium: 2000
     high: 5000
   account:
-    low: 100000
-    high: 250000
+    low: 500000
+    high: 750000
 billing-reader:
   has-header: true
   batch-size: 1000

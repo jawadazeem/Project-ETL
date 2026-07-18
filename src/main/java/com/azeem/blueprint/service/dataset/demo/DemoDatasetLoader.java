@@ -157,6 +157,6 @@ public class DemoDatasetLoader {
   private boolean isLoaded() {
     long existingCount =
         billingRecordRepository.countByDatasetIdIn((DUMMY_DATA_DATASET_IDS.keySet()));
-    return existingCount == DUMMY_DATA_DATASET_IDS.size();
+    return existingCount > 0;
   }
 }

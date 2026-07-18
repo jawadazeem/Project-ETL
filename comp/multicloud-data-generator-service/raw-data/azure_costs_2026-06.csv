@@ -1,0 +1,1310 @@
+SubscriptionName,ResourceId,BillingMonth,Quantity_Compute,Quantity_Storage,Quantity_API,CostInBillingCurrency,ConsumedService,MeterName
+DevOps-Central,ado-00e2292,2026-06,0.0,98.9,0,24.73,Azure DevOps,Artifacts storage
+DevOps-Central,redis-0b8c869,2026-06,943.5,0.0,0,1147.94,Azure Cache for Redis,Premium P1 cache
+Shared-Services,fd-0ecb547,2026-06,0.0,0.0,81407209,610.57,Front Door,Global load balancer
+Production-Main,eh-0bee571,2026-06,632.6,0.0,26357657,288.62,Event Hubs,Standard throughput units
+DR-Recovery,cosmos-04b4890,2026-06,910.7,63.2,18971760,616.58,Cosmos DB,Config store
+DevOps-Central,azmon-0b5a859,2026-06,0.0,322.4,42992379,456.8,Azure Monitor,Logs and metrics
+Data-Science,cosmos-0de3347,2026-06,797.1,221.4,44285650,1799.1,Cosmos DB,User data store
+Customer-Portal,eh-067c886,2026-06,0.0,606.7,0,151.67,Event Hubs,Capture to storage
+Finance-Systems,aks-0bf9833,2026-06,248.0,0.0,0,372.02,AKS,Dev K8s cluster
+Security-Ops,vm-0f8c889,2026-06,712.8,0.0,0,433.59,Virtual Machines,D2s v3 utility server
+Customer-Portal,blob-0442236,2026-06,0.0,5391.0,0,539.1,Blob Storage,Security audit logs
+Analytics-Platform,aks-059f313,2026-06,1321.0,0.0,0,1981.52,AKS,Staging K8s cluster
+Customer-Portal,blob-0c4e917,2026-06,0.0,4813.1,0,481.31,Blob Storage,Security audit logs
+Production-Main,eh-0026187,2026-06,0.0,681.4,0,170.36,Event Hubs,Capture to storage
+Customer-Portal,appi-0257485,2026-06,0.0,0.0,40222616,502.78,Application Insights,APM telemetry
+DevOps-Central,vm-0814453,2026-06,637.2,0.0,0,193.81,Virtual Machines,B2s development VM
+Production-Secondary,redis-0801574,2026-06,1074.1,0.0,0,544.5,Azure Cache for Redis,Standard C2 cache
+Finance-Systems,ado-0e52241,2026-06,542.7,0.0,0,271.34,Azure DevOps,Pipelines hosted
+Finance-Systems,sentinel-07b4432,2026-06,0.0,0.0,110275395,2756.88,Microsoft Sentinel,SIEM detection
+Production-Secondary,sentinel-0502751,2026-06,0.0,0.0,64363410,1609.08,Microsoft Sentinel,SIEM detection
+Customer-Portal,func-0958195,2026-06,0.0,0.0,2565528,38.48,Azure Functions,Webhook processor
+Finance-Systems,kv-0563504,2026-06,0.0,0.0,2884438,8.66,Key Vault,Secrets management
+Partner-Integration,azmon-0cc4223,2026-06,0.0,201.3,26843351,285.22,Azure Monitor,Logs and metrics
+Data-Science,blob-0d32531,2026-06,0.0,2485.6,6628428,323.13,Blob Storage,Build artifacts
+Production-Secondary,blob-04dd841,2026-06,0.0,11779.5,29448,94.24,Blob Storage,Archive tier
+Customer-Portal,redis-0260701,2026-06,909.5,0.0,0,461.09,Azure Cache for Redis,Standard C2 cache
+Production-Secondary,sqldb-04d6752,2026-06,531.4,184.6,0,889.24,SQL Database,Standard S3 production
+Finance-Systems,sb-093d809,2026-06,0.0,0.0,25709871,64.27,Service Bus,Standard messaging
+Partner-Integration,sb-03ab945,2026-06,727.3,0.0,10101774,553.07,Service Bus,Premium messaging
+DevOps-Central,appi-00d4852,2026-06,0.0,0.0,66129801,826.62,Application Insights,APM telemetry
+Security-Ops,eh-08a0504,2026-06,0.0,399.7,0,99.94,Event Hubs,Capture to storage
+DevOps-Central,azmon-061e582,2026-06,0.0,321.3,42850636,455.29,Azure Monitor,Logs and metrics
+DR-Recovery,appi-07b6956,2026-06,0.0,0.0,19502659,243.79,Application Insights,Custom metrics
+Shared-Services,ado-078c824,2026-06,0.0,84.6,0,21.15,Azure DevOps,Artifacts storage
+Finance-Systems,blob-1044860,2026-06,0.0,8471.9,84716,254.15,Blob Storage,Backup storage
+Finance-Systems,ado-0451264,2026-06,512.2,0.0,0,256.08,Azure DevOps,Pipelines hosted
+Shared-Services,sb-0621661,2026-06,575.9,0.0,7999818,437.99,Service Bus,Premium messaging
+Customer-Portal,func-081c995,2026-06,0.0,0.0,2888866,43.33,Azure Functions,Webhook processor
+Customer-Portal,vm-0dcd189,2026-06,478.4,0.0,0,873.05,Virtual Machines,E4s v3 SIEM collector
+DevOps-Central,cosmos-00ee239,2026-06,760.2,52.8,15836529,514.69,Cosmos DB,Config store
+Finance-Systems,aks-0554673,2026-06,276.8,0.0,0,415.29,AKS,Dev K8s cluster
+Internal-Tools,eh-097f635,2026-06,0.0,543.2,0,135.82,Event Hubs,Capture to storage
+DR-Recovery,appi-0d8e996,2026-06,0.0,0.0,51571229,644.64,Application Insights,APM telemetry
+Finance-Systems,redis-0211914,2026-06,786.5,0.0,0,956.89,Azure Cache for Redis,Premium P1 cache
+Customer-Portal,eh-075a870,2026-06,735.3,0.0,30639575,335.5,Event Hubs,Standard throughput units
+Production-Main,blob-086a814,2026-06,0.0,2416.1,6442804,314.09,Blob Storage,Build artifacts
+Analytics-Platform,aks-09f1619,2026-06,1253.8,0.0,0,1880.76,AKS,Staging K8s cluster
+Analytics-Platform,ado-0968389,2026-06,0.0,120.4,0,30.1,Azure DevOps,Artifacts storage
+Customer-Portal,vm-0d19441,2026-06,536.2,0.0,0,326.17,Virtual Machines,D2s v3 utility server
+Shared-Services,vm-0594419,2026-06,829.0,0.0,0,3025.99,Virtual Machines,E8s v3 memory-optimized
+Mobile-Backend,sqldb-0e7e331,2026-06,763.7,530.3,0,3097.16,SQL Database,Premium P1 analytics
+Production-Secondary,app-05e2432,2026-06,1136.9,0.0,0,691.56,App Service,Web app P1v3
+Production-Main,blob-09bc732,2026-06,0.0,5938.3,2226874,315.47,Blob Storage,Data lake storage
+Mobile-Backend,kv-0d0a877,2026-06,0.0,0.0,1612626,4.84,Key Vault,Secrets management
+Production-Secondary,blob-04c0764,2026-06,0.0,2291.6,5729036,372.39,Blob Storage,Media content
+Customer-Portal,vm-0ea1350,2026-06,613.9,0.0,0,373.43,Virtual Machines,D2s v3 utility server
+Shared-Services,aks-01c1897,2026-06,1075.8,0.0,0,1613.66,AKS,Staging K8s cluster
+Finance-Systems,app-0d8b965,2026-06,848.8,0.0,0,129.07,App Service,Web app B1
+Data-Science,blob-06c1498,2026-06,0.0,9794.6,97945,293.84,Blob Storage,Backup storage
+Analytics-Platform,eh-0c1e810,2026-06,490.7,0.0,20448701,223.91,Event Hubs,Standard throughput units
+Shared-Services,func-0456674,2026-06,0.0,0.0,450610,6.76,Azure Functions,Timer triggers
+Finance-Systems,cosmos-0527195,2026-06,490.4,136.2,27244114,1106.79,Cosmos DB,User data store
+Partner-Integration,app-03b2567,2026-06,629.7,0.0,0,383.09,App Service,Web app P1v3
+DevOps-Central,aks-0f83666,2026-06,402.3,0.0,0,603.37,AKS,Dev K8s cluster
+Production-Secondary,sentinel-118d311,2026-06,0.0,0.0,65175934,1629.4,Microsoft Sentinel,SIEM detection
+Production-Main,kv-0426522,2026-06,0.0,0.0,2316670,6.95,Key Vault,Secrets management
+Mobile-Backend,sqldb-1045702,2026-06,765.2,531.4,0,3103.34,SQL Database,Premium P1 analytics
+Shared-Services,kv-0d17212,2026-06,0.0,0.0,409421,1.23,Key Vault,Certificate store
+Finance-Systems,vm-05c1838,2026-06,760.3,0.0,0,1849.82,Virtual Machines,D8s v3 application server
+Analytics-Platform,kv-05a4469,2026-06,0.0,0.0,1504331,4.51,Key Vault,Secrets management
+Internal-Tools,aks-08d9511,2026-06,1630.4,0.0,0,2445.52,AKS,Staging K8s cluster
+Production-Secondary,eh-0d77234,2026-06,602.3,0.0,25096341,274.8,Event Hubs,Standard throughput units
+Production-Secondary,blob-0cd7269,2026-06,0.0,7793.7,2922633,414.03,Blob Storage,Data lake storage
+Partner-Integration,sqldb-0efb498,2026-06,863.1,299.7,0,1444.26,SQL Database,Standard S3 production
+DevOps-Central,aks-0f5d284,2026-06,1783.3,0.0,0,2674.96,AKS,Staging K8s cluster
+Internal-Tools,cosmos-02a3540,2026-06,725.9,201.6,40326241,1638.25,Cosmos DB,User data store
+Internal-Tools,vm-029e595,2026-06,716.2,0.0,0,435.71,Virtual Machines,D2s v3 utility server
+Production-Secondary,app-05df445,2026-06,961.5,0.0,0,584.9,App Service,Web app P1v3
+Production-Secondary,blob-005d230,2026-06,0.0,2411.0,6429325,313.43,Blob Storage,Build artifacts
+Production-Secondary,aks-0b9c491,2026-06,318.3,0.0,0,477.63,AKS,Dev K8s cluster
+Partner-Integration,sqldb-0e96563,2026-06,1184.3,411.2,0,1981.69,SQL Database,Standard S3 production
+Partner-Integration,appi-07a4515,2026-06,0.0,0.0,74840663,935.51,Application Insights,APM telemetry
+Shared-Services,vm-08aa601,2026-06,347.6,0.0,0,3171.51,Virtual Machines,NC6s v3 GPU VM
+DR-Recovery,appi-048f749,2026-06,0.0,0.0,20537638,256.72,Application Insights,Custom metrics
+Production-Main,vm-048d646,2026-06,826.2,0.0,0,2010.38,Virtual Machines,D8s v3 application server
+Shared-Services,sb-1037505,2026-06,666.8,0.0,9261308,507.05,Service Bus,Premium messaging
+DevOps-Central,vm-0691282,2026-06,714.9,0.0,0,217.46,Virtual Machines,B2s development VM
+DevOps-Central,sb-0e4e903,2026-06,737.1,0.0,10238265,560.55,Service Bus,Premium messaging
+Internal-Tools,eh-06f5432,2026-06,0.0,502.2,0,125.57,Event Hubs,Capture to storage
+Finance-Systems,redis-1119805,2026-06,766.1,0.0,0,388.33,Azure Cache for Redis,Standard C2 cache
+Finance-Systems,blob-0d4a811,2026-06,0.0,9896.6,98963,296.89,Blob Storage,Backup storage
+DevOps-Central,appi-0fd7806,2026-06,0.0,0.0,18213416,227.68,Application Insights,Custom metrics
+Production-Secondary,sentinel-0e21747,2026-06,0.0,0.0,76468980,1911.72,Microsoft Sentinel,SIEM detection
+Partner-Integration,sb-03aa861,2026-06,0.0,0.0,15881397,39.7,Service Bus,Standard messaging
+DR-Recovery,sb-02f7507,2026-06,905.0,0.0,12569745,688.19,Service Bus,Premium messaging
+Analytics-Platform,ado-00c7802,2026-06,0.0,110.4,0,27.6,Azure DevOps,Artifacts storage
+Finance-Systems,azmon-0218730,2026-06,0.0,238.8,31843642,338.34,Azure Monitor,Logs and metrics
+Mobile-Backend,aks-0338186,2026-06,995.2,0.0,0,4478.29,AKS,Production K8s cluster
+Production-Secondary,sentinel-075c368,2026-06,0.0,0.0,76853078,1921.33,Microsoft Sentinel,SIEM detection
+Customer-Portal,azmon-0250396,2026-06,0.0,239.4,31923796,339.19,Azure Monitor,Logs and metrics
+Mobile-Backend,acr-07fd235,2026-06,0.0,229.5,458978,151.46,Container Registry,Docker image registry
+Production-Main,blob-0590204,2026-06,0.0,2545.2,6787271,330.88,Blob Storage,Build artifacts
+Production-Main,kv-0024951,2026-06,0.0,0.0,2630210,7.89,Key Vault,Secrets management
+Partner-Integration,redis-0b29754,2026-06,515.7,0.0,0,627.48,Azure Cache for Redis,Premium P1 cache
+Partner-Integration,ado-0439616,2026-06,639.6,0.0,0,319.83,Azure DevOps,Pipelines hosted
+Production-Main,vm-003d976,2026-06,911.2,0.0,0,1663.02,Virtual Machines,E4s v3 SIEM collector
+Analytics-Platform,aks-09e9857,2026-06,545.2,0.0,0,817.81,AKS,Dev K8s cluster
+Production-Secondary,app-0466740,2026-06,990.8,0.0,0,602.7,App Service,Web app P1v3
+Shared-Services,ado-0fb4902,2026-06,0.0,97.0,0,24.23,Azure DevOps,Artifacts storage
+DevOps-Central,redis-04b6472,2026-06,765.3,0.0,0,931.16,Azure Cache for Redis,Premium P1 cache
+Production-Main,eh-0b35787,2026-06,0.0,648.3,0,162.08,Event Hubs,Capture to storage
+Security-Ops,vm-1185620,2026-06,584.7,0.0,0,2134.15,Virtual Machines,E8s v3 memory-optimized
+Partner-Integration,eh-03b1952,2026-06,601.2,0.0,25048032,274.28,Event Hubs,Standard throughput units
+Analytics-Platform,kv-0e9a441,2026-06,0.0,0.0,1414582,4.24,Key Vault,Secrets management
+DR-Recovery,sqldb-0cf9280,2026-06,1031.1,716.0,0,4181.73,SQL Database,Premium P1 analytics
+Production-Secondary,sqldb-1181399,2026-06,399.2,138.7,0,668.09,SQL Database,Standard S3 production
+Customer-Portal,app-0d4f996,2026-06,759.3,0.0,0,923.86,App Service,API app P2v3
+Production-Main,vm-088a832,2026-06,781.0,0.0,0,2850.6,Virtual Machines,E8s v3 memory-optimized
+Security-Ops,sqldb-015d279,2026-06,880.5,61.1,0,183.0,SQL Database,Basic dev database
+DevOps-Central,sb-1051676,2026-06,708.3,0.0,9838424,538.66,Service Bus,Premium messaging
+Customer-Portal,vm-0832652,2026-06,895.5,0.0,0,272.37,Virtual Machines,B2s development VM
+Finance-Systems,blob-0ec5692,2026-06,0.0,2279.2,5698026,370.37,Blob Storage,Media content
+Production-Main,vm-0639386,2026-06,1098.5,0.0,0,1559.84,Virtual Machines,F4s v2 compute node
+Mobile-Backend,vm-1113710,2026-06,734.0,0.0,0,1042.26,Virtual Machines,F4s v2 compute node
+Production-Secondary,sqldb-112c524,2026-06,513.9,178.5,0,859.89,SQL Database,Standard S3 production
+Mobile-Backend,vm-0345320,2026-06,808.1,0.0,0,491.57,Virtual Machines,D2s v3 utility server
+DevOps-Central,blob-0817476,2026-06,0.0,8471.3,3176731,450.03,Blob Storage,Data lake storage
+Finance-Systems,cosmos-0aff500,2026-06,611.8,169.8,33984057,1380.6,Cosmos DB,User data store
+DevOps-Central,appi-0b7d877,2026-06,0.0,0.0,16836073,210.46,Application Insights,Custom metrics
+DevOps-Central,appi-1005985,2026-06,0.0,0.0,67627267,845.33,Application Insights,APM telemetry
+Shared-Services,cosmos-0b23168,2026-06,655.0,90.9,22743624,852.89,Cosmos DB,Event store
+DR-Recovery,cosmos-08fe192,2026-06,856.7,238.0,47594054,1933.5,Cosmos DB,User data store
+Shared-Services,cosmos-0921628,2026-06,514.5,71.4,17865871,669.97,Cosmos DB,Event store
+DR-Recovery,cosmos-0ee2607,2026-06,918.5,255.2,51026881,2072.96,Cosmos DB,User data store
+Data-Science,blob-07d6144,2026-06,0.0,10778.1,107780,323.34,Blob Storage,Backup storage
+Partner-Integration,azmon-0695468,2026-06,0.0,287.8,38382838,407.82,Azure Monitor,Logs and metrics
+DevOps-Central,appi-09ca610,2026-06,0.0,0.0,60158217,751.97,Application Insights,APM telemetry
+Data-Science,aks-014f990,2026-06,507.1,0.0,0,2281.85,AKS,Production K8s cluster
+Data-Science,aks-102c324,2026-06,272.0,0.0,0,408.09,AKS,Dev K8s cluster
+DevOps-Central,vm-0fd0689,2026-06,729.6,0.0,0,221.91,Virtual Machines,B2s development VM
+Production-Main,kv-0a38604,2026-06,0.0,0.0,2641398,7.92,Key Vault,Secrets management
+Internal-Tools,redis-044a879,2026-06,636.2,0.0,0,322.53,Azure Cache for Redis,Standard C2 cache
+Finance-Systems,sb-0ea2541,2026-06,0.0,0.0,27568790,68.92,Service Bus,Standard messaging
+Internal-Tools,aks-09b3389,2026-06,1669.7,0.0,0,2504.56,AKS,Staging K8s cluster
+Customer-Portal,azmon-0faa173,2026-06,0.0,221.4,29522065,313.68,Azure Monitor,Logs and metrics
+Production-Secondary,sqldb-006d367,2026-06,562.1,39.0,0,116.83,SQL Database,Basic dev database
+Shared-Services,eh-01b3861,2026-06,952.3,0.0,39679216,434.49,Event Hubs,Standard throughput units
+Customer-Portal,sqldb-0262859,2026-06,976.3,339.0,0,1633.72,SQL Database,Standard S3 production
+Finance-Systems,aks-0215831,2026-06,1297.9,0.0,0,1946.9,AKS,Staging K8s cluster
+Analytics-Platform,ado-0ed0672,2026-06,0.0,106.6,0,26.66,Azure DevOps,Artifacts storage
+DR-Recovery,appi-0da9194,2026-06,0.0,0.0,22343693,279.3,Application Insights,Custom metrics
+Production-Main,aks-0bc0816,2026-06,1302.1,0.0,0,1953.13,AKS,Staging K8s cluster
+Mobile-Backend,fd-06fe344,2026-06,0.0,0.0,43203825,324.03,Front Door,Global load balancer
+Customer-Portal,cosmos-04b5613,2026-06,682.5,47.4,14218716,462.11,Cosmos DB,Config store
+Finance-Systems,sb-0abe213,2026-06,0.0,0.0,26216858,65.54,Service Bus,Standard messaging
+Shared-Services,vm-01ba554,2026-06,392.0,0.0,0,3576.93,Virtual Machines,NC6s v3 GPU VM
+Production-Secondary,app-0909121,2026-06,1246.5,0.0,0,758.23,App Service,Web app P1v3
+Analytics-Platform,ado-00c6175,2026-06,470.6,0.0,0,235.32,Azure DevOps,Pipelines hosted
+Finance-Systems,blob-0ae8718,2026-06,0.0,7260.1,72599,217.8,Blob Storage,Backup storage
+Security-Ops,vm-015e672,2026-06,620.0,0.0,0,377.15,Virtual Machines,D2s v3 utility server
+Data-Science,fd-078a255,2026-06,0.0,0.0,36279537,272.1,Front Door,Global load balancer
+Customer-Portal,cosmos-0835427,2026-06,869.7,60.3,18118914,588.87,Cosmos DB,Config store
+Production-Secondary,blob-0fbd152,2026-06,0.0,14786.4,36965,118.29,Blob Storage,Archive tier
+Customer-Portal,blob-0839846,2026-06,0.0,5959.9,0,595.99,Blob Storage,Security audit logs
+Production-Main,aks-0aa2773,2026-06,588.5,0.0,0,2648.36,AKS,Production K8s cluster
+Production-Main,aks-0eb0801,2026-06,484.3,0.0,0,726.45,AKS,Dev K8s cluster
+Customer-Portal,ado-0910502,2026-06,0.0,107.2,0,26.8,Azure DevOps,Artifacts storage
+Shared-Services,ado-07b2307,2026-06,490.3,0.0,0,245.11,Azure DevOps,Pipelines hosted
+Production-Main,cosmos-0ceb324,2026-06,947.2,263.1,52623551,2137.83,Cosmos DB,User data store
+DR-Recovery,appi-1178561,2026-06,0.0,0.0,16674459,208.43,Application Insights,Custom metrics
+Internal-Tools,blob-0298842,2026-06,0.0,3736.3,9963346,485.71,Blob Storage,Build artifacts
+Analytics-Platform,kv-09a4625,2026-06,0.0,0.0,553404,1.66,Key Vault,Certificate store
+Production-Secondary,redis-1191966,2026-06,1035.7,0.0,0,525.0,Azure Cache for Redis,Standard C2 cache
+Production-Secondary,sentinel-0a95436,2026-06,0.0,0.0,70669300,1766.73,Microsoft Sentinel,SIEM detection
+Production-Secondary,acr-0834611,2026-06,0.0,215.4,430686,142.13,Container Registry,Docker image registry
+Production-Secondary,blob-1149645,2026-06,0.0,2532.7,6331693,411.56,Blob Storage,Media content
+DevOps-Central,blob-0fb6133,2026-06,0.0,5018.8,0,501.88,Blob Storage,Security audit logs
+Shared-Services,func-106b269,2026-06,0.0,0.0,8881464,133.22,Azure Functions,API handlers
+DevOps-Central,vm-0a85632,2026-06,648.6,0.0,0,5918.51,Virtual Machines,NC6s v3 GPU VM
+Mobile-Backend,fd-0587882,2026-06,0.0,0.0,42102932,315.77,Front Door,Global load balancer
+Production-Secondary,sqldb-0dda483,2026-06,448.6,155.9,0,750.78,SQL Database,Standard S3 production
+Shared-Services,fd-01b4291,2026-06,0.0,0.0,56239538,421.8,Front Door,Global load balancer
+Internal-Tools,sentinel-02a1505,2026-06,0.0,0.0,35236857,880.92,Microsoft Sentinel,Log analytics
+Production-Secondary,kv-0065440,2026-06,0.0,0.0,2431190,7.29,Key Vault,Secrets management
+DR-Recovery,cosmos-0867713,2026-06,925.6,257.1,51422878,2089.05,Cosmos DB,User data store
+Shared-Services,vm-05d6199,2026-06,446.2,0.0,0,4071.18,Virtual Machines,NC6s v3 GPU VM
+Internal-Tools,aks-0296711,2026-06,783.3,0.0,0,3524.97,AKS,Production K8s cluster
+Production-Secondary,acr-1133427,2026-06,0.0,211.3,422491,139.43,Container Registry,Docker image registry
+Production-Secondary,blob-087f580,2026-06,0.0,7018.7,2632002,372.86,Blob Storage,Data lake storage
+Shared-Services,kv-0957987,2026-06,0.0,0.0,453011,1.36,Key Vault,Certificate store
+Production-Main,vm-0b41296,2026-06,467.4,0.0,0,4265.29,Virtual Machines,NC6s v3 GPU VM
+Partner-Integration,redis-06f8389,2026-06,838.2,0.0,0,1019.81,Azure Cache for Redis,Premium P1 cache
+DR-Recovery,sqldb-0803479,2026-06,1023.8,711.0,0,4152.23,SQL Database,Premium P1 analytics
+Production-Secondary,acr-07ad940,2026-06,0.0,248.6,497206,164.08,Container Registry,Docker image registry
+Analytics-Platform,eh-0806403,2026-06,627.5,0.0,26146679,286.31,Event Hubs,Standard throughput units
+Finance-Systems,acr-0224993,2026-06,0.0,338.9,677813,223.68,Container Registry,Docker image registry
+Production-Main,aks-0f57337,2026-06,420.1,0.0,0,630.11,AKS,Dev K8s cluster
+Shared-Services,vm-01b8556,2026-06,653.0,0.0,0,1588.97,Virtual Machines,D8s v3 application server
+Shared-Services,sb-08e5943,2026-06,481.3,0.0,6685350,366.02,Service Bus,Premium messaging
+Data-Science,blob-04b8243,2026-06,0.0,10330.4,103303,309.91,Blob Storage,Backup storage
+Customer-Portal,func-0e55523,2026-06,0.0,0.0,2864000,42.96,Azure Functions,Webhook processor
+DevOps-Central,azmon-00e3878,2026-06,0.0,341.3,45511444,483.56,Azure Monitor,Logs and metrics
+DevOps-Central,aks-041e972,2026-06,394.7,0.0,0,592.08,AKS,Dev K8s cluster
+Production-Main,blob-0c25669,2026-06,0.0,2533.1,6754979,329.31,Blob Storage,Build artifacts
+Production-Secondary,eh-0450304,2026-06,677.6,0.0,28233615,309.15,Event Hubs,Standard throughput units
+DevOps-Central,app-00ea379,2026-06,760.5,0.0,0,462.62,App Service,Web app P1v3
+Internal-Tools,blob-1187759,2026-06,0.0,13936.0,139359,418.08,Blob Storage,Backup storage
+Production-Main,blob-1077331,2026-06,0.0,3080.6,8214841,400.48,Blob Storage,Build artifacts
+Shared-Services,ado-0b61138,2026-06,0.0,78.4,0,19.6,Azure DevOps,Artifacts storage
+Customer-Portal,vm-025b762,2026-06,606.5,0.0,0,368.94,Virtual Machines,D2s v3 utility server
+Production-Secondary,app-0fb2316,2026-06,807.4,0.0,0,491.17,App Service,Web app P1v3
+Shared-Services,func-0509892,2026-06,0.0,0.0,8662519,129.94,Azure Functions,API handlers
+Production-Secondary,eh-0ed1531,2026-06,733.2,0.0,30548315,334.5,Event Hubs,Standard throughput units
+Production-Secondary,sb-0550807,2026-06,0.0,0.0,22625766,56.56,Service Bus,Standard messaging
+Finance-Systems,func-021d261,2026-06,0.0,0.0,4153612,62.3,Azure Functions,Webhook processor
+Finance-Systems,appi-0ada402,2026-06,0.0,0.0,16672421,208.41,Application Insights,Custom metrics
+Production-Secondary,blob-08d0486,2026-06,0.0,12395.8,123957,371.87,Blob Storage,Backup storage
+Production-Secondary,blob-1102786,2026-06,0.0,14525.0,36312,116.19,Blob Storage,Archive tier
+Finance-Systems,func-0b2d239,2026-06,0.0,0.0,4924977,73.88,Azure Functions,API handlers
+Shared-Services,func-0fb3832,2026-06,0.0,0.0,3325927,49.9,Azure Functions,Webhook processor
+Data-Science,blob-0ff1848,2026-06,0.0,2559.0,6823970,332.66,Blob Storage,Build artifacts
+Production-Main,blob-0f7c723,2026-06,0.0,2879.0,7677538,374.28,Blob Storage,Build artifacts
+Shared-Services,eh-04b1664,2026-06,1068.4,0.0,44515758,487.45,Event Hubs,Standard throughput units
+Customer-Portal,blob-0671523,2026-06,0.0,4795.3,0,479.53,Blob Storage,Security audit logs
+Analytics-Platform,aks-06ee815,2026-06,505.1,0.0,0,757.75,AKS,Dev K8s cluster
+Production-Secondary,blob-005f915,2026-06,0.0,2658.6,6646435,432.02,Blob Storage,Media content
+Mobile-Backend,azmon-0a21733,2026-06,0.0,262.8,35037626,372.27,Azure Monitor,Logs and metrics
+Finance-Systems,blob-083a215,2026-06,0.0,6773.3,67731,203.2,Blob Storage,Backup storage
+Customer-Portal,app-09dd159,2026-06,741.6,0.0,0,451.15,App Service,Web app P1v3
+Analytics-Platform,ado-0761752,2026-06,0.0,124.2,0,31.06,Azure DevOps,Artifacts storage
+DevOps-Central,appi-056d259,2026-06,0.0,0.0,61417105,767.71,Application Insights,APM telemetry
+DevOps-Central,vm-10f1723,2026-06,690.8,0.0,0,1260.68,Virtual Machines,E4s v3 SIEM collector
+DevOps-Central,appi-0804101,2026-06,0.0,0.0,74080230,926.0,Application Insights,APM telemetry
+Partner-Integration,appi-07e3482,2026-06,0.0,0.0,49706805,621.33,Application Insights,APM telemetry
+Production-Main,eh-0bb2869,2026-06,0.0,591.7,0,147.93,Event Hubs,Capture to storage
+Analytics-Platform,aks-00bf283,2026-06,618.7,0.0,0,2783.93,AKS,Production K8s cluster
+Mobile-Backend,sqldb-0883304,2026-06,867.5,602.4,0,3518.26,SQL Database,Premium P1 analytics
+Internal-Tools,aks-06b0216,2026-06,1739.8,0.0,0,2609.8,AKS,Staging K8s cluster
+Internal-Tools,aks-0f22641,2026-06,1578.9,0.0,0,2368.44,AKS,Staging K8s cluster
+Production-Main,aks-0022100,2026-06,484.5,0.0,0,726.68,AKS,Dev K8s cluster
+Shared-Services,appi-0dfe368,2026-06,0.0,0.0,39571431,494.64,Application Insights,APM telemetry
+Mobile-Backend,vm-09bb165,2026-06,709.1,0.0,0,1006.92,Virtual Machines,F4s v2 compute node
+Customer-Portal,fd-0251891,2026-06,0.0,0.0,66253942,496.9,Front Door,Global load balancer
+Data-Science,cosmos-09e8442,2026-06,613.7,170.5,34096746,1385.18,Cosmos DB,User data store
+Customer-Portal,blob-0eb1253,2026-06,0.0,5413.1,0,541.31,Blob Storage,Security audit logs
+DevOps-Central,sqldb-0a8e401,2026-06,650.0,225.6,0,1087.58,SQL Database,Standard S3 production
+Finance-Systems,aks-102f898,2026-06,279.8,0.0,0,419.78,AKS,Dev K8s cluster
+Partner-Integration,azmon-0a59651,2026-06,0.0,238.0,31732602,337.17,Azure Monitor,Logs and metrics
+Analytics-Platform,kv-10e4289,2026-06,0.0,0.0,521449,1.56,Key Vault,Certificate store
+Shared-Services,func-09a1968,2026-06,0.0,0.0,10907892,163.62,Azure Functions,API handlers
+Customer-Portal,blob-0259159,2026-06,0.0,2528.1,6320216,410.81,Blob Storage,Media content
+Production-Main,vm-003c553,2026-06,969.3,0.0,0,1376.44,Virtual Machines,F4s v2 compute node
+Shared-Services,sb-05c7144,2026-06,561.2,0.0,7795644,426.81,Service Bus,Premium messaging
+Production-Main,eh-0025680,2026-06,625.4,0.0,26058303,285.34,Event Hubs,Standard throughput units
+DevOps-Central,sb-00d7881,2026-06,794.4,0.0,11033728,604.1,Service Bus,Premium messaging
+Analytics-Platform,eh-0c57869,2026-06,0.0,373.6,0,93.39,Event Hubs,Capture to storage
+Partner-Integration,sb-05dd537,2026-06,771.5,0.0,10715609,586.68,Service Bus,Premium messaging
+Shared-Services,sb-0dc4566,2026-06,550.2,0.0,7642101,418.4,Service Bus,Premium messaging
+DevOps-Central,aks-0cf1749,2026-06,438.5,0.0,0,657.81,AKS,Dev K8s cluster
+Analytics-Platform,eh-0479891,2026-06,0.0,373.1,0,93.29,Event Hubs,Capture to storage
+Partner-Integration,appi-064d380,2026-06,0.0,0.0,70187012,877.34,Application Insights,APM telemetry
+Data-Science,kv-015a390,2026-06,0.0,0.0,500469,1.5,Key Vault,Certificate store
+Mobile-Backend,azmon-0bba725,2026-06,0.0,322.3,42974356,456.6,Azure Monitor,Logs and metrics
+Finance-Systems,aks-0922802,2026-06,319.0,0.0,0,478.48,AKS,Dev K8s cluster
+Mobile-Backend,fd-095e352,2026-06,0.0,0.0,56009965,420.07,Front Door,Global load balancer
+DevOps-Central,sentinel-00e5745,2026-06,0.0,0.0,39249912,981.25,Microsoft Sentinel,Log analytics
+Analytics-Platform,eh-04e3729,2026-06,570.1,0.0,23756709,260.14,Event Hubs,Standard throughput units
+DevOps-Central,redis-0fc2470,2026-06,789.9,0.0,0,961.03,Azure Cache for Redis,Premium P1 cache
+Customer-Portal,vm-05b7601,2026-06,614.3,0.0,0,373.67,Virtual Machines,D2s v3 utility server
+DevOps-Central,sentinel-0905483,2026-06,0.0,0.0,39136384,978.41,Microsoft Sentinel,Log analytics
+DevOps-Central,kv-0c74453,2026-06,0.0,0.0,2673315,8.02,Key Vault,Secrets management
+Production-Secondary,cosmos-0ad3510,2026-06,544.0,75.6,18887803,708.29,Cosmos DB,Event store
+Production-Main,redis-0042268,2026-06,958.8,0.0,0,1166.58,Azure Cache for Redis,Premium P1 cache
+Partner-Integration,appi-0ef7381,2026-06,0.0,0.0,47728564,596.6,Application Insights,APM telemetry
+Production-Secondary,sqldb-006e371,2026-06,594.0,412.5,0,2408.99,SQL Database,Premium P1 analytics
+Data-Science,aks-10ae750,2026-06,264.6,0.0,0,396.98,AKS,Dev K8s cluster
+DR-Recovery,sb-0ba9867,2026-06,0.0,0.0,15519965,38.8,Service Bus,Standard messaging
+Shared-Services,vm-0c90772,2026-06,933.4,0.0,0,1135.61,Virtual Machines,D4s v3 CI runner
+Finance-Systems,sb-0610431,2026-06,0.0,0.0,25052883,62.63,Service Bus,Standard messaging
+Partner-Integration,redis-03b0238,2026-06,759.4,0.0,0,923.97,Azure Cache for Redis,Premium P1 cache
+Mobile-Backend,sqldb-0349366,2026-06,845.3,587.0,0,3428.16,SQL Database,Premium P1 analytics
+Mobile-Backend,vm-0986858,2026-06,705.2,0.0,0,1001.41,Virtual Machines,F4s v2 compute node
+Production-Main,app-0028269,2026-06,981.2,0.0,0,596.9,App Service,Web app P1v3
+DevOps-Central,appi-060e853,2026-06,0.0,0.0,62386804,779.83,Application Insights,APM telemetry
+Data-Science,sb-0152320,2026-06,0.0,0.0,24445564,61.11,Service Bus,Standard messaging
+Customer-Portal,cosmos-0aa0416,2026-06,586.2,81.4,20351405,763.17,Cosmos DB,Event store
+Analytics-Platform,aks-0f9f800,2026-06,1055.6,0.0,0,1583.4,AKS,Staging K8s cluster
+Finance-Systems,sentinel-108a486,2026-06,0.0,0.0,112265153,2806.62,Microsoft Sentinel,SIEM detection
+Finance-Systems,appi-0fce421,2026-06,0.0,0.0,53739171,671.75,Application Insights,APM telemetry
+Production-Main,aks-0828395,2026-06,1244.7,0.0,0,1867.0,AKS,Staging K8s cluster
+Mobile-Backend,acr-0c2e265,2026-06,0.0,167.2,334519,110.39,Container Registry,Docker image registry
+Customer-Portal,blob-0df2180,2026-06,0.0,2846.9,7117214,462.61,Blob Storage,Media content
+Production-Secondary,eh-0eec514,2026-06,650.0,0.0,27082407,296.55,Event Hubs,Standard throughput units
+Partner-Integration,ado-0c66978,2026-06,0.0,86.4,0,21.6,Azure DevOps,Artifacts storage
+Partner-Integration,redis-0765770,2026-06,601.0,0.0,0,731.31,Azure Cache for Redis,Premium P1 cache
+Internal-Tools,aks-0672283,2026-06,771.8,0.0,0,3473.03,AKS,Production K8s cluster
+Partner-Integration,sqldb-0979792,2026-06,1044.3,362.6,0,1747.44,SQL Database,Standard S3 production
+Production-Main,blob-1073292,2026-06,0.0,2651.4,7070299,344.68,Blob Storage,Build artifacts
+Analytics-Platform,kv-1126150,2026-06,0.0,0.0,603827,1.81,Key Vault,Certificate store
+Production-Main,app-0623118,2026-06,539.8,0.0,0,656.67,App Service,API app P2v3
+Finance-Systems,sentinel-0552744,2026-06,0.0,0.0,108493068,2712.32,Microsoft Sentinel,SIEM detection
+Mobile-Backend,vm-0959284,2026-06,626.7,0.0,0,190.64,Virtual Machines,B2s development VM
+Partner-Integration,sqldb-09c3873,2026-06,1109.3,385.3,0,1856.26,SQL Database,Standard S3 production
+Production-Main,kv-0bab992,2026-06,0.0,0.0,2652318,7.96,Key Vault,Secrets management
+DevOps-Central,sentinel-0c65933,2026-06,0.0,0.0,128075986,3201.9,Microsoft Sentinel,SIEM detection
+Shared-Services,ado-0a55808,2026-06,485.8,0.0,0,242.86,Azure DevOps,Pipelines hosted
+Shared-Services,fd-0f31203,2026-06,0.0,0.0,73535358,551.53,Front Door,Global load balancer
+Shared-Services,ado-0734847,2026-06,458.1,0.0,0,229.01,Azure DevOps,Pipelines hosted
+Production-Secondary,aks-0c9d452,2026-06,279.9,0.0,0,419.88,AKS,Dev K8s cluster
+DR-Recovery,kv-0f82870,2026-06,0.0,0.0,3388819,10.16,Key Vault,Secrets management
+Finance-Systems,blob-0f7e871,2026-06,0.0,7800.0,77997,233.99,Blob Storage,Backup storage
+DR-Recovery,sqldb-02f6848,2026-06,873.3,303.2,0,1461.31,SQL Database,Standard S3 production
+Production-Main,vm-003e151,2026-06,781.4,0.0,0,237.66,Virtual Machines,B2s development VM
+Finance-Systems,appi-1002402,2026-06,0.0,0.0,55629032,695.37,Application Insights,APM telemetry
+Production-Secondary,acr-1141721,2026-06,0.0,188.0,375809,124.02,Container Registry,Docker image registry
+DevOps-Central,appi-0cb4375,2026-06,0.0,0.0,14238081,177.98,Application Insights,Custom metrics
+Customer-Portal,cosmos-0447788,2026-06,809.6,56.2,16867366,548.19,Cosmos DB,Config store
+Partner-Integration,ado-092b573,2026-06,685.1,0.0,0,342.59,Azure DevOps,Pipelines hosted
+Shared-Services,ado-1140484,2026-06,0.0,111.2,0,27.79,Azure DevOps,Artifacts storage
+Shared-Services,fd-0560173,2026-06,0.0,0.0,63753262,478.16,Front Door,Global load balancer
+DevOps-Central,redis-09e7408,2026-06,767.4,0.0,0,933.6,Azure Cache for Redis,Premium P1 cache
+DevOps-Central,blob-00da581,2026-06,0.0,11026.7,4135015,585.79,Blob Storage,Data lake storage
+DevOps-Central,redis-1190753,2026-06,687.7,0.0,0,836.73,Azure Cache for Redis,Premium P1 cache
+DevOps-Central,kv-0e1b913,2026-06,0.0,0.0,291780,0.89,Key Vault,Certificate store
+DR-Recovery,kv-0613428,2026-06,0.0,0.0,2622830,7.87,Key Vault,Secrets management
+Internal-Tools,ado-02a5507,2026-06,0.0,92.0,0,23.0,Azure DevOps,Artifacts storage
+Finance-Systems,redis-0210457,2026-06,663.8,0.0,0,336.5,Azure Cache for Redis,Standard C2 cache
+DevOps-Central,vm-071c986,2026-06,699.6,0.0,0,1702.4,Virtual Machines,D8s v3 application server
+Production-Main,eh-0cf0769,2026-06,668.3,0.0,27845141,304.91,Event Hubs,Standard throughput units
+Shared-Services,cosmos-0e93637,2026-06,671.3,93.2,23307687,874.04,Cosmos DB,Event store
+Finance-Systems,func-0826413,2026-06,0.0,0.0,6301596,94.53,Azure Functions,API handlers
+Shared-Services,ado-0b78468,2026-06,428.5,0.0,0,214.23,Azure DevOps,Pipelines hosted
+Mobile-Backend,acr-0b12701,2026-06,0.0,207.6,415181,137.01,Container Registry,Docker image registry
+Finance-Systems,sentinel-05e7563,2026-06,0.0,0.0,104673346,2616.83,Microsoft Sentinel,SIEM detection
+Customer-Portal,app-06c7409,2026-06,720.4,0.0,0,876.55,App Service,API app P2v3
+Customer-Portal,blob-0d44180,2026-06,0.0,2425.9,6064710,394.2,Blob Storage,Media content
+Production-Main,vm-109b381,2026-06,941.2,0.0,0,1336.51,Virtual Machines,F4s v2 compute node
+Analytics-Platform,aks-00be403,2026-06,461.8,0.0,0,692.73,AKS,Dev K8s cluster
+Production-Secondary,ado-06e5155,2026-06,0.0,115.6,0,28.89,Azure DevOps,Artifacts storage
+Finance-Systems,kv-0223506,2026-06,0.0,0.0,2796040,8.39,Key Vault,Secrets management
+Data-Science,blob-0d06742,2026-06,0.0,2257.6,6020181,293.48,Blob Storage,Build artifacts
+Mobile-Backend,vm-0caa975,2026-06,738.5,0.0,0,898.47,Virtual Machines,D4s v3 CI runner
+Finance-Systems,eh-0ee6804,2026-06,617.2,0.0,25717168,281.6,Event Hubs,Standard throughput units
+Partner-Integration,blob-03ae877,2026-06,0.0,3656.0,9749290,475.28,Blob Storage,Build artifacts
+Finance-Systems,redis-0b0d589,2026-06,671.1,0.0,0,340.18,Azure Cache for Redis,Standard C2 cache
+Customer-Portal,cosmos-0eb5141,2026-06,535.6,37.2,11159034,362.67,Cosmos DB,Config store
+DR-Recovery,sqldb-088f209,2026-06,857.5,297.7,0,1434.86,SQL Database,Standard S3 production
+Partner-Integration,azmon-05c4257,2026-06,0.0,263.8,35177263,373.77,Azure Monitor,Logs and metrics
+Partner-Integration,sqldb-0cdc909,2026-06,1105.9,384.0,0,1850.57,SQL Database,Standard S3 production
+Shared-Services,app-0c91462,2026-06,928.9,0.0,0,565.08,App Service,Web app P1v3
+Customer-Portal,blob-025a526,2026-06,0.0,5468.4,0,546.84,Blob Storage,Security audit logs
+Partner-Integration,azmon-0704778,2026-06,0.0,255.4,34046345,361.75,Azure Monitor,Logs and metrics
+Shared-Services,cosmos-04a6756,2026-06,609.9,84.7,21177107,794.14,Cosmos DB,Event store
+Production-Secondary,eh-006c756,2026-06,644.7,0.0,26861624,294.13,Event Hubs,Standard throughput units
+Production-Secondary,blob-0a2b284,2026-06,0.0,2531.0,6327319,411.28,Blob Storage,Media content
+Production-Secondary,app-0915380,2026-06,721.4,0.0,0,109.71,App Service,Web app B1
+Data-Science,cosmos-0759587,2026-06,719.4,50.0,14989104,487.14,Cosmos DB,Config store
+Customer-Portal,cosmos-0c5f842,2026-06,701.0,48.7,14604767,474.66,Cosmos DB,Config store
+Security-Ops,sqldb-1117748,2026-06,892.0,61.9,0,185.4,SQL Database,Basic dev database
+Partner-Integration,azmon-0a12660,2026-06,0.0,187.6,25022321,265.87,Azure Monitor,Logs and metrics
+DevOps-Central,appi-0de6691,2026-06,0.0,0.0,16493584,206.17,Application Insights,Custom metrics
+Production-Main,aks-0020880,2026-06,1162.1,0.0,0,1743.09,AKS,Staging K8s cluster
+Production-Main,fd-100f700,2026-06,0.0,0.0,54566773,409.25,Front Door,Global load balancer
+Partner-Integration,redis-0b16352,2026-06,689.8,0.0,0,349.67,Azure Cache for Redis,Standard C2 cache
+DevOps-Central,app-00ec349,2026-06,998.0,0.0,0,151.79,App Service,Web app B1
+DevOps-Central,vm-0fba688,2026-06,775.9,0.0,0,236.03,Virtual Machines,B2s development VM
+Mobile-Backend,vm-0342261,2026-06,564.4,0.0,0,171.68,Virtual Machines,B2s development VM
+Customer-Portal,acr-0430482,2026-06,0.0,276.2,552337,182.27,Container Registry,Docker image registry
+Partner-Integration,sqldb-0a6e846,2026-06,783.9,544.3,0,3179.1,SQL Database,Premium P1 analytics
+Production-Secondary,cosmos-068d137,2026-06,757.2,210.3,42068422,1709.03,Cosmos DB,User data store
+Production-Secondary,redis-043b543,2026-06,954.8,0.0,0,484.02,Azure Cache for Redis,Standard C2 cache
+Mobile-Backend,vm-0f2d973,2026-06,822.3,0.0,0,3001.54,Virtual Machines,E8s v3 memory-optimized
+Production-Secondary,aks-0ef2938,2026-06,1299.3,0.0,0,1948.92,AKS,Staging K8s cluster
+Production-Secondary,aks-0056966,2026-06,315.3,0.0,0,472.92,AKS,Dev K8s cluster
+Partner-Integration,sb-0892421,2026-06,642.4,0.0,8922134,488.49,Service Bus,Premium messaging
+Internal-Tools,blob-06fc172,2026-06,0.0,5998.0,0,599.8,Blob Storage,Security audit logs
+DR-Recovery,redis-02f0691,2026-06,750.7,0.0,0,913.34,Azure Cache for Redis,Premium P1 cache
+Shared-Services,app-0bad270,2026-06,1093.0,0.0,0,1329.78,App Service,API app P2v3
+DevOps-Central,appi-102a552,2026-06,0.0,0.0,16753637,209.43,Application Insights,Custom metrics
+Internal-Tools,blob-029a273,2026-06,0.0,11003.7,110037,330.11,Blob Storage,Backup storage
+DevOps-Central,blob-05b0338,2026-06,0.0,8376.5,83765,251.29,Blob Storage,Backup storage
+Internal-Tools,blob-05f5277,2026-06,0.0,4064.6,10838837,528.39,Blob Storage,Build artifacts
+DR-Recovery,appi-0733593,2026-06,0.0,0.0,55521697,694.02,Application Insights,APM telemetry
+Production-Secondary,appi-099b256,2026-06,0.0,0.0,41304002,516.3,Application Insights,APM telemetry
+Data-Science,cosmos-0157534,2026-06,727.3,50.5,15152686,492.46,Cosmos DB,Config store
+Production-Secondary,sentinel-006a297,2026-06,0.0,0.0,71656510,1791.41,Microsoft Sentinel,SIEM detection
+DevOps-Central,kv-0b6f244,2026-06,0.0,0.0,397361,1.2,Key Vault,Certificate store
+Production-Main,aks-07bf182,2026-06,1294.4,0.0,0,1941.61,AKS,Staging K8s cluster
+Customer-Portal,app-0950773,2026-06,800.7,0.0,0,974.14,App Service,API app P2v3
+Customer-Portal,eh-0f06905,2026-06,782.8,0.0,32617503,357.16,Event Hubs,Standard throughput units
+Production-Secondary,acr-0066906,2026-06,0.0,221.7,443381,146.32,Container Registry,Docker image registry
+Production-Main,vm-0572465,2026-06,616.7,0.0,0,375.16,Virtual Machines,D2s v3 utility server
+Shared-Services,cosmos-10bd365,2026-06,757.0,105.1,26281927,985.58,Cosmos DB,Event store
+Internal-Tools,redis-0ed3348,2026-06,597.6,0.0,0,302.97,Azure Cache for Redis,Standard C2 cache
+Internal-Tools,vm-07f3327,2026-06,702.1,0.0,0,427.12,Virtual Machines,D2s v3 utility server
+Data-Science,cosmos-0159320,2026-06,712.7,198.0,39597144,1608.63,Cosmos DB,User data store
+Finance-Systems,func-107c756,2026-06,0.0,0.0,6417127,96.26,Azure Functions,API handlers
+Finance-Systems,aks-0214143,2026-06,288.9,0.0,0,433.37,AKS,Dev K8s cluster
+Finance-Systems,app-0227237,2026-06,952.2,0.0,0,1158.49,App Service,API app P2v3
+Finance-Systems,ado-0925803,2026-06,442.2,0.0,0,221.1,Azure DevOps,Pipelines hosted
+Finance-Systems,blob-020a462,2026-06,0.0,9396.3,93962,281.89,Blob Storage,Backup storage
+Analytics-Platform,kv-05dc790,2026-06,0.0,0.0,1637731,4.91,Key Vault,Secrets management
+Data-Science,blob-0d8d618,2026-06,0.0,2356.8,5892158,382.99,Blob Storage,Media content
+Shared-Services,fd-0492244,2026-06,0.0,0.0,65628139,492.22,Front Door,Global load balancer
+Mobile-Backend,sb-10ff514,2026-06,766.4,0.0,10644826,582.8,Service Bus,Premium messaging
+Shared-Services,fd-1046720,2026-06,0.0,0.0,66447277,498.37,Front Door,Global load balancer
+Customer-Portal,sentinel-110d988,2026-06,0.0,0.0,92631014,2315.78,Microsoft Sentinel,SIEM detection
+Mobile-Backend,kv-033d920,2026-06,0.0,0.0,460253,1.38,Key Vault,Certificate store
+Shared-Services,azmon-01be752,2026-06,0.0,225.8,30101152,319.82,Azure Monitor,Logs and metrics
+Data-Science,cosmos-0158552,2026-06,748.8,104.0,25999079,974.97,Cosmos DB,Event store
+DevOps-Central,app-0b0a111,2026-06,685.3,0.0,0,833.78,App Service,API app P2v3
+Production-Secondary,app-0ca1591,2026-06,576.9,0.0,0,87.74,App Service,Web app B1
+DevOps-Central,sentinel-1183697,2026-06,0.0,0.0,43381975,1084.55,Microsoft Sentinel,Log analytics
+DevOps-Central,blob-096b361,2026-06,0.0,4282.4,0,428.24,Blob Storage,Security audit logs
+Production-Secondary,kv-0a1f915,2026-06,0.0,0.0,2483699,7.45,Key Vault,Secrets management
+Finance-Systems,blob-04ec237,2026-06,0.0,6955.2,69550,208.65,Blob Storage,Backup storage
+Shared-Services,app-0707433,2026-06,1033.8,0.0,0,628.88,App Service,Web app P1v3
+Partner-Integration,azmon-0b82239,2026-06,0.0,219.0,29205217,310.31,Azure Monitor,Logs and metrics
+DevOps-Central,blob-0431268,2026-06,0.0,4942.0,0,494.2,Blob Storage,Security audit logs
+Production-Secondary,app-0680416,2026-06,663.8,0.0,0,100.95,App Service,Web app B1
+Customer-Portal,sqldb-0aef333,2026-06,624.8,434.0,0,2534.18,SQL Database,Premium P1 analytics
+Production-Secondary,redis-1115354,2026-06,878.5,0.0,0,1068.83,Azure Cache for Redis,Premium P1 cache
+Finance-Systems,sqldb-0fad517,2026-06,928.6,322.5,0,1553.79,SQL Database,Standard S3 production
+DR-Recovery,fd-05f1355,2026-06,0.0,0.0,80280298,602.1,Front Door,Global load balancer
+Security-Ops,sqldb-116a549,2026-06,949.5,65.9,0,197.35,SQL Database,Basic dev database
+Production-Secondary,blob-0837822,2026-06,0.0,6827.8,2560431,362.72,Blob Storage,Data lake storage
+Shared-Services,ado-01c4881,2026-06,0.0,96.0,0,24.01,Azure DevOps,Artifacts storage
+DevOps-Central,aks-0e16624,2026-06,437.9,0.0,0,656.98,AKS,Dev K8s cluster
+Mobile-Backend,sb-0b13801,2026-06,0.0,0.0,15056795,37.64,Service Bus,Standard messaging
+Shared-Services,appi-0edc199,2026-06,0.0,0.0,42120459,526.51,Application Insights,APM telemetry
+Production-Secondary,blob-0a70809,2026-06,0.0,16738.2,41845,133.9,Blob Storage,Archive tier
+DevOps-Central,vm-0adb335,2026-06,703.6,0.0,0,1712.01,Virtual Machines,D8s v3 application server
+Production-Secondary,app-0db8839,2026-06,616.6,0.0,0,93.77,App Service,Web app B1
+Customer-Portal,eh-1049771,2026-06,0.0,533.8,0,133.46,Event Hubs,Capture to storage
+Shared-Services,ado-0add561,2026-06,0.0,97.7,0,24.42,Azure DevOps,Artifacts storage
+Shared-Services,aks-01c2470,2026-06,414.6,0.0,0,621.87,AKS,Dev K8s cluster
+Production-Secondary,sqldb-09a8374,2026-06,474.8,164.9,0,794.47,SQL Database,Standard S3 production
+Shared-Services,vm-0ea9500,2026-06,925.5,0.0,0,3378.21,Virtual Machines,E8s v3 memory-optimized
+Shared-Services,fd-0768299,2026-06,0.0,0.0,65450200,490.89,Front Door,Global load balancer
+Mobile-Backend,vm-081d742,2026-06,926.2,0.0,0,1126.89,Virtual Machines,D4s v3 CI runner
+DevOps-Central,appi-076d459,2026-06,0.0,0.0,69809915,872.62,Application Insights,APM telemetry
+Finance-Systems,aks-1127320,2026-06,253.5,0.0,0,380.2,AKS,Dev K8s cluster
+Shared-Services,ado-01c3479,2026-06,564.2,0.0,0,282.08,Azure DevOps,Pipelines hosted
+Production-Secondary,blob-0981146,2026-06,0.0,10821.0,108209,324.63,Blob Storage,Backup storage
+Production-Secondary,blob-0488174,2026-06,0.0,2556.3,6816785,332.32,Blob Storage,Build artifacts
+Finance-Systems,app-0548668,2026-06,1018.0,0.0,0,154.82,App Service,Web app B1
+Partner-Integration,sqldb-0665143,2026-06,966.2,335.5,0,1616.74,SQL Database,Standard S3 production
+Customer-Portal,sentinel-0682220,2026-06,0.0,0.0,52274287,1306.85,Microsoft Sentinel,Log analytics
+Shared-Services,ado-0850519,2026-06,0.0,75.4,0,18.85,Azure DevOps,Artifacts storage
+Partner-Integration,redis-0663905,2026-06,668.8,0.0,0,339.01,Azure Cache for Redis,Standard C2 cache
+Production-Secondary,sqldb-006f710,2026-06,523.3,181.7,0,875.62,SQL Database,Standard S3 production
+Production-Secondary,redis-0f93554,2026-06,1054.4,0.0,0,534.49,Azure Cache for Redis,Standard C2 cache
+Production-Main,aks-0ee4408,2026-06,1229.0,0.0,0,1843.4,AKS,Staging K8s cluster
+DevOps-Central,vm-00dd933,2026-06,980.4,0.0,0,596.4,Virtual Machines,D2s v3 utility server
+Production-Main,vm-071d819,2026-06,766.6,0.0,0,1865.25,Virtual Machines,D8s v3 application server
+Customer-Portal,fd-048a408,2026-06,0.0,0.0,71956257,539.67,Front Door,Global load balancer
+DR-Recovery,fd-0d5c299,2026-06,0.0,0.0,83812162,628.59,Front Door,Global load balancer
+Production-Secondary,sqldb-0772825,2026-06,485.1,168.5,0,811.8,SQL Database,Standard S3 production
+Customer-Portal,eh-0467686,2026-06,0.0,629.2,0,157.3,Event Hubs,Capture to storage
+Mobile-Backend,vm-08ed373,2026-06,542.7,0.0,0,4952.29,Virtual Machines,NC6s v3 GPU VM
+DevOps-Central,aks-10dc270,2026-06,331.2,0.0,0,496.75,AKS,Dev K8s cluster
+DR-Recovery,eh-0842602,2026-06,0.0,468.3,0,117.06,Event Hubs,Capture to storage
+Analytics-Platform,eh-09e2725,2026-06,0.0,417.9,0,104.49,Event Hubs,Capture to storage
+Partner-Integration,fd-03b3380,2026-06,0.0,0.0,71594625,536.96,Front Door,Global load balancer
+Production-Secondary,blob-0e0e879,2026-06,0.0,14664.3,36660,117.31,Blob Storage,Archive tier
+Internal-Tools,aks-0697488,2026-06,248.4,0.0,0,372.63,AKS,Dev K8s cluster
+Customer-Portal,sb-08f0351,2026-06,701.6,0.0,9743314,533.45,Service Bus,Premium messaging
+Customer-Portal,redis-0d24250,2026-06,985.3,0.0,0,499.52,Azure Cache for Redis,Standard C2 cache
+Finance-Systems,sentinel-0ce7822,2026-06,0.0,0.0,99164237,2479.1,Microsoft Sentinel,SIEM detection
+Shared-Services,func-1016313,2026-06,0.0,0.0,3383535,50.76,Azure Functions,Webhook processor
+Production-Secondary,redis-0c21685,2026-06,980.1,0.0,0,1192.45,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,sqldb-06a0823,2026-06,600.6,208.6,0,1004.99,SQL Database,Standard S3 production
+Internal-Tools,aks-04c1633,2026-06,1419.1,0.0,0,2128.63,AKS,Staging K8s cluster
+Production-Secondary,app-1121363,2026-06,1290.5,0.0,0,785.0,App Service,Web app P1v3
+Production-Main,aks-0b11718,2026-06,584.0,0.0,0,2628.32,AKS,Production K8s cluster
+Production-Secondary,sqldb-04cb316,2026-06,465.8,161.8,0,779.51,SQL Database,Standard S3 production
+Finance-Systems,sentinel-0984463,2026-06,0.0,0.0,126414339,3160.35,Microsoft Sentinel,SIEM detection
+Production-Secondary,acr-0a81124,2026-06,0.0,243.5,487055,160.73,Container Registry,Docker image registry
+DevOps-Central,blob-060f173,2026-06,0.0,4565.8,0,456.58,Blob Storage,Security audit logs
+DevOps-Central,appi-0710252,2026-06,0.0,0.0,55774901,697.18,Application Insights,APM telemetry
+Mobile-Backend,sqldb-0f79775,2026-06,884.1,307.0,0,1479.42,SQL Database,Standard S3 production
+Data-Science,blob-0fc5519,2026-06,0.0,10701.3,107011,321.04,Blob Storage,Backup storage
+Production-Secondary,aks-05a2662,2026-06,338.4,0.0,0,507.64,AKS,Dev K8s cluster
+DevOps-Central,sentinel-0844469,2026-06,0.0,0.0,44059364,1101.49,Microsoft Sentinel,Log analytics
+Shared-Services,fd-0c6c604,2026-06,0.0,0.0,66694460,500.22,Front Door,Global load balancer
+Finance-Systems,blob-0bfe263,2026-06,0.0,6930.0,69298,207.9,Blob Storage,Backup storage
+Production-Secondary,acr-0cdd824,2026-06,0.0,212.5,424928,140.23,Container Registry,Docker image registry
+Mobile-Backend,vm-09c7745,2026-06,816.6,0.0,0,993.49,Virtual Machines,D4s v3 CI runner
+Shared-Services,app-0e7a761,2026-06,1037.7,0.0,0,1262.53,App Service,API app P2v3
+Shared-Services,kv-01cc830,2026-06,0.0,0.0,410429,1.23,Key Vault,Certificate store
+Analytics-Platform,kv-06cd417,2026-06,0.0,0.0,1821425,5.46,Key Vault,Secrets management
+Production-Secondary,blob-0fe2396,2026-06,0.0,2510.9,6695483,326.4,Blob Storage,Build artifacts
+Production-Main,vm-0038294,2026-06,629.3,0.0,0,765.68,Virtual Machines,D4s v3 CI runner
+Customer-Portal,cosmos-0ea0245,2026-06,615.3,85.5,21363719,801.13,Cosmos DB,Event store
+Shared-Services,kv-0adc624,2026-06,0.0,0.0,390650,1.17,Key Vault,Certificate store
+Partner-Integration,redis-0d95457,2026-06,631.5,0.0,0,768.42,Azure Cache for Redis,Premium P1 cache
+Mobile-Backend,acr-0340268,2026-06,0.0,202.2,404393,133.45,Container Registry,Docker image registry
+Production-Main,cosmos-0e2c318,2026-06,737.2,102.4,25598104,959.93,Cosmos DB,Event store
+Production-Main,sentinel-0deb616,2026-06,0.0,0.0,77006720,1925.17,Microsoft Sentinel,SIEM detection
+Shared-Services,vm-0fe0559,2026-06,988.9,0.0,0,1203.18,Virtual Machines,D4s v3 CI runner
+Customer-Portal,vm-0b93566,2026-06,864.3,0.0,0,262.89,Virtual Machines,B2s development VM
+Mobile-Backend,aks-046c326,2026-06,1002.7,0.0,0,1504.06,AKS,Staging K8s cluster
+Shared-Services,sb-111b141,2026-06,577.9,0.0,8027019,439.47,Service Bus,Premium messaging
+Partner-Integration,sb-08a4958,2026-06,606.9,0.0,8429681,461.52,Service Bus,Premium messaging
+DevOps-Central,redis-0ff6273,2026-06,696.2,0.0,0,847.07,Azure Cache for Redis,Premium P1 cache
+Customer-Portal,blob-09de529,2026-06,0.0,5990.2,0,599.02,Blob Storage,Security audit logs
+Shared-Services,vm-0b6d990,2026-06,614.6,0.0,0,2243.19,Virtual Machines,E8s v3 memory-optimized
+Mobile-Backend,sqldb-0c69847,2026-06,740.3,257.1,0,1238.85,SQL Database,Standard S3 production
+DR-Recovery,azmon-02f9948,2026-06,0.0,266.4,35519031,377.39,Azure Monitor,Logs and metrics
+Partner-Integration,azmon-0f4d156,2026-06,0.0,229.4,30584587,324.96,Azure Monitor,Logs and metrics
+Customer-Portal,sb-0267468,2026-06,0.0,0.0,18317911,45.79,Service Bus,Standard messaging
+Production-Secondary,app-0df0743,2026-06,667.4,0.0,0,101.51,App Service,Web app B1
+Production-Secondary,blob-0afc132,2026-06,0.0,2712.5,6781179,440.78,Blob Storage,Media content
+Analytics-Platform,aks-0a79530,2026-06,1225.2,0.0,0,1837.85,AKS,Staging K8s cluster
+Finance-Systems,blob-0f5c178,2026-06,0.0,2239.1,5597745,363.85,Blob Storage,Media content
+Mobile-Backend,vm-0f40851,2026-06,933.5,0.0,0,1135.76,Virtual Machines,D4s v3 CI runner
+Finance-Systems,cosmos-09b9465,2026-06,598.5,166.1,33247180,1350.66,Cosmos DB,User data store
+Customer-Portal,blob-0c6b861,2026-06,0.0,4377.8,0,437.78,Blob Storage,Security audit logs
+DevOps-Central,vm-1176875,2026-06,834.7,0.0,0,253.91,Virtual Machines,B2s development VM
+DevOps-Central,aks-0b9b612,2026-06,377.9,0.0,0,566.84,AKS,Dev K8s cluster
+Data-Science,fd-0551933,2026-06,0.0,0.0,37511988,281.34,Front Door,Global load balancer
+Finance-Systems,cosmos-021a338,2026-06,617.7,42.9,12869552,418.26,Cosmos DB,Config store
+Customer-Portal,blob-09e3556,2026-06,0.0,2680.0,6699988,435.49,Blob Storage,Media content
+DR-Recovery,appi-0b58118,2026-06,0.0,0.0,16972267,212.16,Application Insights,Custom metrics
+Mobile-Backend,vm-0433725,2026-06,816.2,0.0,0,1159.0,Virtual Machines,F4s v2 compute node
+Shared-Services,cosmos-05aa586,2026-06,661.8,91.9,22978062,861.68,Cosmos DB,Event store
+Mobile-Backend,acr-0d36117,2026-06,0.0,232.2,464312,153.22,Container Registry,Docker image registry
+Finance-Systems,blob-1130845,2026-06,0.0,9710.3,97101,291.31,Blob Storage,Backup storage
+DR-Recovery,cosmos-02ee235,2026-06,857.5,238.2,47639942,1935.37,Cosmos DB,User data store
+Customer-Portal,acr-0939368,2026-06,0.0,233.8,467565,154.3,Container Registry,Docker image registry
+Shared-Services,sb-07c5344,2026-06,527.7,0.0,7330275,401.33,Service Bus,Premium messaging
+Production-Main,app-08b7973,2026-06,531.7,0.0,0,646.84,App Service,API app P2v3
+Mobile-Backend,azmon-0d40534,2026-06,0.0,276.5,36867874,391.72,Azure Monitor,Logs and metrics
+Analytics-Platform,eh-0d75846,2026-06,630.6,0.0,26274542,287.71,Event Hubs,Standard throughput units
+Production-Secondary,kv-0ae0339,2026-06,0.0,0.0,2197479,6.59,Key Vault,Secrets management
+DevOps-Central,cosmos-00ed713,2026-06,697.3,96.9,24212755,907.98,Cosmos DB,Event store
+Customer-Portal,blob-0c5b230,2026-06,0.0,4762.0,0,476.2,Blob Storage,Security audit logs
+Mobile-Backend,sb-0ad6340,2026-06,0.0,0.0,14829328,37.07,Service Bus,Standard messaging
+Production-Secondary,aks-0bff445,2026-06,1455.6,0.0,0,2183.41,AKS,Staging K8s cluster
+Shared-Services,func-01c9726,2026-06,0.0,0.0,10123911,151.86,Azure Functions,Event processors
+Customer-Portal,app-026b326,2026-06,787.5,0.0,0,958.14,App Service,API app P2v3
+Production-Secondary,appi-0059233,2026-06,0.0,0.0,46674478,583.43,Application Insights,APM telemetry
+Mobile-Backend,vm-0cf4927,2026-06,933.3,0.0,0,2271.15,Virtual Machines,D8s v3 application server
+Mobile-Backend,vm-0b72180,2026-06,744.2,0.0,0,452.68,Virtual Machines,D2s v3 utility server
+DevOps-Central,vm-00e0218,2026-06,631.2,0.0,0,1535.94,Virtual Machines,D8s v3 application server
+Customer-Portal,app-0f24784,2026-06,686.4,0.0,0,835.1,App Service,API app P2v3
+Production-Main,blob-095d284,2026-06,0.0,2609.5,6958578,339.23,Blob Storage,Build artifacts
+Customer-Portal,cosmos-06d4992,2026-06,762.3,52.9,15881085,516.14,Cosmos DB,Config store
+DevOps-Central,app-0c88463,2026-06,945.0,0.0,0,143.72,App Service,Web app B1
+Finance-Systems,app-0778754,2026-06,1151.2,0.0,0,175.08,App Service,Web app B1
+Production-Secondary,blob-07ab764,2026-06,0.0,2224.9,5933011,289.23,Blob Storage,Build artifacts
+Finance-Systems,blob-0e03178,2026-06,0.0,2407.4,6018551,391.2,Blob Storage,Media content
+Customer-Portal,cosmos-0404793,2026-06,734.5,51.0,15303292,497.36,Cosmos DB,Config store
+Customer-Portal,fd-0908832,2026-06,0.0,0.0,63530865,476.48,Front Door,Global load balancer
+Shared-Services,sb-0bf8929,2026-06,535.2,0.0,7434550,407.04,Service Bus,Premium messaging
+Shared-Services,ado-0997765,2026-06,512.2,0.0,0,256.04,Azure DevOps,Pipelines hosted
+Analytics-Platform,kv-00c2112,2026-06,0.0,0.0,1543622,4.63,Key Vault,Secrets management
+Mobile-Backend,vm-0348464,2026-06,629.1,0.0,0,2296.22,Virtual Machines,E8s v3 memory-optimized
+Shared-Services,vm-01bb143,2026-06,681.2,0.0,0,207.19,Virtual Machines,B2s development VM
+DevOps-Central,appi-06d6774,2026-06,0.0,0.0,15219563,190.25,Application Insights,Custom metrics
+Internal-Tools,aks-05a1845,2026-06,232.1,0.0,0,348.2,AKS,Dev K8s cluster
+Internal-Tools,aks-0295462,2026-06,258.6,0.0,0,387.93,AKS,Dev K8s cluster
+Production-Secondary,blob-0e56225,2026-06,0.0,13476.4,33690,107.81,Blob Storage,Archive tier
+Customer-Portal,func-1175826,2026-06,0.0,0.0,2855822,42.84,Azure Functions,Webhook processor
+DevOps-Central,kv-073f461,2026-06,0.0,0.0,326406,0.99,Key Vault,Certificate store
+DevOps-Central,sentinel-0612533,2026-06,0.0,0.0,118423731,2960.6,Microsoft Sentinel,SIEM detection
+Production-Secondary,acr-0964375,2026-06,0.0,245.2,490352,161.82,Container Registry,Docker image registry
+Production-Main,aks-0a3c748,2026-06,1111.5,0.0,0,1667.21,AKS,Staging K8s cluster
+Finance-Systems,vm-04f6533,2026-06,824.9,0.0,0,2007.11,Virtual Machines,D8s v3 application server
+Finance-Systems,aks-04b2652,2026-06,1314.8,0.0,0,1972.29,AKS,Staging K8s cluster
+DevOps-Central,vm-0f6a520,2026-06,935.3,0.0,0,568.96,Virtual Machines,D2s v3 utility server
+DevOps-Central,blob-044f248,2026-06,0.0,9456.3,3546112,502.36,Blob Storage,Data lake storage
+Finance-Systems,blob-020b988,2026-06,0.0,2346.2,5865540,381.26,Blob Storage,Media content
+DevOps-Central,appi-0fc8335,2026-06,0.0,0.0,72802274,910.02,Application Insights,APM telemetry
+Production-Main,ado-0040969,2026-06,647.3,0.0,0,323.63,Azure DevOps,Pipelines hosted
+Customer-Portal,kv-1009619,2026-06,0.0,0.0,401166,1.2,Key Vault,Certificate store
+Production-Secondary,redis-0b3e355,2026-06,1000.0,0.0,0,1216.67,Azure Cache for Redis,Premium P1 cache
+Shared-Services,fd-0ad2606,2026-06,0.0,0.0,56499502,423.75,Front Door,Global load balancer
+Customer-Portal,cosmos-04b7344,2026-06,626.7,43.5,13056424,424.34,Cosmos DB,Config store
+Customer-Portal,sb-0266467,2026-06,773.0,0.0,10735550,587.77,Service Bus,Premium messaging
+Shared-Services,vm-0dc1116,2026-06,659.2,0.0,0,1202.97,Virtual Machines,E4s v3 SIEM collector
+Production-Secondary,app-0bbf989,2026-06,701.0,0.0,0,106.61,App Service,Web app B1
+Finance-Systems,sentinel-0f92956,2026-06,0.0,0.0,121142740,3028.57,Microsoft Sentinel,SIEM detection
+Production-Main,sentinel-0d04759,2026-06,0.0,0.0,51146645,1278.67,Microsoft Sentinel,Log analytics
+Customer-Portal,func-100b422,2026-06,0.0,0.0,3071483,46.07,Azure Functions,Webhook processor
+Analytics-Platform,eh-0f6c240,2026-06,0.0,325.9,0,81.49,Event Hubs,Capture to storage
+Production-Main,aks-0c17786,2026-06,670.1,0.0,0,3015.6,AKS,Production K8s cluster
+Production-Main,aks-0021897,2026-06,585.4,0.0,0,2634.39,AKS,Production K8s cluster
+Production-Main,blob-0030160,2026-06,0.0,23909.8,59774,191.28,Blob Storage,Archive tier
+Internal-Tools,blob-0d60166,2026-06,0.0,11140.9,111409,334.23,Blob Storage,Backup storage
+Analytics-Platform,eh-00c5982,2026-06,631.2,0.0,26302046,288.01,Event Hubs,Standard throughput units
+Analytics-Platform,kv-051b219,2026-06,0.0,0.0,1600959,4.8,Key Vault,Secrets management
+Mobile-Backend,azmon-08f3239,2026-06,0.0,300.1,40018048,425.19,Azure Monitor,Logs and metrics
+Shared-Services,func-0949366,2026-06,0.0,0.0,8663519,129.95,Azure Functions,Event processors
+Partner-Integration,azmon-0fe9839,2026-06,0.0,230.6,30744417,326.67,Azure Monitor,Logs and metrics
+DevOps-Central,vm-00dc778,2026-06,753.7,0.0,0,1375.53,Virtual Machines,E4s v3 SIEM collector
+Production-Main,sentinel-10d5584,2026-06,0.0,0.0,82342242,2058.56,Microsoft Sentinel,SIEM detection
+Customer-Portal,vm-0db6424,2026-06,543.8,0.0,0,992.36,Virtual Machines,E4s v3 SIEM collector
+Analytics-Platform,eh-0929123,2026-06,493.7,0.0,20575249,225.3,Event Hubs,Standard throughput units
+Shared-Services,sb-0606905,2026-06,616.9,0.0,8568667,469.13,Service Bus,Premium messaging
+Partner-Integration,azmon-058d378,2026-06,0.0,277.3,36972886,392.84,Azure Monitor,Logs and metrics
+Production-Main,blob-0b36257,2026-06,0.0,2959.5,7892033,384.74,Blob Storage,Build artifacts
+Partner-Integration,sb-0e5f113,2026-06,615.9,0.0,8554015,468.33,Service Bus,Premium messaging
+Customer-Portal,cosmos-0a9e872,2026-06,989.7,68.6,20617918,670.09,Cosmos DB,Config store
+Mobile-Backend,vm-0343411,2026-06,911.0,0.0,0,2216.84,Virtual Machines,D8s v3 application server
+Shared-Services,app-01c0794,2026-06,931.7,0.0,0,566.8,App Service,Web app P1v3
+Finance-Systems,app-0541727,2026-06,944.0,0.0,0,1148.53,App Service,API app P2v3
+Internal-Tools,blob-0fa5145,2026-06,0.0,3231.4,8617174,420.09,Blob Storage,Build artifacts
+Partner-Integration,sqldb-0be5862,2026-06,1181.3,410.2,0,1976.64,SQL Database,Standard S3 production
+DR-Recovery,eh-09d6470,2026-06,0.0,509.7,0,127.41,Event Hubs,Capture to storage
+DevOps-Central,redis-055b854,2026-06,869.2,0.0,0,1057.57,Azure Cache for Redis,Premium P1 cache
+Production-Main,vm-0d79829,2026-06,419.9,0.0,0,3831.65,Virtual Machines,NC6s v3 GPU VM
+Internal-Tools,cosmos-02a2437,2026-06,909.3,126.3,31571338,1183.93,Cosmos DB,Event store
+Production-Main,aks-107b512,2026-06,1350.7,0.0,0,2026.08,AKS,Staging K8s cluster
+Production-Secondary,sqldb-118a991,2026-06,483.6,167.9,0,809.18,SQL Database,Standard S3 production
+Customer-Portal,azmon-0d29230,2026-06,0.0,210.0,28001450,297.52,Azure Monitor,Logs and metrics
+Mobile-Backend,azmon-0dc6635,2026-06,0.0,280.0,37337574,396.71,Azure Monitor,Logs and metrics
+Production-Secondary,sb-0d13494,2026-06,823.6,0.0,11439058,626.29,Service Bus,Premium messaging
+Production-Secondary,redis-0875552,2026-06,781.1,0.0,0,950.42,Azure Cache for Redis,Premium P1 cache
+Partner-Integration,sqldb-0577751,2026-06,914.5,317.5,0,1530.18,SQL Database,Standard S3 production
+DR-Recovery,appi-0faf736,2026-06,0.0,0.0,23689181,296.12,Application Insights,Custom metrics
+Finance-Systems,cosmos-05bd564,2026-06,537.1,149.1,29837585,1212.15,Cosmos DB,User data store
+Finance-Systems,cosmos-0bc5468,2026-06,419.3,116.4,23293420,946.29,Cosmos DB,User data store
+Production-Secondary,sqldb-0afe717,2026-06,445.1,154.5,0,744.77,SQL Database,Standard S3 production
+Production-Secondary,sqldb-0d9f715,2026-06,480.0,166.6,0,803.26,SQL Database,Standard S3 production
+DevOps-Central,blob-0a8f732,2026-06,0.0,4734.9,0,473.49,Blob Storage,Security audit logs
+DevOps-Central,sqldb-0d3e220,2026-06,685.9,238.1,0,1147.76,SQL Database,Standard S3 production
+Shared-Services,vm-05f4840,2026-06,871.1,0.0,0,1059.82,Virtual Machines,D4s v3 CI runner
+Customer-Portal,cosmos-0254162,2026-06,655.5,91.0,22758766,853.45,Cosmos DB,Event store
+Internal-Tools,appi-029f352,2026-06,0.0,0.0,17523796,219.05,Application Insights,Custom metrics
+Shared-Services,cosmos-05d3731,2026-06,574.1,79.7,19933239,747.5,Cosmos DB,Event store
+Shared-Services,vm-0446739,2026-06,740.9,0.0,0,901.37,Virtual Machines,D4s v3 CI runner
+Partner-Integration,appi-097e230,2026-06,0.0,0.0,70359052,879.49,Application Insights,APM telemetry
+Production-Main,sentinel-0036541,2026-06,0.0,0.0,76785156,1919.63,Microsoft Sentinel,SIEM detection
+Customer-Portal,eh-0699582,2026-06,0.0,547.1,0,136.77,Event Hubs,Capture to storage
+Production-Secondary,redis-0609368,2026-06,925.8,0.0,0,1126.41,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,blob-005c665,2026-06,0.0,7667.6,2875353,407.34,Blob Storage,Data lake storage
+Security-Ops,vm-0160506,2026-06,682.5,0.0,0,2491.13,Virtual Machines,E8s v3 memory-optimized
+Production-Secondary,blob-005b954,2026-06,0.0,10819.1,108191,324.57,Blob Storage,Backup storage
+Analytics-Platform,aks-05f7197,2026-06,1351.2,0.0,0,2026.84,AKS,Staging K8s cluster
+DevOps-Central,blob-00db441,2026-06,0.0,9435.7,94357,283.07,Blob Storage,Backup storage
+Customer-Portal,blob-0ee9309,2026-06,0.0,4611.8,0,461.18,Blob Storage,Security audit logs
+Finance-Systems,blob-09be448,2026-06,0.0,1962.2,4905479,318.85,Blob Storage,Media content
+Production-Main,blob-002d702,2026-06,0.0,2810.0,7493279,365.3,Blob Storage,Build artifacts
+Shared-Services,vm-01b7776,2026-06,544.4,0.0,0,993.45,Virtual Machines,E4s v3 SIEM collector
+Internal-Tools,eh-02a4811,2026-06,0.0,462.2,0,115.56,Event Hubs,Capture to storage
+Production-Main,eh-0640655,2026-06,0.0,719.9,0,179.98,Event Hubs,Capture to storage
+Finance-Systems,fd-115e311,2026-06,0.0,0.0,52694443,395.21,Front Door,Global load balancer
+Shared-Services,cosmos-0afb701,2026-06,656.6,91.2,22800007,855.0,Cosmos DB,Event store
+Finance-Systems,appi-0409195,2026-06,0.0,0.0,50603528,632.55,Application Insights,APM telemetry
+Partner-Integration,blob-03ad516,2026-06,0.0,13394.0,133940,401.82,Blob Storage,Backup storage
+DevOps-Central,vm-00de137,2026-06,591.5,0.0,0,5397.69,Virtual Machines,NC6s v3 GPU VM
+Mobile-Backend,sqldb-034a278,2026-06,917.3,318.5,0,1534.99,SQL Database,Standard S3 production
+Shared-Services,appi-01b5631,2026-06,0.0,0.0,26940346,336.75,Application Insights,Custom metrics
+Shared-Services,vm-0a13145,2026-06,721.5,0.0,0,2633.43,Virtual Machines,E8s v3 memory-optimized
+Mobile-Backend,vm-0346435,2026-06,925.3,0.0,0,1313.93,Virtual Machines,F4s v2 compute node
+Finance-Systems,func-0f8a387,2026-06,0.0,0.0,6317522,94.77,Azure Functions,API handlers
+Production-Secondary,redis-1100231,2026-06,819.8,0.0,0,997.41,Azure Cache for Redis,Premium P1 cache
+Partner-Integration,sb-0cac510,2026-06,644.5,0.0,8951569,490.1,Service Bus,Premium messaging
+Mobile-Backend,aks-0339617,2026-06,398.4,0.0,0,597.53,AKS,Dev K8s cluster
+Shared-Services,eh-0962257,2026-06,0.0,693.5,0,173.36,Event Hubs,Capture to storage
+Mobile-Backend,sb-0e69292,2026-06,0.0,0.0,16309551,40.77,Service Bus,Standard messaging
+Internal-Tools,sentinel-02a0411,2026-06,0.0,0.0,77488065,1937.2,Microsoft Sentinel,SIEM detection
+Partner-Integration,blob-03ac316,2026-06,0.0,1663.1,4157774,270.26,Blob Storage,Media content
+Internal-Tools,sentinel-0a7f164,2026-06,0.0,0.0,33431580,835.79,Microsoft Sentinel,Log analytics
+Analytics-Platform,redis-0829391,2026-06,471.3,0.0,0,573.47,Azure Cache for Redis,Premium P1 cache
+Customer-Portal,eh-0e73541,2026-06,0.0,611.5,0,152.87,Event Hubs,Capture to storage
+Shared-Services,func-091a460,2026-06,0.0,0.0,10987375,164.81,Azure Functions,API handlers
+Customer-Portal,vm-116f206,2026-06,590.7,0.0,0,1077.93,Virtual Machines,E4s v3 SIEM collector
+Customer-Portal,vm-0d1f996,2026-06,542.8,0.0,0,330.16,Virtual Machines,D2s v3 utility server
+Production-Secondary,sqldb-0917961,2026-06,428.4,148.7,0,716.85,SQL Database,Standard S3 production
+Production-Secondary,redis-0063919,2026-06,939.8,0.0,0,476.41,Azure Cache for Redis,Standard C2 cache
+Partner-Integration,appi-03a3584,2026-06,0.0,0.0,55020813,687.76,Application Insights,APM telemetry
+Shared-Services,func-042c439,2026-06,0.0,0.0,10966535,164.5,Azure Functions,API handlers
+Customer-Portal,sb-0d6e915,2026-06,0.0,0.0,15700383,39.25,Service Bus,Standard messaging
+Production-Secondary,blob-0da3800,2026-06,0.0,2738.4,7302385,355.99,Blob Storage,Build artifacts
+Production-Secondary,sqldb-0655765,2026-06,526.4,182.9,0,880.91,SQL Database,Standard S3 production
+Shared-Services,sb-0d2f609,2026-06,561.8,0.0,7804605,427.3,Service Bus,Premium messaging
+Partner-Integration,sb-103f867,2026-06,610.3,0.0,8475709,464.04,Service Bus,Premium messaging
+Internal-Tools,vm-029d382,2026-06,588.3,0.0,0,178.93,Virtual Machines,B2s development VM
+DR-Recovery,azmon-07f2353,2026-06,0.0,288.4,38450879,408.55,Azure Monitor,Logs and metrics
+Finance-Systems,func-021c663,2026-06,0.0,0.0,5629016,84.44,Azure Functions,API handlers
+DevOps-Central,sqldb-00e4234,2026-06,638.6,221.7,0,1068.58,SQL Database,Standard S3 production
+Customer-Portal,fd-0efe463,2026-06,0.0,0.0,64681090,485.1,Front Door,Global load balancer
+Internal-Tools,blob-1061535,2026-06,0.0,6644.0,0,664.4,Blob Storage,Security audit logs
+Shared-Services,func-0c05155,2026-06,0.0,0.0,9614397,144.21,Azure Functions,Event processors
+Shared-Services,appi-05e6663,2026-06,0.0,0.0,42673492,533.42,Application Insights,APM telemetry
+Production-Secondary,aks-1097469,2026-06,481.3,0.0,0,2165.74,AKS,Production K8s cluster
+Customer-Portal,blob-0a49959,2026-06,0.0,5542.5,0,554.25,Blob Storage,Security audit logs
+Internal-Tools,blob-029b273,2026-06,0.0,5898.6,0,589.86,Blob Storage,Security audit logs
+Production-Secondary,app-0bcc721,2026-06,676.8,0.0,0,102.93,App Service,Web app B1
+Production-Secondary,sqldb-0f87366,2026-06,463.0,160.7,0,774.7,SQL Database,Standard S3 production
+Production-Main,redis-0e3f197,2026-06,835.0,0.0,0,1015.9,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,blob-0944504,2026-06,0.0,11473.4,114733,344.2,Blob Storage,Backup storage
+Customer-Portal,vm-025c560,2026-06,543.9,0.0,0,992.53,Virtual Machines,E4s v3 SIEM collector
+Shared-Services,app-04bc337,2026-06,1004.8,0.0,0,611.26,App Service,Web app P1v3
+Mobile-Backend,vm-0344813,2026-06,920.5,0.0,0,1119.94,Virtual Machines,D4s v3 CI runner
+Mobile-Backend,acr-1172245,2026-06,0.0,243.1,486116,160.42,Container Registry,Docker image registry
+Shared-Services,sb-0506723,2026-06,605.4,0.0,8408328,460.35,Service Bus,Premium messaging
+Internal-Tools,blob-07c1390,2026-06,0.0,3338.1,8901490,433.95,Blob Storage,Build artifacts
+Production-Secondary,blob-109a113,2026-06,0.0,7197.8,2699199,382.38,Blob Storage,Data lake storage
+Production-Secondary,aks-07b8164,2026-06,501.9,0.0,0,2258.46,AKS,Production K8s cluster
+Production-Secondary,blob-0df7960,2026-06,0.0,2081.1,5202816,338.19,Blob Storage,Media content
+Production-Secondary,cosmos-0794762,2026-06,584.6,81.2,20298539,761.19,Cosmos DB,Event store
+Finance-Systems,blob-0e84394,2026-06,0.0,8398.3,83980,251.94,Blob Storage,Backup storage
+DR-Recovery,appi-0c93294,2026-06,0.0,0.0,15436945,192.97,Application Insights,Custom metrics
+Partner-Integration,ado-1163263,2026-06,676.1,0.0,0,338.1,Azure DevOps,Pipelines hosted
+Data-Science,appi-014d674,2026-06,0.0,0.0,20007573,250.09,Application Insights,Custom metrics
+Customer-Portal,func-025f994,2026-06,0.0,0.0,561022,8.42,Azure Functions,Timer triggers
+DevOps-Central,redis-0cc8842,2026-06,731.2,0.0,0,889.6,Azure Cache for Redis,Premium P1 cache
+Analytics-Platform,ado-0af3187,2026-06,0.0,118.3,0,29.58,Azure DevOps,Artifacts storage
+Partner-Integration,ado-03a9963,2026-06,0.0,91.8,0,22.94,Azure DevOps,Artifacts storage
+Production-Main,app-0e07775,2026-06,714.8,0.0,0,108.71,App Service,Web app B1
+Partner-Integration,azmon-0bc1733,2026-06,0.0,234.7,31294014,332.51,Azure Monitor,Logs and metrics
+Finance-Systems,blob-0f8b380,2026-06,0.0,2245.8,5614642,364.95,Blob Storage,Media content
+Internal-Tools,blob-0573578,2026-06,0.0,12206.1,122061,366.18,Blob Storage,Backup storage
+Shared-Services,sb-10bc304,2026-06,574.9,0.0,7984625,437.15,Service Bus,Premium messaging
+Mobile-Backend,fd-0500920,2026-06,0.0,0.0,45671297,342.53,Front Door,Global load balancer
+Partner-Integration,appi-1065534,2026-06,0.0,0.0,47412457,592.66,Application Insights,APM telemetry
+Finance-Systems,blob-020c758,2026-06,0.0,3613.9,9637177,469.81,Blob Storage,Build artifacts
+Finance-Systems,fd-0212792,2026-06,0.0,0.0,47118712,353.39,Front Door,Global load balancer
+Finance-Systems,blob-04ed338,2026-06,0.0,8118.0,3044272,431.27,Blob Storage,Data lake storage
+Mobile-Backend,fd-06a9855,2026-06,0.0,0.0,49736945,373.02,Front Door,Global load balancer
+Production-Secondary,redis-0d6b439,2026-06,1052.4,0.0,0,1280.43,Azure Cache for Redis,Premium P1 cache
+Shared-Services,eh-01b2547,2026-06,0.0,629.8,0,157.44,Event Hubs,Capture to storage
+Internal-Tools,blob-05a7913,2026-06,0.0,3192.7,8513881,415.05,Blob Storage,Build artifacts
+Shared-Services,sb-07fc849,2026-06,526.7,0.0,7315301,400.51,Service Bus,Premium messaging
+Finance-Systems,blob-07c8190,2026-06,0.0,2115.9,5289801,343.83,Blob Storage,Media content
+Production-Secondary,appi-10d8998,2026-06,0.0,0.0,35605647,445.07,Application Insights,APM telemetry
+Production-Secondary,aks-0058383,2026-06,1435.0,0.0,0,2152.45,AKS,Staging K8s cluster
+Customer-Portal,ado-0265894,2026-06,0.0,108.6,0,27.16,Azure DevOps,Artifacts storage
+Production-Main,vm-0039243,2026-06,774.3,0.0,0,2826.15,Virtual Machines,E8s v3 memory-optimized
+Customer-Portal,blob-0c83136,2026-06,0.0,5568.3,0,556.83,Blob Storage,Security audit logs
+Customer-Portal,sqldb-0263872,2026-06,563.1,391.1,0,2283.79,SQL Database,Premium P1 analytics
+Mobile-Backend,fd-0ef5396,2026-06,0.0,0.0,41760561,313.2,Front Door,Global load balancer
+Production-Secondary,redis-0064522,2026-06,912.6,0.0,0,1110.37,Azure Cache for Redis,Premium P1 cache
+Data-Science,sb-0e7b324,2026-06,0.0,0.0,25596367,63.98,Service Bus,Standard messaging
+Internal-Tools,blob-0ba1272,2026-06,0.0,3109.5,8291778,404.23,Blob Storage,Build artifacts
+DevOps-Central,redis-0ffe600,2026-06,664.3,0.0,0,808.24,Azure Cache for Redis,Premium P1 cache
+Partner-Integration,sqldb-03a6150,2026-06,852.0,59.2,0,177.08,SQL Database,Basic dev database
+Production-Main,vm-08bc212,2026-06,1094.4,0.0,0,1553.97,Virtual Machines,F4s v2 compute node
+Production-Secondary,sqldb-0ad7535,2026-06,482.0,167.5,0,806.54,SQL Database,Standard S3 production
+Analytics-Platform,ado-07d3760,2026-06,0.0,107.2,0,26.8,Azure DevOps,Artifacts storage
+Customer-Portal,blob-1177805,2026-06,0.0,4998.3,0,499.83,Blob Storage,Security audit logs
+Customer-Portal,blob-0ddb390,2026-06,0.0,5107.1,0,510.71,Blob Storage,Security audit logs
+Production-Main,appi-0031980,2026-06,0.0,0.0,66689700,833.62,Application Insights,APM telemetry
+DR-Recovery,appi-0b7c490,2026-06,0.0,0.0,16693170,208.67,Application Insights,Custom metrics
+Shared-Services,app-081b214,2026-06,885.2,0.0,0,1077.02,App Service,API app P2v3
+Internal-Tools,blob-0299348,2026-06,0.0,2661.6,6653976,432.51,Blob Storage,Media content
+Production-Secondary,app-0df4564,2026-06,623.3,0.0,0,94.79,App Service,Web app B1
+Shared-Services,vm-0c46763,2026-06,887.7,0.0,0,1080.05,Virtual Machines,D4s v3 CI runner
+Customer-Portal,blob-0934606,2026-06,0.0,5048.1,0,504.81,Blob Storage,Security audit logs
+Finance-Systems,func-081f530,2026-06,0.0,0.0,5584949,83.78,Azure Functions,API handlers
+DR-Recovery,sqldb-02f5967,2026-06,941.9,654.1,0,3820.05,SQL Database,Premium P1 analytics
+Finance-Systems,blob-049b662,2026-06,0.0,7909.8,79096,237.29,Blob Storage,Backup storage
+DevOps-Central,appi-09af973,2026-06,0.0,0.0,69187638,864.84,Application Insights,APM telemetry
+Data-Science,appi-014c926,2026-06,0.0,0.0,55093500,688.67,Application Insights,APM telemetry
+DevOps-Central,sentinel-00e6345,2026-06,0.0,0.0,112621016,2815.53,Microsoft Sentinel,SIEM detection
+Mobile-Backend,vm-0a18879,2026-06,905.1,0.0,0,1285.29,Virtual Machines,F4s v2 compute node
+DevOps-Central,vm-0952136,2026-06,673.8,0.0,0,204.95,Virtual Machines,B2s development VM
+Production-Main,sentinel-0037520,2026-06,0.0,0.0,47400414,1185.01,Microsoft Sentinel,Log analytics
+Production-Main,app-0027586,2026-06,568.7,0.0,0,691.93,App Service,API app P2v3
+Mobile-Backend,azmon-0aa4532,2026-06,0.0,332.4,44324416,470.94,Azure Monitor,Logs and metrics
+DevOps-Central,sentinel-0d56288,2026-06,0.0,0.0,35940042,898.5,Microsoft Sentinel,Log analytics
+Partner-Integration,ado-0a99621,2026-06,608.2,0.0,0,304.15,Azure DevOps,Pipelines hosted
+Shared-Services,appi-01b6184,2026-06,0.0,0.0,44335224,554.19,Application Insights,APM telemetry
+Finance-Systems,sqldb-020e330,2026-06,785.3,545.3,0,3184.73,SQL Database,Premium P1 analytics
+Production-Secondary,blob-005e473,2026-06,0.0,14585.6,36464,116.68,Blob Storage,Archive tier
+Security-Ops,sentinel-015b316,2026-06,0.0,0.0,91099355,2277.48,Microsoft Sentinel,SIEM detection
+Data-Science,blob-0155153,2026-06,0.0,2234.7,5586783,363.14,Blob Storage,Media content
+Production-Secondary,sqldb-0481357,2026-06,472.7,164.1,0,791.03,SQL Database,Standard S3 production
+Partner-Integration,azmon-07d2786,2026-06,0.0,220.6,29416370,312.56,Azure Monitor,Logs and metrics
+Finance-Systems,func-021e999,2026-06,0.0,0.0,9848352,147.73,Azure Functions,Event processors
+Internal-Tools,blob-0833224,2026-06,0.0,2688.5,6721133,436.88,Blob Storage,Media content
+DevOps-Central,kv-05de284,2026-06,0.0,0.0,343783,1.04,Key Vault,Certificate store
+Mobile-Backend,fd-0636613,2026-06,0.0,0.0,42962891,322.22,Front Door,Global load balancer
+Analytics-Platform,eh-10c2682,2026-06,0.0,335.0,0,83.74,Event Hubs,Capture to storage
+Production-Main,eh-04d7845,2026-06,0.0,758.8,0,189.7,Event Hubs,Capture to storage
+Production-Main,cosmos-002b765,2026-06,1005.6,69.8,20949068,680.84,Cosmos DB,Config store
+Production-Main,func-0a97169,2026-06,0.0,0.0,2761459,41.42,Azure Functions,Webhook processor
+Finance-Systems,vm-0217306,2026-06,745.5,0.0,0,1813.94,Virtual Machines,D8s v3 application server
+Analytics-Platform,eh-0553442,2026-06,621.7,0.0,25906369,283.68,Event Hubs,Standard throughput units
+DR-Recovery,appi-045d659,2026-06,0.0,0.0,21883623,273.55,Application Insights,Custom metrics
+DevOps-Central,kv-00d5790,2026-06,0.0,0.0,381964,1.15,Key Vault,Certificate store
+Finance-Systems,aks-111d841,2026-06,1357.9,0.0,0,2036.99,AKS,Staging K8s cluster
+Partner-Integration,appi-0518688,2026-06,0.0,0.0,62113774,776.42,Application Insights,APM telemetry
+Production-Secondary,blob-0060140,2026-06,0.0,6902.7,0,690.27,Blob Storage,Security audit logs
+DevOps-Central,aks-040b567,2026-06,357.3,0.0,0,535.99,AKS,Dev K8s cluster
+Partner-Integration,redis-0521982,2026-06,601.0,0.0,0,304.66,Azure Cache for Redis,Standard C2 cache
+Shared-Services,sb-01c6216,2026-06,629.8,0.0,8747281,478.91,Service Bus,Premium messaging
+Customer-Portal,ado-0264345,2026-06,469.3,0.0,0,234.63,Azure DevOps,Pipelines hosted
+Production-Secondary,app-0e45756,2026-06,710.7,0.0,0,108.08,App Service,Web app B1
+Finance-Systems,app-0228579,2026-06,932.9,0.0,0,141.88,App Service,Web app B1
+Customer-Portal,app-05eb327,2026-06,563.7,0.0,0,342.95,App Service,Web app P1v3
+Security-Ops,eh-015c222,2026-06,0.0,451.3,0,112.83,Event Hubs,Capture to storage
+Production-Secondary,blob-0911942,2026-06,0.0,11917.8,29794,95.34,Blob Storage,Archive tier
+DR-Recovery,appi-095b779,2026-06,0.0,0.0,22298847,278.74,Application Insights,Custom metrics
+Finance-Systems,blob-07a1954,2026-06,0.0,2067.9,5169877,336.04,Blob Storage,Media content
+Production-Secondary,blob-0618339,2026-06,0.0,12196.0,121959,365.88,Blob Storage,Backup storage
+Data-Science,blob-071e425,2026-06,0.0,10002.7,100026,300.08,Blob Storage,Backup storage
+Customer-Portal,aks-0258969,2026-06,371.3,0.0,0,556.99,AKS,Dev K8s cluster
+Production-Main,blob-105c374,2026-06,0.0,27397.5,68492,219.18,Blob Storage,Archive tier
+Internal-Tools,vm-08d6906,2026-06,730.6,0.0,0,444.48,Virtual Machines,D2s v3 utility server
+DR-Recovery,sqldb-0884129,2026-06,703.2,48.9,0,146.15,SQL Database,Basic dev database
+Production-Secondary,cosmos-0ffc140,2026-06,745.3,207.0,41406191,1682.13,Cosmos DB,User data store
+Internal-Tools,vm-029c164,2026-06,752.5,0.0,0,1068.6,Virtual Machines,F4s v2 compute node
+Production-Secondary,redis-08fd634,2026-06,1213.6,0.0,0,615.22,Azure Cache for Redis,Standard C2 cache
+Internal-Tools,sentinel-04a2413,2026-06,0.0,0.0,80192609,2004.81,Microsoft Sentinel,SIEM detection
+Customer-Portal,eh-0268839,2026-06,0.0,631.0,0,157.75,Event Hubs,Capture to storage
+Mobile-Backend,sb-033f307,2026-06,0.0,0.0,15045624,37.61,Service Bus,Standard messaging
+Production-Main,kv-0023471,2026-06,0.0,0.0,389153,1.17,Key Vault,Certificate store
+Production-Secondary,aks-0057749,2026-06,529.6,0.0,0,2383.21,AKS,Production K8s cluster
+Security-Ops,vm-015f925,2026-06,924.0,0.0,0,1312.09,Virtual Machines,F4s v2 compute node
+Shared-Services,sb-09c4900,2026-06,719.5,0.0,9992875,547.11,Service Bus,Premium messaging
+Production-Secondary,app-077f551,2026-06,616.9,0.0,0,93.82,App Service,Web app B1
+Customer-Portal,eh-0269959,2026-06,740.6,0.0,30859298,337.91,Event Hubs,Standard throughput units
+Partner-Integration,sqldb-0fa2831,2026-06,610.8,424.1,0,2477.1,SQL Database,Premium P1 analytics
+Production-Main,cosmos-0c6d534,2026-06,1145.0,79.5,23853654,775.24,Cosmos DB,Config store
+Production-Secondary,redis-0a42245,2026-06,978.5,0.0,0,496.06,Azure Cache for Redis,Standard C2 cache
+DevOps-Central,azmon-0c06770,2026-06,0.0,303.5,40465381,429.95,Azure Monitor,Logs and metrics
+DevOps-Central,aks-0f42341,2026-06,461.0,0.0,0,691.59,AKS,Dev K8s cluster
+Customer-Portal,blob-045f799,2026-06,0.0,5384.4,0,538.44,Blob Storage,Security audit logs
+Internal-Tools,blob-0aac997,2026-06,0.0,3293.4,8782234,428.13,Blob Storage,Build artifacts
+Customer-Portal,appi-062c764,2026-06,0.0,0.0,44656078,558.2,Application Insights,APM telemetry
+Finance-Systems,blob-0c99432,2026-06,0.0,7726.9,77266,231.8,Blob Storage,Backup storage
+Partner-Integration,appi-1023507,2026-06,0.0,0.0,18477225,230.96,Application Insights,Custom metrics
+Production-Main,appi-0847459,2026-06,0.0,0.0,62381219,779.76,Application Insights,APM telemetry
+Shared-Services,func-0d86552,2026-06,0.0,0.0,3330445,49.97,Azure Functions,Webhook processor
+Internal-Tools,eh-04ce593,2026-06,0.0,492.7,0,123.2,Event Hubs,Capture to storage
+Shared-Services,vm-01bd545,2026-06,813.9,0.0,0,990.23,Virtual Machines,D4s v3 CI runner
+Partner-Integration,azmon-0c44748,2026-06,0.0,200.7,26768940,284.43,Azure Monitor,Logs and metrics
+Production-Secondary,sqldb-08c5740,2026-06,641.3,445.3,0,2600.64,SQL Database,Premium P1 analytics
+Production-Main,sentinel-0d4b259,2026-06,0.0,0.0,71873264,1796.83,Microsoft Sentinel,SIEM detection
+Customer-Portal,vm-1155432,2026-06,657.3,0.0,0,399.84,Virtual Machines,D2s v3 utility server
+Finance-Systems,sb-0221337,2026-06,0.0,0.0,23132182,57.83,Service Bus,Standard messaging
+Production-Secondary,blob-0537327,2026-06,0.0,11839.4,29598,94.72,Blob Storage,Archive tier
+Production-Main,blob-0567340,2026-06,0.0,6064.5,2274210,322.18,Blob Storage,Data lake storage
+DevOps-Central,vm-1132587,2026-06,656.7,0.0,0,5992.12,Virtual Machines,NC6s v3 GPU VM
+Finance-Systems,blob-071a100,2026-06,0.0,9126.2,91259,273.78,Blob Storage,Backup storage
+Production-Secondary,eh-073c647,2026-06,722.8,0.0,30113910,329.74,Event Hubs,Standard throughput units
+Production-Secondary,sentinel-05a5323,2026-06,0.0,0.0,79474041,1986.85,Microsoft Sentinel,SIEM detection
+Mobile-Backend,acr-1156740,2026-06,0.0,181.2,362336,119.57,Container Registry,Docker image registry
+Customer-Portal,blob-075b799,2026-06,0.0,4960.3,0,496.03,Blob Storage,Security audit logs
+DevOps-Central,aks-0d90350,2026-06,394.9,0.0,0,592.38,AKS,Dev K8s cluster
+DR-Recovery,azmon-05e3748,2026-06,0.0,259.4,34584986,367.47,Azure Monitor,Logs and metrics
+Production-Secondary,sqldb-041d260,2026-06,446.6,155.1,0,747.34,SQL Database,Standard S3 production
+Customer-Portal,sentinel-024f652,2026-06,0.0,0.0,50363698,1259.09,Microsoft Sentinel,Log analytics
+Internal-Tools,aks-0b96889,2026-06,220.8,0.0,0,331.18,AKS,Dev K8s cluster
+DevOps-Central,kv-0cb8429,2026-06,0.0,0.0,400347,1.21,Key Vault,Certificate store
+Mobile-Backend,aks-09cd525,2026-06,1121.7,0.0,0,1682.56,AKS,Staging K8s cluster
+Production-Main,app-0af8774,2026-06,568.7,0.0,0,691.89,App Service,API app P2v3
+Production-Secondary,app-0d9d259,2026-06,613.5,0.0,0,93.3,App Service,Web app B1
+Finance-Systems,blob-0904360,2026-06,0.0,7857.5,78572,235.72,Blob Storage,Backup storage
+Production-Secondary,sqldb-0e2d429,2026-06,494.9,171.9,0,828.23,SQL Database,Standard S3 production
+Shared-Services,func-0ced650,2026-06,0.0,0.0,3523483,52.86,Azure Functions,Webhook processor
+Production-Secondary,blob-0b81720,2026-06,0.0,2460.6,6561455,319.87,Blob Storage,Build artifacts
+Analytics-Platform,kv-0d2b592,2026-06,0.0,0.0,1598176,4.79,Key Vault,Secrets management
+Production-Secondary,sentinel-0af4539,2026-06,0.0,0.0,71040502,1776.01,Microsoft Sentinel,SIEM detection
+DevOps-Central,app-0bbb994,2026-06,868.9,0.0,0,528.59,App Service,Web app P1v3
+Finance-Systems,appi-0cbb472,2026-06,0.0,0.0,57409624,717.63,Application Insights,APM telemetry
+Production-Secondary,ado-0067979,2026-06,0.0,131.1,0,32.76,Azure DevOps,Artifacts storage
+DR-Recovery,appi-02f1748,2026-06,0.0,0.0,20327884,254.1,Application Insights,Custom metrics
+DevOps-Central,blob-0eeb156,2026-06,0.0,8328.5,3123186,442.44,Blob Storage,Data lake storage
+DevOps-Central,redis-00e7665,2026-06,781.6,0.0,0,950.97,Azure Cache for Redis,Premium P1 cache
+Shared-Services,app-0fa0693,2026-06,981.0,0.0,0,1193.52,App Service,API app P2v3
+Internal-Tools,vm-0b99997,2026-06,878.1,0.0,0,534.17,Virtual Machines,D2s v3 utility server
+Shared-Services,vm-0ebb781,2026-06,1033.9,0.0,0,1257.92,Virtual Machines,D4s v3 CI runner
+Production-Main,kv-098d208,2026-06,0.0,0.0,2574943,7.72,Key Vault,Secrets management
+Finance-Systems,blob-0712300,2026-06,0.0,7117.8,71176,213.53,Blob Storage,Backup storage
+Production-Main,app-09d8629,2026-06,1045.3,0.0,0,635.87,App Service,Web app P1v3
+Production-Secondary,cosmos-0f2c465,2026-06,584.7,81.2,20303716,761.38,Cosmos DB,Event store
+Data-Science,blob-0156872,2026-06,0.0,2426.7,6471247,315.47,Blob Storage,Build artifacts
+Partner-Integration,ado-03a8410,2026-06,610.6,0.0,0,305.32,Azure DevOps,Pipelines hosted
+Shared-Services,app-01bf246,2026-06,984.2,0.0,0,1197.45,App Service,API app P2v3
+Finance-Systems,sentinel-0208778,2026-06,0.0,0.0,109262074,2731.55,Microsoft Sentinel,SIEM detection
+Mobile-Backend,eh-0336161,2026-06,715.6,0.0,29816132,326.49,Event Hubs,Standard throughput units
+Finance-Systems,blob-1031652,2026-06,0.0,5481.1,54809,164.43,Blob Storage,Backup storage
+Mobile-Backend,azmon-033b163,2026-06,0.0,334.3,44573081,473.59,Azure Monitor,Logs and metrics
+Production-Main,vm-1165798,2026-06,676.2,0.0,0,822.79,Virtual Machines,D4s v3 CI runner
+Shared-Services,vm-01bc461,2026-06,870.3,0.0,0,3176.65,Virtual Machines,E8s v3 memory-optimized
+Production-Secondary,blob-0bcf230,2026-06,0.0,2307.5,5768531,374.96,Blob Storage,Media content
+Shared-Services,aks-048e500,2026-06,369.4,0.0,0,554.03,AKS,Dev K8s cluster
+Mobile-Backend,kv-065f722,2026-06,0.0,0.0,498391,1.49,Key Vault,Certificate store
+Analytics-Platform,eh-0b1e568,2026-06,0.0,447.1,0,111.8,Event Hubs,Capture to storage
+Mobile-Backend,vm-0b70277,2026-06,817.1,0.0,0,994.14,Virtual Machines,D4s v3 CI runner
+Mobile-Backend,aks-0ae4200,2026-06,1131.0,0.0,0,1696.55,AKS,Staging K8s cluster
+Analytics-Platform,kv-041a844,2026-06,0.0,0.0,539823,1.62,Key Vault,Certificate store
+DR-Recovery,fd-02ef948,2026-06,0.0,0.0,71878583,539.09,Front Door,Global load balancer
+Customer-Portal,fd-0b08398,2026-06,0.0,0.0,65607390,492.05,Front Door,Global load balancer
+Production-Secondary,app-0d65909,2026-06,1076.3,0.0,0,654.7,App Service,Web app P1v3
+Internal-Tools,blob-0a06232,2026-06,0.0,3549.6,9465356,461.44,Blob Storage,Build artifacts
+Production-Main,cosmos-002a508,2026-06,863.3,239.8,47962571,1948.48,Cosmos DB,User data store
+DR-Recovery,fd-1129787,2026-06,0.0,0.0,74906025,561.79,Front Door,Global load balancer
+DevOps-Central,appi-1157479,2026-06,0.0,0.0,58733304,734.16,Application Insights,APM telemetry
+Production-Main,app-0029993,2026-06,637.6,0.0,0,96.97,App Service,Web app B1
+Mobile-Backend,aks-0bc9456,2026-06,1220.6,0.0,0,1830.94,AKS,Staging K8s cluster
+DevOps-Central,appi-0a74430,2026-06,0.0,0.0,73150004,914.37,Application Insights,APM telemetry
+Mobile-Backend,vm-0347828,2026-06,578.8,0.0,0,1056.23,Virtual Machines,E4s v3 SIEM collector
+Mobile-Backend,vm-04f4258,2026-06,774.7,0.0,0,471.26,Virtual Machines,D2s v3 utility server
+Production-Main,sentinel-0b5c731,2026-06,0.0,0.0,70625586,1765.64,Microsoft Sentinel,SIEM detection
+Analytics-Platform,eh-0920184,2026-06,538.2,0.0,22429101,245.6,Event Hubs,Standard throughput units
+Mobile-Backend,vm-0ab2945,2026-06,610.3,0.0,0,2227.55,Virtual Machines,E8s v3 memory-optimized
+Shared-Services,fd-0c84968,2026-06,0.0,0.0,73156841,548.69,Front Door,Global load balancer
+Partner-Integration,sqldb-03a7375,2026-06,879.9,305.5,0,1472.3,SQL Database,Standard S3 production
+Analytics-Platform,aks-063d802,2026-06,510.7,0.0,0,766.08,AKS,Dev K8s cluster
+Production-Main,kv-0c89603,2026-06,0.0,0.0,2315640,6.95,Key Vault,Secrets management
+Shared-Services,func-0ed4230,2026-06,0.0,0.0,8695245,130.43,Azure Functions,Event processors
+Production-Main,vm-003f653,2026-06,832.7,0.0,0,2026.19,Virtual Machines,D8s v3 application server
+Mobile-Backend,vm-0341972,2026-06,491.7,0.0,0,4486.62,Virtual Machines,NC6s v3 GPU VM
+Customer-Portal,blob-105b713,2026-06,0.0,5856.8,0,585.68,Blob Storage,Security audit logs
+Partner-Integration,sqldb-0750133,2026-06,974.1,338.3,0,1630.02,SQL Database,Standard S3 production
+Shared-Services,cosmos-089a538,2026-06,698.6,97.0,24258136,909.68,Cosmos DB,Event store
+Finance-Systems,blob-0dfa184,2026-06,0.0,5337.8,53376,160.13,Blob Storage,Backup storage
+Finance-Systems,appi-0fa4969,2026-06,0.0,0.0,18397670,229.98,Application Insights,Custom metrics
+Production-Secondary,redis-0d5e966,2026-06,903.1,0.0,0,1098.85,Azure Cache for Redis,Premium P1 cache
+Finance-Systems,appi-0fdc444,2026-06,0.0,0.0,39789671,497.37,Application Insights,APM telemetry
+Mobile-Backend,acr-0d0e656,2026-06,0.0,193.1,386216,127.45,Container Registry,Docker image registry
+DevOps-Central,vm-00e1513,2026-06,993.0,0.0,0,1410.02,Virtual Machines,F4s v2 compute node
+Shared-Services,ado-0498358,2026-06,0.0,99.4,0,24.85,Azure DevOps,Artifacts storage
+Analytics-Platform,aks-07be261,2026-06,442.2,0.0,0,663.43,AKS,Dev K8s cluster
+Shared-Services,ado-0524335,2026-06,594.1,0.0,0,297.05,Azure DevOps,Pipelines hosted
+Production-Secondary,sb-0061462,2026-06,0.0,0.0,23337067,58.34,Service Bus,Standard messaging
+Data-Science,aks-0151245,2026-06,1412.0,0.0,0,2117.99,AKS,Staging K8s cluster
+Internal-Tools,blob-0a05230,2026-06,0.0,5269.2,0,526.92,Blob Storage,Security audit logs
+Data-Science,blob-04af932,2026-06,0.0,2053.3,5133253,333.67,Blob Storage,Media content
+Mobile-Backend,ado-0337337,2026-06,0.0,76.5,0,19.13,Azure DevOps,Artifacts storage
+Analytics-Platform,ado-0c1c621,2026-06,0.0,111.7,0,27.94,Azure DevOps,Artifacts storage
+Mobile-Backend,acr-0933982,2026-06,0.0,183.4,366850,121.06,Container Registry,Docker image registry
+Finance-Systems,blob-0a9d546,2026-06,0.0,8865.4,88653,265.96,Blob Storage,Backup storage
+Security-Ops,sqldb-07af165,2026-06,969.1,67.2,0,201.41,SQL Database,Basic dev database
+Partner-Integration,sb-0677216,2026-06,684.4,0.0,9505423,520.42,Service Bus,Premium messaging
+Internal-Tools,eh-0fe7790,2026-06,0.0,558.4,0,139.61,Event Hubs,Capture to storage
+Mobile-Backend,vm-08df543,2026-06,948.8,0.0,0,1347.4,Virtual Machines,F4s v2 compute node
+Production-Main,blob-072a535,2026-06,0.0,2624.9,6999908,341.25,Blob Storage,Build artifacts
+Finance-Systems,sqldb-0638934,2026-06,1089.7,378.4,0,1823.38,SQL Database,Standard S3 production
+DevOps-Central,redis-0746127,2026-06,759.3,0.0,0,923.76,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,ado-0f7a776,2026-06,0.0,116.7,0,29.17,Azure DevOps,Artifacts storage
+Shared-Services,vm-0ef9933,2026-06,538.5,0.0,0,982.71,Virtual Machines,E4s v3 SIEM collector
+Internal-Tools,vm-084b534,2026-06,781.9,0.0,0,475.67,Virtual Machines,D2s v3 utility server
+Finance-Systems,blob-0899517,2026-06,0.0,8375.7,83754,251.26,Blob Storage,Backup storage
+Finance-Systems,app-070d322,2026-06,884.1,0.0,0,134.45,App Service,Web app B1
+Shared-Services,ado-0586532,2026-06,524.1,0.0,0,262.02,Azure DevOps,Pipelines hosted
+Security-Ops,sqldb-07f8643,2026-06,718.3,49.9,0,149.3,SQL Database,Basic dev database
+Customer-Portal,sentinel-0903319,2026-06,0.0,0.0,107466391,2686.66,Microsoft Sentinel,SIEM detection
+Production-Secondary,cosmos-0071690,2026-06,562.3,78.1,19523801,732.14,Cosmos DB,Event store
+Analytics-Platform,aks-04e6233,2026-06,459.3,0.0,0,689.04,AKS,Dev K8s cluster
+Production-Main,redis-053a503,2026-06,959.5,0.0,0,1167.45,Azure Cache for Redis,Premium P1 cache
+Production-Main,func-0033235,2026-06,0.0,0.0,8499657,127.49,Azure Functions,Event processors
+Internal-Tools,vm-0c07552,2026-06,732.8,0.0,0,445.8,Virtual Machines,D2s v3 utility server
+Data-Science,fd-014e379,2026-06,0.0,0.0,43216033,324.12,Front Door,Global load balancer
+Mobile-Backend,eh-0335343,2026-06,0.0,421.8,0,105.45,Event Hubs,Capture to storage
+DR-Recovery,eh-02f3384,2026-06,0.0,530.5,0,132.62,Event Hubs,Capture to storage
+Finance-Systems,sqldb-10e9583,2026-06,1027.0,356.7,0,1718.47,SQL Database,Standard S3 production
+Mobile-Backend,fd-05ae464,2026-06,0.0,0.0,39643402,297.32,Front Door,Global load balancer
+Internal-Tools,aks-0ec9743,2026-06,1447.5,0.0,0,2171.2,AKS,Staging K8s cluster
+DR-Recovery,cosmos-02ed229,2026-06,941.0,65.3,19603999,637.13,Cosmos DB,Config store
+Partner-Integration,sb-0685610,2026-06,726.8,0.0,10094584,552.68,Service Bus,Premium messaging
+Data-Science,blob-10e3276,2026-06,0.0,9401.9,94018,282.06,Blob Storage,Backup storage
+Finance-Systems,app-0ba8317,2026-06,897.4,0.0,0,1091.91,App Service,API app P2v3
+Shared-Services,ado-0e6e571,2026-06,520.3,0.0,0,260.13,Azure DevOps,Pipelines hosted
+Finance-Systems,blob-0c24932,2026-06,0.0,7583.9,75836,227.51,Blob Storage,Backup storage
+Data-Science,sb-03fb113,2026-06,0.0,0.0,22498513,56.24,Service Bus,Standard messaging
+Internal-Tools,redis-0e82275,2026-06,635.3,0.0,0,322.06,Azure Cache for Redis,Standard C2 cache
+Internal-Tools,redis-0294559,2026-06,598.4,0.0,0,303.38,Azure Cache for Redis,Standard C2 cache
+Shared-Services,vm-069e641,2026-06,510.4,0.0,0,4656.64,Virtual Machines,NC6s v3 GPU VM
+Finance-Systems,appi-0b64759,2026-06,0.0,0.0,42418898,530.24,Application Insights,APM telemetry
+DevOps-Central,acr-00d8552,2026-06,0.0,265.8,531637,175.44,Container Registry,Docker image registry
+Production-Secondary,aks-0508393,2026-06,1591.3,0.0,0,2386.9,AKS,Staging K8s cluster
+Production-Main,vm-0ae6301,2026-06,996.0,0.0,0,1414.26,Virtual Machines,F4s v2 compute node
+Production-Secondary,cosmos-0c42811,2026-06,531.8,73.9,18464773,692.43,Cosmos DB,Event store
+Customer-Portal,sentinel-024e511,2026-06,0.0,0.0,121837875,3045.95,Microsoft Sentinel,SIEM detection
+Customer-Portal,blob-0e7d167,2026-06,0.0,4694.0,0,469.4,Blob Storage,Security audit logs
+Analytics-Platform,eh-0daf110,2026-06,520.3,0.0,21683140,237.43,Event Hubs,Standard throughput units
+DR-Recovery,redis-091e910,2026-06,780.0,0.0,0,949.0,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,blob-107a413,2026-06,0.0,2807.8,7487431,365.01,Blob Storage,Build artifacts
+Production-Main,eh-0f89343,2026-06,726.1,0.0,30252894,331.27,Event Hubs,Standard throughput units
+Finance-Systems,ado-0222957,2026-06,476.4,0.0,0,238.2,Azure DevOps,Pipelines hosted
+Customer-Portal,cosmos-0b44271,2026-06,527.8,73.3,18323690,687.13,Cosmos DB,Event store
+Production-Main,vm-06e4791,2026-06,487.1,0.0,0,4445.05,Virtual Machines,NC6s v3 GPU VM
+Production-Secondary,cosmos-0070623,2026-06,723.9,201.1,40219028,1633.9,Cosmos DB,User data store
+Security-Ops,sqldb-0408548,2026-06,835.2,58.0,0,173.59,SQL Database,Basic dev database
+Production-Secondary,cosmos-091d756,2026-06,780.8,216.9,43379947,1762.31,Cosmos DB,User data store
+Customer-Portal,vm-025d194,2026-06,931.0,0.0,0,283.17,Virtual Machines,B2s development VM
+Security-Ops,sentinel-0f54548,2026-06,0.0,0.0,91196728,2279.92,Microsoft Sentinel,SIEM detection
+DevOps-Central,app-00eb594,2026-06,713.4,0.0,0,867.98,App Service,API app P2v3
+Production-Secondary,fd-005a664,2026-06,0.0,0.0,73131698,548.49,Front Door,Global load balancer
+Shared-Services,ado-09e6900,2026-06,585.1,0.0,0,292.49,Azure DevOps,Pipelines hosted
+DevOps-Central,blob-00d9603,2026-06,0.0,5721.7,0,572.17,Blob Storage,Security audit logs
+Analytics-Platform,aks-1048569,2026-06,582.0,0.0,0,2618.69,AKS,Production K8s cluster
+Partner-Integration,ado-0b3b205,2026-06,647.7,0.0,0,323.9,Azure DevOps,Pipelines hosted
+Partner-Integration,sqldb-03a5439,2026-06,703.5,488.5,0,2853.0,SQL Database,Premium P1 analytics
+DevOps-Central,aks-0e66233,2026-06,395.4,0.0,0,593.18,AKS,Dev K8s cluster
+Production-Secondary,blob-081e798,2026-06,0.0,7191.8,2696939,382.06,Blob Storage,Data lake storage
+Finance-Systems,sqldb-020f404,2026-06,978.5,339.8,0,1637.37,SQL Database,Standard S3 production
+DevOps-Central,kv-0b3d149,2026-06,0.0,0.0,2646068,7.94,Key Vault,Secrets management
+Production-Secondary,app-10d9619,2026-06,665.6,0.0,0,101.23,App Service,Web app B1
+Production-Secondary,sqldb-051f349,2026-06,470.4,163.3,0,787.15,SQL Database,Standard S3 production
+Shared-Services,vm-05ec122,2026-06,602.5,0.0,0,1099.47,Virtual Machines,E4s v3 SIEM collector
+Internal-Tools,sentinel-0cd3679,2026-06,0.0,0.0,69257029,1731.42,Microsoft Sentinel,SIEM detection
+Partner-Integration,azmon-0cbf470,2026-06,0.0,282.9,37723661,400.83,Azure Monitor,Logs and metrics
+Shared-Services,sb-042f463,2026-06,535.7,0.0,7440954,407.39,Service Bus,Premium messaging
+Mobile-Backend,aks-0e51488,2026-06,1219.8,0.0,0,1829.76,AKS,Staging K8s cluster
+Shared-Services,sb-094b954,2026-06,585.4,0.0,8130985,445.17,Service Bus,Premium messaging
+Production-Secondary,sqldb-084c701,2026-06,535.7,186.0,0,896.32,SQL Database,Standard S3 production
+Production-Secondary,aks-0e26217,2026-06,328.1,0.0,0,492.15,AKS,Dev K8s cluster
+DevOps-Central,redis-0705828,2026-06,759.1,0.0,0,923.65,Azure Cache for Redis,Premium P1 cache
+Shared-Services,fd-07bb349,2026-06,0.0,0.0,53066375,398.0,Front Door,Global load balancer
+Production-Secondary,sentinel-10f6292,2026-06,0.0,0.0,68508675,1712.72,Microsoft Sentinel,SIEM detection
+Production-Main,func-0032597,2026-06,0.0,0.0,2684802,40.27,Azure Functions,Webhook processor
+Customer-Portal,cosmos-0253523,2026-06,766.7,53.2,15973136,519.13,Cosmos DB,Config store
+Finance-Systems,vm-0cfc281,2026-06,741.5,0.0,0,1804.14,Virtual Machines,D8s v3 application server
+Production-Main,app-0e8f585,2026-06,584.7,0.0,0,711.44,App Service,API app P2v3
+Production-Secondary,eh-006b891,2026-06,0.0,652.5,0,163.13,Event Hubs,Capture to storage
+Customer-Portal,ado-0714795,2026-06,0.0,110.9,0,27.73,Azure DevOps,Artifacts storage
+Customer-Portal,vm-0e9c963,2026-06,603.4,0.0,0,1101.06,Virtual Machines,E4s v3 SIEM collector
+Finance-Systems,eh-052e307,2026-06,0.0,560.5,0,140.12,Event Hubs,Capture to storage
+Mobile-Backend,vm-0d08853,2026-06,651.3,0.0,0,792.36,Virtual Machines,D4s v3 CI runner
+Finance-Systems,eh-0220761,2026-06,665.9,0.0,27744521,303.8,Event Hubs,Standard throughput units
+Internal-Tools,sentinel-0b74350,2026-06,0.0,0.0,82641186,2066.03,Microsoft Sentinel,SIEM detection
+Customer-Portal,acr-0255148,2026-06,0.0,272.3,544547,179.7,Container Registry,Docker image registry
+Customer-Portal,blob-0e3d646,2026-06,0.0,4129.2,0,412.92,Blob Storage,Security audit logs
+Mobile-Backend,vm-09e5814,2026-06,734.2,0.0,0,2680.12,Virtual Machines,E8s v3 memory-optimized
+Shared-Services,sb-10c0746,2026-06,566.2,0.0,7864072,430.55,Service Bus,Premium messaging
+DR-Recovery,cosmos-0b34859,2026-06,808.0,56.1,16832607,547.06,Cosmos DB,Config store
+Internal-Tools,cosmos-094f603,2026-06,685.7,190.4,38094702,1547.59,Cosmos DB,User data store
+Shared-Services,func-01c8820,2026-06,0.0,0.0,9939801,149.1,Azure Functions,API handlers
+Production-Main,fd-0041592,2026-06,0.0,0.0,59069390,443.02,Front Door,Global load balancer
+Analytics-Platform,ado-0fea891,2026-06,0.0,112.4,0,28.11,Azure DevOps,Artifacts storage
+DevOps-Central,app-0c13134,2026-06,1013.2,0.0,0,154.09,App Service,Web app B1
+DevOps-Central,appi-0ce4354,2026-06,0.0,0.0,15772435,197.16,Application Insights,Custom metrics
+Production-Secondary,redis-0ffb272,2026-06,1055.1,0.0,0,1283.77,Azure Cache for Redis,Premium P1 cache
+DR-Recovery,appi-0f14890,2026-06,0.0,0.0,20742677,259.29,Application Insights,Custom metrics
+Production-Main,blob-1125912,2026-06,0.0,2682.5,7153355,348.73,Blob Storage,Build artifacts
+Finance-Systems,blob-0e74551,2026-06,0.0,9289.3,92889,278.67,Blob Storage,Backup storage
+Partner-Integration,azmon-03a4247,2026-06,0.0,267.8,35711595,379.44,Azure Monitor,Logs and metrics
+Internal-Tools,eh-0bd6129,2026-06,0.0,576.5,0,144.16,Event Hubs,Capture to storage
+Mobile-Backend,acr-07ff591,2026-06,0.0,201.3,402624,132.86,Container Registry,Docker image registry
+Customer-Portal,acr-0d83191,2026-06,0.0,224.2,448394,147.97,Container Registry,Docker image registry
+Internal-Tools,vm-0d0c590,2026-06,709.0,0.0,0,1006.85,Virtual Machines,F4s v2 compute node
+Customer-Portal,vm-0c0d537,2026-06,523.8,0.0,0,955.77,Virtual Machines,E4s v3 SIEM collector
+Partner-Integration,redis-066b401,2026-06,683.4,0.0,0,831.52,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,blob-0bd9587,2026-06,0.0,2281.7,6084362,296.61,Blob Storage,Build artifacts
+Data-Science,cosmos-0fe6107,2026-06,651.4,45.2,13571911,441.09,Cosmos DB,Config store
+Production-Main,aks-0a5f479,2026-06,430.0,0.0,0,644.88,AKS,Dev K8s cluster
+Analytics-Platform,kv-08c1391,2026-06,0.0,0.0,1624589,4.87,Key Vault,Secrets management
+DR-Recovery,appi-0e3a902,2026-06,0.0,0.0,17566886,219.59,Application Insights,Custom metrics
+Production-Main,eh-0c55388,2026-06,0.0,662.3,0,165.59,Event Hubs,Capture to storage
+Analytics-Platform,kv-0e54871,2026-06,0.0,0.0,1774772,5.32,Key Vault,Secrets management
+Customer-Portal,sentinel-0c4c755,2026-06,0.0,0.0,45467537,1136.68,Microsoft Sentinel,Log analytics
+Production-Main,eh-0f23188,2026-06,726.4,0.0,30267703,331.44,Event Hubs,Standard throughput units
+Internal-Tools,blob-0b2f184,2026-06,0.0,3299.4,8798295,428.92,Blob Storage,Build artifacts
+Analytics-Platform,kv-00c3580,2026-06,0.0,0.0,550922,1.65,Key Vault,Certificate store
+Shared-Services,fd-046d439,2026-06,0.0,0.0,58995294,442.47,Front Door,Global load balancer
+Data-Science,blob-040e812,2026-06,0.0,1975.3,4938252,320.99,Blob Storage,Media content
+Shared-Services,kv-0d97187,2026-06,0.0,0.0,405104,1.22,Key Vault,Certificate store
+DR-Recovery,kv-0baa296,2026-06,0.0,0.0,3002755,9.0,Key Vault,Secrets management
+DevOps-Central,blob-04ad851,2026-06,0.0,8595.1,3223166,456.61,Blob Storage,Data lake storage
+Production-Secondary,redis-0a16837,2026-06,918.9,0.0,0,1118.04,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,sb-0062995,2026-06,897.2,0.0,12460813,682.23,Service Bus,Premium messaging
+Production-Secondary,app-0069940,2026-06,680.2,0.0,0,103.45,App Service,Web app B1
+Shared-Services,func-06e8816,2026-06,0.0,0.0,9536154,143.04,Azure Functions,API handlers
+Internal-Tools,sentinel-0a0c256,2026-06,0.0,0.0,69132816,1728.32,Microsoft Sentinel,SIEM detection
+Production-Main,blob-0d02486,2026-06,0.0,24650.7,61626,197.21,Blob Storage,Archive tier
+DR-Recovery,sb-10f8769,2026-06,0.0,0.0,16229123,40.57,Service Bus,Standard messaging
+Finance-Systems,sqldb-0c9c210,2026-06,969.2,336.6,0,1621.76,SQL Database,Standard S3 production
+Data-Science,appi-0a5a764,2026-06,0.0,0.0,59842095,748.03,Application Insights,APM telemetry
+Production-Secondary,sqldb-1063866,2026-06,470.3,163.3,0,786.86,SQL Database,Standard S3 production
+Finance-Systems,cosmos-0972198,2026-06,507.2,70.5,17610810,660.4,Cosmos DB,Event store
+Shared-Services,vm-01b9536,2026-06,807.7,0.0,0,1146.96,Virtual Machines,F4s v2 compute node
+Production-Main,blob-061f857,2026-06,0.0,5164.4,0,516.44,Blob Storage,Security audit logs
+Security-Ops,vm-084d410,2026-06,609.5,0.0,0,2224.81,Virtual Machines,E8s v3 memory-optimized
+Production-Main,vm-0e62704,2026-06,562.8,0.0,0,342.37,Virtual Machines,D2s v3 utility server
+Shared-Services,ado-0603789,2026-06,0.0,86.0,0,21.51,Azure DevOps,Artifacts storage
+Shared-Services,ado-0d38457,2026-06,489.7,0.0,0,244.81,Azure DevOps,Pipelines hosted
+Shared-Services,ado-0c7e652,2026-06,0.0,90.4,0,22.59,Azure DevOps,Artifacts storage
+Data-Science,blob-0154681,2026-06,0.0,18541.4,46353,148.33,Blob Storage,Archive tier
+Shared-Services,cosmos-0fc1348,2026-06,619.7,86.0,21517859,806.92,Cosmos DB,Event store
+Finance-Systems,blob-0820121,2026-06,0.0,9777.0,97766,293.3,Blob Storage,Backup storage
+Analytics-Platform,kv-0406146,2026-06,0.0,0.0,1706279,5.12,Key Vault,Secrets management
+DevOps-Central,appi-0c51901,2026-06,0.0,0.0,70842390,885.52,Application Insights,APM telemetry
+DevOps-Central,aks-00e8216,2026-06,2008.2,0.0,0,3012.29,AKS,Staging K8s cluster
+Partner-Integration,sb-07e9878,2026-06,709.5,0.0,9853948,539.5,Service Bus,Premium messaging
+Customer-Portal,azmon-0aa3619,2026-06,0.0,207.6,27684165,294.14,Azure Monitor,Logs and metrics
+Shared-Services,func-0995812,2026-06,0.0,0.0,2955617,44.34,Azure Functions,Webhook processor
+Production-Secondary,app-1000684,2026-06,620.4,0.0,0,94.34,App Service,Web app B1
+Mobile-Backend,vm-0b10826,2026-06,758.9,0.0,0,461.67,Virtual Machines,D2s v3 utility server
+Shared-Services,vm-10e0416,2026-06,745.1,0.0,0,1813.17,Virtual Machines,D8s v3 application server
+Production-Secondary,blob-0416770,2026-06,0.0,12674.9,31687,101.4,Blob Storage,Archive tier
+DevOps-Central,blob-061a187,2026-06,0.0,4878.8,0,487.88,Blob Storage,Security audit logs
+Customer-Portal,acr-0e00958,2026-06,0.0,214.9,429749,141.82,Container Registry,Docker image registry
+Production-Secondary,eh-0576711,2026-06,611.9,0.0,25498088,279.2,Event Hubs,Standard throughput units
+Production-Secondary,app-0745398,2026-06,712.1,0.0,0,108.3,App Service,Web app B1
+DevOps-Central,redis-08a8623,2026-06,812.5,0.0,0,988.47,Azure Cache for Redis,Premium P1 cache
+Mobile-Backend,vm-0d27691,2026-06,566.8,0.0,0,689.51,Virtual Machines,D4s v3 CI runner
+Shared-Services,func-04c7461,2026-06,0.0,0.0,9988620,149.83,Azure Functions,API handlers
+DevOps-Central,sqldb-0a91564,2026-06,674.2,234.0,0,1128.04,SQL Database,Standard S3 production
+Production-Secondary,sqldb-0789138,2026-06,400.0,138.8,0,669.28,SQL Database,Standard S3 production
+Finance-Systems,app-0c58925,2026-06,760.7,0.0,0,925.49,App Service,API app P2v3
+DevOps-Central,sentinel-0854602,2026-06,0.0,0.0,113091069,2827.28,Microsoft Sentinel,SIEM detection
+Mobile-Backend,acr-0ff3421,2026-06,0.0,204.3,408625,134.85,Container Registry,Docker image registry
+Production-Main,cosmos-002c629,2026-06,692.2,96.1,24034858,901.31,Cosmos DB,Event store
+Production-Secondary,app-0468902,2026-06,948.6,0.0,0,577.04,App Service,Web app P1v3
+DevOps-Central,redis-0718230,2026-06,847.4,0.0,0,1031.04,Azure Cache for Redis,Premium P1 cache
+Internal-Tools,blob-0ac1639,2026-06,0.0,4260.8,11362056,553.9,Blob Storage,Build artifacts
+Security-Ops,sqldb-095f436,2026-06,756.4,52.5,0,157.22,SQL Database,Basic dev database
+DevOps-Central,sqldb-0bd5208,2026-06,689.0,239.1,0,1152.81,SQL Database,Standard S3 production
+Production-Secondary,sentinel-0b9d521,2026-06,0.0,0.0,63158482,1578.96,Microsoft Sentinel,SIEM detection
+Production-Main,app-110c575,2026-06,573.3,0.0,0,697.54,App Service,API app P2v3
+Partner-Integration,azmon-03fa592,2026-06,0.0,244.3,32579980,346.17,Azure Monitor,Logs and metrics
+Finance-Systems,kv-0a56102,2026-06,0.0,0.0,2918878,8.76,Key Vault,Secrets management
+Shared-Services,aks-0c94504,2026-06,318.5,0.0,0,477.62,AKS,Dev K8s cluster
+DevOps-Central,appi-0d28385,2026-06,0.0,0.0,17317969,216.48,Application Insights,Custom metrics
+Production-Main,eh-0c15276,2026-06,0.0,801.6,0,200.4,Event Hubs,Capture to storage
+Production-Secondary,cosmos-09cf617,2026-06,556.8,77.3,19332247,724.95,Cosmos DB,Event store
+DR-Recovery,eh-08e4690,2026-06,0.0,519.3,0,129.8,Event Hubs,Capture to storage
+Internal-Tools,blob-0b8b546,2026-06,0.0,2417.4,6043596,392.84,Blob Storage,Media content
+Shared-Services,ado-10cc486,2026-06,467.2,0.0,0,233.55,Azure DevOps,Pipelines hosted
+Mobile-Backend,vm-1082854,2026-06,1081.6,0.0,0,1536.03,Virtual Machines,F4s v2 compute node
+Mobile-Backend,kv-111e842,2026-06,0.0,0.0,1744283,5.24,Key Vault,Secrets management
+Analytics-Platform,acr-00c8676,2026-06,0.0,201.1,402219,132.73,Container Registry,Docker image registry
+DevOps-Central,aks-0474653,2026-06,1939.4,0.0,0,2909.16,AKS,Staging K8s cluster
+Mobile-Backend,kv-033c971,2026-06,0.0,0.0,1808346,5.43,Key Vault,Secrets management
+Shared-Services,ado-0fd5860,2026-06,0.0,88.5,0,22.13,Azure DevOps,Artifacts storage
+Shared-Services,ado-0d7d199,2026-06,574.2,0.0,0,287.08,Azure DevOps,Pipelines hosted
+DevOps-Central,blob-0fc7470,2026-06,0.0,7394.9,2773073,392.85,Blob Storage,Data lake storage
+Mobile-Backend,vm-09e4739,2026-06,702.2,0.0,0,2563.21,Virtual Machines,E8s v3 memory-optimized
+Data-Science,aks-0ae2613,2026-06,1325.0,0.0,0,1987.43,AKS,Staging K8s cluster
+Partner-Integration,redis-03af826,2026-06,537.1,0.0,0,272.27,Azure Cache for Redis,Standard C2 cache
+Production-Secondary,redis-05cd720,2026-06,876.0,0.0,0,1065.85,Azure Cache for Redis,Premium P1 cache
+Production-Secondary,aks-0887612,2026-06,303.9,0.0,0,455.95,AKS,Dev K8s cluster
+Analytics-Platform,aks-00c0825,2026-06,1312.7,0.0,0,1969.03,AKS,Staging K8s cluster
+Production-Main,aks-087d143,2026-06,1394.3,0.0,0,2091.5,AKS,Staging K8s cluster
+Analytics-Platform,aks-0901861,2026-06,557.6,0.0,0,836.37,AKS,Dev K8s cluster
+DevOps-Central,appi-1091671,2026-06,0.0,0.0,78199852,977.5,Application Insights,APM telemetry
+Finance-Systems,app-0bbc103,2026-06,1111.5,0.0,0,169.05,App Service,Web app B1
+Production-Secondary,acr-0ae3180,2026-06,0.0,218.4,436713,144.12,Container Registry,Docker image registry
+Customer-Portal,vm-1043820,2026-06,932.3,0.0,0,283.55,Virtual Machines,B2s development VM
+Mobile-Backend,vm-0813383,2026-06,869.5,0.0,0,1234.74,Virtual Machines,F4s v2 compute node
+Data-Science,blob-0153838,2026-06,0.0,9590.4,95903,287.71,Blob Storage,Backup storage
+Production-Secondary,aks-04e9539,2026-06,1520.1,0.0,0,2280.07,AKS,Staging K8s cluster
+Production-Main,app-058f647,2026-06,509.4,0.0,0,619.72,App Service,API app P2v3
+DR-Recovery,appi-0df9366,2026-06,0.0,0.0,14872448,185.91,Application Insights,Custom metrics
+DevOps-Central,blob-0f60507,2026-06,0.0,7640.3,2865120,405.89,Blob Storage,Data lake storage
+Production-Secondary,sb-0b67850,2026-06,0.0,0.0,21439833,53.6,Service Bus,Standard messaging
+Shared-Services,sb-01c7290,2026-06,0.0,0.0,14362786,35.91,Service Bus,Standard messaging
+Partner-Integration,appi-03a2597,2026-06,0.0,0.0,19362608,242.03,Application Insights,Custom metrics
+Customer-Portal,blob-08b1911,2026-06,0.0,5667.4,0,566.74,Blob Storage,Security audit logs
+Production-Secondary,app-0068571,2026-06,915.6,0.0,0,556.97,App Service,Web app P1v3
+Customer-Portal,cosmos-0db3851,2026-06,671.7,93.3,23320886,874.52,Cosmos DB,Event store
+Partner-Integration,azmon-0ab0934,2026-06,0.0,269.0,35866462,381.09,Azure Monitor,Logs and metrics
+Analytics-Platform,kv-07cc983,2026-06,0.0,0.0,570576,1.71,Key Vault,Certificate store
+DevOps-Central,redis-0415551,2026-06,872.5,0.0,0,1061.55,Azure Cache for Redis,Premium P1 cache
+Shared-Services,ado-09f0961,2026-06,0.0,102.7,0,25.68,Azure DevOps,Artifacts storage
+Security-Ops,sqldb-067d679,2026-06,989.4,68.7,0,205.63,SQL Database,Basic dev database
+Internal-Tools,blob-0f88578,2026-06,0.0,3029.1,7572833,492.24,Blob Storage,Media content
+Partner-Integration,azmon-07b1730,2026-06,0.0,251.3,33508288,356.03,Azure Monitor,Logs and metrics
+Data-Science,cosmos-0927286,2026-06,694.4,192.9,38581434,1567.37,Cosmos DB,User data store
+Production-Main,blob-002f172,2026-06,0.0,6833.2,2562456,363.01,Blob Storage,Data lake storage
+Internal-Tools,aks-0297432,2026-06,1610.8,0.0,0,2416.24,AKS,Staging K8s cluster
+Analytics-Platform,kv-0cb7100,2026-06,0.0,0.0,1396245,4.19,Key Vault,Secrets management
+Finance-Systems,ado-0d5d179,2026-06,452.0,0.0,0,226.0,Azure DevOps,Pipelines hosted
+Mobile-Backend,sqldb-0a27822,2026-06,847.2,294.2,0,1417.7,SQL Database,Standard S3 production
+Production-Main,vm-003a385,2026-06,716.6,0.0,0,435.95,Virtual Machines,D2s v3 utility server
+Analytics-Platform,eh-00c4152,2026-06,0.0,414.5,0,103.63,Event Hubs,Capture to storage
+Finance-Systems,blob-0ccb663,2026-06,0.0,2129.2,5323048,346.0,Blob Storage,Media content
+Customer-Portal,azmon-110e151,2026-06,0.0,218.8,29170020,309.94,Azure Monitor,Logs and metrics
+Customer-Portal,cosmos-0252776,2026-06,945.6,262.7,52535233,2134.24,Cosmos DB,User data store
+Finance-Systems,cosmos-021b523,2026-06,530.5,147.3,29469750,1197.21,Cosmos DB,User data store
+DR-Recovery,appi-0c28938,2026-06,0.0,0.0,22559621,282.0,Application Insights,Custom metrics
+Customer-Portal,blob-0851669,2026-06,0.0,5246.3,0,524.63,Blob Storage,Security audit logs
+Finance-Systems,app-0fe4884,2026-06,1005.9,0.0,0,153.0,App Service,Web app B1
+Production-Main,blob-04d1230,2026-06,0.0,2593.9,6917054,337.21,Blob Storage,Build artifacts
+DR-Recovery,sqldb-02f4102,2026-06,669.0,46.5,0,139.03,SQL Database,Basic dev database
+Finance-Systems,func-0402202,2026-06,0.0,0.0,5568691,83.54,Azure Functions,API handlers
+Finance-Systems,blob-03ff840,2026-06,0.0,2047.1,5117768,332.65,Blob Storage,Media content
+Mobile-Backend,kv-0b79582,2026-06,0.0,0.0,480107,1.44,Key Vault,Certificate store
+Data-Science,aks-0150773,2026-06,288.1,0.0,0,432.15,AKS,Dev K8s cluster
+Finance-Systems,blob-0a8c725,2026-06,0.0,6167.1,61669,185.01,Blob Storage,Backup storage
+Production-Secondary,aks-0f13431,2026-06,1369.2,0.0,0,2053.77,AKS,Staging K8s cluster
+Finance-Systems,eh-0ce3909,2026-06,620.0,0.0,25833768,282.88,Event Hubs,Standard throughput units
+Finance-Systems,aks-0213923,2026-06,985.1,0.0,0,4433.05,AKS,Production K8s cluster
+Finance-Systems,app-05d9740,2026-06,872.8,0.0,0,1061.96,App Service,API app P2v3
+Finance-Systems,sqldb-020d385,2026-06,986.5,68.5,0,205.03,SQL Database,Basic dev database
+Data-Science,cosmos-0e72317,2026-06,716.1,99.5,24863648,932.39,Cosmos DB,Event store
+Production-Secondary,blob-0a30257,2026-06,0.0,13695.1,34237,109.56,Blob Storage,Archive tier
+Shared-Services,aks-09a6162,2026-06,978.7,0.0,0,1467.95,AKS,Staging K8s cluster
+Data-Science,aks-0896218,2026-06,273.2,0.0,0,409.87,AKS,Dev K8s cluster
+Shared-Services,aks-076e357,2026-06,1148.5,0.0,0,1722.7,AKS,Staging K8s cluster
+Finance-Systems,eh-021f394,2026-06,0.0,614.6,0,153.64,Event Hubs,Capture to storage
+DevOps-Central,aks-0b28145,2026-06,325.9,0.0,0,488.94,AKS,Dev K8s cluster
+Mobile-Backend,fd-0334773,2026-06,0.0,0.0,42061405,315.46,Front Door,Global load balancer
+Analytics-Platform,aks-0d0b935,2026-06,623.2,0.0,0,934.83,AKS,Dev K8s cluster
+Analytics-Platform,aks-113f390,2026-06,665.4,0.0,0,2993.88,AKS,Production K8s cluster
+DevOps-Central,appi-00d3140,2026-06,0.0,0.0,15126185,189.08,Application Insights,Custom metrics
+DevOps-Central,aks-00e9220,2026-06,368.3,0.0,0,552.43,AKS,Dev K8s cluster
+Shared-Services,func-087c893,2026-06,0.0,0.0,8841419,132.62,Azure Functions,Event processors
+Customer-Portal,vm-0bf1249,2026-06,625.0,0.0,0,380.17,Virtual Machines,D2s v3 utility server
+Production-Main,eh-0d6a232,2026-06,0.0,768.6,0,192.17,Event Hubs,Capture to storage
+Production-Main,sentinel-0d46883,2026-06,0.0,0.0,49865342,1246.64,Microsoft Sentinel,Log analytics
+Shared-Services,func-0be4858,2026-06,0.0,0.0,8714639,130.72,Azure Functions,API handlers
+Production-Secondary,sentinel-0960796,2026-06,0.0,0.0,67019214,1675.48,Microsoft Sentinel,SIEM detection
+Shared-Services,fd-047c534,2026-06,0.0,0.0,62396938,467.98,Front Door,Global load balancer
+Shared-Services,func-0418785,2026-06,0.0,0.0,3086764,46.31,Azure Functions,Webhook processor
+Shared-Services,ado-114b393,2026-06,0.0,95.3,0,23.84,Azure DevOps,Artifacts storage
+Security-Ops,sentinel-08ca167,2026-06,0.0,0.0,102315207,2557.88,Microsoft Sentinel,SIEM detection
+DR-Recovery,eh-0de4297,2026-06,0.0,593.1,0,148.24,Event Hubs,Capture to storage
+Finance-Systems,vm-0216865,2026-06,834.6,0.0,0,3046.33,Virtual Machines,E8s v3 memory-optimized
+Customer-Portal,fd-09eb623,2026-06,0.0,0.0,65776679,493.32,Front Door,Global load balancer
+Mobile-Backend,redis-0333751,2026-06,776.9,0.0,0,393.86,Azure Cache for Redis,Standard C2 cache
+Shared-Services,vm-0ccf546,2026-06,768.5,0.0,0,2805.12,Virtual Machines,E8s v3 memory-optimized
+Production-Main,vm-003b995,2026-06,491.4,0.0,0,4484.42,Virtual Machines,NC6s v3 GPU VM
+Mobile-Backend,vm-0b83258,2026-06,809.6,0.0,0,984.97,Virtual Machines,D4s v3 CI runner
+Shared-Services,sb-0d48406,2026-06,539.6,0.0,7495773,410.39,Service Bus,Premium messaging
+Production-Secondary,blob-0b77983,2026-06,0.0,2304.3,5760519,374.44,Blob Storage,Media content
+Production-Secondary,appi-0fa6211,2026-06,0.0,0.0,38016577,475.21,Application Insights,APM telemetry
+DR-Recovery,sb-02f8539,2026-06,0.0,0.0,17049619,42.62,Service Bus,Standard messaging
+Shared-Services,appi-0e4c650,2026-06,0.0,0.0,46720828,584.01,Application Insights,APM telemetry
+Finance-Systems,aks-10e7263,2026-06,211.2,0.0,0,316.77,AKS,Dev K8s cluster
+Finance-Systems,blob-0464577,2026-06,0.0,8002.8,80026,240.08,Blob Storage,Backup storage
+DevOps-Central,vm-00df422,2026-06,733.2,0.0,0,223.02,Virtual Machines,B2s development VM
+Finance-Systems,redis-06f3501,2026-06,746.0,0.0,0,378.18,Azure Cache for Redis,Standard C2 cache
+Shared-Services,ado-0d93508,2026-06,0.0,77.2,0,19.3,Azure DevOps,Artifacts storage
+DR-Recovery,sqldb-0a7a105,2026-06,692.4,48.1,0,143.91,SQL Database,Basic dev database
+Production-Secondary,blob-0b27268,2026-06,0.0,11520.1,28799,92.17,Blob Storage,Archive tier
+DevOps-Central,kv-00d6689,2026-06,0.0,0.0,2570342,7.71,Key Vault,Secrets management
+Mobile-Backend,aks-033a939,2026-06,1142.6,0.0,0,1713.87,AKS,Staging K8s cluster
+Production-Secondary,aks-04be630,2026-06,556.4,0.0,0,2503.74,AKS,Production K8s cluster
+Production-Main,blob-0b59559,2026-06,0.0,6672.5,2502184,354.47,Blob Storage,Data lake storage
+Production-Main,kv-0ea5380,2026-06,0.0,0.0,2330715,6.99,Key Vault,Secrets management
+Finance-Systems,blob-0848995,2026-06,0.0,9281.0,3480385,493.05,Blob Storage,Data lake storage
+Production-Secondary,blob-0dab457,2026-06,0.0,2061.0,5152465,334.91,Blob Storage,Media content
+Finance-Systems,app-0735979,2026-06,879.7,0.0,0,1070.37,App Service,API app P2v3
+Production-Main,func-0034684,2026-06,0.0,0.0,9650774,144.76,Azure Functions,API handlers
+DevOps-Central,kv-0966849,2026-06,0.0,0.0,309261,0.94,Key Vault,Certificate store
+Analytics-Platform,aks-10a1281,2026-06,487.6,0.0,0,731.55,AKS,Dev K8s cluster
+Production-Main,func-0e70460,2026-06,0.0,0.0,2787045,41.8,Azure Functions,Webhook processor
+Mobile-Backend,eh-0ee7100,2026-06,632.9,0.0,26369764,288.75,Event Hubs,Standard throughput units
+Security-Ops,sqldb-116c948,2026-06,827.1,57.4,0,171.92,SQL Database,Basic dev database
+DevOps-Central,sentinel-061b348,2026-06,0.0,0.0,120715593,3017.89,Microsoft Sentinel,SIEM detection
+DR-Recovery,appi-02f2887,2026-06,0.0,0.0,62810952,785.14,Application Insights,APM telemetry
+Customer-Portal,app-026a146,2026-06,661.7,0.0,0,402.54,App Service,Web app P1v3
+Finance-Systems,appi-0225717,2026-06,0.0,0.0,45443727,568.05,Application Insights,APM telemetry
+Production-Main,kv-0aae335,2026-06,0.0,0.0,2421917,7.26,Key Vault,Secrets management
+DevOps-Central,vm-090b907,2026-06,775.1,0.0,0,235.78,Virtual Machines,B2s development VM
+Internal-Tools,eh-10fe850,2026-06,0.0,440.9,0,110.23,Event Hubs,Capture to storage
+Shared-Services,fd-0f90890,2026-06,0.0,0.0,76515422,573.88,Front Door,Global load balancer
+Customer-Portal,appi-0cae731,2026-06,0.0,0.0,23223262,290.29,Application Insights,Custom metrics
+Production-Secondary,sqldb-0d25557,2026-06,420.7,146.0,0,703.98,SQL Database,Standard S3 production
+DevOps-Central,appi-047d948,2026-06,0.0,0.0,60288811,753.61,Application Insights,APM telemetry
+Analytics-Platform,app-00bd383,2026-06,876.3,0.0,0,533.06,App Service,Web app P1v3
+Partner-Integration,ado-065e537,2026-06,0.0,102.5,0,25.61,Azure DevOps,Artifacts storage
+Production-Main,blob-0efc134,2026-06,0.0,2877.9,7674327,374.13,Blob Storage,Build artifacts
+Analytics-Platform,aks-0e44813,2026-06,1270.7,0.0,0,1906.02,AKS,Staging K8s cluster
+DevOps-Central,app-0b8f534,2026-06,1043.2,0.0,0,158.66,App Service,Web app B1
+Shared-Services,ado-0a0b685,2026-06,500.0,0.0,0,250.0,Azure DevOps,Pipelines hosted
+Mobile-Backend,sqldb-04db913,2026-06,870.9,604.8,0,3531.87,SQL Database,Premium P1 analytics
+Customer-Portal,func-025e719,2026-06,0.0,0.0,2892052,43.38,Azure Functions,Webhook processor
+DR-Recovery,redis-112b516,2026-06,726.8,0.0,0,884.28,Azure Cache for Redis,Premium P1 cache
+Finance-Systems,sentinel-0918997,2026-06,0.0,0.0,115568530,2889.21,Microsoft Sentinel,SIEM detection
+Finance-Systems,app-0bd2556,2026-06,1036.6,0.0,0,157.64,App Service,Web app B1
+Finance-Systems,sb-0af7412,2026-06,0.0,0.0,28592591,71.48,Service Bus,Standard messaging
+Shared-Services,func-01cb238,2026-06,0.0,0.0,420062,6.3,Azure Functions,Timer triggers
+Mobile-Backend,sb-033e339,2026-06,732.2,0.0,10169304,556.77,Service Bus,Premium messaging
+Production-Main,vm-0522364,2026-06,625.9,0.0,0,761.54,Virtual Machines,D4s v3 CI runner
+Customer-Portal,kv-0261440,2026-06,0.0,0.0,423111,1.27,Key Vault,Certificate store
+Shared-Services,vm-08c4697,2026-06,906.0,0.0,0,3307.0,Virtual Machines,E8s v3 memory-optimized
+Partner-Integration,sqldb-0e15863,2026-06,735.5,510.7,0,2982.94,SQL Database,Premium P1 analytics
+Finance-Systems,sqldb-0a6c230,2026-06,1059.3,73.6,0,220.16,SQL Database,Basic dev database
+Analytics-Platform,redis-00c1155,2026-06,526.9,0.0,0,641.11,Azure Cache for Redis,Premium P1 cache
+DR-Recovery,eh-0830824,2026-06,0.0,483.6,0,120.89,Event Hubs,Capture to storage
+DevOps-Central,redis-0678471,2026-06,708.8,0.0,0,862.35,Azure Cache for Redis,Premium P1 cache
+Production-Main,app-0e9e755,2026-06,572.0,0.0,0,695.9,App Service,API app P2v3
+Customer-Portal,vm-0d14393,2026-06,579.8,0.0,0,352.7,Virtual Machines,D2s v3 utility server
+Shared-Services,cosmos-01c5475,2026-06,573.4,79.6,19909664,746.61,Cosmos DB,Event store
+Production-Main,blob-002e702,2026-06,0.0,5438.7,0,543.87,Blob Storage,Security audit logs
+Mobile-Backend,azmon-0c97221,2026-06,0.0,380.6,50746075,539.17,Azure Monitor,Logs and metrics
+DevOps-Central,appi-0d57672,2026-06,0.0,0.0,18596012,232.46,Application Insights,Custom metrics
+Production-Secondary,sqldb-050d815,2026-06,467.3,162.3,0,781.98,SQL Database,Standard S3 production
+Customer-Portal,cosmos-057f603,2026-06,690.2,47.9,14379347,467.33,Cosmos DB,Config store
+Customer-Portal,eh-0501800,2026-06,0.0,650.7,0,162.68,Event Hubs,Capture to storage
+DevOps-Central,appi-0f19138,2026-06,0.0,0.0,55655082,695.68,Application Insights,APM telemetry
+Finance-Systems,vm-10f9391,2026-06,743.4,0.0,0,1808.59,Virtual Machines,D8s v3 application server
+Shared-Services,sb-09c5978,2026-06,743.2,0.0,10321608,565.11,Service Bus,Premium messaging
+DevOps-Central,appi-0dd3396,2026-06,0.0,0.0,13560992,169.52,Application Insights,Custom metrics
+Finance-Systems,cosmos-0219643,2026-06,529.6,73.6,18388395,689.56,Cosmos DB,Event store
+Internal-Tools,eh-104e481,2026-06,0.0,596.5,0,149.14,Event Hubs,Capture to storage
+Production-Main,acr-0035926,2026-06,0.0,312.3,624616,206.12,Container Registry,Docker image registry
+Finance-Systems,eh-05d4851,2026-06,671.7,0.0,27986071,306.44,Event Hubs,Standard throughput units
+DevOps-Central,redis-05a6544,2026-06,719.7,0.0,0,875.64,Azure Cache for Redis,Premium P1 cache
+Partner-Integration,eh-0fc3866,2026-06,593.2,0.0,24716054,270.64,Event Hubs,Standard throughput units
+Mobile-Backend,vm-080e442,2026-06,824.9,0.0,0,1171.4,Virtual Machines,F4s v2 compute node
+Finance-Systems,eh-0e99947,2026-06,663.4,0.0,27639749,302.65,Event Hubs,Standard throughput units
+Finance-Systems,app-063b847,2026-06,841.3,0.0,0,1023.54,App Service,API app P2v3
+DevOps-Central,aks-0f3b213,2026-06,2035.9,0.0,0,3053.81,AKS,Staging K8s cluster
+Production-Secondary,eh-0f4e930,2026-06,0.0,706.1,0,176.52,Event Hubs,Capture to storage
+Customer-Portal,appi-0256518,2026-06,0.0,0.0,23748317,296.85,Application Insights,Custom metrics
+Shared-Services,aks-07ce741,2026-06,1064.3,0.0,0,1596.34,AKS,Staging K8s cluster
+DevOps-Central,aks-0748902,2026-06,311.9,0.0,0,467.95,AKS,Dev K8s cluster
+Finance-Systems,blob-0209645,2026-06,0.0,8174.1,3065293,434.25,Blob Storage,Data lake storage
+DR-Recovery,kv-02ec904,2026-06,0.0,0.0,2747880,8.24,Key Vault,Secrets management
+DevOps-Central,aks-0e98359,2026-06,414.0,0.0,0,621.11,AKS,Dev K8s cluster
+DevOps-Central,kv-07d7650,2026-06,0.0,0.0,409513,1.23,Key Vault,Certificate store
+Shared-Services,func-07ef321,2026-06,0.0,0.0,10931047,163.97,Azure Functions,API handlers
+Mobile-Backend,vm-10bb955,2026-06,881.7,0.0,0,1252.12,Virtual Machines,F4s v2 compute node
+Partner-Integration,redis-0e4a190,2026-06,769.4,0.0,0,936.09,Azure Cache for Redis,Premium P1 cache
+Shared-Services,func-01ca602,2026-06,0.0,0.0,2699711,40.5,Azure Functions,Webhook processor
+Finance-Systems,appi-0226443,2026-06,0.0,0.0,15502209,193.78,Application Insights,Custom metrics
+Mobile-Backend,vm-103c910,2026-06,579.1,0.0,0,1056.71,Virtual Machines,E4s v3 SIEM collector
+Security-Ops,vm-0f8c889,2026-06,712.8,0.0,0,433.59,Virtual Machines,D2s v3 utility server

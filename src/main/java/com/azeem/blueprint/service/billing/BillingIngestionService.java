@@ -59,6 +59,10 @@ public class BillingIngestionService {
     this.alarmService = alarmService;
   }
 
+  /**
+   * This is for data ingestion in bulk. This typically only happens the first time a dataset is ingested at the start of the
+   * period or while ingesting the user's older data from past periods.
+   */
   @Transactional
   @CacheEvict(
       value = {"billingSummaries", "billingPeriods", "providers", "alarms"},
@@ -129,4 +133,12 @@ public class BillingIngestionService {
     return new IngestionResult(
         datasetId, billingPeriod, successCount, failureCount, errorBuffer.toString());
   }
+
+  /**
+    * This method is called much more often. This should only be inserting a few more billing records and
+   * updating the majority of them.
+   */
+//  public IngestionResult ingestIncrementalData(@NotNull UUID datasetId, @NotNull InputStream inputStream) {
+//    // TODO: Implement
+//  }
 }

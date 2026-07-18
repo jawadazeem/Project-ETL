@@ -8,6 +8,7 @@ package com.azeem.blueprint.repository;
 import com.azeem.blueprint.entity.BillingRecordEntity;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -95,7 +96,26 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecordEnti
   double sumTotalChargeByDatasetIdAndBillingPeriod(
       @Param("datasetId") UUID datasetId, @Param("billingPeriod") String billingPeriod);
 
+  @Query(
+      """
+      SELECT b
+      FROM BillingRecordEntity b
+      WHERE b.dataset.id = :datasetId
+        AND b.billingPeriod = :billingPeriod
+        AND b.totalCharge >= :lowerBound
+        AND b.totalCharge < :upperBound
+    """)
+  List<BillingRecordEntity> findResourceAlarmRecomputeCandidates(
+      @Param("datasetId") UUID datasetId,
+      @Param("billingPeriod") String billingPeriod,
+      @Param("lowerBound") double lowerBound,
+      @Param("upperBound") double upperBound);
+
   @Modifying
   @Transactional
   int deleteByDatasetIdAndBillingPeriod(UUID datasetId, String billingPeriod);
+
+  Optional<BillingRecordEntity> findByDataset_IdAndResourceId(UUID datasetId, String resourceId);
+
+  List<BillingRecordEntity> findByDataset_IdAndCloudProvider(UUID datasetId, String cloudProvider);
 }

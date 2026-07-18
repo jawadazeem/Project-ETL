@@ -77,6 +77,23 @@ public class BillingQueryService {
     return records;
   }
 
+  public BillingRecord getByResourceId(UUID datasetId, String resourceId) {
+    BillingRecordEntity record =
+        repository
+            .findByDataset_IdAndResourceId(datasetId, resourceId)
+            .orElseThrow(
+                () ->
+                    new BillingDataNotFoundException(
+                        "Could not find billing record with resource id: " + resourceId));
+    return mapper.mapToDomain(record);
+  }
+
+  public List<BillingRecord> getByCloudProvider(UUID datasetId, String cloudProvider) {
+    List<BillingRecordEntity> record =
+        repository.findByDataset_IdAndCloudProvider(datasetId, cloudProvider);
+    return record.stream().map(mapper::mapToDomain).toList();
+  }
+
   /**
    * Purges all billing records associated with a specific billing period strictly within the
    * boundaries of the given dataset.
