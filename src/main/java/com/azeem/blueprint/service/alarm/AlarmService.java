@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +45,7 @@ public class AlarmService {
   private final AlarmDetectionService alarmDetectionService;
   private final NotificationClient notificationClient;
   private final DatasetService datasetService;
+  private final CacheManager cacheManager;
 
   public AlarmService(
       AlarmRepository alarmRepository,
@@ -51,7 +54,8 @@ public class AlarmService {
       AlarmMapper alarmMapper,
       BillingRecordMapper billingRecordMapper,
       NotificationClient notificationClient,
-      DatasetService datasetService) {
+      DatasetService datasetService,
+      CacheManager cacheManager) {
     this.alarmRepository = alarmRepository;
     this.alarmBillingQueryService = alarmBillingQueryService;
     this.alarmDetectionService = alarmDetectionService;
@@ -59,6 +63,7 @@ public class AlarmService {
     this.alarmMapper = alarmMapper;
     this.notificationClient = notificationClient;
     this.datasetService = datasetService;
+    this.cacheManager = cacheManager;
   }
 
   /**
@@ -109,6 +114,7 @@ public class AlarmService {
     }
 
     if (!allNewAlarms.isEmpty()) {
+      evictAlarmCaches();
       notifyQuietly(allNewAlarms);
     }
   }
@@ -122,9 +128,7 @@ public class AlarmService {
   /** Recomputes alarms across all datasets for a user. */
   @Transactional
   public void recompute(
-      UUID userId,
-      AlarmThresholdPreference oldPreference,
-      AlarmThresholdPreference newPreference) {
+      UUID userId, AlarmThresholdPreference oldPreference, AlarmThresholdPreference newPreference) {
     Map<UUID, String> datasets = datasetService.getBillingPeriods(userId);
     datasets.forEach(
         (datasetId, billingPeriod) ->
@@ -322,7 +326,12 @@ public class AlarmService {
     };
   }
 
-  private void evictAlarmCaches() {}
+  private void evictAlarmCaches() {
+    Cache alarms = cacheManager.getCache("alarms");
+    if (alarms != null) {
+      alarms.clear();
+    }
+  }
 
   private void persistNewAlarms(
       List<Alarm> detected, Set<UUID> existingKeys, List<Alarm> allNewAlarms) {

@@ -26,9 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// TODO: Turn this into an AI first report. This should be a summary of the AI's findings and
-// re-generate every 10 minutes,
-//  Or on Runtime, whatever comes first.
+// TODO: Turn this into an AI first report. This should be a summary of the AI's findings.
+//  Re-generate everytime new billing data is ingested OR Alarm preferences are changed/recomputed, though this is the responsibility of the AI Agent Caller.
 @Service
 public class PdfReportService {
   private static final Logger log = LoggerFactory.getLogger(PdfReportService.class);
@@ -64,6 +63,15 @@ public class PdfReportService {
     this.appUserService = appUserService;
   }
 
+  // TODO: Add the ability for an external caller via the API to add a couple of sections. These
+  //  include, but are not limited to:
+  //  BLUF
+  //  Spend Increases
+  //  Predictions
+  //  Audit Findings
+  //  Policy and Contract Fit
+  //  Savings Opportunities
+  //  Each of these will be tiny sections, enough to fit on one page, followed by the rest of the report.
   @Transactional
   public PdfReport generateReport(UUID userId, UUID datasetId, String billingPeriod) {
     log.info(

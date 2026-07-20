@@ -54,13 +54,37 @@ function showToast(message, type = "error") {
     const container = document.getElementById("toast-container");
     const toast = document.createElement("div");
     toast.className = `bp-toast bp-toast-${type}`;
-    toast.innerHTML = `<span>${message}</span><button class="bp-toast-close" aria-label="Dismiss">✕</button>`;
 
-    const closeBtn = toast.querySelector(".bp-toast-close");
+    const text = document.createElement("span");
+    text.textContent = message;
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "bp-toast-close";
+    closeBtn.type = "button";
+    closeBtn.setAttribute("aria-label", "Dismiss");
+    closeBtn.textContent = "✕";
+
+    toast.append(text, closeBtn);
+
     closeBtn.addEventListener("click", () => toast.remove());
 
     container.appendChild(toast);
     setTimeout(() => toast.remove(), 5000);
+}
+
+async function readApiErrorMessage(response, fallbackMessage) {
+    try {
+        const contentType = response.headers.get("Content-Type") || "";
+        if (contentType.includes("application/json")) {
+            const body = await response.json();
+            return body?.message || fallbackMessage;
+        }
+
+        const body = await response.text();
+        return body || fallbackMessage;
+    } catch (e) {
+        return fallbackMessage;
+    }
 }
 
 // ── Skeleton helpers ──────────────────────────────────────────────────────
@@ -668,7 +692,9 @@ async function loadProviders() {
 
 async function fetchAlarms() {
     if (!currentPeriod || !currentDatasetId) return [];
-    const res = await fetch(`/datasets/${currentDatasetId}/alarms/${encodeURIComponent(currentPeriod)}`);
+    const res = await fetch(`/datasets/${currentDatasetId}/alarms/${encodeURIComponent(currentPeriod)}`, {
+        cache: "no-store"
+    });
     if (!res.ok) throw new Error("Failed to load alarms");
     return asArray(await res.json());
 }
@@ -760,9 +786,31 @@ async function loadAlarmPreferences() {
     }
 }
 
+async function refreshAlarmViews() {
+    const alarms = await fetchAlarms();
+    const count = alarms.length;
+    const alarmsButton = document.getElementById("alarms-btn");
+    const alarmsTitle = document.getElementById("alarms-title");
+
+    renderAlarms(alarms);
+
+    if (alarmsTitle) {
+        alarmsTitle.textContent = `Alarms (${count})`;
+    }
+
+    if (alarmsButton) {
+        alarmsButton.textContent = `Alarms (${count})`;
+        alarmsButton.style.opacity = count === 0 ? "0.4" : "1";
+    }
+
+    await loadAlarmsChart();
+}
+
 async function saveAlarmPreferences(event) {
     event.preventDefault();
     const btn = document.getElementById("alarmPreferencesSaveBtn");
+    const originalText = btn.textContent;
+    btn.textContent = "Loading...";
     btn.disabled = true;
 
     try {
@@ -775,14 +823,18 @@ async function saveAlarmPreferences(event) {
             body: JSON.stringify(readAlarmPreferencesForm())
         });
 
-        if (!res.ok) throw new Error(`Alarm preferences save failed: ${res.status}`);
+        if (!res.ok) {
+            throw new Error(await readApiErrorMessage(res, `Alarm preferences save failed: ${res.status}`));
+        }
 
         renderAlarmPreferences(await res.json());
+        await refreshAlarmViews();
         showToast("Alarm preferences saved.", "success");
     } catch (e) {
         console.error("Failed to save alarm preferences", e);
-        showToast("Could not save alarm preferences.");
+        showToast(e.message || "Could not save alarm preferences.");
     } finally {
+        btn.textContent = originalText;
         btn.disabled = false;
     }
 }
@@ -799,10 +851,7 @@ async function onAlarmsClick() {
     openAlarmsModal();
     try {
         await loadAlarmPreferences();
-        const alarms = await fetchAlarms();
-        document.getElementById("alarms-title").textContent = `Alarms (${alarms.length})`;
-        renderAlarms(alarms);
-        document.getElementById("alarms-btn").textContent = `Alarms (${alarms.length})`;
+        await refreshAlarmViews();
     } catch (e) {
         console.error(e);
         renderAlarms([]);
@@ -928,9 +977,7 @@ async function loadAlarmsCount() {
     if (!currentPeriod || !currentDatasetId) return;
 
     try {
-        const res = await fetch(`/datasets/${currentDatasetId}/alarms/${encodeURIComponent(currentPeriod)}`);
-        if (!res.ok) throw new Error(`Alarms count fetch failed: ${res.status}`);
-        const alarms = asArray(await res.json());
+        const alarms = await fetchAlarms();
         const count = alarms.length;
         const btn = document.getElementById("alarms-btn");
 
@@ -983,6 +1030,26 @@ function setTracePrompt(prompt) {
 
     input.value = prompt;
     input.focus();
+}
+
+async function runCostOptimizationAnalysis() {
+    const btn = document.getElementById("runOptimizationBtn");
+    const originalText = btn?.textContent || "Run Cost Optimization Analysis";
+
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Loading...";
+    }
+
+    try {
+        setTracePrompt("Produce prioritized, evidence-backed cloud cost optimization recommendations for the current billing period.");
+        await sendChat();
+    } finally {
+        if (btn) {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    }
 }
 
 function showBackendPlaceholder(featureName) {
@@ -1772,10 +1839,7 @@ function wireDashboardEvents() {
         deleteOrgContextDocument(btn.dataset.documentId);
     });
     document.getElementById("patternSearchBtn")?.addEventListener("click", runPatternSearchPlaceholder);
-    document.getElementById("runOptimizationBtn")?.addEventListener("click", () => {
-        showBackendPlaceholder("Cost optimization analysis");
-        setTracePrompt("Run a cost optimization analysis for the current billing period and rank the recommendations by projected savings.");
-    });
+    document.getElementById("runOptimizationBtn")?.addEventListener("click", runCostOptimizationAnalysis);
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));
     document.getElementById("prevBtnFilterByProviders")?.addEventListener("click", () => changePageFilterByProvider(-1));

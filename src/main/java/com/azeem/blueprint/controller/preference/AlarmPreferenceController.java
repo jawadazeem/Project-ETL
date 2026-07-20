@@ -64,7 +64,8 @@ public class AlarmPreferenceController {
     return ResponseEntity.ok(alarmPreferenceService.savePreference(userId, preference));
   }
 
-  @Operation(summary = "Update alarm threshold preferences and recompute alarms for the current user")
+  @Operation(
+      summary = "Update alarm threshold preferences and recompute alarms for the current user")
   @PutMapping("/me/recompute")
   public ResponseEntity<AlarmThresholdPreference> updatePreferenceAndRecompute(
       @RequestHeader("X-User-Id") UUID userId,

@@ -60,8 +60,8 @@ public class BillingIngestionService {
   }
 
   /**
-   * This is for data ingestion in bulk. This typically only happens the first time a dataset is ingested at the start of the
-   * period or while ingesting the user's older data from past periods.
+   * This is for data ingestion in bulk. This typically only happens the first time a dataset is
+   * ingested at the start of the period or while ingesting the user's older data from past periods.
    */
   @Transactional
   @CacheEvict(
@@ -135,10 +135,11 @@ public class BillingIngestionService {
   }
 
   /**
-    * This method is called much more often. This should only be inserting a few more billing records and
-   * updating the majority of them.
+   * This method is called much more often. This should only be inserting a few more billing records
+   * and updating the majority of them.
    */
-//  public IngestionResult ingestIncrementalData(@NotNull UUID datasetId, @NotNull InputStream inputStream) {
-//    // TODO: Implement
-//  }
+  //  public IngestionResult ingestIncrementalData(@NotNull UUID datasetId, @NotNull InputStream
+  // inputStream) {
+  //    // TODO: Implement
+  //  }
 }

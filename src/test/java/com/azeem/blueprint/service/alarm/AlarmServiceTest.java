@@ -32,6 +32,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -46,6 +48,8 @@ class AlarmServiceTest {
   @Mock private AlarmMapper alarmMapper;
   @Mock private BillingRecordMapper billingMapper;
   @Mock private NotificationClient notificationClient;
+  @Mock private CacheManager cacheManager;
+  @Mock private Cache alarmsCache;
 
   @InjectMocks private AlarmService service;
 
@@ -109,10 +113,12 @@ class AlarmServiceTest {
     when(alarmDetectionService.detectResourceAlarms(eq(DATASET_ID), anyList(), eq("2026-01")))
         .thenReturn(List.of(alarm(new UUID(0L, 1L))));
     when(alarmMapper.mapToEntity(any())).thenReturn(new AlarmEntity());
+    when(cacheManager.getCache("alarms")).thenReturn(alarmsCache);
 
     service.detectAndPersistAlarmsForDataset(DATASET_ID, "2026-01");
 
     verify(alarmRepository).saveAll(anyList());
+    verify(alarmsCache).clear();
   }
 
   @Test
