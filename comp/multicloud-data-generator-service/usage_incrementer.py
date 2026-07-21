@@ -14,7 +14,8 @@ class UsageIncrementer:
                 "secret": "test"
             }
             df = pd.read_csv(url, storage_options=storage_options)
-        elif url.startswith("az://") or url.startswith("abfs://"): # Azure specific config. 
+        # Azure specific config. 
+        elif url.startswith("az://") or url.startswith("abfs://"):
             azurite_conn_str = (
                 "DefaultEndpointsProtocol=http;"
                 "AccountName=devstoreaccount1;"
@@ -25,8 +26,17 @@ class UsageIncrementer:
                 "connection_string": azurite_conn_str
             }
             df = pd.read_csv(url, storage_options=storage_options)
+        # GCP specific config (fake-gcs-server)
+        elif url.startswith("gs://"):
+            storage_options = {
+                "client_kwargs": {
+                    "endpoint_url": "http://127.0.0.1:4443"  # Points gcsfs to fake-gcs-server
+                },
+                "token": "anon"
+            }
+            df = pd.read_csv(url, storage_options=storage_options)
         else:
-            df = pd.read_csv(url) # GCP doesn't need storage options
+            df = pd.read_csv(url)
             
         numeric_cols = df.select_dtypes(include="number").columns
         df[numeric_cols] = df[numeric_cols] * scalar

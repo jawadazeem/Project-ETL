@@ -5,18 +5,29 @@ from usage_incrementer import UsageIncrementer
 
 def tick(manager: MultiCloudStorageManager,
          incrementer: UsageIncrementer,
-         path_scalar_map: map,
+         path_scalar_map: dict,
          bucket_name: str,
          period: str):
     
     for path, scalar in path_scalar_map.items():
         df = incrementer.increment(path, scalar)
-        csv_bytes = df.to_csv(index=False).encode('utf-8')
-        manager.upload_csv_bytes(csv_bytes, bucket_name=bucket_name, object_name=period)
+        csv_bytes = df.to_csv(index=False).encode("utf-8")
+    
+        if path.startswith("s3://"):
+            manager.s3_client.put_object(Bucket=bucket_name, Key=period, Body=csv_bytes)
+        elif path.startswith("gs://"):
+            bucket = manager.gcp_client.bucket(bucket_name)
+            bucket.blob(period).upload_from_string(csv_bytes, content_type="text/csv")
+        elif path.startswith("az://") or path.startswith("abfs://"):
+            blob_client = manager.azure_client.get_blob_client(container=bucket_name, blob=period)
+            blob_client.upload_blob(csv_bytes, overwrite=True)
 
 def main():
     manager = MultiCloudStorageManager()
     incrementer = UsageIncrementer()
+
+    container_client = manager.azure_client.get_container_client("billingreports")
+    container_client.set_container_access_policy({}, public_access="blob")
 
     bucket_name = "billingreports"
     period = "2026-06.csv"

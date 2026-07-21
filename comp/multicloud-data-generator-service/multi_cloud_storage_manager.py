@@ -115,12 +115,16 @@ class MultiCloudStorageManager:
         blob.download_to_filename(local_dest_path)
         print(f"Downloaded '{blob_name}' from GCP GCS to {local_dest_path}")
 
-    # Azure Blob Storage Operations
     def create_bucket_azure(self, bucket_name):
         try:
-            self.azure_client.create_container(bucket_name)
+            # Create container with public blob access enabled
+            self.azure_client.create_container(bucket_name, public_access="blob")
+            print(f"Azure Container '{bucket_name}' created successfully with public blob access.")
         except ResourceExistsError:
             print(f"Azure Container '{bucket_name}' already exists.")
+            # Pass an empty dict {} for signed_identifiers to satisfy the positional argument
+            container_client = self.azure_client.get_container_client(bucket_name)
+            container_client.set_container_access_policy({}, public_access="blob")
 
     def upload_to_azure(self, local_path, container_name, blob_name):
         """Uploads a local file to an Azure Blob Storage container."""
