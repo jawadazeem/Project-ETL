@@ -3,3 +3,6 @@ google-cloud-storage>=3.13.0
 azure-storage-blob==12.19.0
 numpy==2.5.1
 pandas==3.0.4
+s3fs>=2024.1.0
+gcsfs>=2024.1.0
+adlfs>=2024.1.0

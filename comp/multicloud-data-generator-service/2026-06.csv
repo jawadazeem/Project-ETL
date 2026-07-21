@@ -1,0 +1,1836 @@
+,lineItem/UsageAccountId,lineItem/ResourceId,bill/BillingPeriodStartDate,lineItem/UsageAmount_ComputeHours,lineItem/UsageAmount_StorageGB,lineItem/UsageAmount_APIRequests,lineItem/UnblendedCost,product/ProductName,lineItem/LineItemDescription
+0,Mobile-Backend,ebs-0ab8278,2026-06,0.0,4082.5199999999995,0.0,183.72,EBS,st1 volumes archive
+1,Data-Science,cf-0140766,2026-06,0.0,0.0,132289400.39999999,661.452,CloudFront,CDN web distribution
+2,Security-Ops,ebs-0bcb202,2026-06,0.0,5751.24,0.0,258.804,EBS,st1 volumes archive
+3,Marketing-Platform,rs-0483517,2026-06,764.52,2123.7599999999998,0.0,3875.652,Redshift,Data warehouse cluster
+4,Production-Main,sns-114a513,2026-06,0.0,0.0,7967293.199999999,3.972,SNS,Alert notifications
+5,Security-Ops,s3-017f436,2026-06,0.0,20708.04,4141602.0,724.776,S3,Data lake raw zone
+6,Internal-Tools,rds-0f84794,2026-06,1170.0,1625.1599999999999,0.0,5200.139999999999,RDS,db.r5.2xlarge Aurora cluster
+7,DevOps-Central,kin-09fd183,2026-06,1142.8799999999999,0.0,31747297.2,463.52399999999994,Kinesis,Firehose delivery
+8,Internal-Tools,sqs-1090601,2026-06,0.0,0.0,72795933.6,36.384,SQS,Order processing queue
+9,Mobile-Backend,ebs-0ed8926,2026-06,0.0,3477.48,0.0,156.492,EBS,st1 volumes archive
+10,Partner-Integration,rds-09ee347,2026-06,1024.44,711.3599999999999,0.0,2027.3999999999999,RDS,db.r5.large PostgreSQL replica
+11,DevOps-Central,sm-00d1740,2026-06,0.0,0.0,1501774.8,6.012,Secrets Manager,Application secrets
+12,Production-Secondary,ecs-0b92760,2026-06,601.4399999999999,0.0,0.0,1097.7479999999998,ECS,Fargate API cluster
+13,Production-Secondary,nat-0083744,2026-06,855.4799999999999,0.0,0.0,195.15599999999998,NAT Gateway,Staging VPC NAT
+14,Marketing-Platform,i-01e6426,2026-06,1125.84,0.0,0.0,82.18799999999999,EC2,t3.micro bastion host
+15,Security-Ops,ecs-0ca2184,2026-06,597.24,0.0,0.0,1089.924,ECS,Fargate API cluster
+16,Production-Secondary,sqs-0086923,2026-06,0.0,0.0,30714795.599999998,15.36,SQS,Event notification queue
+17,Finance-Systems,eks-061d810,2026-06,1022.04,0.0,0.0,3066.096,EKS,Production K8s cluster
+18,Production-Main,kin-045b307,2026-06,883.92,0.0,24554203.2,358.488,Kinesis,Firehose delivery
+19,Shared-Services,nat-0d7f916,2026-06,803.64,0.0,0.0,366.72,NAT Gateway,Production VPC NAT
+20,Customer-Portal,ebs-0b9a537,2026-06,0.0,637.56,0.0,398.424,EBS,io2 volumes database
+21,DevOps-Central,ec-0ce8236,2026-06,868.32,0.0,0.0,625.164,ElastiCache,Redis production cluster
+22,Partner-Integration,sm-0856857,2026-06,0.0,0.0,1700374.8,6.803999999999999,Secrets Manager,Application secrets
+23,Compliance-Audit,elb-0aeb454,2026-06,533.76,0.0,37066440.0,231.288,ELB,Network load balancer
+24,Mobile-Backend,ebs-0898961,2026-06,0.0,5076.72,0.0,228.468,EBS,st1 volumes archive
+25,Security-Ops,lam-017a794,2026-06,0.0,0.0,4596924.0,32.412,Lambda,Image resizer
+26,Partner-Integration,rds-1042178,2026-06,1104.9599999999998,767.28,0.0,2186.88,RDS,db.r5.large PostgreSQL replica
+27,Security-Ops,sm-08a6920,2026-06,0.0,0.0,1472137.2,5.892,Secrets Manager,Application secrets
+28,Compliance-Audit,sns-0c1d686,2026-06,0.0,0.0,14195696.4,7.092,SNS,Alert notifications
+29,Edge-Network,ecs-031f111,2026-06,343.92,0.0,0.0,627.6,ECS,Fargate worker cluster
+30,ML-Training,i-0dad813,2026-06,741.72,0.0,0.0,2571.612,EC2,r5.2xlarge database server
+31,Marketing-Platform,sm-0a3a425,2026-06,0.0,0.0,1034134.7999999999,4.128,Secrets Manager,Application secrets
+32,Compliance-Audit,kin-083d194,2026-06,809.7599999999999,0.0,33737061.6,492.564,Kinesis,Data stream ingestion
+33,Partner-Integration,eks-03c5402,2026-06,905.64,0.0,0.0,2716.8360000000002,EKS,Production K8s cluster
+34,Edge-Network,lam-0e35921,2026-06,0.0,0.0,23963700.0,167.748,Lambda,Data transformer
+35,Marketing-Platform,sm-0d30645,2026-06,0.0,0.0,1279006.8,5.111999999999999,Secrets Manager,Application secrets
+36,Marketing-Platform,sm-0e7c136,2026-06,0.0,0.0,962090.3999999999,3.84,Secrets Manager,Application secrets
+37,Partner-Integration,elb-0bd4274,2026-06,733.1999999999999,0.0,10183236.0,148.26,ELB,Classic load balancer
+38,Internal-Tools,rs-02b6574,2026-06,0.0,0.0,5771301.6,288.56399999999996,Redshift,Spectrum queries
+39,Data-Science,rs-0146862,2026-06,866.0400000000001,2405.52,0.0,4390.128,Redshift,Data warehouse cluster
+40,ML-Training,lam-055d746,2026-06,0.0,0.0,12442023.6,87.09599999999999,Lambda,Notification dispatcher
+41,Security-Ops,lam-09fe233,2026-06,0.0,0.0,29215719.599999998,204.504,Lambda,Data transformer
+42,Compliance-Audit,i-1029425,2026-06,720.4799999999999,0.0,0.0,624.468,EC2,m5.large monitoring server
+43,Edge-Network,vpn-0c9e800,2026-06,587.76,0.0,0.0,148.992,VPN Gateway,Client VPN endpoint
+44,Production-Main,r53-0c16894,2026-06,0.0,0.0,18622184.4,27.947999999999997,Route 53,Health checks
+45,Edge-Network,i-06ce887,2026-06,895.68,0.0,0.0,3105.096,EC2,r5.2xlarge database server
+46,Production-Main,i-0d80610,2026-06,542.88,0.0,0.0,1574.7479999999998,EC2,c5.2xlarge HPC node
+47,ML-Training,i-0b25477,2026-06,670.68,0.0,0.0,2325.408,EC2,r5.2xlarge database server
+48,Partner-Integration,rds-03c8753,2026-06,510.0,141.6,0.0,602.016,RDS,db.t3.medium MySQL staging
+49,Marketing-Platform,r53-01dd837,2026-06,0.0,0.0,69666780.0,104.496,Route 53,DNS hosting
+50,Marketing-Platform,i-01e7981,2026-06,699.24,0.0,0.0,2027.7599999999998,EC2,c5.2xlarge HPC node
+51,QA-Testing,ec-1136274,2026-06,994.92,0.0,0.0,716.34,ElastiCache,Redis production cluster
+52,Security-Ops,ses-09f7782,2026-06,0.0,0.0,2935323.6,3.516,SES,Transactional email
+53,Security-Ops,s3-08db379,2026-06,0.0,61.44,30715324.799999997,199.644,S3,Static website hosting
+54,Partner-Integration,ses-03cb400,2026-06,0.0,0.0,2617856.4,3.144,SES,Transactional email
+55,ML-Training,lam-0c34400,2026-06,0.0,0.0,12136202.4,84.94800000000001,Lambda,Notification dispatcher
+56,Internal-Tools,elb-08c2704,2026-06,1194.36,0.0,16589282.399999999,241.536,ELB,Classic load balancer
+57,Compliance-Audit,ecs-0d1c714,2026-06,585.12,0.0,0.0,1067.916,ECS,Fargate worker cluster
+58,Production-Main,i-1108283,2026-06,390.84,0.0,0.0,1133.28,EC2,c5.2xlarge HPC node
+59,Compliance-Audit,s3-0c95132,2026-06,0.0,891.9599999999999,1783971.5999999999,78.05999999999999,S3,Artifact storage
+60,Edge-Network,ebs-09ad548,2026-06,0.0,888.4799999999999,0.0,111.05999999999999,EBS,gp3 volumes production
+61,Production-Main,i-000d373,2026-06,487.67999999999995,0.0,0.0,1414.2479999999998,EC2,c5.2xlarge HPC node
+62,Compliance-Audit,s3-0667496,2026-06,0.0,14539.199999999999,2907830.4,508.86,S3,Data lake raw zone
+63,Mobile-Backend,ec-032e628,2026-06,739.8,0.0,0.0,532.644,ElastiCache,Redis production cluster
+64,Partner-Integration,r53-060c599,2026-06,0.0,0.0,79611998.39999999,119.42399999999999,Route 53,DNS hosting
+65,Internal-Tools,s3-0e43727,2026-06,0.0,4537.2,7259434.8,331.212,S3,Media content bucket
+66,Security-Ops,ecs-0499787,2026-06,526.68,0.0,0.0,961.308,ECS,Fargate worker cluster
+67,Production-Secondary,s3-0075793,2026-06,0.0,81.48,40747636.8,264.864,S3,Static website hosting
+68,Security-Ops,sqs-0195828,2026-06,0.0,0.0,48744196.8,24.371999999999996,SQS,Event notification queue
+69,Security-Ops,ebs-08c0486,2026-06,0.0,869.7599999999999,0.0,543.648,EBS,io2 volumes database
+70,Production-Main,cf-0a4b960,2026-06,0.0,0.0,71676547.2,358.37999999999994,CloudFront,CDN API distribution
+71,QA-Testing,elb-03e9138,2026-06,998.28,0.0,69322695.6,432.576,ELB,Network load balancer
+72,Marketing-Platform,sm-10db510,2026-06,0.0,0.0,1438626.0,5.748,Secrets Manager,Application secrets
+73,Data-Science,ses-0e41871,2026-06,0.0,0.0,2617688.4,3.144,SES,Transactional email
+74,Production-Main,rds-0005467,2026-06,834.6,579.6,0.0,2144.412,RDS,db.r5.xlarge PostgreSQL primary
+75,QA-Testing,ebs-0cff760,2026-06,0.0,1400.1599999999999,0.0,175.032,EBS,gp3 volumes production
+76,Production-Secondary,elb-0fed620,2026-06,690.9599999999999,0.0,47982027.6,299.412,ELB,Network load balancer
+77,ML-Training,ebs-0b54889,2026-06,0.0,5513.04,0.0,248.088,EBS,st1 volumes archive
+78,Partner-Integration,sm-03d6254,2026-06,0.0,0.0,1571512.8,6.288,Secrets Manager,Application secrets
+79,Security-Ops,s3-09e0838,2026-06,0.0,68.28,34157403.6,222.01199999999997,S3,Static website hosting
+80,Edge-Network,ebs-0907384,2026-06,0.0,498.23999999999995,0.0,311.436,EBS,io2 volumes database
+81,ML-Training,sqs-0365439,2026-06,0.0,0.0,620755.2,0.312,SQS,Dead letter queue
+82,Partner-Integration,eks-03c4771,2026-06,520.56,0.0,0.0,1561.548,EKS,Staging K8s cluster
+83,Compliance-Audit,ses-0ad0283,2026-06,0.0,0.0,2178920.4,2.616,SES,Transactional email
+84,Shared-Services,rds-0c30227,2026-06,582.8399999999999,404.64,0.0,1153.272,RDS,db.r5.large PostgreSQL replica
+85,Customer-Portal,ses-0bde451,2026-06,0.0,0.0,822426.0,0.9959999999999999,SES,Marketing email
+86,Compliance-Audit,rds-055c490,2026-06,1327.8,922.0799999999999,0.0,2627.88,RDS,db.r5.large PostgreSQL replica
+87,Data-Science,kin-0141333,2026-06,877.92,0.0,24386121.599999998,356.03999999999996,Kinesis,Firehose delivery
+88,Security-Ops,sqs-0acf483,2026-06,0.0,0.0,55039293.6,27.528000000000002,SQS,Event notification queue
+89,Marketing-Platform,sm-0c60824,2026-06,0.0,0.0,1181343.5999999999,4.716,Secrets Manager,Application secrets
+90,Edge-Network,eks-0c0a109,2026-06,729.72,0.0,0.0,2189.052,EKS,Production K8s cluster
+91,ML-Training,i-0b05946,2026-06,683.52,0.0,0.0,2369.808,EC2,r5.2xlarge database server
+92,Production-Main,cf-05be618,2026-06,0.0,0.0,63987614.4,319.932,CloudFront,CDN API distribution
+93,Production-Secondary,ecs-0073512,2026-06,567.8399999999999,0.0,0.0,1036.356,ECS,Fargate API cluster
+94,Compliance-Audit,elb-0d8f759,2026-06,460.56,0.0,31981022.4,199.56,ELB,Network load balancer
+95,Security-Ops,ecs-1053185,2026-06,575.64,0.0,0.0,1050.6119999999999,ECS,Fargate worker cluster
+96,Internal-Tools,rds-02c5855,2026-06,844.0799999999999,586.1999999999999,0.0,2168.736,RDS,db.r5.xlarge PostgreSQL primary
+97,Marketing-Platform,r53-0b06291,2026-06,0.0,0.0,65093461.199999996,97.63199999999999,Route 53,DNS hosting
+98,QA-Testing,lam-1169721,2026-06,0.0,0.0,100724310.0,705.06,Lambda,Auth token validator
+99,Compliance-Audit,elb-0385602,2026-06,937.1999999999999,0.0,39051498.0,284.292,ELB,Application load balancer
+100,Finance-Systems,s3-0570229,2026-06,0.0,2922.8399999999997,1461423.5999999999,109.608,S3,Analytics export bucket
+101,QA-Testing,lam-0622244,2026-06,0.0,0.0,39356929.199999996,273.52799999999996,Lambda,API gateway handler
+102,QA-Testing,lam-07f0573,2026-06,0.0,0.0,5888892.0,41.508,Lambda,Image resizer
+103,Marketing-Platform,sm-01d7826,2026-06,0.0,0.0,1111034.4,4.44,Secrets Manager,Application secrets
+104,Edge-Network,ec-0e4b931,2026-06,964.92,0.0,0.0,694.7159999999999,ElastiCache,Redis production cluster
+105,Marketing-Platform,rds-0d51613,2026-06,576.8399999999999,160.32,0.0,681.0,RDS,db.t3.medium MySQL staging
+106,ML-Training,kin-0a76630,2026-06,867.24,0.0,36136486.8,527.592,Kinesis,Data stream ingestion
+107,Security-Ops,eks-0191572,2026-06,600.12,0.0,0.0,1800.288,EKS,Staging K8s cluster
+108,Shared-Services,vpn-0199240,2026-06,1083.48,0.0,0.0,274.62,VPN Gateway,Client VPN endpoint
+109,Finance-Systems,s3-0555363,2026-06,0.0,80.75999999999999,40394728.8,262.572,S3,Static website hosting
+110,Compliance-Audit,s3-0f76493,2026-06,0.0,982.68,1965462.0,85.99199999999999,S3,Artifact storage
+111,Internal-Tools,lam-100a745,2026-06,0.0,0.0,1345062.0,10.092,Lambda,Cron job runner
+112,Marketing-Platform,ddb-0bef403,2026-06,712.44,9.839999999999998,4947406.8,86.58,DynamoDB,Config store table
+113,Security-Ops,ebs-0a88692,2026-06,0.0,5194.679999999999,0.0,233.76,EBS,st1 volumes archive
+114,Marketing-Platform,vpn-04ea593,2026-06,980.4,0.0,0.0,248.50799999999998,VPN Gateway,Client VPN endpoint
+115,Production-Main,s3-057d934,2026-06,0.0,10718.159999999998,669883.2,267.948,S3,Log archive bucket
+116,Compliance-Audit,rs-10fb531,2026-06,0.0,0.0,5890381.2,294.516,Redshift,Spectrum queries
+117,Internal-Tools,cf-0a39494,2026-06,0.0,0.0,172920050.4,864.588,CloudFront,CDN media distribution
+118,Compliance-Audit,ecs-06db379,2026-06,579.8399999999999,0.0,0.0,1058.244,ECS,Fargate worker cluster
+119,Internal-Tools,ebs-02a9257,2026-06,0.0,526.0799999999999,0.0,328.82399999999996,EBS,io2 volumes database
+120,Compliance-Audit,vpn-0a64605,2026-06,911.7599999999999,0.0,0.0,231.11999999999998,VPN Gateway,Client VPN endpoint
+121,ML-Training,rs-0788768,2026-06,0.0,0.0,5254228.8,262.716,Redshift,Spectrum queries
+122,Finance-Systems,elb-0e1e935,2026-06,970.44,0.0,40432724.4,294.36,ELB,Application load balancer
+123,Customer-Portal,elb-0287653,2026-06,840.12,0.0,11668915.2,169.89600000000002,ELB,Classic load balancer
+124,ML-Training,i-0bdb603,2026-06,946.8,0.0,0.0,3282.204,EC2,r5.2xlarge database server
+125,QA-Testing,r53-085b883,2026-06,0.0,0.0,11494861.2,17.244,Route 53,Health checks
+126,Customer-Portal,i-0ae1467,2026-06,801.3599999999999,0.0,0.0,2777.8199999999997,EC2,r5.2xlarge database server
+127,Production-Secondary,i-007b774,2026-06,1049.8799999999999,0.0,0.0,909.924,EC2,m5.large monitoring server
+128,Production-Secondary,ec-0bb0589,2026-06,1107.72,0.0,0.0,398.80799999999994,ElastiCache,Redis staging cluster
+129,Marketing-Platform,rs-0f0b689,2026-06,0.0,0.0,8903557.2,445.176,Redshift,Spectrum queries
+130,Production-Main,lam-000a777,2026-06,0.0,0.0,7187409.6,50.315999999999995,Lambda,Notification dispatcher
+131,QA-Testing,ses-0411794,2026-06,0.0,0.0,2810412.0,3.372,SES,Transactional email
+132,Compliance-Audit,sns-0987286,2026-06,0.0,0.0,18962638.8,9.48,SNS,Event fanout topic
+133,Customer-Portal,vpn-09b8118,2026-06,1287.48,0.0,0.0,326.34,VPN Gateway,Client VPN endpoint
+134,Internal-Tools,nat-0ba5290,2026-06,623.4,0.0,0.0,142.224,NAT Gateway,Dev VPC NAT
+135,Internal-Tools,ec-0a9a592,2026-06,639.24,0.0,0.0,460.26,ElastiCache,Redis production cluster
+136,Partner-Integration,elb-0b31940,2026-06,523.1999999999999,0.0,21799046.4,158.7,ELB,Application load balancer
+137,Marketing-Platform,ddb-07e5376,2026-06,763.56,10.56,5302741.2,92.79599999999999,DynamoDB,Config store table
+138,Customer-Portal,i-06d9393,2026-06,713.0400000000001,0.0,0.0,1029.984,EC2,c5.xlarge compute worker
+139,Security-Ops,r53-018f903,2026-06,0.0,0.0,82555058.39999999,123.82799999999999,Route 53,DNS hosting
+140,Compliance-Audit,rs-0bf0566,2026-06,704.64,1957.08,0.0,3571.704,Redshift,Data warehouse cluster
+141,Production-Main,s3-062a775,2026-06,0.0,12758.279999999999,797386.7999999999,318.94800000000004,S3,Log archive bucket
+142,Production-Main,i-0724237,2026-06,503.76,0.0,0.0,1460.7959999999998,EC2,c5.2xlarge HPC node
+143,Marketing-Platform,i-06c6949,2026-06,1082.52,0.0,0.0,79.02,EC2,t3.micro bastion host
+144,Finance-Systems,s3-0240452,2026-06,0.0,8780.4,87804.0,201.94799999999998,S3,Backup storage bucket
+145,Internal-Tools,rds-02c4542,2026-06,496.0799999999999,137.76,0.0,585.648,RDS,db.t3.medium MySQL staging
+146,Compliance-Audit,kin-0386537,2026-06,823.0799999999999,0.0,34292888.4,500.676,Kinesis,Data stream ingestion
+147,Edge-Network,s3-097d920,2026-06,0.0,1052.64,2105457.6,92.1,S3,Artifact storage
+148,Compliance-Audit,i-0a57109,2026-06,776.0400000000001,0.0,0.0,672.564,EC2,m5.large monitoring server
+149,Security-Ops,ebs-0186597,2026-06,0.0,818.0400000000001,0.0,511.26,EBS,io2 volumes database
+150,Data-Science,i-0f5f350,2026-06,810.84,0.0,0.0,1405.3319999999999,EC2,r5.xlarge cache server
+151,Compliance-Audit,s3-1109492,2026-06,0.0,1083.72,2167698.0,94.836,S3,Artifact storage
+152,Production-Main,ecs-001f111,2026-06,375.12,0.0,0.0,684.6239999999999,ECS,Fargate batch cluster
+153,Production-Secondary,elb-106c801,2026-06,759.72,0.0,31652803.2,230.424,ELB,Application load balancer
+154,Finance-Systems,elb-10f0785,2026-06,803.7599999999999,0.0,33492355.2,243.82799999999997,ELB,Application load balancer
+155,Compliance-Audit,rds-0425609,2026-06,1123.2,780.0,0.0,2223.0119999999997,RDS,db.r5.large PostgreSQL replica
+156,ML-Training,ebs-0ad9186,2026-06,0.0,4588.68,0.0,206.496,EBS,st1 volumes archive
+157,Security-Ops,s3-0180786,2026-06,0.0,15230.759999999998,152306.4,350.30400000000003,S3,Backup storage bucket
+158,Shared-Services,r53-0b2b508,2026-06,0.0,0.0,10348838.4,15.527999999999999,Route 53,Health checks
+159,Internal-Tools,eks-03f1737,2026-06,591.12,0.0,0.0,1773.408,EKS,Staging K8s cluster
+160,Marketing-Platform,r53-0c76143,2026-06,0.0,0.0,80545885.2,120.816,Route 53,DNS hosting
+161,Edge-Network,s3-0c0b689,2026-06,0.0,79.8,39894892.8,259.308,S3,Static website hosting
+162,Marketing-Platform,ec-08b3367,2026-06,794.88,0.0,0.0,572.28,ElastiCache,Redis production cluster
+163,Internal-Tools,ec-02b5631,2026-06,913.68,0.0,0.0,328.92,ElastiCache,Redis staging cluster
+164,Mobile-Backend,sqs-0caf152,2026-06,0.0,0.0,371392.8,0.192,SQS,Dead letter queue
+165,Internal-Tools,ec-0a32433,2026-06,792.72,0.0,0.0,285.396,ElastiCache,Redis staging cluster
+166,Shared-Services,s3-0fd6134,2026-06,0.0,17327.64,3465536.4,606.468,S3,Data lake raw zone
+167,Production-Secondary,sqs-1120122,2026-06,0.0,0.0,33405540.0,16.704,SQS,Event notification queue
+168,Customer-Portal,vpn-051d688,2026-06,1250.64,0.0,0.0,317.016,VPN Gateway,Client VPN endpoint
+169,Compliance-Audit,s3-04b9679,2026-06,0.0,3198.36,19190241.599999998,799.596,S3,Production asset storage
+170,Marketing-Platform,ec-0e10130,2026-06,1027.92,0.0,0.0,740.112,ElastiCache,Redis production cluster
+171,Internal-Tools,ebs-0742903,2026-06,0.0,1570.9199999999998,0.0,196.36799999999997,EBS,gp3 volumes production
+172,Security-Ops,s3-058b286,2026-06,0.0,7910.279999999999,12656492.4,577.452,S3,Media content bucket
+173,Marketing-Platform,ddb-0f52812,2026-06,879.0,61.199999999999996,97670265.6,686.7479999999999,DynamoDB,Session store table
+174,Customer-Portal,vpn-044d967,2026-06,1143.24,0.0,0.0,289.788,VPN Gateway,Client VPN endpoint
+175,ML-Training,i-036c430,2026-06,808.32,0.0,0.0,2802.2879999999996,EC2,r5.2xlarge database server
+176,Internal-Tools,sqs-0758153,2026-06,0.0,0.0,63376257.599999994,31.679999999999996,SQS,Order processing queue
+177,Customer-Portal,vpn-080b733,2026-06,1002.3599999999999,0.0,0.0,254.064,VPN Gateway,Client VPN endpoint
+178,Marketing-Platform,nat-01df371,2026-06,1071.12,0.0,0.0,488.7,NAT Gateway,Production VPC NAT
+179,Edge-Network,i-0607444,2026-06,635.7599999999999,0.0,0.0,2203.716,EC2,m5.2xlarge batch processor
+180,Shared-Services,s3-0d6d893,2026-06,0.0,19527.6,3905534.4,683.4719999999999,S3,Data lake raw zone
+181,Production-Main,i-068a660,2026-06,450.36,0.0,0.0,1305.936,EC2,c5.2xlarge HPC node
+182,Shared-Services,ec-019b105,2026-06,876.12,0.0,0.0,315.39599999999996,ElastiCache,Redis staging cluster
+183,Internal-Tools,s3-02bf969,2026-06,0.0,46.8,23416790.4,152.208,S3,Static website hosting
+184,Customer-Portal,elb-0285346,2026-06,703.0799999999999,0.0,48822909.6,304.656,ELB,Network load balancer
+185,ML-Training,lam-084f704,2026-06,0.0,0.0,10822503.6,75.756,Lambda,Notification dispatcher
+186,Edge-Network,s3-0a66300,2026-06,0.0,13889.159999999998,138889.19999999998,319.45199999999994,S3,Backup storage bucket
+187,Production-Secondary,r53-0a8a968,2026-06,0.0,0.0,11784283.2,17.676,Route 53,Health checks
+188,ML-Training,lam-0373133,2026-06,0.0,0.0,13206036.0,92.44800000000001,Lambda,Notification dispatcher
+189,Data-Science,ses-04ff620,2026-06,0.0,0.0,407929.2,0.48,SES,Marketing email
+190,Data-Science,rs-0410704,2026-06,763.0799999999999,2119.56,0.0,3868.2,Redshift,Data warehouse cluster
+191,Finance-Systems,eks-08fb841,2026-06,1320.84,0.0,0.0,3962.2919999999995,EKS,Production K8s cluster
+192,Production-Secondary,i-10c1954,2026-06,1214.8799999999999,0.0,0.0,1053.684,EC2,t3.large application server
+193,Compliance-Audit,s3-05e1422,2026-06,0.0,16871.28,3374233.1999999997,590.4839999999999,S3,Data lake raw zone
+194,Customer-Portal,i-0913746,2026-06,738.6,0.0,0.0,53.904,EC2,t3.micro bastion host
+195,Production-Secondary,elb-0082886,2026-06,974.52,0.0,13534700.4,197.064,ELB,Classic load balancer
+196,Customer-Portal,ses-0dde104,2026-06,0.0,0.0,734064.0,0.888,SES,Marketing email
+197,Production-Main,i-0c92467,2026-06,774.9599999999999,0.0,0.0,2686.356,EC2,m5.2xlarge batch processor
+198,DevOps-Central,r53-00d2330,2026-06,0.0,0.0,9364120.799999999,14.052000000000001,Route 53,Health checks
+199,Shared-Services,r53-0558765,2026-06,0.0,0.0,85701477.6,128.544,Route 53,DNS hosting
+200,QA-Testing,elb-03e8828,2026-06,679.32,0.0,9434559.6,137.364,ELB,Classic load balancer
+201,ML-Training,ebs-0ba3526,2026-06,0.0,5563.079999999999,0.0,250.344,EBS,st1 volumes archive
+202,Compliance-Audit,s3-06e9419,2026-06,0.0,3686.88,22121422.8,921.732,S3,Production asset storage
+203,Production-Secondary,r53-0f0d232,2026-06,0.0,0.0,11874199.2,17.808,Route 53,Health checks
+204,Production-Secondary,ec-0079721,2026-06,1080.0,0.0,0.0,388.81199999999995,ElastiCache,Redis staging cluster
+205,Edge-Network,sns-048c776,2026-06,0.0,0.0,14219905.2,7.116,SNS,Alert notifications
+206,Production-Main,r53-0470454,2026-06,0.0,0.0,14780365.2,22.176,Route 53,Health checks
+207,Edge-Network,vpn-0800570,2026-06,688.1999999999999,0.0,0.0,174.444,VPN Gateway,Client VPN endpoint
+208,Compliance-Audit,kin-0bc3292,2026-06,788.64,0.0,32857804.799999997,479.72399999999993,Kinesis,Data stream ingestion
+209,Marketing-Platform,ddb-0a45101,2026-06,575.64,40.08,63966594.0,449.76,DynamoDB,Session store table
+210,Data-Science,i-0465430,2026-06,719.88,0.0,0.0,623.9159999999999,EC2,m5.large monitoring server
+211,Finance-Systems,s3-0241654,2026-06,0.0,7141.56,11426586.0,521.3399999999999,S3,Media content bucket
+212,Data-Science,ses-0692725,2026-06,0.0,0.0,2827497.6,3.396,SES,Transactional email
+213,QA-Testing,lam-0888169,2026-06,0.0,0.0,5252780.399999999,37.032,Lambda,Image resizer
+214,Finance-Systems,elb-1128805,2026-06,1011.5999999999999,0.0,70253920.8,438.38399999999996,ELB,Network load balancer
+215,Internal-Tools,ddb-02b0773,2026-06,1069.92,74.28,118873711.2,835.8359999999999,DynamoDB,Session store table
+216,ML-Training,rs-1144262,2026-06,0.0,0.0,5329084.8,266.46,Redshift,Spectrum queries
+217,Compliance-Audit,rds-0ac6147,2026-06,634.44,440.64,0.0,1630.416,RDS,db.r5.xlarge PostgreSQL primary
+218,Marketing-Platform,ec-01d6411,2026-06,918.12,0.0,0.0,661.068,ElastiCache,Redis production cluster
+219,Compliance-Audit,rds-05e8100,2026-06,1284.84,357.0,0.0,1159.944,RDS,db.t3.large development DB
+220,QA-Testing,lam-093f853,2026-06,0.0,0.0,41818152.0,290.628,Lambda,API gateway handler
+221,Finance-Systems,s3-0ad4697,2026-06,0.0,12131.88,758251.2,303.288,S3,Log archive bucket
+222,Compliance-Audit,rs-0b4f885,2026-06,0.0,0.0,5851222.8,292.56,Redshift,Spectrum queries
+223,Compliance-Audit,ses-0b60255,2026-06,0.0,0.0,2034441.5999999999,2.448,SES,Transactional email
+224,ML-Training,rds-0f5e458,2026-06,664.32,738.12,0.0,1550.1,RDS,db.m5.xlarge analytics DB
+225,Marketing-Platform,sm-0bf6746,2026-06,0.0,0.0,1331362.8,5.34,Secrets Manager,Application secrets
+226,Customer-Portal,elb-078d589,2026-06,879.84,0.0,36658514.4,266.88,ELB,Application load balancer
+227,QA-Testing,lam-0ca7303,2026-06,0.0,0.0,5964277.2,42.036,Lambda,Image resizer
+228,Edge-Network,vpn-08cb273,2026-06,677.4,0.0,0.0,171.696,VPN Gateway,Client VPN endpoint
+229,ML-Training,i-088d971,2026-06,910.32,0.0,0.0,3155.772,EC2,r5.2xlarge database server
+230,Customer-Portal,vpn-098e105,2026-06,1331.64,0.0,0.0,337.548,VPN Gateway,Client VPN endpoint
+231,Compliance-Audit,elb-0e88274,2026-06,717.6,0.0,49838388.0,310.992,ELB,Network load balancer
+232,Data-Science,i-10b4120,2026-06,554.4,0.0,0.0,1921.812,EC2,m5.2xlarge batch processor
+233,Shared-Services,s3-019d844,2026-06,0.0,19514.879999999997,3902985.5999999996,683.028,S3,Data lake raw zone
+234,Partner-Integration,ddb-1080701,2026-06,1356.48,188.4,282597826.8,2119.488,DynamoDB,Cache table
+235,Compliance-Audit,vpn-0dcf521,2026-06,779.52,0.0,0.0,197.59199999999998,VPN Gateway,Client VPN endpoint
+236,Partner-Integration,rds-0a86894,2026-06,1223.1599999999999,849.3599999999999,0.0,2420.808,RDS,db.r5.large PostgreSQL replica
+237,QA-Testing,elb-06d7691,2026-06,996.0,0.0,41500784.4,302.124,ELB,Application load balancer
+238,Production-Secondary,i-007e938,2026-06,807.4799999999999,0.0,0.0,2799.408,EC2,r5.2xlarge database server
+239,ML-Training,ebs-0eb6707,2026-06,0.0,838.56,0.0,104.82,EBS,gp3 volumes production
+240,Partner-Integration,rs-03c7685,2026-06,957.3599999999999,2659.4399999999996,0.0,4853.556,Redshift,Data warehouse cluster
+241,Shared-Services,rds-0f49206,2026-06,738.12,512.52,0.0,1460.676,RDS,db.r5.large PostgreSQL replica
+242,Production-Main,kin-001a241,2026-06,823.68,0.0,22881540.0,334.068,Kinesis,Firehose delivery
+243,Production-Main,s3-0017758,2026-06,0.0,17584.92,3516991.1999999997,615.468,S3,Data lake raw zone
+244,Internal-Tools,ec-0706217,2026-06,656.88,0.0,0.0,472.90799999999996,ElastiCache,Redis production cluster
+245,Compliance-Audit,vpn-0388274,2026-06,620.4,0.0,0.0,314.496,VPN Gateway,Site-to-site VPN
+246,Compliance-Audit,rds-10d0202,2026-06,662.64,460.2,0.0,1702.752,RDS,db.r5.xlarge PostgreSQL primary
+247,Internal-Tools,s3-07a6794,2026-06,0.0,4861.92,7778948.399999999,354.924,S3,Media content bucket
+248,Data-Science,i-0cfd292,2026-06,1031.76,0.0,0.0,894.852,EC2,t3.large application server
+249,Edge-Network,s3-0719478,2026-06,0.0,60.35999999999999,30181408.8,196.164,S3,Static website hosting
+250,Edge-Network,sns-04ef293,2026-06,0.0,0.0,13797813.6,6.8999999999999995,SNS,Alert notifications
+251,ML-Training,kin-1087550,2026-06,981.72,0.0,40905535.199999996,597.216,Kinesis,Data stream ingestion
+252,Data-Science,ddb-0144483,2026-06,1007.04,69.96,111895248.0,786.7679999999999,DynamoDB,Session store table
+253,QA-Testing,lam-09f6339,2026-06,0.0,0.0,5795648.399999999,40.85999999999999,Lambda,Image resizer
+254,Internal-Tools,elb-0947447,2026-06,1209.48,0.0,16799564.4,244.608,ELB,Classic load balancer
+255,Customer-Portal,ses-06a2688,2026-06,0.0,0.0,697786.7999999999,0.84,SES,Marketing email
+256,Production-Secondary,s3-0077408,2026-06,0.0,6785.16,10856259.6,495.31199999999995,S3,Media content bucket
+257,Internal-Tools,s3-02bc563,2026-06,0.0,4339.44,2169711.6,162.732,S3,Analytics export bucket
+258,QA-Testing,lam-0bd8325,2026-06,0.0,0.0,42501258.0,295.38,Lambda,API gateway handler
+259,Internal-Tools,s3-0827332,2026-06,0.0,50.879999999999995,25448906.4,165.42,S3,Static website hosting
+260,Edge-Network,s3-031b847,2026-06,0.0,71.39999999999999,35672192.4,231.86399999999998,S3,Static website hosting
+261,Mobile-Backend,ebs-04fd975,2026-06,0.0,4806.96,0.0,216.324,EBS,st1 volumes archive
+262,QA-Testing,lam-03e0492,2026-06,0.0,0.0,18966037.2,132.768,Lambda,Event processor
+263,Finance-Systems,elb-098a560,2026-06,903.4799999999999,0.0,37642519.199999996,274.044,ELB,Application load balancer
+264,DevOps-Central,ec-00cb370,2026-06,983.1599999999999,0.0,0.0,707.8439999999999,ElastiCache,Redis production cluster
+265,Security-Ops,lam-0179437,2026-06,0.0,0.0,33633163.199999996,235.428,Lambda,Data transformer
+266,ML-Training,lam-117f789,2026-06,0.0,0.0,17040708.0,119.28,Lambda,Notification dispatcher
+267,Edge-Network,vpn-0a60326,2026-06,643.68,0.0,0.0,326.352,VPN Gateway,Site-to-site VPN
+268,Marketing-Platform,ec-0bd0408,2026-06,868.1999999999999,0.0,0.0,625.068,ElastiCache,Redis production cluster
+269,Production-Main,lam-10c9218,2026-06,0.0,0.0,5535967.2,38.76,Lambda,Notification dispatcher
+270,Internal-Tools,ec-0992806,2026-06,576.0,0.0,0.0,414.63599999999997,ElastiCache,Redis production cluster
+271,Production-Main,i-0bac739,2026-06,442.32,0.0,0.0,1282.7160000000001,EC2,c5.2xlarge HPC node
+272,Partner-Integration,elb-0700448,2026-06,586.4399999999999,0.0,24436291.2,177.9,ELB,Application load balancer
+273,Shared-Services,s3-019c253,2026-06,0.0,2552.88,15317248.799999999,638.22,S3,Production asset storage
+274,Finance-Systems,s3-0dbf295,2026-06,0.0,6068.28,9709357.2,442.992,S3,Media content bucket
+275,Internal-Tools,ec-08ee362,2026-06,622.8,0.0,0.0,448.332,ElastiCache,Redis production cluster
+276,ML-Training,lam-089f792,2026-06,0.0,0.0,57477355.199999996,399.47999999999996,Lambda,API gateway handler
+277,Edge-Network,rds-0f71882,2026-06,625.1999999999999,434.16,0.0,1606.356,RDS,db.r5.xlarge PostgreSQL primary
+278,Internal-Tools,elb-02b9187,2026-06,1161.6,0.0,80662996.8,503.34,ELB,Network load balancer
+279,Marketing-Platform,sm-0b6e297,2026-06,0.0,0.0,1048694.4,4.188,Secrets Manager,Application secrets
+280,Production-Secondary,elb-0937293,2026-06,865.8,0.0,36076262.4,262.632,ELB,Application load balancer
+281,Shared-Services,rds-0c77272,2026-06,693.3599999999999,192.6,0.0,625.8599999999999,RDS,db.t3.large development DB
+282,Compliance-Audit,vpn-0689714,2026-06,542.16,0.0,0.0,274.81199999999995,VPN Gateway,Site-to-site VPN
+283,Compliance-Audit,i-042e877,2026-06,747.24,0.0,0.0,1295.256,EC2,r5.xlarge cache server
+284,Shared-Services,nat-04f3423,2026-06,792.4799999999999,0.0,0.0,361.60799999999995,NAT Gateway,Production VPC NAT
+285,Finance-Systems,rds-0766891,2026-06,733.56,1018.8,0.0,3260.052,RDS,db.r5.2xlarge Aurora cluster
+286,Production-Main,cf-0003320,2026-06,0.0,0.0,128809430.39999999,644.052,CloudFront,CDN media distribution
+287,Customer-Portal,i-0bd7434,2026-06,741.12,0.0,0.0,54.096,EC2,t3.micro bastion host
+288,Marketing-Platform,lam-063a502,2026-06,0.0,0.0,23160062.4,162.11999999999998,Lambda,Data transformer
+289,Mobile-Backend,kin-056c185,2026-06,836.28,0.0,34843668.0,508.716,Kinesis,Data stream ingestion
+290,Production-Main,i-04f1220,2026-06,790.0799999999999,0.0,0.0,2738.7,EC2,m5.2xlarge batch processor
+291,Security-Ops,vpn-0d67108,2026-06,741.12,0.0,0.0,187.84799999999998,VPN Gateway,Client VPN endpoint
+292,Edge-Network,s3-0ea4486,2026-06,0.0,17354.64,173545.19999999998,399.156,S3,Backup storage bucket
+293,Internal-Tools,ebs-05fb936,2026-06,0.0,1595.88,0.0,199.488,EBS,gp3 volumes production
+294,Compliance-Audit,s3-0b6b490,2026-06,0.0,4779.599999999999,2389758.0,179.232,S3,Analytics export bucket
+295,Edge-Network,s3-06ff262,2026-06,0.0,1204.8,2409667.1999999997,105.408,S3,Artifact storage
+296,Finance-Systems,s3-0a14417,2026-06,0.0,8087.52,80875.2,186.01199999999997,S3,Backup storage bucket
+297,Compliance-Audit,ecs-0387740,2026-06,551.52,0.0,0.0,1006.5719999999999,ECS,Fargate worker cluster
+298,QA-Testing,lam-10dd814,2026-06,0.0,0.0,3848978.4,26.939999999999998,Lambda,Webhook processor
+299,Marketing-Platform,ddb-0bfd934,2026-06,786.0,54.6,87335350.8,614.076,DynamoDB,Session store table
+300,Shared-Services,rds-04e1616,2026-06,792.3599999999999,220.08,0.0,715.2599999999999,RDS,db.t3.large development DB
+301,Mobile-Backend,ebs-10e8663,2026-06,0.0,3440.4,0.0,154.824,EBS,st1 volumes archive
+302,Production-Main,ecs-0bb3908,2026-06,438.59999999999997,0.0,0.0,800.304,ECS,Fargate worker cluster
+303,Internal-Tools,ses-02a7914,2026-06,0.0,0.0,763964.4,0.9119999999999999,SES,Marketing email
+304,Compliance-Audit,s3-038f677,2026-06,0.0,4629.48,2314718.4,173.60399999999998,S3,Analytics export bucket
+305,Customer-Portal,i-028f489,2026-06,959.1599999999999,0.0,0.0,831.924,EC2,t3.large application server
+306,Edge-Network,sns-0bbd511,2026-06,0.0,0.0,16502236.799999999,8.256,SNS,Alert notifications
+307,Finance-Systems,s3-09d3333,2026-06,0.0,11409.84,713116.7999999999,285.23999999999995,S3,Log archive bucket
+308,Compliance-Audit,i-0e90994,2026-06,828.84,0.0,0.0,718.332,EC2,m5.large monitoring server
+309,ML-Training,rds-1056958,2026-06,747.3599999999999,830.4,0.0,1743.78,RDS,db.m5.xlarge analytics DB
+310,Marketing-Platform,ec-07ee977,2026-06,804.24,0.0,0.0,579.06,ElastiCache,Redis production cluster
+311,QA-Testing,elb-1159984,2026-06,792.24,0.0,11002575.6,160.18800000000002,ELB,Classic load balancer
+312,Edge-Network,elb-0512305,2026-06,983.8799999999999,0.0,13663729.2,198.94799999999998,ELB,Classic load balancer
+313,Marketing-Platform,ddb-0fdb347,2026-06,668.52,46.559999999999995,74283951.6,522.312,DynamoDB,Session store table
+314,Production-Secondary,elb-05c2651,2026-06,788.64,0.0,32859694.799999997,239.21999999999997,ELB,Application load balancer
+315,ML-Training,lam-0fbc967,2026-06,0.0,0.0,61495809.599999994,427.404,Lambda,API gateway handler
+316,Compliance-Audit,i-0c4f200,2026-06,1079.04,0.0,0.0,78.78,EC2,t3.micro bastion host
+317,Production-Main,lam-1143684,2026-06,0.0,0.0,46885664.4,328.212,Lambda,Data transformer
+318,Internal-Tools,lam-0d49445,2026-06,0.0,0.0,25583385.599999998,179.076,Lambda,Data transformer
+319,Marketing-Platform,ec-09a2710,2026-06,861.4799999999999,0.0,0.0,620.244,ElastiCache,Redis production cluster
+320,Production-Secondary,elb-0ab7130,2026-06,680.7599999999999,0.0,28363549.2,206.48399999999998,ELB,Application load balancer
+321,Shared-Services,rds-01a1956,2026-06,642.84,446.4,0.0,1272.18,RDS,db.r5.large PostgreSQL replica
+322,Production-Secondary,elb-08b6221,2026-06,863.7599999999999,0.0,35988122.4,261.996,ELB,Application load balancer
+323,Internal-Tools,ec-04d3686,2026-06,575.88,0.0,0.0,414.61199999999997,ElastiCache,Redis production cluster
+324,Marketing-Platform,eks-01d3629,2026-06,443.28,0.0,0.0,1329.804,EKS,Staging K8s cluster
+325,Mobile-Backend,sqs-05af649,2026-06,0.0,0.0,399162.0,0.20400000000000001,SQS,Dead letter queue
+326,Compliance-Audit,rds-0513820,2026-06,712.32,494.76,0.0,1830.528,RDS,db.r5.xlarge PostgreSQL primary
+327,Customer-Portal,ses-117c830,2026-06,0.0,0.0,838102.7999999999,1.02,SES,Marketing email
+328,ML-Training,sns-0366281,2026-06,0.0,0.0,11262375.6,5.628,SNS,Alert notifications
+329,Marketing-Platform,rds-0420438,2026-06,512.4,142.44,0.0,604.932,RDS,db.t3.medium MySQL staging
+330,Compliance-Audit,s3-0477403,2026-06,0.0,888.24,1776493.2,77.72399999999999,S3,Artifact storage
+331,Compliance-Audit,elb-0d71740,2026-06,527.88,0.0,36656182.8,228.732,ELB,Network load balancer
+332,QA-Testing,ses-06cb257,2026-06,0.0,0.0,2889794.4,3.468,SES,Transactional email
+333,Compliance-Audit,rds-0393803,2026-06,1188.84,825.6,0.0,2352.852,RDS,db.r5.large PostgreSQL replica
+334,Compliance-Audit,i-07a7252,2026-06,977.1599999999999,0.0,0.0,846.924,EC2,m5.large monitoring server
+335,DevOps-Central,ddb-00ce395,2026-06,624.6,86.75999999999999,130112620.8,975.84,DynamoDB,Cache table
+336,Security-Ops,vpn-017d779,2026-06,654.12,0.0,0.0,165.792,VPN Gateway,Client VPN endpoint
+337,Security-Ops,ecs-0658518,2026-06,193.08,0.0,0.0,352.464,ECS,Fargate batch cluster
+338,ML-Training,i-0dc9655,2026-06,778.32,0.0,0.0,2698.212,EC2,r5.2xlarge database server
+339,Customer-Portal,elb-0286969,2026-06,947.52,0.0,39480736.8,287.424,ELB,Application load balancer
+340,Production-Main,lam-0009821,2026-06,0.0,0.0,39749274.0,278.24399999999997,Lambda,Data transformer
+341,Partner-Integration,rs-03c6136,2026-06,0.0,0.0,5830754.399999999,291.53999999999996,Redshift,Spectrum queries
+342,Security-Ops,ecs-101c745,2026-06,581.64,0.0,0.0,1061.58,ECS,Fargate worker cluster
+343,Marketing-Platform,r53-0d41208,2026-06,0.0,0.0,55934112.0,83.892,Route 53,DNS hosting
+344,Internal-Tools,lam-0b1d283,2026-06,0.0,0.0,10552048.799999999,73.86,Lambda,Notification dispatcher
+345,Edge-Network,s3-101a960,2026-06,0.0,15560.759999999998,155605.19999999998,357.9,S3,Backup storage bucket
+346,Customer-Portal,vpn-0f7d948,2026-06,1681.2,0.0,0.0,426.144,VPN Gateway,Client VPN endpoint
+347,Production-Main,lam-08ec165,2026-06,0.0,0.0,40887848.4,286.212,Lambda,Data transformer
+348,Compliance-Audit,kin-0fd9497,2026-06,898.92,0.0,37450297.199999996,546.78,Kinesis,Data stream ingestion
+349,ML-Training,rs-1151520,2026-06,737.88,2049.84,0.0,3741.0719999999997,Redshift,Data warehouse cluster
+350,Data-Science,nat-0602814,2026-06,603.36,0.0,0.0,137.652,NAT Gateway,Staging VPC NAT
+351,Edge-Network,elb-060d300,2026-06,1058.76,0.0,14704914.0,214.10399999999998,ELB,Classic load balancer
+352,Marketing-Platform,rs-0db7790,2026-06,0.0,0.0,8328904.8,416.436,Redshift,Spectrum queries
+353,DevOps-Central,kin-0bc2586,2026-06,1150.6799999999998,0.0,31964524.799999997,466.692,Kinesis,Firehose delivery
+354,Finance-Systems,s3-109f584,2026-06,0.0,14759.52,2951901.6,516.576,S3,Data lake raw zone
+355,QA-Testing,lam-0cce559,2026-06,0.0,0.0,5420073.6,38.196,Lambda,Image resizer
+356,Marketing-Platform,ddb-0c73535,2026-06,607.0799999999999,8.4,4216116.0,73.788,DynamoDB,Config store table
+357,Customer-Portal,vpn-0d53194,2026-06,1070.1599999999999,0.0,0.0,271.236,VPN Gateway,Client VPN endpoint
+358,Data-Science,rds-0135326,2026-06,878.16,975.72,0.0,2049.0719999999997,RDS,db.m5.xlarge analytics DB
+359,Internal-Tools,sqs-02af753,2026-06,0.0,0.0,64550050.8,32.279999999999994,SQS,Order processing queue
+360,Production-Secondary,i-0f80736,2026-06,1506.48,0.0,0.0,1306.6560000000002,EC2,t3.large application server
+361,Production-Secondary,i-007d734,2026-06,754.68,0.0,0.0,2616.372,EC2,m5.2xlarge batch processor
+362,Customer-Portal,elb-04a4272,2026-06,955.68,0.0,13274530.799999999,193.272,ELB,Classic load balancer
+363,Internal-Tools,ec-0940670,2026-06,582.72,0.0,0.0,419.508,ElastiCache,Redis production cluster
+364,Edge-Network,ebs-0314161,2026-06,0.0,204.23999999999998,0.0,25.536,EBS,gp3 volumes staging
+365,Finance-Systems,s3-0d74264,2026-06,0.0,9488.52,94884.0,218.232,S3,Backup storage bucket
+366,Compliance-Audit,i-1059858,2026-06,1019.04,0.0,0.0,883.2479999999999,EC2,m5.large monitoring server
+367,Partner-Integration,rds-056b126,2026-06,1095.24,760.56,0.0,2167.56,RDS,db.r5.large PostgreSQL replica
+368,Compliance-Audit,rs-0ab9836,2026-06,786.12,2183.52,0.0,3984.852,Redshift,Data warehouse cluster
+369,Finance-Systems,s3-0591832,2026-06,0.0,6647.04,10635392.4,485.24399999999997,S3,Media content bucket
+370,Data-Science,i-013c432,2026-06,702.3599999999999,0.0,0.0,2434.764,EC2,m5.2xlarge batch processor
+371,ML-Training,rs-0363157,2026-06,627.72,1743.7199999999998,0.0,3182.4,Redshift,Data warehouse cluster
+372,Edge-Network,ebs-0f39725,2026-06,0.0,158.16,0.0,19.776,EBS,gp3 volumes staging
+373,Finance-Systems,rds-0f26468,2026-06,984.9599999999999,1094.52,0.0,2298.408,RDS,db.m5.xlarge analytics DB
+374,ML-Training,rs-1068403,2026-06,626.52,1740.36,0.0,3176.28,Redshift,Data warehouse cluster
+375,Compliance-Audit,s3-0864751,2026-06,0.0,15724.079999999998,3144811.1999999997,550.3439999999999,S3,Data lake raw zone
+376,Internal-Tools,lam-02c7649,2026-06,0.0,0.0,1511581.2,11.339999999999998,Lambda,Cron job runner
+377,Internal-Tools,s3-102e326,2026-06,0.0,5190.96,8305284.0,378.924,S3,Media content bucket
+378,Internal-Tools,ses-02a8789,2026-06,0.0,0.0,3015675.6,3.6239999999999997,SES,Transactional email
+379,Marketing-Platform,rds-0dec903,2026-06,815.64,566.4,0.0,1614.264,RDS,db.r5.large PostgreSQL replica
+380,Partner-Integration,rs-0af6242,2026-06,799.1999999999999,2220.0,0.0,4051.608,Redshift,Data warehouse cluster
+381,Edge-Network,sns-065d432,2026-06,0.0,0.0,13756183.2,6.876,SNS,Alert notifications
+382,Partner-Integration,elb-0534422,2026-06,584.16,0.0,24340435.2,177.19199999999998,ELB,Application load balancer
+383,Compliance-Audit,sns-07bc236,2026-06,0.0,0.0,21495494.4,10.739999999999998,SNS,Event fanout topic
+384,Customer-Portal,i-0292184,2026-06,1036.08,0.0,0.0,897.948,EC2,m5.large monitoring server
+385,Finance-Systems,eks-0458148,2026-06,1265.88,0.0,0.0,3797.556,EKS,Production K8s cluster
+386,Marketing-Platform,ddb-01d9664,2026-06,723.4799999999999,50.279999999999994,80391488.39999999,565.248,DynamoDB,Session store table
+387,Compliance-Audit,elb-0755271,2026-06,1000.8,0.0,41699178.0,303.56399999999996,ELB,Application load balancer
+388,Compliance-Audit,vpn-113e883,2026-06,759.72,0.0,0.0,192.576,VPN Gateway,Client VPN endpoint
+389,Customer-Portal,s3-09c9825,2026-06,0.0,25967.280000000002,5193457.2,908.856,S3,Data lake raw zone
+390,Edge-Network,sns-10c8578,2026-06,0.0,0.0,12198001.2,6.096,SNS,Alert notifications
+391,Marketing-Platform,ddb-0f33123,2026-06,732.4799999999999,50.879999999999995,81393829.2,572.304,DynamoDB,Session store table
+392,Production-Main,r53-0407779,2026-06,0.0,0.0,78390109.2,117.588,Route 53,DNS hosting
+393,Security-Ops,ses-0c0f585,2026-06,0.0,0.0,2671075.1999999997,3.2039999999999997,SES,Transactional email
+394,Marketing-Platform,ddb-050e790,2026-06,797.4,11.04,5537666.399999999,96.912,DynamoDB,Config store table
+395,QA-Testing,elb-03e7273,2026-06,961.44,0.0,40060258.8,291.63599999999997,ELB,Application load balancer
+396,Partner-Integration,rds-0f16278,2026-06,951.72,660.9599999999999,0.0,1883.616,RDS,db.r5.large PostgreSQL replica
+397,Production-Main,s3-0eb8776,2026-06,0.0,2192.16,13153162.799999999,548.0519999999999,S3,Production asset storage
+398,Production-Main,r53-0a71797,2026-06,0.0,0.0,17346198.0,26.028000000000002,Route 53,Health checks
+399,Marketing-Platform,nat-052d993,2026-06,1069.2,0.0,0.0,243.89999999999998,NAT Gateway,Dev VPC NAT
+400,Partner-Integration,elb-108e748,2026-06,971.7599999999999,0.0,13497519.6,196.51199999999997,ELB,Classic load balancer
+401,Production-Main,cf-10fc798,2026-06,0.0,0.0,57528886.8,287.64,CloudFront,CDN API distribution
+402,Customer-Portal,elb-054e407,2026-06,1028.64,0.0,42860282.4,312.02399999999994,ELB,Application load balancer
+403,Internal-Tools,ebs-02aa908,2026-06,0.0,288.12,0.0,36.024,EBS,gp3 volumes staging
+404,Data-Science,i-0c45831,2026-06,898.44,0.0,0.0,1557.984,EC2,m5.xlarge web server
+405,Security-Ops,sqs-0a29511,2026-06,0.0,0.0,55129969.199999996,27.563999999999997,SQS,Event notification queue
+406,Partner-Integration,eks-093a354,2026-06,538.92,0.0,0.0,1616.676,EKS,Staging K8s cluster
+407,Customer-Portal,s3-0b03411,2026-06,0.0,23057.04,4611422.399999999,807.0,S3,Data lake raw zone
+408,Production-Main,i-04c9242,2026-06,487.92,0.0,0.0,1415.028,EC2,c5.2xlarge HPC node
+409,Compliance-Audit,s3-0e75150,2026-06,0.0,15766.559999999998,3153294.0,551.832,S3,Data lake raw zone
+410,Production-Main,s3-0bb9469,2026-06,0.0,12572.159999999998,785755.2,314.30400000000003,S3,Log archive bucket
+411,Security-Ops,ecs-0b43950,2026-06,229.08,0.0,0.0,418.2,ECS,Fargate batch cluster
+412,Mobile-Backend,kin-032c685,2026-06,1104.36,0.0,30676748.4,447.87600000000003,Kinesis,Firehose delivery
+413,Marketing-Platform,rds-0ee5106,2026-06,813.3599999999999,225.96,0.0,734.304,RDS,db.t3.large development DB
+414,Partner-Integration,cf-0cd9510,2026-06,0.0,0.0,50832072.0,254.16,CloudFront,CDN API distribution
+415,DevOps-Central,kin-0fc6673,2026-06,731.28,0.0,30469179.599999998,444.84,Kinesis,Data stream ingestion
+416,Production-Main,lam-0008470,2026-06,0.0,0.0,71270076.0,495.32399999999996,Lambda,API gateway handler
+417,Mobile-Backend,ebs-032f576,2026-06,0.0,4489.44,0.0,202.032,EBS,st1 volumes archive
+418,Customer-Portal,i-0d4e952,2026-06,560.28,0.0,0.0,40.895999999999994,EC2,t3.micro bastion host
+419,ML-Training,ebs-0841189,2026-06,0.0,801.24,0.0,500.7,EBS,io2 volumes database
+420,Compliance-Audit,ec-04b0887,2026-06,775.0799999999999,0.0,0.0,558.06,ElastiCache,Redis production cluster
+421,Shared-Services,ec-0b20815,2026-06,844.8,0.0,0.0,304.092,ElastiCache,Redis staging cluster
+422,Data-Science,i-0fa7215,2026-06,836.88,0.0,0.0,725.3280000000001,EC2,m5.large monitoring server
+423,ML-Training,ebs-0f7f128,2026-06,0.0,776.64,0.0,485.304,EBS,io2 volumes database
+424,ML-Training,ec-0375244,2026-06,1171.32,0.0,0.0,843.348,ElastiCache,Redis production cluster
+425,Compliance-Audit,s3-0bed504,2026-06,0.0,15523.679999999998,3104704.8,543.324,S3,Data lake raw zone
+426,Production-Main,r53-0c3e737,2026-06,0.0,0.0,13133058.0,19.704,Route 53,Health checks
+427,Finance-Systems,elb-1055185,2026-06,596.28,0.0,8282424.0,120.588,ELB,Classic load balancer
+428,Production-Secondary,s3-08f4922,2026-06,0.0,6293.4,10069387.2,459.40799999999996,S3,Media content bucket
+429,Production-Secondary,i-0fb0145,2026-06,1060.2,0.0,0.0,919.632,EC2,t3.large application server
+430,Edge-Network,cf-088b275,2026-06,0.0,0.0,222090595.2,1110.456,CloudFront,CDN media distribution
+431,ML-Training,rs-1153734,2026-06,0.0,0.0,4687754.399999999,234.39600000000002,Redshift,Spectrum queries
+432,DevOps-Central,kin-00c9161,2026-06,948.72,0.0,26352974.4,384.756,Kinesis,Firehose delivery
+433,Data-Science,i-0139251,2026-06,799.56,0.0,0.0,1386.552,EC2,m5.xlarge web server
+434,Compliance-Audit,rds-0be3189,2026-06,993.72,690.12,0.0,1966.716,RDS,db.r5.large PostgreSQL replica
+435,Marketing-Platform,i-0a0a518,2026-06,1160.1599999999999,0.0,0.0,84.696,EC2,t3.micro bastion host
+436,DevOps-Central,ebs-04a0171,2026-06,0.0,487.2,0.0,304.488,EBS,io2 volumes database
+437,Edge-Network,s3-06d1496,2026-06,0.0,64.32,32167584.0,209.076,S3,Static website hosting
+438,Compliance-Audit,ses-0412488,2026-06,0.0,0.0,1673200.8,2.004,SES,Transactional email
+439,Marketing-Platform,lam-0815639,2026-06,0.0,0.0,19679324.4,137.748,Lambda,Data transformer
+440,Edge-Network,vpn-0ce6719,2026-06,614.28,0.0,0.0,311.412,VPN Gateway,Site-to-site VPN
+441,QA-Testing,lam-03dd851,2026-06,0.0,0.0,37955880.0,263.796,Lambda,API gateway handler
+442,Security-Ops,s3-087b902,2026-06,0.0,6887.28,430449.6,172.176,S3,Log archive bucket
+443,Marketing-Platform,lam-01cf664,2026-06,0.0,0.0,4545226.8,31.812,Lambda,Webhook processor
+444,Shared-Services,rds-07e6132,2026-06,748.1999999999999,207.83999999999997,0.0,675.444,RDS,db.t3.large development DB
+445,Production-Main,lam-04f0908,2026-06,0.0,0.0,21923029.2,153.456,Lambda,Event processor
+446,Internal-Tools,elb-0796570,2026-06,583.92,0.0,24331292.4,177.132,ELB,Application load balancer
+447,Partner-Integration,sm-04dc286,2026-06,0.0,0.0,1703390.4,6.816,Secrets Manager,Application secrets
+448,ML-Training,sqs-0fc9335,2026-06,0.0,0.0,695218.7999999999,0.348,SQS,Dead letter queue
+449,Compliance-Audit,s3-085f937,2026-06,0.0,17476.32,3495240.0,611.664,S3,Data lake raw zone
+450,Internal-Tools,nat-1021535,2026-06,648.0,0.0,0.0,147.84,NAT Gateway,Dev VPC NAT
+451,Marketing-Platform,ddb-0a83584,2026-06,660.0,45.959999999999994,73329546.0,515.592,DynamoDB,Session store table
+452,Compliance-Audit,elb-0384685,2026-06,634.8,0.0,44084688.0,275.088,ELB,Network load balancer
+453,QA-Testing,elb-0d43130,2026-06,1038.84,0.0,43284002.4,315.10799999999995,ELB,Application load balancer
+454,Data-Science,i-013a381,2026-06,644.52,0.0,0.0,1117.176,EC2,r5.xlarge cache server
+455,Marketing-Platform,lam-0906533,2026-06,0.0,0.0,1248002.4,9.36,Lambda,Cron job runner
+456,Internal-Tools,rds-0757370,2026-06,645.4799999999999,717.12,0.0,1505.964,RDS,db.m5.xlarge analytics DB
+457,Compliance-Audit,s3-0fec630,2026-06,0.0,3564.0,1781996.4,133.644,S3,Analytics export bucket
+458,Customer-Portal,i-0f9b989,2026-06,643.0799999999999,0.0,0.0,46.931999999999995,EC2,t3.micro bastion host
+459,Marketing-Platform,rs-0872178,2026-06,663.72,1843.68,0.0,3364.704,Redshift,Data warehouse cluster
+460,Internal-Tools,rds-09b5720,2026-06,768.0,533.4,0.0,1973.2199999999998,RDS,db.r5.xlarge PostgreSQL primary
+461,Partner-Integration,rs-0ac2999,2026-06,1138.6799999999998,3162.8399999999997,0.0,5772.432,Redshift,Data warehouse cluster
+462,Internal-Tools,ebs-02ac590,2026-06,0.0,1672.2,0.0,209.028,EBS,gp3 volumes production
+463,Compliance-Audit,rds-0396180,2026-06,892.8,992.04,0.0,2083.296,RDS,db.m5.xlarge analytics DB
+464,Security-Ops,s3-0efa390,2026-06,0.0,5826.72,364168.8,145.668,S3,Log archive bucket
+465,Compliance-Audit,s3-0b30830,2026-06,0.0,4162.2,2081104.7999999998,156.072,S3,Analytics export bucket
+466,QA-Testing,elb-0e25643,2026-06,951.3599999999999,0.0,13213592.4,192.384,ELB,Classic load balancer
+467,Security-Ops,s3-06cc595,2026-06,0.0,6514.320000000001,407143.2,162.852,S3,Log archive bucket
+468,Production-Secondary,ecs-0598501,2026-06,423.84,0.0,0.0,773.496,ECS,Fargate worker cluster
+469,Customer-Portal,elb-111f752,2026-06,668.88,0.0,46446787.199999996,289.824,ELB,Network load balancer
+470,Security-Ops,ecs-018c343,2026-06,675.9599999999999,0.0,0.0,1233.54,ECS,Fargate API cluster
+471,DevOps-Central,ddb-0681556,2026-06,1190.8799999999999,16.439999999999998,8270294.399999999,144.72,DynamoDB,Config store table
+472,Production-Main,s3-0e4d988,2026-06,0.0,2530.56,15183524.399999999,632.652,S3,Production asset storage
+473,Compliance-Audit,elb-0e81808,2026-06,679.32,0.0,47178432.0,294.396,ELB,Network load balancer
+474,Security-Ops,ec-08b0776,2026-06,752.52,0.0,0.0,270.936,ElastiCache,Redis staging cluster
+475,Shared-Services,rds-1103155,2026-06,640.68,177.96,0.0,578.304,RDS,db.t3.large development DB
+476,ML-Training,rds-0377190,2026-06,706.32,490.56,0.0,1814.892,RDS,db.r5.xlarge PostgreSQL primary
+477,Internal-Tools,ec-1024595,2026-06,723.12,0.0,0.0,520.632,ElastiCache,Redis production cluster
+478,Compliance-Audit,i-0779383,2026-06,993.72,0.0,0.0,861.2280000000001,EC2,m5.large monitoring server
+479,Security-Ops,ecs-0752257,2026-06,731.7599999999999,0.0,0.0,1335.4560000000001,ECS,Fargate API cluster
+480,Production-Main,lam-0ef8919,2026-06,0.0,0.0,36686190.0,256.81199999999995,Lambda,Data transformer
+481,Compliance-Audit,rds-0a2d193,2026-06,687.12,477.23999999999995,0.0,1765.728,RDS,db.r5.xlarge PostgreSQL primary
+482,QA-Testing,elb-05f6806,2026-06,1055.3999999999999,0.0,43974609.6,320.13599999999997,ELB,Application load balancer
+483,Compliance-Audit,elb-0383198,2026-06,784.68,0.0,10898164.799999999,158.676,ELB,Classic load balancer
+484,Marketing-Platform,rs-01d1175,2026-06,0.0,0.0,7658024.399999999,382.89599999999996,Redshift,Spectrum queries
+485,Compliance-Audit,kin-0f65409,2026-06,809.16,0.0,33712053.6,492.192,Kinesis,Data stream ingestion
+486,Compliance-Audit,rds-0c5c625,2026-06,957.9599999999999,665.28,0.0,1895.892,RDS,db.r5.large PostgreSQL replica
+487,Shared-Services,ecs-0196614,2026-06,318.47999999999996,0.0,0.0,581.2679999999999,ECS,Fargate worker cluster
+488,QA-Testing,ec-03e5292,2026-06,822.12,0.0,0.0,591.888,ElastiCache,Redis production cluster
+489,Customer-Portal,ebs-0284870,2026-06,0.0,666.6,0.0,416.59200000000004,EBS,io2 volumes database
+490,Partner-Integration,elb-0a1a739,2026-06,512.16,0.0,21341558.4,155.364,ELB,Application load balancer
+491,Marketing-Platform,ddb-10b7797,2026-06,719.52,9.96,4996956.0,87.444,DynamoDB,Config store table
+492,Edge-Network,sqs-030f172,2026-06,0.0,0.0,41279673.6,20.639999999999997,SQS,Event notification queue
+493,Compliance-Audit,i-09bd329,2026-06,781.56,0.0,0.0,677.3280000000001,EC2,m5.large monitoring server
+494,Customer-Portal,vpn-0620659,2026-06,1044.48,0.0,0.0,264.74399999999997,VPN Gateway,Client VPN endpoint
+495,Data-Science,i-0b26616,2026-06,860.88,0.0,0.0,1492.788,EC2,m5.xlarge web server
+496,Security-Ops,ecs-07b7146,2026-06,176.51999999999998,0.0,0.0,322.14,ECS,Fargate batch cluster
+497,DevOps-Central,ddb-0c8d504,2026-06,1062.6,14.639999999999999,7379156.399999999,129.144,DynamoDB,Config store table
+498,Security-Ops,sqs-100d671,2026-06,0.0,0.0,50009475.6,25.008,SQS,Event notification queue
+499,Edge-Network,s3-0e77512,2026-06,0.0,1294.9199999999998,2589904.8,113.304,S3,Artifact storage
+500,Security-Ops,vpn-0b04791,2026-06,589.68,0.0,0.0,149.448,VPN Gateway,Client VPN endpoint
+501,DevOps-Central,kin-05ca757,2026-06,836.7599999999999,0.0,34865470.8,509.02799999999996,Kinesis,Data stream ingestion
+502,QA-Testing,r53-03eb769,2026-06,0.0,0.0,69802736.39999999,104.7,Route 53,DNS hosting
+503,DevOps-Central,ec-08c9419,2026-06,934.44,0.0,0.0,672.7919999999999,ElastiCache,Redis production cluster
+504,ML-Training,rs-0cb9386,2026-06,0.0,0.0,4843591.2,242.18399999999997,Redshift,Spectrum queries
+505,QA-Testing,elb-0fcb895,2026-06,997.1999999999999,0.0,41547982.8,302.46,ELB,Application load balancer
+506,Internal-Tools,ses-06ea830,2026-06,0.0,0.0,3302865.6,3.972,SES,Transactional email
+507,Customer-Portal,vpn-0c49718,2026-06,1270.2,0.0,0.0,321.972,VPN Gateway,Client VPN endpoint
+508,Compliance-Audit,i-0711499,2026-06,850.0799999999999,0.0,0.0,2946.8759999999997,EC2,m5.2xlarge batch processor
+509,ML-Training,i-05c0894,2026-06,1068.48,0.0,0.0,925.944,EC2,m5.large monitoring server
+510,ML-Training,ebs-0505369,2026-06,0.0,657.84,0.0,411.132,EBS,io2 volumes database
+511,Production-Secondary,i-064a426,2026-06,539.88,0.0,0.0,935.94,EC2,r5.xlarge cache server
+512,ML-Training,rds-0d21371,2026-06,656.28,729.3599999999999,0.0,1531.548,RDS,db.m5.xlarge analytics DB
+513,Edge-Network,i-0326979,2026-06,638.28,0.0,0.0,553.668,EC2,t3.large application server
+514,Production-Secondary,elb-07db529,2026-06,660.3599999999999,0.0,45853830.0,286.128,ELB,Network load balancer
+515,Marketing-Platform,ddb-0401403,2026-06,714.12,49.68,79348437.6,557.9159999999999,DynamoDB,Session store table
+516,Finance-Systems,rds-0f07880,2026-06,1021.1999999999999,709.0799999999999,0.0,2021.04,RDS,db.r5.large PostgreSQL replica
+517,Production-Main,i-0011267,2026-06,1045.8,0.0,0.0,76.344,EC2,t3.micro bastion host
+518,ML-Training,i-0ea3191,2026-06,974.28,0.0,0.0,844.356,EC2,m5.large monitoring server
+519,Data-Science,i-0138182,2026-06,432.84,0.0,0.0,1255.212,EC2,c5.2xlarge HPC node
+520,Compliance-Audit,i-0f48232,2026-06,769.44,0.0,0.0,666.9,EC2,m5.large monitoring server
+521,Marketing-Platform,rds-0ff5598,2026-06,478.0799999999999,132.84,0.0,564.468,RDS,db.t3.medium MySQL staging
+522,Customer-Portal,vpn-0445666,2026-06,1221.72,0.0,0.0,309.67199999999997,VPN Gateway,Client VPN endpoint
+523,Production-Main,r53-08e7973,2026-06,0.0,0.0,18324632.4,27.492,Route 53,Health checks
+524,Internal-Tools,s3-04d2237,2026-06,0.0,5295.96,8473388.4,386.59200000000004,S3,Media content bucket
+525,ML-Training,r53-0977544,2026-06,0.0,0.0,16103096.399999999,24.144000000000002,Route 53,Health checks
+526,Marketing-Platform,rds-01e3515,2026-06,1093.08,759.12,0.0,2808.624,RDS,db.r5.xlarge PostgreSQL primary
+527,Shared-Services,s3-05c9296,2026-06,0.0,17214.359999999997,3442887.6,602.5079999999999,S3,Data lake raw zone
+528,ML-Training,lam-0f1c278,2026-06,0.0,0.0,12388045.2,86.72399999999999,Lambda,Notification dispatcher
+529,ML-Training,kin-0462370,2026-06,978.24,0.0,40762395.6,595.1279999999999,Kinesis,Data stream ingestion
+530,Edge-Network,i-0494187,2026-06,718.68,0.0,0.0,2491.356,EC2,m5.2xlarge batch processor
+531,Compliance-Audit,s3-0dd2695,2026-06,0.0,828.0,1656355.2,72.456,S3,Artifact storage
+532,Marketing-Platform,ddb-01da740,2026-06,770.7599999999999,10.68,5352693.6,93.672,DynamoDB,Config store table
+533,Compliance-Audit,rds-10cb700,2026-06,930.12,646.0799999999999,0.0,2390.052,RDS,db.r5.xlarge PostgreSQL primary
+534,Marketing-Platform,vpn-01d5989,2026-06,866.4,0.0,0.0,219.624,VPN Gateway,Client VPN endpoint
+535,Internal-Tools,rds-10b1574,2026-06,962.1599999999999,668.0400000000001,0.0,1904.2199999999998,RDS,db.r5.large PostgreSQL replica
+536,Compliance-Audit,r53-037c367,2026-06,0.0,0.0,8568654.0,12.852,Route 53,Health checks
+537,Customer-Portal,ebs-0bbe242,2026-06,0.0,701.7599999999999,0.0,438.516,EBS,io2 volumes database
+538,Compliance-Audit,i-039f632,2026-06,842.16,0.0,0.0,2919.504,EC2,m5.2xlarge batch processor
+539,Finance-Systems,rds-0a10412,2026-06,652.44,906.12,0.0,2899.596,RDS,db.r5.2xlarge Aurora cluster
+540,Data-Science,i-1124730,2026-06,471.59999999999997,0.0,0.0,1368.0,EC2,c5.2xlarge HPC node
+541,Partner-Integration,elb-0f47182,2026-06,757.92,0.0,10526714.4,153.26399999999998,ELB,Classic load balancer
+542,Compliance-Audit,rds-0fa1834,2026-06,614.4,426.72,0.0,1578.984,RDS,db.r5.xlarge PostgreSQL primary
+543,Security-Ops,eks-0190684,2026-06,1015.0799999999999,0.0,0.0,3045.12,EKS,Production K8s cluster
+544,Customer-Portal,i-043f493,2026-06,767.88,0.0,0.0,2661.756,EC2,r5.2xlarge database server
+545,Mobile-Backend,sqs-0528940,2026-06,0.0,0.0,445406.39999999997,0.22799999999999998,SQS,Dead letter queue
+546,Security-Ops,s3-06c2985,2026-06,0.0,21299.399999999998,4259875.2,745.476,S3,Data lake raw zone
+547,Production-Main,cf-06b3438,2026-06,0.0,0.0,102956950.8,514.788,CloudFront,CDN media distribution
+548,Compliance-Audit,s3-0a22154,2026-06,0.0,842.16,1684604.4,73.692,S3,Artifact storage
+549,Mobile-Backend,kin-0d78738,2026-06,783.84,0.0,32657313.599999998,476.79599999999994,Kinesis,Data stream ingestion
+550,Shared-Services,r53-0b00500,2026-06,0.0,0.0,9894579.6,14.843999999999998,Route 53,Health checks
+551,Compliance-Audit,s3-0390870,2026-06,0.0,891.72,1783554.0,78.036,S3,Artifact storage
+552,Production-Main,i-06fb209,2026-06,479.28,0.0,0.0,1389.888,EC2,c5.2xlarge HPC node
+553,DevOps-Central,ddb-10b3290,2026-06,1177.92,16.32,8180564.399999999,143.16,DynamoDB,Config store table
+554,Marketing-Platform,nat-094a230,2026-06,617.28,0.0,0.0,140.82,NAT Gateway,Staging VPC NAT
+555,ML-Training,rds-104f691,2026-06,696.24,483.47999999999996,0.0,1788.8999999999999,RDS,db.r5.xlarge PostgreSQL primary
+556,Finance-Systems,s3-0843623,2026-06,0.0,1633.0800000000002,3265897.1999999997,142.884,S3,Artifact storage
+557,Compliance-Audit,s3-08ab237,2026-06,0.0,823.1999999999999,1646638.8,72.036,S3,Artifact storage
+558,Partner-Integration,rds-0d50949,2026-06,1122.84,779.64,0.0,2222.124,RDS,db.r5.large PostgreSQL replica
+559,Production-Main,lam-0c7c274,2026-06,0.0,0.0,40798951.199999996,285.59999999999997,Lambda,Data transformer
+560,Customer-Portal,s3-0283422,2026-06,0.0,24302.399999999998,4860490.8,850.5840000000001,S3,Data lake raw zone
+561,Production-Main,i-07c0191,2026-06,415.56,0.0,0.0,1205.1719999999998,EC2,c5.2xlarge HPC node
+562,Compliance-Audit,ses-0f78329,2026-06,0.0,0.0,2011735.2,2.424,SES,Transactional email
+563,Compliance-Audit,vpn-0389183,2026-06,990.72,0.0,0.0,251.136,VPN Gateway,Client VPN endpoint
+564,Mobile-Backend,sqs-0def195,2026-06,0.0,0.0,405822.0,0.20400000000000001,SQS,Dead letter queue
+565,Production-Secondary,ec-040f964,2026-06,890.7599999999999,0.0,0.0,641.364,ElastiCache,Redis production cluster
+566,Shared-Services,rds-0643416,2026-06,872.52,242.39999999999998,0.0,787.704,RDS,db.t3.large development DB
+567,Production-Main,cf-0a1d761,2026-06,0.0,0.0,78435642.0,392.17199999999997,CloudFront,CDN API distribution
+568,Customer-Portal,vpn-0562398,2026-06,1085.64,0.0,0.0,275.17199999999997,VPN Gateway,Client VPN endpoint
+569,DevOps-Central,ddb-0ec7667,2026-06,1031.28,14.16,7161105.6,125.32799999999999,DynamoDB,Config store table
+570,Customer-Portal,ses-05b1907,2026-06,0.0,0.0,860676.0,1.032,SES,Marketing email
+571,Data-Science,rds-0133470,2026-06,875.88,243.36,0.0,790.764,RDS,db.t3.large development DB
+572,Production-Secondary,r53-10de681,2026-06,0.0,0.0,8291259.6,12.431999999999999,Route 53,Health checks
+573,Edge-Network,ebs-0da6405,2026-06,0.0,157.32,0.0,19.668,EBS,gp3 volumes staging
+574,DevOps-Central,vpn-00cd561,2026-06,606.36,0.0,0.0,307.416,VPN Gateway,Site-to-site VPN
+575,Internal-Tools,ec-073e687,2026-06,749.64,0.0,0.0,539.736,ElastiCache,Redis production cluster
+576,Compliance-Audit,s3-0d2d241,2026-06,0.0,56.879999999999995,28464697.2,185.016,S3,Static website hosting
+577,ML-Training,ebs-037b837,2026-06,0.0,750.6,0.0,469.092,EBS,io2 volumes database
+578,DevOps-Central,r53-0abf412,2026-06,0.0,0.0,9304430.4,13.968,Route 53,Health checks
+579,Marketing-Platform,r53-0873117,2026-06,0.0,0.0,76330645.2,114.49199999999999,Route 53,DNS hosting
+580,Finance-Systems,rds-023c556,2026-06,1148.3999999999999,797.52,0.0,2950.872,RDS,db.r5.xlarge PostgreSQL primary
+581,Data-Science,rs-116d833,2026-06,830.52,2306.88,0.0,4210.187999999999,Redshift,Data warehouse cluster
+582,Edge-Network,vpn-04e0116,2026-06,765.9599999999999,0.0,0.0,194.148,VPN Gateway,Client VPN endpoint
+583,Mobile-Backend,sqs-0730520,2026-06,0.0,0.0,479954.39999999997,0.24,SQS,Dead letter queue
+584,Mobile-Backend,sqs-0a98298,2026-06,0.0,0.0,394509.6,0.192,SQS,Dead letter queue
+585,Edge-Network,ebs-09fb469,2026-06,0.0,224.04,0.0,28.008,EBS,gp3 volumes staging
+586,Shared-Services,rds-01a0568,2026-06,1084.92,753.4799999999999,0.0,2787.72,RDS,db.r5.xlarge PostgreSQL primary
+587,Edge-Network,cf-0310235,2026-06,0.0,0.0,194939578.79999998,974.6999999999999,CloudFront,CDN media distribution
+588,Finance-Systems,rds-04ac243,2026-06,758.28,1053.24,0.0,3370.104,RDS,db.r5.2xlarge Aurora cluster
+589,Finance-Systems,eks-0f96669,2026-06,1067.28,0.0,0.0,3201.8639999999996,EKS,Production K8s cluster
+590,Marketing-Platform,rds-01e4174,2026-06,784.68,544.92,0.0,1553.028,RDS,db.r5.large PostgreSQL replica
+591,Partner-Integration,sqs-0cd1270,2026-06,0.0,0.0,597954.0,0.3,SQS,Dead letter queue
+592,Production-Main,r53-0708555,2026-06,0.0,0.0,12996318.0,19.5,Route 53,Health checks
+593,Finance-Systems,s3-0246846,2026-06,0.0,1483.32,2966589.6,129.792,S3,Artifact storage
+594,Marketing-Platform,sm-1039320,2026-06,0.0,0.0,1264063.2,5.0760000000000005,Secrets Manager,Application secrets
+595,Finance-Systems,elb-0c43172,2026-06,683.88,0.0,9497730.0,138.28799999999998,ELB,Classic load balancer
+596,Production-Main,s3-0014680,2026-06,0.0,2238.96,13433976.0,559.752,S3,Production asset storage
+597,ML-Training,ec-0693709,2026-06,1371.0,0.0,0.0,987.12,ElastiCache,Redis production cluster
+598,Shared-Services,ebs-01a3398,2026-06,0.0,721.8,0.0,451.116,EBS,io2 volumes database
+599,Marketing-Platform,rds-0b94353,2026-06,397.92,110.52,0.0,469.73999999999995,RDS,db.t3.medium MySQL staging
+600,Compliance-Audit,ses-07fa563,2026-06,0.0,0.0,2166640.8,2.6039999999999996,SES,Transactional email
+601,Edge-Network,vpn-0f3a733,2026-06,649.44,0.0,0.0,164.616,VPN Gateway,Client VPN endpoint
+602,Security-Ops,ebs-10a2954,2026-06,0.0,762.12,0.0,476.36400000000003,EBS,io2 volumes database
+603,ML-Training,lam-0f35499,2026-06,0.0,0.0,16016852.399999999,112.116,Lambda,Notification dispatcher
+604,Customer-Portal,ses-099c582,2026-06,0.0,0.0,945970.7999999999,1.14,SES,Marketing email
+605,Compliance-Audit,rs-037f769,2026-06,0.0,0.0,6011557.2,300.57599999999996,Redshift,Spectrum queries
+606,Partner-Integration,cf-03cf862,2026-06,0.0,0.0,45537522.0,227.68800000000002,CloudFront,CDN API distribution
+607,Security-Ops,ecs-04c3278,2026-06,647.52,0.0,0.0,1181.628,ECS,Fargate API cluster
+608,Marketing-Platform,ddb-0644636,2026-06,836.4,58.08,92936589.6,653.4599999999999,DynamoDB,Session store table
+609,Security-Ops,lam-10f3942,2026-06,0.0,0.0,4565631.6,32.196,Lambda,Image resizer
+610,Production-Main,cf-090e801,2026-06,0.0,0.0,62492788.8,312.45599999999996,CloudFront,CDN API distribution
+611,Finance-Systems,rds-0a4f386,2026-06,1225.92,851.4,0.0,3150.12,RDS,db.r5.xlarge PostgreSQL primary
+612,ML-Training,lam-0ec1508,2026-06,0.0,0.0,14581394.4,102.072,Lambda,Notification dispatcher
+613,Customer-Portal,i-0ea6657,2026-06,796.92,0.0,0.0,58.163999999999994,EC2,t3.micro bastion host
+614,Production-Secondary,ecs-03f5609,2026-06,371.4,0.0,0.0,677.7719999999999,ECS,Fargate batch cluster
+615,DevOps-Central,kin-06cf628,2026-06,1040.3999999999999,0.0,28899766.8,421.944,Kinesis,Firehose delivery
+616,Data-Science,i-06b7985,2026-06,960.9599999999999,0.0,0.0,416.772,EC2,t3.medium API server
+617,Security-Ops,ecs-0989841,2026-06,611.4,0.0,0.0,1115.676,ECS,Fargate API cluster
+618,Production-Main,lam-0006400,2026-06,0.0,0.0,54371529.6,380.604,Lambda,Auth token validator
+619,Partner-Integration,rds-0f56547,2026-06,447.72,124.32,0.0,528.504,RDS,db.t3.medium MySQL staging
+620,Customer-Portal,i-110a445,2026-06,858.6,0.0,0.0,744.6719999999999,EC2,t3.large application server
+621,Production-Main,cf-06a8576,2026-06,0.0,0.0,114055873.2,570.288,CloudFront,CDN media distribution
+622,Internal-Tools,rds-0dc8281,2026-06,631.56,701.7599999999999,0.0,1473.6119999999999,RDS,db.m5.xlarge analytics DB
+623,Internal-Tools,s3-0e8e973,2026-06,0.0,1306.68,2613276.0,114.324,S3,Artifact storage
+624,Edge-Network,ebs-0c62549,2026-06,0.0,212.51999999999998,0.0,26.568,EBS,gp3 volumes staging
+625,Production-Main,lam-0e1f721,2026-06,0.0,0.0,38261175.6,267.828,Lambda,Data transformer
+626,QA-Testing,lam-03df419,2026-06,0.0,0.0,94600050.0,662.196,Lambda,Auth token validator
+627,Edge-Network,eks-0322850,2026-06,566.52,0.0,0.0,1699.608,EKS,Staging K8s cluster
+628,Production-Main,ebs-117e412,2026-06,0.0,840.24,0.0,525.168,EBS,io2 volumes database
+629,Internal-Tools,lam-0e60938,2026-06,0.0,0.0,39406720.8,273.876,Lambda,API gateway handler
+630,Data-Science,ddb-0647670,2026-06,750.3599999999999,104.28,156326288.4,1172.4479999999999,DynamoDB,Cache table
+631,Production-Main,s3-06ad806,2026-06,0.0,18326.76,3665356.8,641.4359999999999,S3,Data lake raw zone
+632,Shared-Services,nat-01a5784,2026-06,718.0799999999999,0.0,0.0,163.81199999999998,NAT Gateway,Staging VPC NAT
+633,Data-Science,rds-069c314,2026-06,727.8,505.32,0.0,1869.828,RDS,db.r5.xlarge PostgreSQL primary
+634,Internal-Tools,lam-07ca671,2026-06,0.0,0.0,29182618.8,204.27599999999998,Lambda,Data transformer
+635,Production-Main,lam-104a539,2026-06,0.0,0.0,45310675.199999996,317.18399999999997,Lambda,Data transformer
+636,Finance-Systems,rds-074a363,2026-06,821.64,912.9599999999999,0.0,1917.204,RDS,db.m5.xlarge analytics DB
+637,Compliance-Audit,ec-04a7468,2026-06,757.1999999999999,0.0,0.0,545.16,ElastiCache,Redis production cluster
+638,Internal-Tools,lam-0abb122,2026-06,0.0,0.0,1441912.8,10.824,Lambda,Cron job runner
+639,Mobile-Backend,ebs-086b693,2026-06,0.0,4479.24,0.0,201.576,EBS,st1 volumes archive
+640,Edge-Network,rds-0457903,2026-06,605.28,420.36,0.0,1555.104,RDS,db.r5.xlarge PostgreSQL primary
+641,Compliance-Audit,sm-05b3121,2026-06,0.0,0.0,1525377.5999999999,6.096,Secrets Manager,Application secrets
+642,Security-Ops,s3-0185416,2026-06,0.0,6842.52,427656.0,171.06,S3,Log archive bucket
+643,Production-Main,lam-0be7690,2026-06,0.0,0.0,8912169.6,62.388,Lambda,Notification dispatcher
+644,Shared-Services,nat-0713424,2026-06,757.1999999999999,0.0,0.0,172.72799999999998,NAT Gateway,Staging VPC NAT
+645,Finance-Systems,rds-0545685,2026-06,1131.48,785.7599999999999,0.0,2907.252,RDS,db.r5.xlarge PostgreSQL primary
+646,ML-Training,rs-0364324,2026-06,0.0,0.0,5177017.2,258.852,Redshift,Spectrum queries
+647,Internal-Tools,rds-04c8593,2026-06,742.1999999999999,824.52,0.0,1731.54,RDS,db.m5.xlarge analytics DB
+648,Production-Main,cf-0c6e848,2026-06,0.0,0.0,41437255.199999996,207.18,CloudFront,CDN API distribution
+649,Data-Science,nat-0568861,2026-06,584.28,0.0,0.0,133.296,NAT Gateway,Staging VPC NAT
+650,Compliance-Audit,rds-0424610,2026-06,833.52,579.0,0.0,2141.94,RDS,db.r5.xlarge PostgreSQL primary
+651,Internal-Tools,sqs-02ae931,2026-06,0.0,0.0,714686.4,0.36,SQS,Dead letter queue
+652,Internal-Tools,ec-0a53778,2026-06,698.64,0.0,0.0,502.97999999999996,ElastiCache,Redis production cluster
+653,Internal-Tools,lam-02c9216,2026-06,0.0,0.0,45249406.8,314.484,Lambda,API gateway handler
+654,Shared-Services,rds-07c6808,2026-06,691.92,192.23999999999998,0.0,624.636,RDS,db.t3.large development DB
+655,Security-Ops,ecs-0f99165,2026-06,496.43999999999994,0.0,0.0,905.8679999999999,ECS,Fargate API cluster
+656,Shared-Services,rds-0b02683,2026-06,596.88,829.0799999999999,0.0,2653.044,RDS,db.r5.2xlarge Aurora cluster
+657,Marketing-Platform,rs-01d2424,2026-06,680.64,1890.6,0.0,3450.252,Redshift,Data warehouse cluster
+658,Security-Ops,lam-0aaf344,2026-06,0.0,0.0,5334237.6,37.608,Lambda,Image resizer
+659,Compliance-Audit,i-0d15800,2026-06,740.64,0.0,0.0,1069.764,EC2,c5.xlarge compute worker
+660,Edge-Network,s3-0fda230,2026-06,0.0,1264.8,2529579.6,110.664,S3,Artifact storage
+661,Security-Ops,s3-0b4a511,2026-06,0.0,6170.76,385666.8,154.272,S3,Log archive bucket
+662,QA-Testing,r53-0d45682,2026-06,0.0,0.0,60946136.4,91.41600000000001,Route 53,DNS hosting
+663,QA-Testing,r53-03ea149,2026-06,0.0,0.0,13388961.6,20.087999999999997,Route 53,Health checks
+664,Internal-Tools,ec-0588801,2026-06,636.4799999999999,0.0,0.0,458.20799999999997,ElastiCache,Redis production cluster
+665,Security-Ops,ecs-076f734,2026-06,180.96,0.0,0.0,330.32399999999996,ECS,Fargate batch cluster
+666,Production-Main,s3-076c637,2026-06,0.0,59.64,29820195.599999998,193.824,S3,Static website hosting
+667,Internal-Tools,ec-0497288,2026-06,596.64,0.0,0.0,429.516,ElastiCache,Redis production cluster
+668,Marketing-Platform,rds-0fe1560,2026-06,625.44,434.28,0.0,1237.812,RDS,db.r5.large PostgreSQL replica
+669,Customer-Portal,elb-0a54570,2026-06,878.88,0.0,36616999.199999996,266.58,ELB,Application load balancer
+670,Internal-Tools,lam-0782653,2026-06,0.0,0.0,1408347.5999999999,10.572000000000001,Lambda,Cron job runner
+671,Customer-Portal,s3-0417989,2026-06,0.0,20747.16,4149439.1999999997,726.156,S3,Data lake raw zone
+672,Internal-Tools,s3-02bb548,2026-06,0.0,1239.9599999999998,2479952.4,108.49199999999999,S3,Artifact storage
+673,Shared-Services,rds-0533968,2026-06,786.84,546.36,0.0,1557.048,RDS,db.r5.large PostgreSQL replica
+674,Edge-Network,s3-0ec2367,2026-06,0.0,1138.8,2277669.6,99.64800000000001,S3,Artifact storage
+675,Marketing-Platform,vpn-0a2e654,2026-06,991.0799999999999,0.0,0.0,251.232,VPN Gateway,Client VPN endpoint
+676,Production-Main,ecs-082a733,2026-06,509.4,0.0,0.0,929.628,ECS,Fargate worker cluster
+677,Internal-Tools,cf-095a942,2026-06,0.0,0.0,56462517.6,282.31199999999995,CloudFront,CDN API distribution
+678,Partner-Integration,elb-0f50855,2026-06,955.56,0.0,13271380.799999999,193.212,ELB,Classic load balancer
+679,Production-Secondary,r53-0087224,2026-06,0.0,0.0,80533740.0,120.804,Route 53,DNS hosting
+680,Shared-Services,rds-0798140,2026-06,676.32,939.3599999999999,0.0,3005.9639999999995,RDS,db.r5.2xlarge Aurora cluster
+681,Shared-Services,rds-088e703,2026-06,649.1999999999999,901.68,0.0,2885.544,RDS,db.r5.2xlarge Aurora cluster
+682,Customer-Portal,elb-062f711,2026-06,943.1999999999999,0.0,39299071.199999996,286.104,ELB,Application load balancer
+683,Shared-Services,nat-0e1a884,2026-06,736.0799999999999,0.0,0.0,167.928,NAT Gateway,Staging VPC NAT
+684,Compliance-Audit,elb-04ca178,2026-06,571.0799999999999,0.0,39662188.8,247.488,ELB,Network load balancer
+685,Internal-Tools,nat-0a69775,2026-06,701.16,0.0,0.0,159.96,NAT Gateway,Dev VPC NAT
+686,Finance-Systems,s3-0515672,2026-06,0.0,1584.0,3167847.6,138.6,S3,Artifact storage
+687,Security-Ops,ecs-07d0252,2026-06,597.36,0.0,0.0,1090.212,ECS,Fargate API cluster
+688,Internal-Tools,s3-052b864,2026-06,0.0,4796.16,7673779.199999999,350.11199999999997,S3,Media content bucket
+689,Security-Ops,sqs-0cca144,2026-06,0.0,0.0,56955483.6,28.476,SQS,Event notification queue
+690,Internal-Tools,cf-0809156,2026-06,0.0,0.0,176802040.79999998,884.0039999999999,CloudFront,CDN media distribution
+691,Marketing-Platform,sqs-0652126,2026-06,0.0,0.0,580135.2,0.288,SQS,Dead letter queue
+692,Partner-Integration,ddb-03d5405,2026-06,835.68,11.639999999999999,5803010.399999999,101.556,DynamoDB,Config store table
+693,Customer-Portal,ses-06a6724,2026-06,0.0,0.0,847227.6,1.02,SES,Marketing email
+694,Security-Ops,sm-08b5882,2026-06,0.0,0.0,1492725.5999999999,5.976,Secrets Manager,Application secrets
+695,Compliance-Audit,rds-04d9582,2026-06,435.23999999999995,120.84,0.0,513.852,RDS,db.t3.medium MySQL staging
+696,Compliance-Audit,sns-0399927,2026-06,0.0,0.0,16566184.799999999,8.28,SNS,Alert notifications
+697,Compliance-Audit,eks-101f873,2026-06,771.6,0.0,0.0,2314.932,EKS,Production K8s cluster
+698,Data-Science,i-0b8e813,2026-06,570.12,0.0,0.0,1976.436,EC2,m5.2xlarge batch processor
+699,Marketing-Platform,rs-063e686,2026-06,0.0,0.0,7468105.2,373.404,Redshift,Spectrum queries
+700,Internal-Tools,ebs-113b578,2026-06,0.0,471.36,0.0,294.59999999999997,EBS,io2 volumes database
+701,Partner-Integration,elb-06d8314,2026-06,855.0,0.0,11875263.6,172.89600000000002,ELB,Classic load balancer
+702,Compliance-Audit,ses-0d16832,2026-06,0.0,0.0,2160740.4,2.592,SES,Transactional email
+703,Shared-Services,s3-0eda156,2026-06,0.0,16916.879999999997,3383378.4,592.092,S3,Data lake raw zone
+704,Production-Secondary,elb-0487699,2026-06,810.72,0.0,33778879.199999996,245.90399999999997,ELB,Application load balancer
+705,Edge-Network,ebs-06de655,2026-06,0.0,160.92,0.0,20.124,EBS,gp3 volumes staging
+706,Internal-Tools,lam-0f9d732,2026-06,0.0,0.0,18961033.2,132.732,Lambda,Event processor
+707,Internal-Tools,s3-0556224,2026-06,0.0,4828.44,7725367.199999999,352.476,S3,Media content bucket
+708,Compliance-Audit,i-0af0314,2026-06,653.28,0.0,0.0,283.332,EC2,t3.medium API server
+709,Shared-Services,rds-0454133,2026-06,691.8,480.36,0.0,1368.9599999999998,RDS,db.r5.large PostgreSQL replica
+710,Compliance-Audit,ecs-0e22271,2026-06,508.67999999999995,0.0,0.0,928.3199999999999,ECS,Fargate worker cluster
+711,DevOps-Central,kin-00ca857,2026-06,973.56,0.0,40562698.8,592.212,Kinesis,Data stream ingestion
+712,Production-Main,ec-0bc4932,2026-06,1293.48,0.0,0.0,931.3199999999999,ElastiCache,Redis production cluster
+713,Internal-Tools,s3-0cf7590,2026-06,0.0,8237.76,514856.39999999997,205.956,S3,Log archive bucket
+714,Security-Ops,s3-0182639,2026-06,0.0,4194.0,25164267.599999998,1048.512,S3,Production asset storage
+715,Data-Science,i-0e0c224,2026-06,440.4,0.0,0.0,1277.5079999999998,EC2,c5.2xlarge HPC node
+716,Partner-Integration,ecs-03d7683,2026-06,541.32,0.0,0.0,987.996,ECS,Fargate API cluster
+717,Security-Ops,lam-0988526,2026-06,0.0,0.0,27455491.2,192.18,Lambda,Data transformer
+718,Finance-Systems,s3-079a209,2026-06,0.0,6427.92,10284758.4,469.248,S3,Media content bucket
+719,Partner-Integration,sm-0ed5679,2026-06,0.0,0.0,1842753.5999999999,7.38,Secrets Manager,Application secrets
+720,Production-Main,r53-0012755,2026-06,0.0,0.0,16711995.6,25.068,Route 53,Health checks
+721,Edge-Network,ebs-0dd1202,2026-06,0.0,252.71999999999997,0.0,31.595999999999997,EBS,gp3 volumes staging
+722,Data-Science,rds-0d7c680,2026-06,996.24,276.84,0.0,899.424,RDS,db.t3.large development DB
+723,Production-Main,s3-0016611,2026-06,0.0,1018.56,2037212.4,89.124,S3,Artifact storage
+724,Edge-Network,ecs-0320455,2026-06,234.6,0.0,0.0,428.19599999999997,ECS,Fargate batch cluster
+725,Marketing-Platform,sqs-01db272,2026-06,0.0,0.0,631080.0,0.312,SQS,Dead letter queue
+726,Shared-Services,rds-09c6142,2026-06,705.24,489.72,0.0,1395.684,RDS,db.r5.large PostgreSQL replica
+727,Partner-Integration,rds-086c113,2026-06,540.96,150.24,0.0,638.4359999999999,RDS,db.t3.medium MySQL staging
+728,Marketing-Platform,i-0dcc735,2026-06,665.0400000000001,0.0,0.0,576.24,EC2,m5.large monitoring server
+729,Security-Ops,lam-0e9d376,2026-06,0.0,0.0,27326626.8,191.28,Lambda,Data transformer
+730,Security-Ops,lam-017b358,2026-06,0.0,0.0,69882835.2,489.17999999999995,Lambda,Auth token validator
+731,Security-Ops,s3-0540342,2026-06,0.0,21009.719999999998,4201940.399999999,735.3359999999999,S3,Data lake raw zone
+732,Mobile-Backend,kin-0db1783,2026-06,725.16,0.0,30213081.599999998,441.10799999999995,Kinesis,Data stream ingestion
+733,Production-Secondary,r53-0088920,2026-06,0.0,0.0,12234278.4,18.348,Route 53,Health checks
+734,DevOps-Central,ec-07fb671,2026-06,936.24,0.0,0.0,674.088,ElastiCache,Redis production cluster
+735,Marketing-Platform,vpn-0547838,2026-06,1170.0,0.0,0.0,593.088,VPN Gateway,Site-to-site VPN
+736,Security-Ops,sm-0192528,2026-06,0.0,0.0,1262440.8,5.052,Secrets Manager,Application secrets
+737,Marketing-Platform,rds-0dc3816,2026-06,834.72,579.72,0.0,1652.2079999999999,RDS,db.r5.large PostgreSQL replica
+738,Data-Science,ses-014b619,2026-06,0.0,0.0,463512.0,0.552,SES,Marketing email
+739,Compliance-Audit,i-0b1a567,2026-06,864.72,0.0,0.0,749.4359999999999,EC2,m5.large monitoring server
+740,Marketing-Platform,sm-0e0b262,2026-06,0.0,0.0,1164790.8,4.656,Secrets Manager,Application secrets
+741,Edge-Network,i-07f9917,2026-06,706.32,0.0,0.0,2448.576,EC2,m5.2xlarge batch processor
+742,ML-Training,i-07b3955,2026-06,878.16,0.0,0.0,760.992,EC2,m5.large monitoring server
+743,Production-Secondary,rs-0085981,2026-06,1144.6799999999998,3179.64,0.0,5802.9,Redshift,Data warehouse cluster
+744,Finance-Systems,s3-0475629,2026-06,0.0,71.52,35761682.4,232.452,S3,Static website hosting
+745,Partner-Integration,sqs-080f764,2026-06,0.0,0.0,549962.4,0.276,SQS,Dead letter queue
+746,Edge-Network,lam-0f3f242,2026-06,0.0,0.0,25866915.599999998,181.06799999999998,Lambda,Data transformer
+747,Compliance-Audit,rs-115c829,2026-06,0.0,0.0,5899779.6,294.984,Redshift,Spectrum queries
+748,Customer-Portal,vpn-10ed434,2026-06,1185.0,0.0,0.0,300.372,VPN Gateway,Client VPN endpoint
+749,Compliance-Audit,ses-1003965,2026-06,0.0,0.0,1970138.4,2.364,SES,Transactional email
+750,Internal-Tools,rds-0bea427,2026-06,1178.52,1636.9199999999998,0.0,5237.736,RDS,db.r5.2xlarge Aurora cluster
+751,ML-Training,r53-0370851,2026-06,0.0,0.0,57892131.6,86.84400000000001,Route 53,DNS hosting
+752,ML-Training,i-08d8148,2026-06,756.72,0.0,0.0,2623.524,EC2,r5.2xlarge database server
+753,DevOps-Central,ddb-00cf819,2026-06,1032.36,14.28,7169214.0,125.46,DynamoDB,Config store table
+754,ML-Training,ec-0ee1247,2026-06,1049.04,0.0,0.0,755.364,ElastiCache,Redis production cluster
+755,Edge-Network,sns-103a136,2026-06,0.0,0.0,17183474.4,8.604,SNS,Alert notifications
+756,Edge-Network,sns-1116196,2026-06,0.0,0.0,14115182.4,7.056,SNS,Alert notifications
+757,Compliance-Audit,sm-113a398,2026-06,0.0,0.0,1583275.2,6.323999999999999,Secrets Manager,Application secrets
+758,Production-Main,i-0e83752,2026-06,706.0799999999999,0.0,0.0,2447.46,EC2,m5.2xlarge batch processor
+759,Shared-Services,r53-0b86525,2026-06,0.0,0.0,87403180.8,131.1,Route 53,DNS hosting
+760,Internal-Tools,elb-02b8525,2026-06,668.0400000000001,0.0,27834643.2,202.632,ELB,Application load balancer
+761,QA-Testing,ses-062e201,2026-06,0.0,0.0,3212253.6,3.852,SES,Transactional email
+762,Edge-Network,i-0634118,2026-06,944.64,0.0,0.0,3274.716,EC2,r5.2xlarge database server
+763,Edge-Network,s3-0319797,2026-06,0.0,15410.04,154099.19999999998,354.432,S3,Backup storage bucket
+764,Production-Main,lam-000b396,2026-06,0.0,0.0,20628690.0,144.396,Lambda,Event processor
+765,Partner-Integration,elb-03db380,2026-06,607.68,0.0,25318779.599999998,184.32,ELB,Application load balancer
+766,Shared-Services,r53-0197483,2026-06,0.0,0.0,83770064.39999999,125.65199999999999,Route 53,DNS hosting
+767,Edge-Network,s3-06b2129,2026-06,0.0,76.32,38134729.199999996,247.86,S3,Static website hosting
+768,Data-Science,i-013d711,2026-06,835.1999999999999,0.0,0.0,723.8159999999999,EC2,m5.large monitoring server
+769,Partner-Integration,elb-0f4c997,2026-06,776.4,0.0,10782070.799999999,156.98399999999998,ELB,Classic load balancer
+770,ML-Training,i-0369482,2026-06,1185.72,0.0,0.0,514.236,EC2,t3.medium API server
+771,Partner-Integration,ddb-04cf704,2026-06,672.9599999999999,46.8,74778022.8,525.78,DynamoDB,Session store table
+772,Compliance-Audit,i-0812373,2026-06,755.28,0.0,0.0,2618.004,EC2,r5.2xlarge database server
+773,Marketing-Platform,r53-0aa1477,2026-06,0.0,0.0,62238218.4,93.348,Route 53,DNS hosting
+774,Internal-Tools,lam-0eb4918,2026-06,0.0,0.0,27328879.2,191.30399999999997,Lambda,Data transformer
+775,QA-Testing,sm-03ed358,2026-06,0.0,0.0,943819.2,3.78,Secrets Manager,Application secrets
+776,Finance-Systems,vpn-0c5e853,2026-06,1089.6,0.0,0.0,276.192,VPN Gateway,Client VPN endpoint
+777,Edge-Network,ecs-083f327,2026-06,352.56,0.0,0.0,643.308,ECS,Fargate worker cluster
+778,Compliance-Audit,kin-0cdf374,2026-06,772.8,0.0,32197904.4,470.08799999999997,Kinesis,Data stream ingestion
+779,Compliance-Audit,s3-038e331,2026-06,0.0,12306.48,123064.79999999999,283.044,S3,Backup storage bucket
+780,Customer-Portal,ses-09ba980,2026-06,0.0,0.0,2613927.6,3.144,SES,Transactional email
+781,Data-Science,i-063f419,2026-06,423.23999999999995,0.0,0.0,1227.5159999999998,EC2,c5.2xlarge HPC node
+782,Compliance-Audit,i-0d76887,2026-06,817.0799999999999,0.0,0.0,708.096,EC2,m5.large monitoring server
+783,Marketing-Platform,rs-0578755,2026-06,749.64,2082.3599999999997,0.0,3800.0519999999997,Redshift,Data warehouse cluster
+784,Production-Main,i-07b0216,2026-06,493.2,0.0,0.0,1430.316,EC2,c5.2xlarge HPC node
+785,ML-Training,lam-04e8479,2026-06,0.0,0.0,13293370.799999999,93.05999999999999,Lambda,Notification dispatcher
+786,Compliance-Audit,i-039c168,2026-06,1157.64,0.0,0.0,84.516,EC2,t3.micro bastion host
+787,Security-Ops,sqs-0889881,2026-06,0.0,0.0,53417592.0,26.712,SQS,Event notification queue
+788,Compliance-Audit,i-0954606,2026-06,974.7599999999999,0.0,0.0,844.8,EC2,m5.large monitoring server
+789,Partner-Integration,cf-0ccc998,2026-06,0.0,0.0,47511568.8,237.552,CloudFront,CDN API distribution
+790,Internal-Tools,ebs-0fd8235,2026-06,0.0,6633.48,0.0,298.512,EBS,st1 volumes archive
+791,Marketing-Platform,s3-01ee984,2026-06,0.0,16341.24,163411.19999999998,375.852,S3,Backup storage bucket
+792,Security-Ops,sqs-0cc7659,2026-06,0.0,0.0,68674171.2,34.344,SQS,Order processing queue
+793,Internal-Tools,ebs-05fe716,2026-06,0.0,1669.0800000000002,0.0,208.632,EBS,gp3 volumes production
+794,Marketing-Platform,rds-0f32152,2026-06,1092.6,758.88,0.0,2807.544,RDS,db.r5.xlarge PostgreSQL primary
+795,Internal-Tools,lam-05b9579,2026-06,0.0,0.0,28329201.599999998,198.29999999999998,Lambda,Data transformer
+796,Edge-Network,s3-05cb638,2026-06,0.0,74.75999999999999,37362211.199999996,242.844,S3,Static website hosting
+797,Partner-Integration,s3-03cc842,2026-06,0.0,1462.32,2924743.1999999997,127.95599999999999,S3,Artifact storage
+798,Compliance-Audit,s3-0d91108,2026-06,0.0,1073.52,2147270.4,93.94800000000001,S3,Artifact storage
+799,Data-Science,i-09a3137,2026-06,774.72,0.0,0.0,1342.812,EC2,r5.xlarge cache server
+800,Internal-Tools,s3-0d9a450,2026-06,0.0,7321.92,73216.8,168.39600000000002,S3,Backup storage bucket
+801,Marketing-Platform,ddb-0582661,2026-06,787.92,54.72,87548758.8,615.576,DynamoDB,Session store table
+802,Security-Ops,ecs-0f12611,2026-06,220.79999999999998,0.0,0.0,403.044,ECS,Fargate batch cluster
+803,Edge-Network,ebs-0311888,2026-06,0.0,8208.72,0.0,369.39599999999996,EBS,st1 volumes archive
+804,Production-Secondary,ec-0cec280,2026-06,1262.28,0.0,0.0,454.464,ElastiCache,Redis staging cluster
+805,Production-Secondary,i-06e3233,2026-06,1227.0,0.0,0.0,1064.232,EC2,t3.large application server
+806,Partner-Integration,rds-03c9787,2026-06,1079.52,749.64,0.0,2136.516,RDS,db.r5.large PostgreSQL replica
+807,QA-Testing,ses-07c3229,2026-06,0.0,0.0,3189136.8,3.828,SES,Transactional email
+808,Finance-Systems,rs-07f1538,2026-06,686.28,1906.3199999999997,0.0,3478.9199999999996,Redshift,Data warehouse cluster
+809,Internal-Tools,elb-0d39987,2026-06,1438.0800000000002,0.0,19974642.0,290.82,ELB,Classic load balancer
+810,Security-Ops,ecs-09ff179,2026-06,164.88,0.0,0.0,301.152,ECS,Fargate batch cluster
+811,ML-Training,i-0b7f363,2026-06,808.1999999999999,0.0,0.0,2801.904,EC2,r5.2xlarge database server
+812,Partner-Integration,ddb-03d3612,2026-06,1142.76,158.76000000000002,238067683.2,1785.5040000000001,DynamoDB,Cache table
+813,Data-Science,i-0fdf856,2026-06,492.36,0.0,0.0,1706.7959999999998,EC2,m5.2xlarge batch processor
+814,Production-Main,ebs-0c33147,2026-06,0.0,666.3599999999999,0.0,416.44800000000004,EBS,io2 volumes database
+815,Partner-Integration,elb-1189487,2026-06,676.32,0.0,9393132.0,136.75199999999998,ELB,Classic load balancer
+816,Edge-Network,s3-031a417,2026-06,0.0,1380.24,2760499.1999999997,120.768,S3,Artifact storage
+817,Internal-Tools,s3-02be827,2026-06,0.0,8775.36,87752.4,201.828,S3,Backup storage bucket
+818,Production-Main,s3-0015422,2026-06,0.0,12609.24,788073.6,315.228,S3,Log archive bucket
+819,Compliance-Audit,rs-0f61772,2026-06,0.0,0.0,6845714.399999999,342.288,Redshift,Spectrum queries
+820,Production-Main,s3-079b598,2026-06,0.0,12131.279999999999,758199.6,303.27599999999995,S3,Log archive bucket
+821,ML-Training,ebs-103e746,2026-06,0.0,776.64,0.0,485.34,EBS,io2 volumes database
+822,QA-Testing,lam-0684112,2026-06,0.0,0.0,5244378.0,36.96,Lambda,Image resizer
+823,Production-Main,cf-0ad5324,2026-06,0.0,0.0,41329604.4,206.64,CloudFront,CDN API distribution
+824,Finance-Systems,rds-1083102,2026-06,899.0400000000001,999.12,0.0,2097.9719999999998,RDS,db.m5.xlarge analytics DB
+825,Security-Ops,s3-0d22917,2026-06,0.0,23208.24,4641640.8,812.28,S3,Data lake raw zone
+826,QA-Testing,elb-0ecf520,2026-06,986.04,0.0,41084355.6,299.088,ELB,Application load balancer
+827,Marketing-Platform,rs-1104859,2026-06,0.0,0.0,8307002.399999999,415.344,Redshift,Spectrum queries
+828,DevOps-Central,ec-03f6896,2026-06,1015.3199999999999,0.0,0.0,730.992,ElastiCache,Redis production cluster
+829,Production-Secondary,sqs-08b9775,2026-06,0.0,0.0,27737325.599999998,13.872,SQS,Event notification queue
+830,Production-Secondary,elb-0fae581,2026-06,717.12,0.0,49793352.0,310.716,ELB,Network load balancer
+831,Security-Ops,ecs-0f2a294,2026-06,207.83999999999997,0.0,0.0,379.2,ECS,Fargate batch cluster
+832,Partner-Integration,sm-0b57782,2026-06,0.0,0.0,1695874.8,6.78,Secrets Manager,Application secrets
+833,Compliance-Audit,rds-0a00512,2026-06,1353.0,375.96,0.0,1221.48,RDS,db.t3.large development DB
+834,Marketing-Platform,i-0880144,2026-06,784.92,0.0,0.0,2276.28,EC2,c5.2xlarge HPC node
+835,Internal-Tools,s3-0d4d615,2026-06,0.0,47.76,23913684.0,155.44799999999998,S3,Static website hosting
+836,Customer-Portal,i-09ed915,2026-06,822.0,0.0,0.0,712.9799999999999,EC2,t3.large application server
+837,Finance-Systems,vpn-0b15944,2026-06,1112.3999999999999,0.0,0.0,281.94,VPN Gateway,Client VPN endpoint
+838,Internal-Tools,vpn-02cf704,2026-06,1160.3999999999999,0.0,0.0,588.264,VPN Gateway,Site-to-site VPN
+839,Edge-Network,i-0324608,2026-06,984.3599999999999,0.0,0.0,1706.1719999999998,EC2,r5.xlarge cache server
+840,Internal-Tools,ebs-077e364,2026-06,0.0,604.32,0.0,377.748,EBS,io2 volumes database
+841,Compliance-Audit,s3-0660837,2026-06,0.0,18512.879999999997,3702541.1999999997,647.94,S3,Data lake raw zone
+842,Data-Science,rds-0535688,2026-06,1000.1999999999999,694.44,0.0,2569.944,RDS,db.r5.xlarge PostgreSQL primary
+843,Marketing-Platform,nat-01de756,2026-06,653.88,0.0,0.0,149.172,NAT Gateway,Staging VPC NAT
+844,Production-Main,i-0010646,2026-06,988.8,0.0,0.0,856.992,EC2,m5.large monitoring server
+845,Marketing-Platform,sqs-0be6230,2026-06,0.0,0.0,644869.2,0.324,SQS,Dead letter queue
+846,DevOps-Central,ebs-0eed939,2026-06,0.0,648.24,0.0,405.12,EBS,io2 volumes database
+847,Marketing-Platform,rds-0f55476,2026-06,1223.28,849.6,0.0,3143.256,RDS,db.r5.xlarge PostgreSQL primary
+848,Security-Ops,lam-0777578,2026-06,0.0,0.0,31144333.2,218.004,Lambda,Data transformer
+849,Partner-Integration,ddb-040d764,2026-06,1245.6,173.04,259486567.2,1946.148,DynamoDB,Cache table
+850,Edge-Network,sns-0686722,2026-06,0.0,0.0,15495133.2,7.752,SNS,Alert notifications
+851,Partner-Integration,rs-092a741,2026-06,971.4,2698.3199999999997,0.0,4924.643999999999,Redshift,Data warehouse cluster
+852,Compliance-Audit,ses-077a783,2026-06,0.0,0.0,2001278.4,2.4119999999999995,SES,Transactional email
+853,Internal-Tools,lam-02c8433,2026-06,0.0,0.0,29911387.2,209.37599999999998,Lambda,Data transformer
+854,ML-Training,ec-0a90713,2026-06,1261.2,0.0,0.0,908.088,ElastiCache,Redis production cluster
+855,Internal-Tools,elb-0cc9306,2026-06,669.72,0.0,27905397.599999998,203.148,ELB,Application load balancer
+856,Data-Science,i-078f171,2026-06,462.84,0.0,0.0,1342.512,EC2,c5.2xlarge HPC node
+857,Internal-Tools,s3-05e0714,2026-06,0.0,7558.799999999999,75584.4,173.844,S3,Backup storage bucket
+858,Edge-Network,kin-115a265,2026-06,665.88,0.0,18495111.599999998,270.036,Kinesis,Firehose delivery
+859,Edge-Network,ecs-0bcd990,2026-06,365.76,0.0,0.0,667.5,ECS,Fargate worker cluster
+860,Edge-Network,s3-0c38314,2026-06,0.0,15391.679999999998,153914.4,354.012,S3,Backup storage bucket
+861,ML-Training,rds-0967983,2026-06,752.64,836.28,0.0,1756.152,RDS,db.m5.xlarge analytics DB
+862,Partner-Integration,s3-06f7590,2026-06,0.0,10740.72,671299.2,268.524,S3,Log archive bucket
+863,QA-Testing,elb-0846481,2026-06,957.0,0.0,39877646.4,290.304,ELB,Application load balancer
+864,Edge-Network,sns-0459907,2026-06,0.0,0.0,14186612.4,7.092,SNS,Alert notifications
+865,Data-Science,i-08de409,2026-06,673.8,0.0,0.0,1167.9599999999998,EC2,r5.xlarge cache server
+866,Compliance-Audit,ec-10e5547,2026-06,872.7599999999999,0.0,0.0,628.356,ElastiCache,Redis production cluster
+867,ML-Training,i-0b4c167,2026-06,1059.84,0.0,0.0,1837.836,EC2,m5.xlarge web server
+868,Security-Ops,sqs-0a52870,2026-06,0.0,0.0,51183112.8,25.595999999999997,SQS,Event notification queue
+869,Internal-Tools,lam-02cc497,2026-06,0.0,0.0,3309777.6,23.171999999999997,Lambda,Webhook processor
+870,Production-Main,r53-0d5a947,2026-06,0.0,0.0,18084577.2,27.131999999999998,Route 53,Health checks
+871,Internal-Tools,s3-0e38705,2026-06,0.0,4471.44,2235733.1999999997,167.68800000000002,S3,Analytics export bucket
+872,Edge-Network,vpn-0a43272,2026-06,863.4,0.0,0.0,218.844,VPN Gateway,Client VPN endpoint
+873,ML-Training,lam-0372889,2026-06,0.0,0.0,52602532.8,365.59200000000004,Lambda,API gateway handler
+874,ML-Training,kin-0b4b498,2026-06,819.4799999999999,0.0,34144356.0,498.504,Kinesis,Data stream ingestion
+875,Finance-Systems,elb-0452249,2026-06,713.7599999999999,0.0,9913486.799999999,144.33599999999998,ELB,Classic load balancer
+876,Security-Ops,sm-045e298,2026-06,0.0,0.0,1367025.5999999999,5.4719999999999995,Secrets Manager,Application secrets
+877,ML-Training,lam-0d73769,2026-06,0.0,0.0,14424196.799999999,100.98,Lambda,Notification dispatcher
+878,Marketing-Platform,rs-0ba2171,2026-06,509.03999999999996,1413.9599999999998,0.0,2580.5159999999996,Redshift,Data warehouse cluster
+879,Internal-Tools,lam-02cb754,2026-06,0.0,0.0,75069992.39999999,525.492,Lambda,Auth token validator
+880,Partner-Integration,rds-0c9f949,2026-06,441.47999999999996,122.51999999999998,0.0,521.112,RDS,db.t3.medium MySQL staging
+881,Internal-Tools,s3-0fe8428,2026-06,0.0,7939.679999999999,496219.19999999995,198.48,S3,Log archive bucket
+882,Edge-Network,sns-074f285,2026-06,0.0,0.0,14851327.2,7.428,SNS,Alert notifications
+883,Security-Ops,lam-0f58332,2026-06,0.0,0.0,1542904.8,11.568,Lambda,Cron job runner
+884,Marketing-Platform,i-01eb577,2026-06,797.7599999999999,0.0,0.0,691.9799999999999,EC2,t3.large application server
+885,Marketing-Platform,lam-1106899,2026-06,0.0,0.0,21955320.0,153.684,Lambda,Data transformer
+886,Edge-Network,sns-030d402,2026-06,0.0,0.0,14681886.0,7.343999999999999,SNS,Alert notifications
+887,Internal-Tools,ec-0ef0731,2026-06,727.68,0.0,0.0,523.884,ElastiCache,Redis production cluster
+888,Security-Ops,r53-018e416,2026-06,0.0,0.0,12885693.6,19.331999999999997,Route 53,Health checks
+889,Shared-Services,rds-0c01640,2026-06,843.9599999999999,234.48,0.0,761.964,RDS,db.t3.large development DB
+890,Customer-Portal,vpn-0ca0711,2026-06,1236.7199999999998,0.0,0.0,313.476,VPN Gateway,Client VPN endpoint
+891,Production-Main,ebs-0000818,2026-06,0.0,720.72,0.0,450.45599999999996,EBS,io2 volumes database
+892,Compliance-Audit,s3-0a24119,2026-06,0.0,15311.64,3062308.8,535.896,S3,Data lake raw zone
+893,Production-Secondary,i-007f340,2026-06,1180.56,0.0,0.0,1023.984,EC2,t3.large application server
+894,Data-Science,i-0f03164,2026-06,625.92,0.0,0.0,1085.0159999999998,EC2,r5.xlarge cache server
+895,Data-Science,i-013e564,2026-06,925.68,0.0,0.0,401.44800000000004,EC2,t3.medium API server
+896,Finance-Systems,eks-07ae725,2026-06,1024.92,0.0,0.0,3074.808,EKS,Production K8s cluster
+897,Production-Main,cf-0753522,2026-06,0.0,0.0,102831804.0,514.164,CloudFront,CDN media distribution
+898,ML-Training,ebs-094c540,2026-06,0.0,841.8,0.0,526.1279999999999,EBS,io2 volumes database
+899,QA-Testing,ses-0bb1203,2026-06,0.0,0.0,3354465.6,4.032,SES,Transactional email
+900,DevOps-Central,kin-0afa513,2026-06,1098.36,0.0,30510316.799999997,445.464,Kinesis,Firehose delivery
+901,Finance-Systems,elb-0dfb753,2026-06,1084.92,0.0,75344494.8,470.148,ELB,Network load balancer
+902,Security-Ops,ec-1071526,2026-06,771.0,0.0,0.0,277.596,ElastiCache,Redis staging cluster
+903,Finance-Systems,s3-0ffa665,2026-06,0.0,6276.0,10041601.2,458.148,S3,Media content bucket
+904,Marketing-Platform,rds-09c8470,2026-06,1214.64,843.6,0.0,3121.1159999999995,RDS,db.r5.xlarge PostgreSQL primary
+905,Internal-Tools,elb-05c6198,2026-06,1301.88,0.0,18082729.2,263.28,ELB,Classic load balancer
+906,ML-Training,kin-036d547,2026-06,1047.72,0.0,43655270.4,637.3679999999999,Kinesis,Data stream ingestion
+907,Compliance-Audit,ec-0ebf584,2026-06,693.3599999999999,0.0,0.0,499.176,ElastiCache,Redis production cluster
+908,Partner-Integration,cf-08c7521,2026-06,0.0,0.0,47707795.199999996,238.536,CloudFront,CDN API distribution
+909,Internal-Tools,s3-0d89977,2026-06,0.0,5000.04,7999941.6,364.992,S3,Media content bucket
+910,Marketing-Platform,lam-01cd667,2026-06,0.0,0.0,25862356.8,181.032,Lambda,Data transformer
+911,Partner-Integration,sm-1004542,2026-06,0.0,0.0,1545301.2,6.180000000000001,Secrets Manager,Application secrets
+912,Customer-Portal,s3-0739784,2026-06,0.0,22134.0,4426820.399999999,774.696,S3,Data lake raw zone
+913,Marketing-Platform,i-01e8508,2026-06,813.72,0.0,0.0,1410.3839999999998,EC2,r5.xlarge cache server
+914,Edge-Network,eks-0321899,2026-06,681.6,0.0,0.0,2044.704,EKS,Production K8s cluster
+915,Finance-Systems,s3-055a789,2026-06,0.0,1418.88,2837638.8,124.15199999999999,S3,Artifact storage
+916,Internal-Tools,ec-0419804,2026-06,668.28,0.0,0.0,481.128,ElastiCache,Redis production cluster
+917,QA-Testing,lam-099e683,2026-06,0.0,0.0,3448971.6,24.144000000000002,Lambda,Webhook processor
+918,ML-Training,lam-10da892,2026-06,0.0,0.0,12892996.799999999,90.252,Lambda,Notification dispatcher
+919,Production-Main,ecs-001e666,2026-06,616.56,0.0,0.0,1125.1799999999998,ECS,Fargate API cluster
+920,Production-Secondary,r53-0e61207,2026-06,0.0,0.0,10718407.2,16.08,Route 53,Health checks
+921,ML-Training,i-0367966,2026-06,1073.1599999999999,0.0,0.0,1860.8519999999999,EC2,m5.xlarge web server
+922,Customer-Portal,ses-0825680,2026-06,0.0,0.0,819949.2,0.9839999999999999,SES,Marketing email
+923,Internal-Tools,ebs-0b3f304,2026-06,0.0,1873.8,0.0,234.216,EBS,gp3 volumes production
+924,Data-Science,ses-014a460,2026-06,0.0,0.0,2688688.8,3.2279999999999998,SES,Transactional email
+925,Production-Main,ecs-001d579,2026-06,417.84,0.0,0.0,762.492,ECS,Fargate worker cluster
+926,Marketing-Platform,sm-07dd433,2026-06,0.0,0.0,1204018.8,4.811999999999999,Secrets Manager,Application secrets
+927,Production-Secondary,r53-10c5816,2026-06,0.0,0.0,9115896.0,13.668000000000001,Route 53,Health checks
+928,Edge-Network,ecs-0fc0400,2026-06,496.79999999999995,0.0,0.0,906.756,ECS,Fargate API cluster
+929,ML-Training,rs-0942720,2026-06,0.0,0.0,5897702.399999999,294.888,Redshift,Spectrum queries
+930,Partner-Integration,cf-08ff891,2026-06,0.0,0.0,46901205.6,234.50399999999996,CloudFront,CDN API distribution
+931,Production-Main,r53-0a68605,2026-06,0.0,0.0,15086772.0,22.631999999999998,Route 53,Health checks
+932,Finance-Systems,rds-08ea254,2026-06,656.0400000000001,911.16,0.0,2915.544,RDS,db.r5.2xlarge Aurora cluster
+933,Compliance-Audit,ses-0381310,2026-06,0.0,0.0,1850112.0,2.22,SES,Transactional email
+934,Compliance-Audit,rs-07a8173,2026-06,0.0,0.0,6536694.0,326.832,Redshift,Spectrum queries
+935,Security-Ops,ecs-0ba6598,2026-06,204.0,0.0,0.0,372.32399999999996,ECS,Fargate batch cluster
+936,ML-Training,i-0c81746,2026-06,785.28,0.0,0.0,680.5559999999999,EC2,m5.large monitoring server
+937,Customer-Portal,cf-028b887,2026-06,0.0,0.0,33782936.4,168.91199999999998,CloudFront,CDN static assets
+938,Edge-Network,ebs-072d290,2026-06,0.0,857.88,0.0,107.232,EBS,gp3 volumes production
+939,Mobile-Backend,sqs-0865398,2026-06,0.0,0.0,414759.6,0.20400000000000001,SQS,Dead letter queue
+940,Customer-Portal,ses-1122543,2026-06,0.0,0.0,3189310.8,3.828,SES,Transactional email
+941,Marketing-Platform,ddb-0f43677,2026-06,665.7599999999999,9.24,4623319.2,80.904,DynamoDB,Config store table
+942,Marketing-Platform,sqs-0b48223,2026-06,0.0,0.0,656524.7999999999,0.324,SQS,Dead letter queue
+943,Customer-Portal,vpn-0e39121,2026-06,961.92,0.0,0.0,243.80399999999997,VPN Gateway,Client VPN endpoint
+944,Compliance-Audit,rds-116e550,2026-06,1351.32,938.52,0.0,2674.5719999999997,RDS,db.r5.large PostgreSQL replica
+945,Finance-Systems,rds-023d564,2026-06,1093.92,759.6,0.0,2165.004,RDS,db.r5.large PostgreSQL replica
+946,QA-Testing,elb-0d3a401,2026-06,854.64,0.0,11870178.0,172.824,ELB,Classic load balancer
+947,Internal-Tools,ec-0cbe439,2026-06,663.12,0.0,0.0,477.44399999999996,ElastiCache,Redis production cluster
+948,Partner-Integration,sqs-0654966,2026-06,0.0,0.0,30771904.799999997,15.384,SQS,Event notification queue
+949,Compliance-Audit,ecs-0daa871,2026-06,552.36,0.0,0.0,1008.0840000000001,ECS,Fargate worker cluster
+950,Data-Science,i-0f62656,2026-06,562.56,0.0,0.0,975.1919999999999,EC2,r5.xlarge cache server
+951,Compliance-Audit,rds-08cd532,2026-06,426.12,118.32,0.0,503.03999999999996,RDS,db.t3.medium MySQL staging
+952,Production-Main,s3-050b772,2026-06,0.0,11480.88,717549.6,287.016,S3,Log archive bucket
+953,Data-Science,rds-08d7648,2026-06,1008.72,700.44,0.0,2591.7,RDS,db.r5.xlarge PostgreSQL primary
+954,Data-Science,i-1072168,2026-06,736.1999999999999,0.0,0.0,638.052,EC2,m5.large monitoring server
+955,Internal-Tools,s3-0c32773,2026-06,0.0,8572.8,85725.59999999999,197.172,S3,Backup storage bucket
+956,ML-Training,sns-0a08133,2026-06,0.0,0.0,11111793.6,5.556,SNS,Alert notifications
+957,Production-Main,ecs-074b718,2026-06,448.08,0.0,0.0,817.7159999999999,ECS,Fargate worker cluster
+958,Partner-Integration,rds-071b467,2026-06,501.96,139.44,0.0,592.464,RDS,db.t3.medium MySQL staging
+959,Customer-Portal,vpn-0282677,2026-06,1148.76,0.0,0.0,291.16799999999995,VPN Gateway,Client VPN endpoint
+960,DevOps-Central,ec-1050337,2026-06,952.92,0.0,0.0,686.0400000000001,ElastiCache,Redis production cluster
+961,Production-Main,s3-10fa940,2026-06,0.0,12009.84,750613.2,300.252,S3,Log archive bucket
+962,Internal-Tools,s3-05e5658,2026-06,0.0,9209.279999999999,575581.2,230.244,S3,Log archive bucket
+963,Data-Science,sm-0142508,2026-06,0.0,0.0,1535031.5999999999,6.144,Secrets Manager,Application secrets
+964,Edge-Network,sns-06be252,2026-06,0.0,0.0,13151992.799999999,6.5760000000000005,SNS,Alert notifications
+965,Production-Secondary,s3-0076278,2026-06,0.0,1468.44,2936865.6,128.48399999999998,S3,Artifact storage
+966,Marketing-Platform,rds-0d1a186,2026-06,751.8,522.12,0.0,1488.0359999999998,RDS,db.r5.large PostgreSQL replica
+967,Partner-Integration,rds-042d472,2026-06,543.12,150.84,0.0,641.1479999999999,RDS,db.t3.medium MySQL staging
+968,Partner-Integration,rs-04c5955,2026-06,0.0,0.0,6380578.8,319.032,Redshift,Spectrum queries
+969,Customer-Portal,ebs-06c4378,2026-06,0.0,708.6,0.0,442.81199999999995,EBS,io2 volumes database
+970,Partner-Integration,cf-0e49841,2026-06,0.0,0.0,47656138.8,238.284,CloudFront,CDN API distribution
+971,Compliance-Audit,i-0810870,2026-06,1046.76,0.0,0.0,907.236,EC2,m5.large monitoring server
+972,Marketing-Platform,i-0860850,2026-06,657.84,0.0,0.0,2280.624,EC2,r5.2xlarge database server
+973,Partner-Integration,rds-10b5322,2026-06,1190.1599999999999,826.44,0.0,2355.312,RDS,db.r5.large PostgreSQL replica
+974,ML-Training,ebs-0ac5539,2026-06,0.0,4683.0,0.0,210.732,EBS,st1 volumes archive
+975,Mobile-Backend,sqs-05b2924,2026-06,0.0,0.0,479706.0,0.24,SQS,Dead letter queue
+976,Production-Main,ec-000c489,2026-06,1128.84,0.0,0.0,812.7719999999999,ElastiCache,Redis production cluster
+977,Compliance-Audit,ebs-0392523,2026-06,0.0,303.71999999999997,0.0,37.967999999999996,EBS,gp3 volumes staging
+978,Finance-Systems,elb-024a650,2026-06,676.56,0.0,9396518.4,136.812,ELB,Classic load balancer
+979,Compliance-Audit,sns-0767851,2026-06,0.0,0.0,20979488.4,10.488,SNS,Event fanout topic
+980,Production-Main,i-0c80371,2026-06,485.4,0.0,0.0,1407.864,EC2,c5.2xlarge HPC node
+981,Marketing-Platform,rs-0dba560,2026-06,0.0,0.0,7393694.399999999,369.67199999999997,Redshift,Spectrum queries
+982,Security-Ops,ebs-0625274,2026-06,0.0,751.92,0.0,469.94399999999996,EBS,io2 volumes database
+983,Customer-Portal,elb-0784552,2026-06,813.72,0.0,33902349.6,246.816,ELB,Application load balancer
+984,Internal-Tools,lam-0bda239,2026-06,0.0,0.0,38204446.8,265.524,Lambda,API gateway handler
+985,Internal-Tools,sqs-03fc213,2026-06,0.0,0.0,56591084.4,28.295999999999996,SQS,Order processing queue
+986,Finance-Systems,s3-113d678,2026-06,0.0,83.75999999999999,41900625.6,272.364,S3,Static website hosting
+987,Edge-Network,vpn-0e0d648,2026-06,888.3599999999999,0.0,0.0,225.18,VPN Gateway,Client VPN endpoint
+988,Edge-Network,ecs-0c03661,2026-06,364.67999999999995,0.0,0.0,665.4599999999999,ECS,Fargate worker cluster
+989,Production-Main,ebs-0fb8180,2026-06,0.0,765.84,0.0,478.644,EBS,io2 volumes database
+990,ML-Training,rs-0727239,2026-06,0.0,0.0,4637718.0,231.888,Redshift,Spectrum queries
+991,Internal-Tools,ebs-0793510,2026-06,0.0,303.84,0.0,37.992,EBS,gp3 volumes staging
+992,Internal-Tools,sqs-10ac145,2026-06,0.0,0.0,58209657.6,29.112000000000002,SQS,Order processing queue
+993,QA-Testing,ebs-0a44533,2026-06,0.0,1435.32,0.0,179.41199999999998,EBS,gp3 volumes production
+994,Marketing-Platform,rds-0e92796,2026-06,642.9599999999999,446.52000000000004,0.0,1272.6,RDS,db.r5.large PostgreSQL replica
+995,Security-Ops,ses-0ecc552,2026-06,0.0,0.0,2489335.1999999997,2.988,SES,Transactional email
+996,Production-Main,ecs-06dd673,2026-06,426.72,0.0,0.0,778.7520000000001,ECS,Fargate batch cluster
+997,Mobile-Backend,kin-04f8523,2026-06,893.7599999999999,0.0,37240972.8,543.72,Kinesis,Data stream ingestion
+998,Production-Secondary,sqs-0aca971,2026-06,0.0,0.0,31187332.799999997,15.6,SQS,Event notification queue
+999,Customer-Portal,ses-0289612,2026-06,0.0,0.0,2896593.6,3.48,SES,Transactional email
+1000,Compliance-Audit,s3-104d117,2026-06,0.0,735.6,1471464.0,64.38,S3,Artifact storage
+1001,ML-Training,rds-0376427,2026-06,814.56,905.0400000000001,0.0,1900.62,RDS,db.m5.xlarge analytics DB
+1002,Partner-Integration,kin-03c3921,2026-06,1091.8799999999999,0.0,45496831.199999996,664.2479999999999,Kinesis,Data stream ingestion
+1003,Security-Ops,ecs-04a1561,2026-06,639.0,0.0,0.0,1166.1119999999999,ECS,Fargate API cluster
+1004,Security-Ops,s3-052c304,2026-06,0.0,6840.48,427527.6,171.01199999999997,S3,Log archive bucket
+1005,DevOps-Central,ec-0f73376,2026-06,1030.6799999999998,0.0,0.0,742.1039999999999,ElastiCache,Redis production cluster
+1006,DevOps-Central,ec-0a03550,2026-06,974.52,0.0,0.0,701.688,ElastiCache,Redis production cluster
+1007,Compliance-Audit,s3-0471757,2026-06,0.0,822.24,1644622.8,71.952,S3,Artifact storage
+1008,Edge-Network,sns-07f5105,2026-06,0.0,0.0,15179692.799999999,7.596,SNS,Alert notifications
+1009,Compliance-Audit,ec-078e845,2026-06,788.16,0.0,0.0,567.456,ElastiCache,Redis production cluster
+1010,Data-Science,rds-0e50804,2026-06,813.84,226.08,0.0,734.712,RDS,db.t3.large development DB
+1011,Marketing-Platform,ddb-0fab389,2026-06,562.92,39.24,62555656.8,439.83599999999996,DynamoDB,Session store table
+1012,Mobile-Backend,sqs-097c579,2026-06,0.0,0.0,362992.8,0.18,SQS,Dead letter queue
+1013,Edge-Network,vpn-10a9783,2026-06,598.92,0.0,0.0,303.59999999999997,VPN Gateway,Site-to-site VPN
+1014,Internal-Tools,rds-02c3290,2026-06,985.68,273.84,0.0,889.848,RDS,db.t3.large development DB
+1015,Marketing-Platform,ddb-10a5298,2026-06,668.7599999999999,46.559999999999995,74319042.0,522.5519999999999,DynamoDB,Session store table
+1016,Finance-Systems,rs-023b632,2026-06,803.28,2231.28,0.0,4072.008,Redshift,Data warehouse cluster
+1017,Finance-Systems,s3-0245238,2026-06,0.0,2973.6,1486776.0,111.504,S3,Analytics export bucket
+1018,Production-Main,i-0bf4805,2026-06,790.68,0.0,0.0,2740.656,EC2,m5.2xlarge batch processor
+1019,Compliance-Audit,i-0673829,2026-06,628.8,0.0,0.0,272.736,EC2,t3.medium API server
+1020,Data-Science,i-0530222,2026-06,986.7599999999999,0.0,0.0,72.036,EC2,t3.micro bastion host
+1021,Compliance-Audit,s3-0b32274,2026-06,0.0,979.1999999999999,1958527.2,85.692,S3,Artifact storage
+1022,Data-Science,i-0b3a756,2026-06,590.04,0.0,0.0,2045.4719999999998,EC2,m5.2xlarge batch processor
+1023,Production-Main,s3-0965144,2026-06,0.0,16685.04,3337018.8,583.968,S3,Data lake raw zone
+1024,QA-Testing,ec-10c3544,2026-06,1131.36,0.0,0.0,814.5719999999999,ElastiCache,Redis production cluster
+1025,Production-Main,lam-0cef839,2026-06,0.0,0.0,41818041.6,292.728,Lambda,Data transformer
+1026,Edge-Network,s3-0b73418,2026-06,0.0,68.64,34338789.6,223.18800000000002,S3,Static website hosting
+1027,Marketing-Platform,rds-0fff478,2026-06,632.64,175.79999999999998,0.0,746.8679999999999,RDS,db.t3.medium MySQL staging
+1028,Data-Science,rds-0432834,2026-06,797.16,553.4399999999999,0.0,2048.112,RDS,db.r5.xlarge PostgreSQL primary
+1029,ML-Training,rds-091b932,2026-06,846.84,940.92,0.0,1975.8719999999998,RDS,db.m5.xlarge analytics DB
+1030,Internal-Tools,s3-0969861,2026-06,0.0,5225.16,8360152.8,381.432,S3,Media content bucket
+1031,ML-Training,ebs-10d1413,2026-06,0.0,5567.4,0.0,250.536,EBS,st1 volumes archive
+1032,Internal-Tools,rds-0e18966,2026-06,451.08,125.28,0.0,532.572,RDS,db.t3.medium MySQL staging
+1033,Data-Science,eks-0147675,2026-06,959.52,0.0,0.0,2878.488,EKS,Production K8s cluster
+1034,Data-Science,i-1025803,2026-06,862.1999999999999,0.0,0.0,747.324,EC2,m5.large monitoring server
+1035,Production-Main,sns-001c263,2026-06,0.0,0.0,9683866.799999999,4.836,SNS,Alert notifications
+1036,Partner-Integration,elb-03da159,2026-06,794.4,0.0,11032677.6,160.632,ELB,Classic load balancer
+1037,Production-Main,kin-10af674,2026-06,777.0,0.0,21585285.599999998,315.144,Kinesis,Firehose delivery
+1038,Marketing-Platform,ddb-0b9f375,2026-06,862.1999999999999,59.879999999999995,95801840.39999999,673.6080000000001,DynamoDB,Session store table
+1039,Compliance-Audit,ec-037d484,2026-06,811.56,0.0,0.0,584.304,ElastiCache,Redis production cluster
+1040,Security-Ops,ecs-0be1976,2026-06,223.68,0.0,0.0,408.17999999999995,ECS,Fargate batch cluster
+1041,Compliance-Audit,rds-097a830,2026-06,932.28,1035.9599999999998,0.0,2175.552,RDS,db.m5.xlarge analytics DB
+1042,Internal-Tools,ec-0c53926,2026-06,598.1999999999999,0.0,0.0,430.67999999999995,ElastiCache,Redis production cluster
+1043,Data-Science,rds-0136144,2026-06,1176.6,817.0799999999999,0.0,2328.66,RDS,db.r5.large PostgreSQL replica
+1044,Shared-Services,rds-1070832,2026-06,622.0799999999999,432.0,0.0,1231.068,RDS,db.r5.large PostgreSQL replica
+1045,Compliance-Audit,rds-0d55733,2026-06,907.8,630.4799999999999,0.0,1796.712,RDS,db.r5.large PostgreSQL replica
+1046,Production-Secondary,r53-1192859,2026-06,0.0,0.0,10204701.6,15.299999999999999,Route 53,Health checks
+1047,Internal-Tools,s3-10d4811,2026-06,0.0,4689.48,7503146.399999999,342.33599999999996,S3,Media content bucket
+1048,Compliance-Audit,r53-1052440,2026-06,0.0,0.0,8935782.0,13.404,Route 53,Health checks
+1049,Production-Main,s3-0019862,2026-06,0.0,2871.8399999999997,1435933.2,107.7,S3,Analytics export bucket
+1050,Mobile-Backend,sqs-0da8365,2026-06,0.0,0.0,379185.6,0.192,SQS,Dead letter queue
+1051,Shared-Services,rds-0781760,2026-06,766.8,213.0,0.0,692.22,RDS,db.t3.large development DB
+1052,Marketing-Platform,sm-0de2274,2026-06,0.0,0.0,1085865.5999999999,4.344,Secrets Manager,Application secrets
+1053,Edge-Network,i-0328891,2026-06,466.67999999999995,0.0,0.0,1353.2160000000001,EC2,c5.2xlarge HPC node
+1054,Compliance-Audit,s3-079d136,2026-06,0.0,15299.52,3059887.1999999997,535.476,S3,Data lake raw zone
+1055,Edge-Network,vpn-0315511,2026-06,861.0,0.0,0.0,218.232,VPN Gateway,Client VPN endpoint
+1056,Marketing-Platform,rds-0878977,2026-06,468.12,130.08,0.0,552.6239999999999,RDS,db.t3.medium MySQL staging
+1057,Internal-Tools,s3-0a01897,2026-06,0.0,5317.56,8508048.0,388.176,S3,Media content bucket
+1058,Data-Science,ec-0145951,2026-06,645.3599999999999,0.0,0.0,232.344,ElastiCache,Redis staging cluster
+1059,DevOps-Central,ebs-00cc665,2026-06,0.0,520.8,0.0,325.464,EBS,io2 volumes database
+1060,Partner-Integration,elb-0a75516,2026-06,1050.9599999999998,0.0,14596231.2,212.508,ELB,Classic load balancer
+1061,Production-Main,i-000f723,2026-06,996.72,0.0,0.0,432.264,EC2,t3.medium API server
+1062,Compliance-Audit,s3-0c23914,2026-06,0.0,5365.92,2682895.1999999997,201.216,S3,Analytics export bucket
+1063,Production-Main,cf-0a65604,2026-06,0.0,0.0,48002904.0,240.01199999999997,CloudFront,CDN API distribution
+1064,Data-Science,nat-054b109,2026-06,631.32,0.0,0.0,144.024,NAT Gateway,Staging VPC NAT
+1065,Compliance-Audit,sns-0bfb153,2026-06,0.0,0.0,17562180.0,8.771999999999998,SNS,Alert notifications
+1066,Production-Main,lam-1147471,2026-06,0.0,0.0,38672587.199999996,270.70799999999997,Lambda,Data transformer
+1067,Compliance-Audit,s3-0575814,2026-06,0.0,4122.719999999999,2061336.0,154.596,S3,Analytics export bucket
+1068,Data-Science,rds-0134211,2026-06,915.24,635.52,0.0,2351.568,RDS,db.r5.xlarge PostgreSQL primary
+1069,Partner-Integration,ses-03ca997,2026-06,0.0,0.0,773067.6,0.9239999999999999,SES,Marketing email
+1070,Edge-Network,vpn-05f9490,2026-06,853.0799999999999,0.0,0.0,216.216,VPN Gateway,Client VPN endpoint
+1071,QA-Testing,cf-03e3566,2026-06,0.0,0.0,196405107.6,982.02,CloudFront,CDN media distribution
+1072,Finance-Systems,s3-0ab5299,2026-06,0.0,10365.359999999999,647838.0,259.128,S3,Log archive bucket
+1073,Production-Main,lam-0519516,2026-06,0.0,0.0,36900532.8,258.3,Lambda,Data transformer
+1074,Marketing-Platform,ddb-0fb7490,2026-06,704.7599999999999,49.08,78307003.2,550.584,DynamoDB,Session store table
+1075,Edge-Network,vpn-0316649,2026-06,654.6,0.0,0.0,331.872,VPN Gateway,Site-to-site VPN
+1076,Internal-Tools,lam-0aba667,2026-06,0.0,0.0,43074957.6,299.376,Lambda,API gateway handler
+1077,Partner-Integration,elb-0bca587,2026-06,967.68,0.0,13439536.799999999,195.672,ELB,Classic load balancer
+1078,Customer-Portal,vpn-0579455,2026-06,1263.36,0.0,0.0,320.232,VPN Gateway,Client VPN endpoint
+1079,Compliance-Audit,s3-06ca918,2026-06,0.0,57.599999999999994,28809151.2,187.26000000000002,S3,Static website hosting
+1080,Edge-Network,sqs-0600636,2026-06,0.0,0.0,35758036.8,17.88,SQS,Event notification queue
+1081,Production-Secondary,i-0453402,2026-06,1248.12,0.0,0.0,1082.532,EC2,t3.large application server
+1082,Internal-Tools,lam-0785135,2026-06,0.0,0.0,26280968.4,183.96,Lambda,Data transformer
+1083,Mobile-Backend,sqs-0331305,2026-06,0.0,0.0,423346.8,0.216,SQS,Dead letter queue
+1084,Compliance-Audit,vpn-0617551,2026-06,1027.32,0.0,0.0,260.412,VPN Gateway,Client VPN endpoint
+1085,ML-Training,lam-115f800,2026-06,0.0,0.0,14402886.0,100.824,Lambda,Notification dispatcher
+1086,Internal-Tools,cf-092d732,2026-06,0.0,0.0,121463078.39999999,607.32,CloudFront,CDN web distribution
+1087,Production-Secondary,elb-0080147,2026-06,693.9599999999999,0.0,48188865.6,300.696,ELB,Network load balancer
+1088,Security-Ops,ecs-08d2791,2026-06,525.72,0.0,0.0,959.4,ECS,Fargate API cluster
+1089,Data-Science,eks-0148786,2026-06,472.2,0.0,0.0,1416.756,EKS,Staging K8s cluster
+1090,Partner-Integration,s3-1146713,2026-06,0.0,10477.08,654820.7999999999,261.936,S3,Log archive bucket
+1091,Compliance-Audit,sns-0566288,2026-06,0.0,0.0,19520756.4,9.756,SNS,Event fanout topic
+1092,Finance-Systems,eks-06ed234,2026-06,1011.4799999999999,0.0,0.0,3034.536,EKS,Production K8s cluster
+1093,ML-Training,sqs-072e691,2026-06,0.0,0.0,640228.7999999999,0.324,SQS,Dead letter queue
+1094,Production-Secondary,ec-106a729,2026-06,956.64,0.0,0.0,344.412,ElastiCache,Redis staging cluster
+1095,Internal-Tools,ec-04e7101,2026-06,582.72,0.0,0.0,419.496,ElastiCache,Redis production cluster
+1096,Partner-Integration,ec-03d2749,2026-06,637.32,0.0,0.0,229.416,ElastiCache,Redis staging cluster
+1097,Edge-Network,sns-0e85289,2026-06,0.0,0.0,14042281.2,7.02,SNS,Alert notifications
+1098,Edge-Network,ebs-0312701,2026-06,0.0,450.59999999999997,0.0,281.664,EBS,io2 volumes database
+1099,DevOps-Central,ddb-05d7644,2026-06,1102.08,15.239999999999998,7653505.199999999,133.932,DynamoDB,Config store table
+1100,Internal-Tools,ec-02b4327,2026-06,664.44,0.0,0.0,478.392,ElastiCache,Redis production cluster
+1101,Production-Secondary,ecs-0c4a227,2026-06,324.36,0.0,0.0,591.864,ECS,Fargate batch cluster
+1102,Compliance-Audit,s3-0c98607,2026-06,0.0,828.3599999999999,1656874.8,72.49199999999999,S3,Artifact storage
+1103,Edge-Network,s3-1096283,2026-06,0.0,1420.2,2840732.4,124.25999999999999,S3,Artifact storage
+1104,Internal-Tools,s3-07ea402,2026-06,0.0,42.84,21448750.8,139.416,S3,Static website hosting
+1105,ML-Training,ebs-09a5794,2026-06,0.0,906.0,0.0,566.148,EBS,io2 volumes database
+1106,Compliance-Audit,ecs-1030728,2026-06,625.68,0.0,0.0,1141.8239999999998,ECS,Fargate worker cluster
+1107,Edge-Network,vpn-0e76532,2026-06,621.0,0.0,0.0,314.856,VPN Gateway,Site-to-site VPN
+1108,Marketing-Platform,i-0a25644,2026-06,711.24,0.0,0.0,616.32,EC2,m5.large monitoring server
+1109,Edge-Network,i-0327476,2026-06,710.7599999999999,0.0,0.0,2463.9,EC2,m5.2xlarge batch processor
+1110,Partner-Integration,rds-09fc828,2026-06,971.64,674.64,0.0,1922.892,RDS,db.r5.large PostgreSQL replica
+1111,Shared-Services,rds-0c0c979,2026-06,677.28,470.28,0.0,1340.2319999999997,RDS,db.r5.large PostgreSQL replica
+1112,Customer-Portal,ses-0f91414,2026-06,0.0,0.0,2231514.0,2.688,SES,Transactional email
+1113,Marketing-Platform,rs-07de855,2026-06,598.56,1662.6,0.0,3034.212,Redshift,Data warehouse cluster
+1114,QA-Testing,lam-0aa9972,2026-06,0.0,0.0,5440951.2,38.352,Lambda,Image resizer
+1115,Compliance-Audit,rds-0fa3116,2026-06,1283.3999999999999,891.24,0.0,2539.98,RDS,db.r5.large PostgreSQL replica
+1116,Production-Main,i-0926303,2026-06,972.84,0.0,0.0,71.01599999999999,EC2,t3.micro bastion host
+1117,Compliance-Audit,vpn-070e694,2026-06,483.47999999999996,0.0,0.0,245.03999999999996,VPN Gateway,Site-to-site VPN
+1118,Mobile-Backend,ebs-05cc362,2026-06,0.0,5097.24,0.0,229.392,EBS,st1 volumes archive
+1119,Data-Science,ec-0b5f483,2026-06,560.16,0.0,0.0,201.672,ElastiCache,Redis staging cluster
+1120,Internal-Tools,nat-02ba419,2026-06,690.4799999999999,0.0,0.0,157.51199999999997,NAT Gateway,Dev VPC NAT
+1121,Partner-Integration,elb-0611191,2026-06,906.12,0.0,12584490.0,183.216,ELB,Classic load balancer
+1122,Finance-Systems,elb-0790493,2026-06,655.0799999999999,0.0,9098142.0,132.468,ELB,Classic load balancer
+1123,Edge-Network,ec-1098417,2026-06,774.84,0.0,0.0,557.8439999999999,ElastiCache,Redis production cluster
+1124,Internal-Tools,lam-0a9f654,2026-06,0.0,0.0,26724535.2,187.06799999999998,Lambda,Data transformer
+1125,Marketing-Platform,kin-01d0507,2026-06,644.52,0.0,26856852.0,392.11199999999997,Kinesis,Data stream ingestion
+1126,Data-Science,i-047f834,2026-06,552.4799999999999,0.0,0.0,957.564,EC2,r5.xlarge cache server
+1127,Partner-Integration,cf-0fef875,2026-06,0.0,0.0,41499444.0,207.504,CloudFront,CDN API distribution
+1128,Shared-Services,s3-0f8f356,2026-06,0.0,16020.119999999999,3204033.6,560.712,S3,Data lake raw zone
+1129,Finance-Systems,rds-08fc684,2026-06,811.32,901.44,0.0,1893.0479999999998,RDS,db.m5.xlarge analytics DB
+1130,Customer-Portal,ses-0288805,2026-06,0.0,0.0,752008.7999999999,0.8999999999999999,SES,Marketing email
+1131,Customer-Portal,i-028e796,2026-06,866.0400000000001,0.0,0.0,1501.6319999999998,EC2,m5.xlarge web server
+1132,Shared-Services,rds-019f754,2026-06,749.0400000000001,1040.28,0.0,3328.9199999999996,RDS,db.r5.2xlarge Aurora cluster
+1133,Partner-Integration,elb-04da950,2026-06,715.92,0.0,9942318.0,144.756,ELB,Classic load balancer
+1134,Internal-Tools,lam-02cd701,2026-06,0.0,0.0,10827992.4,75.79199999999999,Lambda,Notification dispatcher
+1135,DevOps-Central,r53-056a999,2026-06,0.0,0.0,8227935.6,12.347999999999999,Route 53,Health checks
+1136,Edge-Network,ebs-0799406,2026-06,0.0,472.32,0.0,295.248,EBS,io2 volumes database
+1137,Production-Main,s3-0725116,2026-06,0.0,15325.679999999998,3065140.8,536.4,S3,Data lake raw zone
+1138,Compliance-Audit,rds-050c134,2026-06,1051.08,729.9599999999999,0.0,2080.296,RDS,db.r5.large PostgreSQL replica
+1139,Partner-Integration,rs-09f8831,2026-06,1021.68,2837.88,0.0,5179.392,Redshift,Data warehouse cluster
+1140,Production-Main,cf-05ce313,2026-06,0.0,0.0,55749988.8,278.748,CloudFront,CDN API distribution
+1141,ML-Training,i-0368473,2026-06,923.1599999999999,0.0,0.0,800.028,EC2,m5.large monitoring server
+1142,Production-Main,lam-0503943,2026-06,0.0,0.0,7843696.8,54.912,Lambda,Notification dispatcher
+1143,Production-Main,s3-054d837,2026-06,0.0,11539.44,721209.6,288.48,S3,Log archive bucket
+1144,Edge-Network,s3-0b63436,2026-06,0.0,64.67999999999999,32347730.4,210.23999999999998,S3,Static website hosting
+1145,Internal-Tools,ebs-1066922,2026-06,0.0,5978.16,0.0,269.02799999999996,EBS,st1 volumes archive
+1146,Compliance-Audit,rds-0f34396,2026-06,1042.8,724.32,0.0,2679.6,RDS,db.r5.xlarge PostgreSQL primary
+1147,Compliance-Audit,ebs-1114137,2026-06,0.0,290.76,0.0,36.336,EBS,gp3 volumes staging
+1148,Customer-Portal,elb-1008327,2026-06,901.68,0.0,12524050.799999999,182.352,ELB,Classic load balancer
+1149,Internal-Tools,rds-103d389,2026-06,1009.3199999999999,1401.9599999999998,0.0,4486.08,RDS,db.r5.2xlarge Aurora cluster
+1150,Compliance-Audit,rds-105e420,2026-06,1300.9199999999998,903.4799999999999,0.0,2574.72,RDS,db.r5.large PostgreSQL replica
+1151,Customer-Portal,elb-0c08248,2026-06,878.52,0.0,36607442.4,266.496,ELB,Application load balancer
+1152,Internal-Tools,lam-0cbd665,2026-06,0.0,0.0,20784428.4,145.488,Lambda,Data transformer
+1153,Internal-Tools,rds-02c1573,2026-06,943.44,655.0799999999999,0.0,1867.1399999999999,RDS,db.r5.large PostgreSQL replica
+1154,Production-Main,cf-0716452,2026-06,0.0,0.0,73251362.39999999,366.25199999999995,CloudFront,CDN API distribution
+1155,Production-Secondary,i-0626908,2026-06,981.84,0.0,0.0,850.968,EC2,m5.large monitoring server
+1156,Edge-Network,sns-0c0e157,2026-06,0.0,0.0,15816898.799999999,7.9079999999999995,SNS,Alert notifications
+1157,ML-Training,ebs-0379809,2026-06,0.0,5080.679999999999,0.0,228.636,EBS,st1 volumes archive
+1158,Mobile-Backend,sqs-0330567,2026-06,0.0,0.0,27376914.0,13.692,SQS,Event notification queue
+1159,Compliance-Audit,r53-1067995,2026-06,0.0,0.0,7433348.399999999,11.147999999999998,Route 53,Health checks
+1160,Edge-Network,rds-0b2c110,2026-06,636.6,442.08,0.0,1635.6599999999999,RDS,db.r5.xlarge PostgreSQL primary
+1161,Internal-Tools,nat-0c40267,2026-06,638.64,0.0,0.0,145.704,NAT Gateway,Dev VPC NAT
+1162,Finance-Systems,s3-0242170,2026-06,0.0,4187.639999999999,25125957.599999998,1046.916,S3,Production asset storage
+1163,Data-Science,i-116b161,2026-06,617.88,0.0,0.0,1071.084,EC2,r5.xlarge cache server
+1164,ML-Training,i-036a778,2026-06,1030.92,0.0,0.0,894.168,EC2,t3.large application server
+1165,Edge-Network,cf-0a4d407,2026-06,0.0,0.0,226293542.4,1131.4679999999998,CloudFront,CDN media distribution
+1166,Compliance-Audit,s3-10df441,2026-06,0.0,789.6,1579243.2,69.09599999999999,S3,Artifact storage
+1167,Edge-Network,ec-030e215,2026-06,904.0799999999999,0.0,0.0,650.952,ElastiCache,Redis production cluster
+1168,ML-Training,rds-0378786,2026-06,1101.72,765.12,0.0,2180.5319999999997,RDS,db.r5.large PostgreSQL replica
+1169,Marketing-Platform,i-0c14600,2026-06,1038.36,0.0,0.0,75.804,EC2,t3.micro bastion host
+1170,QA-Testing,ec-0e37563,2026-06,872.88,0.0,0.0,628.44,ElastiCache,Redis production cluster
+1171,Partner-Integration,sqs-0aa5305,2026-06,0.0,0.0,464148.0,0.24,SQS,Dead letter queue
+1172,Production-Secondary,i-05d1861,2026-06,628.68,0.0,0.0,1089.768,EC2,r5.xlarge cache server
+1173,Customer-Portal,i-0b42325,2026-06,841.92,0.0,0.0,2918.6159999999995,EC2,r5.2xlarge database server
+1174,Production-Main,s3-075e916,2026-06,0.0,57.48,28694726.4,186.516,S3,Static website hosting
+1175,Compliance-Audit,s3-06bc313,2026-06,0.0,831.12,1662327.5999999999,72.732,S3,Artifact storage
+1176,Compliance-Audit,i-0e33874,2026-06,757.8,0.0,0.0,656.7719999999999,EC2,m5.large monitoring server
+1177,Marketing-Platform,ddb-066f897,2026-06,631.1999999999999,43.92,70140168.0,493.176,DynamoDB,Session store table
+1178,Compliance-Audit,i-03a1817,2026-06,612.24,0.0,0.0,265.536,EC2,t3.medium API server
+1179,Finance-Systems,elb-0fac721,2026-06,580.0799999999999,0.0,8056653.6,117.3,ELB,Classic load balancer
+1180,Finance-Systems,eks-024d574,2026-06,1196.64,0.0,0.0,3589.776,EKS,Production K8s cluster
+1181,Internal-Tools,lam-0f04460,2026-06,0.0,0.0,22199534.4,155.4,Lambda,Event processor
+1182,Internal-Tools,lam-02ca983,2026-06,0.0,0.0,21207536.4,148.452,Lambda,Event processor
+1183,ML-Training,lam-0a31794,2026-06,0.0,0.0,15096608.4,105.68399999999998,Lambda,Notification dispatcher
+1184,Internal-Tools,s3-0496761,2026-06,0.0,5153.16,8244968.399999999,376.176,S3,Media content bucket
+1185,Compliance-Audit,rds-0394586,2026-06,1129.08,313.67999999999995,0.0,1019.328,RDS,db.t3.large development DB
+1186,Edge-Network,s3-05c3799,2026-06,0.0,13976.279999999999,139761.6,321.45599999999996,S3,Backup storage bucket
+1187,Partner-Integration,rds-0744686,2026-06,1104.84,767.16,0.0,2186.604,RDS,db.r5.large PostgreSQL replica
+1188,Finance-Systems,elb-0747229,2026-06,838.68,0.0,34944578.4,254.39999999999998,ELB,Application load balancer
+1189,Partner-Integration,cf-0585487,2026-06,0.0,0.0,41572390.8,207.864,CloudFront,CDN API distribution
+1190,DevOps-Central,ddb-0400759,2026-06,1157.76,15.96,8039798.399999999,140.7,DynamoDB,Config store table
+1191,QA-Testing,lam-07d9172,2026-06,0.0,0.0,3805345.1999999997,26.639999999999997,Lambda,Webhook processor
+1192,Compliance-Audit,s3-0c9a509,2026-06,0.0,15210.96,3042187.1999999997,532.3679999999999,S3,Data lake raw zone
+1193,Partner-Integration,s3-03cd881,2026-06,0.0,12152.04,759504.0,303.804,S3,Log archive bucket
+1194,Security-Ops,sm-0731134,2026-06,0.0,0.0,1398337.2,5.592,Secrets Manager,Application secrets
+1195,Edge-Network,kin-062d489,2026-06,602.52,0.0,16736253.6,244.356,Kinesis,Firehose delivery
+1196,Customer-Portal,s3-0924852,2026-06,0.0,21990.359999999997,4398087.6,769.668,S3,Data lake raw zone
+1197,DevOps-Central,ebs-0f0a583,2026-06,0.0,545.28,0.0,340.776,EBS,io2 volumes database
+1198,Compliance-Audit,rds-08ba268,2026-06,485.52,134.76,0.0,573.156,RDS,db.t3.medium MySQL staging
+1199,Marketing-Platform,rds-0a0d483,2026-06,862.32,239.51999999999998,0.0,778.464,RDS,db.t3.large development DB
+1200,Customer-Portal,elb-0d9e318,2026-06,727.1999999999999,0.0,30296974.799999997,220.572,ELB,Application load balancer
+1201,QA-Testing,lam-0633601,2026-06,0.0,0.0,40284056.4,279.984,Lambda,API gateway handler
+1202,Production-Main,lam-0900698,2026-06,0.0,0.0,7441987.2,52.104,Lambda,Notification dispatcher
+1203,Production-Main,i-000e799,2026-06,771.9599999999999,0.0,0.0,2676.0840000000003,EC2,m5.2xlarge batch processor
+1204,Production-Main,s3-0018371,2026-06,0.0,61.32,30635888.4,199.128,S3,Static website hosting
+1205,Marketing-Platform,lam-0e68625,2026-06,0.0,0.0,21941750.4,153.588,Lambda,Data transformer
+1206,Compliance-Audit,rs-05ed666,2026-06,0.0,0.0,6384715.2,319.23599999999993,Redshift,Spectrum queries
+1207,QA-Testing,lam-0d6c615,2026-06,0.0,0.0,5868213.6,41.352,Lambda,Image resizer
+1208,Internal-Tools,elb-02b7594,2026-06,1208.1599999999999,0.0,16780702.8,244.332,ELB,Classic load balancer
+1209,Production-Secondary,elb-0e09451,2026-06,614.28,0.0,42654958.8,266.16,ELB,Network load balancer
+1210,Finance-Systems,elb-024b230,2026-06,842.52,0.0,35105077.199999996,255.564,ELB,Application load balancer
+1211,Customer-Portal,i-0293489,2026-06,766.92,0.0,0.0,2658.48,EC2,r5.2xlarge database server
+1212,Customer-Portal,vpn-08e8844,2026-06,1489.9199999999998,0.0,0.0,377.66400000000004,VPN Gateway,Client VPN endpoint
+1213,Mobile-Backend,sqs-114d103,2026-06,0.0,0.0,387193.2,0.192,SQS,Dead letter queue
+1214,Marketing-Platform,rds-03ee310,2026-06,541.56,150.48,0.0,639.3359999999999,RDS,db.t3.medium MySQL staging
+1215,Security-Ops,lam-0d8c482,2026-06,0.0,0.0,33177764.4,232.236,Lambda,Data transformer
+1216,Internal-Tools,s3-0b89139,2026-06,0.0,4553.04,7284788.399999999,332.36400000000003,S3,Media content bucket
+1217,Marketing-Platform,sm-0a87882,2026-06,0.0,0.0,1189977.5999999999,4.764,Secrets Manager,Application secrets
+1218,Internal-Tools,cf-055f727,2026-06,0.0,0.0,165123170.4,825.612,CloudFront,CDN media distribution
+1219,Edge-Network,rds-031c544,2026-06,657.0,456.23999999999995,0.0,1687.98,RDS,db.r5.xlarge PostgreSQL primary
+1220,Security-Ops,s3-0d81273,2026-06,0.0,7054.92,11287881.6,515.004,S3,Media content bucket
+1221,Compliance-Audit,sns-039a143,2026-06,0.0,0.0,20037798.0,10.02,SNS,Event fanout topic
+1222,DevOps-Central,r53-0d09187,2026-06,0.0,0.0,9098582.4,13.656,Route 53,Health checks
+1223,Production-Main,i-0cdb323,2026-06,693.24,0.0,0.0,2403.12,EC2,m5.2xlarge batch processor
+1224,Marketing-Platform,rs-10ad805,2026-06,0.0,0.0,7300449.6,365.016,Redshift,Spectrum queries
+1225,Security-Ops,sqs-105a137,2026-06,0.0,0.0,60559570.8,30.287999999999997,SQS,Event notification queue
+1226,Shared-Services,ec-0919815,2026-06,961.44,0.0,0.0,346.09200000000004,ElastiCache,Redis staging cluster
+1227,Partner-Integration,sm-0516935,2026-06,0.0,0.0,1483178.4,5.928,Secrets Manager,Application secrets
+1228,Customer-Portal,s3-1138674,2026-06,0.0,25260.24,5052067.2,884.112,S3,Data lake raw zone
+1229,Edge-Network,s3-0fd4667,2026-06,0.0,70.92,35427652.8,230.26799999999997,S3,Static website hosting
+1230,ML-Training,lam-0702545,2026-06,0.0,0.0,57089222.4,396.78,Lambda,API gateway handler
+1231,Data-Science,i-05ef571,2026-06,616.92,0.0,0.0,2138.424,EC2,m5.2xlarge batch processor
+1232,QA-Testing,lam-03de810,2026-06,0.0,0.0,5245056.0,36.971999999999994,Lambda,Image resizer
+1233,Internal-Tools,rds-0635463,2026-06,1030.2,1430.88,0.0,4578.624,RDS,db.r5.2xlarge Aurora cluster
+1234,Production-Main,cf-0dd5490,2026-06,0.0,0.0,40873250.4,204.36,CloudFront,CDN API distribution
+1235,Customer-Portal,ses-084a395,2026-06,0.0,0.0,924414.0,1.116,SES,Marketing email
+1236,Partner-Integration,rds-08e0524,2026-06,940.92,653.4,0.0,1862.196,RDS,db.r5.large PostgreSQL replica
+1237,Security-Ops,s3-0cf8570,2026-06,0.0,20682.96,4136583.5999999996,723.9,S3,Data lake raw zone
+1238,Customer-Portal,i-10b9488,2026-06,724.1999999999999,0.0,0.0,2510.424,EC2,r5.2xlarge database server
+1239,Customer-Portal,i-0c96590,2026-06,689.4,0.0,0.0,50.315999999999995,EC2,t3.micro bastion host
+1240,Compliance-Audit,rds-053c805,2026-06,1109.76,770.64,0.0,2196.384,RDS,db.r5.large PostgreSQL replica
+1241,Marketing-Platform,rds-0f2b947,2026-06,526.1999999999999,146.28,0.0,621.24,RDS,db.t3.medium MySQL staging
+1242,Marketing-Platform,sns-01d8631,2026-06,0.0,0.0,32717715.599999998,16.356,SNS,Event fanout topic
+1243,Marketing-Platform,vpn-01d4232,2026-06,1069.2,0.0,0.0,542.004,VPN Gateway,Site-to-site VPN
+1244,Partner-Integration,sm-0a9b348,2026-06,0.0,0.0,1788918.0,7.164,Secrets Manager,Application secrets
+1245,Internal-Tools,sqs-072f342,2026-06,0.0,0.0,62478886.8,31.236,SQS,Order processing queue
+1246,Customer-Portal,elb-0b22743,2026-06,883.1999999999999,0.0,36801292.8,267.912,ELB,Application load balancer
+1247,Internal-Tools,rds-0b14107,2026-06,602.04,668.7599999999999,0.0,1404.516,RDS,db.m5.xlarge analytics DB
+1248,Customer-Portal,vpn-0e20680,2026-06,1022.28,0.0,0.0,259.128,VPN Gateway,Client VPN endpoint
+1249,Customer-Portal,i-0473915,2026-06,755.64,0.0,0.0,1091.376,EC2,c5.xlarge compute worker
+1250,Marketing-Platform,sqs-06a7298,2026-06,0.0,0.0,71039539.2,35.52,SQS,Order processing queue
+1251,Internal-Tools,s3-0b0b520,2026-06,0.0,44.4,22199857.2,144.29999999999998,S3,Static website hosting
+1252,Compliance-Audit,s3-045c748,2026-06,0.0,16407.48,3281488.8,574.26,S3,Data lake raw zone
+1253,Security-Ops,ec-0f25929,2026-06,636.0,0.0,0.0,228.96,ElastiCache,Redis staging cluster
+1254,Production-Main,lam-06c3822,2026-06,0.0,0.0,40854008.4,285.984,Lambda,Data transformer
+1255,Customer-Portal,ses-0dea201,2026-06,0.0,0.0,737886.0,0.888,SES,Marketing email
+1256,Internal-Tools,s3-066e839,2026-06,0.0,4726.68,7562581.199999999,345.03599999999994,S3,Media content bucket
+1257,Marketing-Platform,r53-05f2407,2026-06,0.0,0.0,64572267.599999994,96.85199999999999,Route 53,DNS hosting
+1258,Marketing-Platform,i-0c79279,2026-06,737.52,0.0,0.0,2556.9,EC2,r5.2xlarge database server
+1259,Partner-Integration,r53-03d8284,2026-06,0.0,0.0,78220545.6,117.336,Route 53,DNS hosting
+1260,Production-Main,lam-04a5904,2026-06,0.0,0.0,37521900.0,262.656,Lambda,Data transformer
+1261,Mobile-Backend,ebs-0b07495,2026-06,0.0,3909.6,0.0,175.944,EBS,st1 volumes archive
+1262,Finance-Systems,elb-0eae911,2026-06,855.4799999999999,0.0,35643424.8,259.488,ELB,Application load balancer
+1263,Production-Main,kin-09ce928,2026-06,760.8,0.0,21133270.8,308.544,Kinesis,Firehose delivery
+1264,Shared-Services,rds-0a3f668,2026-06,692.0400000000001,961.0799999999999,0.0,3075.576,RDS,db.r5.2xlarge Aurora cluster
+1265,Security-Ops,nat-0d72337,2026-06,900.12,0.0,0.0,205.32,NAT Gateway,Staging VPC NAT
+1266,Compliance-Audit,s3-038b490,2026-06,0.0,14929.559999999998,2985900.0,522.528,S3,Data lake raw zone
+1267,QA-Testing,elb-0c75777,2026-06,780.0,0.0,10833388.799999999,157.72799999999998,ELB,Classic load balancer
+1268,ML-Training,eks-036e675,2026-06,516.24,0.0,0.0,1548.756,EKS,Staging K8s cluster
+1269,Marketing-Platform,rds-0ae5139,2026-06,444.96,123.6,0.0,525.312,RDS,db.t3.medium MySQL staging
+1270,Customer-Portal,s3-05ee685,2026-06,0.0,21097.68,4219551.6,738.42,S3,Data lake raw zone
+1271,Internal-Tools,cf-0823451,2026-06,0.0,0.0,160748647.2,803.736,CloudFront,CDN media distribution
+1272,DevOps-Central,kin-0e6b990,2026-06,1034.76,0.0,28745112.0,419.688,Kinesis,Firehose delivery
+1273,Data-Science,rds-0af2839,2026-06,1086.72,754.56,0.0,2792.004,RDS,db.r5.xlarge PostgreSQL primary
+1274,Finance-Systems,elb-0c7f397,2026-06,757.32,0.0,10517233.2,153.132,ELB,Classic load balancer
+1275,Partner-Integration,elb-10fd576,2026-06,1069.2,0.0,14850912.0,216.216,ELB,Classic load balancer
+1276,Production-Secondary,ecs-0072782,2026-06,455.76,0.0,0.0,831.756,ECS,Fargate worker cluster
+1277,Production-Main,i-088c201,2026-06,1194.36,0.0,0.0,87.192,EC2,t3.micro bastion host
+1278,Marketing-Platform,ddb-0bd3653,2026-06,719.64,50.04,79961438.39999999,562.2239999999999,DynamoDB,Session store table
+1279,Compliance-Audit,s3-0a41751,2026-06,0.0,694.68,1389495.5999999999,60.779999999999994,S3,Artifact storage
+1280,Internal-Tools,rds-02c6302,2026-06,976.1999999999999,1355.88,0.0,4338.719999999999,RDS,db.r5.2xlarge Aurora cluster
+1281,Edge-Network,ebs-118e723,2026-06,0.0,767.88,0.0,95.976,EBS,gp3 volumes production
+1282,Security-Ops,ecs-0c7d446,2026-06,770.28,0.0,0.0,1405.6680000000001,ECS,Fargate API cluster
+1283,Compliance-Audit,vpn-0870914,2026-06,1089.24,0.0,0.0,276.12,VPN Gateway,Client VPN endpoint
+1284,Security-Ops,ecs-0f17873,2026-06,228.0,0.0,0.0,416.16,ECS,Fargate batch cluster
+1285,Shared-Services,r53-07dc433,2026-06,0.0,0.0,89979606.0,134.964,Route 53,DNS hosting
+1286,Data-Science,rds-10d2290,2026-06,990.24,687.4799999999999,0.0,2544.384,RDS,db.r5.xlarge PostgreSQL primary
+1287,Compliance-Audit,i-06f6166,2026-06,878.52,0.0,0.0,761.4359999999999,EC2,m5.large monitoring server
+1288,Edge-Network,lam-032b472,2026-06,0.0,0.0,26358734.4,184.51199999999997,Lambda,Data transformer
+1289,Partner-Integration,rs-0c70645,2026-06,918.6,2551.68,0.0,4656.864,Redshift,Data warehouse cluster
+1290,ML-Training,rds-0485498,2026-06,769.68,855.24,0.0,1795.9319999999998,RDS,db.m5.xlarge analytics DB
+1291,QA-Testing,lam-08bd801,2026-06,0.0,0.0,3988090.8,27.924,Lambda,Webhook processor
+1292,Data-Science,i-064e209,2026-06,976.8,0.0,0.0,847.2239999999999,EC2,t3.large application server
+1293,Production-Main,lam-0858407,2026-06,0.0,0.0,6441408.0,45.096,Lambda,Notification dispatcher
+1294,Security-Ops,ecs-0882716,2026-06,228.11999999999998,0.0,0.0,416.532,ECS,Fargate batch cluster
+1295,Data-Science,i-0b3c554,2026-06,447.36,0.0,0.0,1297.608,EC2,c5.2xlarge HPC node
+1296,Partner-Integration,rs-0902323,2026-06,0.0,0.0,6592542.0,329.628,Redshift,Spectrum queries
+1297,Shared-Services,ebs-086f615,2026-06,0.0,660.72,0.0,412.932,EBS,io2 volumes database
+1298,Internal-Tools,elb-0520569,2026-06,1375.32,0.0,19102675.2,278.13599999999997,ELB,Classic load balancer
+1299,QA-Testing,lam-0e28351,2026-06,0.0,0.0,5402289.6,38.076,Lambda,Image resizer
+1300,Production-Secondary,r53-0e6c250,2026-06,0.0,0.0,10437769.2,15.66,Route 53,Health checks
+1301,Shared-Services,nat-0d10205,2026-06,727.68,0.0,0.0,166.008,NAT Gateway,Staging VPC NAT
+1302,ML-Training,rds-0b52197,2026-06,763.32,848.16,0.0,1781.124,RDS,db.m5.xlarge analytics DB
+1303,Partner-Integration,ddb-03d4797,2026-06,677.28,47.04,75251630.39999999,529.116,DynamoDB,Session store table
+1304,Finance-Systems,s3-0243583,2026-06,0.0,83.39999999999999,41708881.199999996,271.104,S3,Static website hosting
+1305,Partner-Integration,kin-1069401,2026-06,1070.76,0.0,44616186.0,651.3960000000001,Kinesis,Data stream ingestion
+1306,Production-Main,kin-0ab3175,2026-06,875.4,0.0,36474528.0,532.524,Kinesis,Data stream ingestion
+1307,Marketing-Platform,sqs-01dc694,2026-06,0.0,0.0,66855954.0,33.431999999999995,SQS,Order processing queue
+1308,Customer-Portal,ebs-0da4750,2026-06,0.0,659.64,0.0,412.23599999999993,EBS,io2 volumes database
+1309,QA-Testing,lam-0e97658,2026-06,0.0,0.0,4073410.8,28.512,Lambda,Webhook processor
+1310,Edge-Network,kin-0317180,2026-06,655.32,0.0,18204430.8,265.788,Kinesis,Firehose delivery
+1311,Shared-Services,r53-0198426,2026-06,0.0,0.0,10286125.2,15.431999999999999,Route 53,Health checks
+1312,Internal-Tools,sqs-02ad468,2026-06,0.0,0.0,45126166.8,22.56,SQS,Event notification queue
+1313,Internal-Tools,ses-0971417,2026-06,0.0,0.0,3536598.0,4.248,SES,Transactional email
+1314,Internal-Tools,sqs-0595574,2026-06,0.0,0.0,65045170.8,32.52,SQS,Order processing queue
+1315,Data-Science,i-0e57691,2026-06,414.0,0.0,0.0,1201.008,EC2,c5.2xlarge HPC node
+1316,Partner-Integration,sm-04a9467,2026-06,0.0,0.0,1553996.4,6.215999999999999,Secrets Manager,Application secrets
+1317,Partner-Integration,ec-10a3752,2026-06,552.4799999999999,0.0,0.0,198.864,ElastiCache,Redis staging cluster
+1318,Production-Main,s3-09f4341,2026-06,0.0,12432.0,776996.4,310.8,S3,Log archive bucket
+1319,Production-Secondary,i-007c627,2026-06,656.0400000000001,0.0,0.0,1137.216,EC2,r5.xlarge cache server
+1320,Customer-Portal,ses-071f490,2026-06,0.0,0.0,830410.7999999999,0.9959999999999999,SES,Marketing email
+1321,Compliance-Audit,sm-10f2477,2026-06,0.0,0.0,1647945.5999999999,6.588,Secrets Manager,Application secrets
+1322,Internal-Tools,ebs-0f72121,2026-06,0.0,1784.3999999999999,0.0,223.05599999999998,EBS,gp3 volumes production
+1323,Security-Ops,ecs-0d3c531,2026-06,600.12,0.0,0.0,1095.204,ECS,Fargate API cluster
+1324,Shared-Services,r53-0ff4269,2026-06,0.0,0.0,79933704.0,119.892,Route 53,DNS hosting
+1325,ML-Training,ebs-05fc988,2026-06,0.0,4953.48,0.0,222.91199999999998,EBS,st1 volumes archive
+1326,QA-Testing,lam-0998741,2026-06,0.0,0.0,5144017.2,36.263999999999996,Lambda,Image resizer
+1327,Customer-Portal,elb-0aee879,2026-06,920.52,0.0,38353138.8,279.216,ELB,Application load balancer
+1328,Security-Ops,ecs-018d725,2026-06,595.56,0.0,0.0,1086.972,ECS,Fargate worker cluster
+1329,Compliance-Audit,nat-037e195,2026-06,650.16,0.0,0.0,148.32,NAT Gateway,Dev VPC NAT
+1330,Partner-Integration,sm-09ef617,2026-06,0.0,0.0,1819140.0,7.284,Secrets Manager,Application secrets
+1331,Internal-Tools,ddb-0a2f287,2026-06,1001.04,69.47999999999999,111218899.2,782.016,DynamoDB,Session store table
+1332,Internal-Tools,rds-02c2514,2026-06,745.0799999999999,827.7599999999999,0.0,1738.392,RDS,db.m5.xlarge analytics DB
+1333,Compliance-Audit,ec-0fb1705,2026-06,855.0,0.0,0.0,615.5400000000001,ElastiCache,Redis production cluster
+1334,Shared-Services,ec-0d88472,2026-06,958.0799999999999,0.0,0.0,344.868,ElastiCache,Redis staging cluster
+1335,Compliance-Audit,ses-0627154,2026-06,0.0,0.0,2046098.4,2.4599999999999995,SES,Transactional email
+1336,Production-Main,r53-0013324,2026-06,0.0,0.0,70902801.6,106.356,Route 53,DNS hosting
+1337,Internal-Tools,rds-0877129,2026-06,1002.84,696.3599999999999,0.0,1984.716,RDS,db.r5.large PostgreSQL replica
+1338,Production-Main,lam-0007733,2026-06,0.0,0.0,1536699.5999999999,11.52,Lambda,Cron job runner
+1339,Production-Main,s3-0dd8940,2026-06,0.0,58.08,29041304.4,188.76000000000002,S3,Static website hosting
+1340,Security-Ops,ebs-0187240,2026-06,0.0,5006.4,0.0,225.288,EBS,st1 volumes archive
+1341,Security-Ops,ecs-05f8138,2026-06,675.12,0.0,0.0,1232.052,ECS,Fargate API cluster
+1342,Customer-Portal,ses-0aec941,2026-06,0.0,0.0,1062577.2,1.284,SES,Marketing email
+1343,Security-Ops,ecs-0ef6702,2026-06,671.16,0.0,0.0,1224.72,ECS,Fargate API cluster
+1344,Edge-Network,s3-09b2918,2026-06,0.0,15217.199999999999,152170.8,350.004,S3,Backup storage bucket
+1345,Edge-Network,s3-0cf5556,2026-06,0.0,77.28,38643748.8,251.172,S3,Static website hosting
+1346,Production-Main,i-0a20226,2026-06,804.6,0.0,0.0,2788.86,EC2,m5.2xlarge batch processor
+1347,Data-Science,i-0a5b952,2026-06,844.92,0.0,0.0,732.204,EC2,m5.large monitoring server
+1348,Shared-Services,r53-059e889,2026-06,0.0,0.0,82785798.0,124.176,Route 53,DNS hosting
+1349,Compliance-Audit,i-03a0994,2026-06,881.88,0.0,0.0,764.304,EC2,m5.large monitoring server
+1350,Compliance-Audit,rds-1171475,2026-06,1268.04,880.56,0.0,2509.548,RDS,db.r5.large PostgreSQL replica
+1351,Internal-Tools,nat-042b155,2026-06,662.16,0.0,0.0,151.05599999999998,NAT Gateway,Dev VPC NAT
+1352,Production-Secondary,r53-114c994,2026-06,0.0,0.0,9615379.2,14.424,Route 53,Health checks
+1353,Security-Ops,sns-0188907,2026-06,0.0,0.0,10884652.799999999,5.4479999999999995,SNS,Alert notifications
+1354,DevOps-Central,ec-1079988,2026-06,873.9599999999999,0.0,0.0,629.232,ElastiCache,Redis production cluster
+1355,ML-Training,ebs-0b24521,2026-06,0.0,5703.72,0.0,256.66799999999995,EBS,st1 volumes archive
+1356,Shared-Services,r53-0619259,2026-06,0.0,0.0,10858113.6,16.296,Route 53,Health checks
+1357,Compliance-Audit,sm-0632353,2026-06,0.0,0.0,1306404.0,5.22,Secrets Manager,Application secrets
+1358,Edge-Network,i-1150768,2026-06,849.24,0.0,0.0,2944.26,EC2,r5.2xlarge database server
+1359,Security-Ops,s3-0181856,2026-06,0.0,7151.879999999999,11443022.4,522.084,S3,Media content bucket
+1360,Data-Science,i-0dfc213,2026-06,609.36,0.0,0.0,2111.916,EC2,m5.2xlarge batch processor
+1361,Marketing-Platform,i-01e9479,2026-06,683.88,0.0,0.0,2370.804,EC2,r5.2xlarge database server
+1362,Internal-Tools,s3-0a63927,2026-06,0.0,8051.879999999999,503235.6,201.288,S3,Log archive bucket
+1363,Production-Secondary,ec-0078540,2026-06,778.32,0.0,0.0,560.4,ElastiCache,Redis production cluster
+1364,Internal-Tools,sqs-0c61528,2026-06,0.0,0.0,59616702.0,29.808,SQS,Order processing queue
+1365,Internal-Tools,sqs-1152733,2026-06,0.0,0.0,60199274.4,30.095999999999997,SQS,Order processing queue
+1366,Edge-Network,rds-031d726,2026-06,675.0,468.72,0.0,1335.84,RDS,db.r5.large PostgreSQL replica
+1367,Finance-Systems,s3-0879414,2026-06,0.0,11684.279999999999,730266.0,292.104,S3,Log archive bucket
+1368,QA-Testing,sm-09d2871,2026-06,0.0,0.0,845173.2,3.384,Secrets Manager,Application secrets
+1369,Internal-Tools,s3-0c64538,2026-06,0.0,4806.599999999999,7690467.6,350.87999999999994,S3,Media content bucket
+1370,Marketing-Platform,i-01ea208,2026-06,916.1999999999999,0.0,0.0,397.368,EC2,t3.medium API server
+1371,DevOps-Central,ddb-1093975,2026-06,1145.76,15.839999999999998,7956691.199999999,139.236,DynamoDB,Config store table
+1372,Customer-Portal,vpn-0c12742,2026-06,1503.84,0.0,0.0,381.17999999999995,VPN Gateway,Client VPN endpoint
+1373,Production-Main,kin-001b193,2026-06,912.9599999999999,0.0,38040062.4,555.384,Kinesis,Data stream ingestion
+1374,Production-Secondary,s3-0963950,2026-06,0.0,1283.88,2567756.4,112.332,S3,Artifact storage
+1375,Internal-Tools,cf-08a2303,2026-06,0.0,0.0,122091957.6,610.464,CloudFront,CDN web distribution
+1376,ML-Training,ec-0549300,2026-06,1296.48,0.0,0.0,933.492,ElastiCache,Redis production cluster
+1377,Compliance-Audit,s3-04df487,2026-06,0.0,2784.72,16708038.0,696.168,S3,Production asset storage
+1378,ML-Training,i-04f5359,2026-06,965.1599999999999,0.0,0.0,836.4119999999999,EC2,m5.large monitoring server
+1379,ML-Training,rds-0a96205,2026-06,683.16,759.12,0.0,1594.14,RDS,db.m5.xlarge analytics DB
+1380,ML-Training,r53-0371230,2026-06,0.0,0.0,14183386.799999999,21.276,Route 53,Health checks
+1381,Marketing-Platform,rds-0657267,2026-06,537.36,149.28,0.0,634.32,RDS,db.t3.medium MySQL staging
+1382,Marketing-Platform,rds-10d6482,2026-06,753.6,209.28,0.0,680.304,RDS,db.t3.large development DB
+1383,ML-Training,r53-05ab480,2026-06,0.0,0.0,15897210.0,23.844,Route 53,Health checks
+1384,Marketing-Platform,sm-0b4d765,2026-06,0.0,0.0,1302459.5999999999,5.22,Secrets Manager,Application secrets
+1385,Marketing-Platform,rds-07a0415,2026-06,543.8399999999999,151.08,0.0,642.036,RDS,db.t3.medium MySQL staging
+1386,Edge-Network,s3-08f1673,2026-06,0.0,1291.0800000000002,2582319.6,112.968,S3,Artifact storage
+1387,ML-Training,rs-072c560,2026-06,0.0,0.0,5257855.2,262.896,Redshift,Spectrum queries
+1388,Internal-Tools,s3-02bd407,2026-06,0.0,8863.08,553941.6,221.58,S3,Log archive bucket
+1389,ML-Training,ebs-0974587,2026-06,0.0,848.7599999999999,0.0,530.4119999999999,EBS,io2 volumes database
+1390,Customer-Portal,i-0930835,2026-06,653.7599999999999,0.0,0.0,47.711999999999996,EC2,t3.micro bastion host
+1391,Security-Ops,s3-0771322,2026-06,0.0,23492.88,4698567.6,822.24,S3,Data lake raw zone
+1392,Data-Science,i-0d23982,2026-06,470.4,0.0,0.0,1363.98,EC2,c5.2xlarge HPC node
+1393,Finance-Systems,s3-08dd455,2026-06,0.0,6287.4,10059848.4,458.988,S3,Media content bucket
+1394,Compliance-Audit,ses-0592338,2026-06,0.0,0.0,1976163.5999999999,2.376,SES,Transactional email
+1395,Internal-Tools,ec-0eb3410,2026-06,653.52,0.0,0.0,470.4359999999999,ElastiCache,Redis production cluster
+1396,Internal-Tools,s3-09aa761,2026-06,0.0,44.4,22238257.2,144.552,S3,Static website hosting
+1397,Compliance-Audit,sm-1017804,2026-06,0.0,0.0,1314331.2,5.255999999999999,Secrets Manager,Application secrets
+1398,Compliance-Audit,elb-0f00262,2026-06,933.84,0.0,38908302.0,283.248,ELB,Application load balancer
+1399,Production-Main,sns-0c8c772,2026-06,0.0,0.0,8683417.2,4.332,SNS,Alert notifications
+1400,Shared-Services,rds-0f6e315,2026-06,849.84,236.03999999999996,0.0,767.1719999999999,RDS,db.t3.large development DB
+1401,Customer-Portal,elb-0525461,2026-06,922.68,0.0,38443490.4,279.876,ELB,Application load balancer
+1402,Data-Science,i-013b699,2026-06,982.44,0.0,0.0,1419.0,EC2,c5.xlarge compute worker
+1403,QA-Testing,lam-05b6672,2026-06,0.0,0.0,4023241.1999999997,28.163999999999998,Lambda,Webhook processor
+1404,QA-Testing,ses-08a5385,2026-06,0.0,0.0,3085028.4,3.7079999999999997,SES,Transactional email
+1405,Shared-Services,rds-0cda288,2026-06,655.92,182.16,0.0,592.0799999999999,RDS,db.t3.large development DB
+1406,Edge-Network,ebs-0b4e168,2026-06,0.0,215.28,0.0,26.904,EBS,gp3 volumes staging
+1407,Partner-Integration,sqs-0bf2947,2026-06,0.0,0.0,512761.19999999995,0.264,SQS,Dead letter queue
+1408,Finance-Systems,vpn-1134255,2026-06,1220.04,0.0,0.0,309.228,VPN Gateway,Client VPN endpoint
+1409,Customer-Portal,vpn-0a09478,2026-06,1301.76,0.0,0.0,329.95199999999994,VPN Gateway,Client VPN endpoint
+1410,Production-Main,ecs-0de7751,2026-06,379.2,0.0,0.0,692.052,ECS,Fargate batch cluster
+1411,Edge-Network,ebs-0313368,2026-06,0.0,896.7599999999999,0.0,112.092,EBS,gp3 volumes production
+1412,Data-Science,eks-0916603,2026-06,518.04,0.0,0.0,1554.12,EKS,Staging K8s cluster
+1413,Marketing-Platform,rs-08d1200,2026-06,0.0,0.0,7070252.399999999,353.508,Redshift,Spectrum queries
+1414,Compliance-Audit,ses-08e6753,2026-06,0.0,0.0,1861950.0,2.244,SES,Transactional email
+1415,Finance-Systems,elb-06a1968,2026-06,1022.04,0.0,70981923.6,442.92,ELB,Network load balancer
+1416,Finance-Systems,s3-0ead914,2026-06,0.0,1378.9199999999998,2757633.6,120.66,S3,Artifact storage
+1417,QA-Testing,vpn-03e6329,2026-06,616.32,0.0,0.0,156.22799999999998,VPN Gateway,Client VPN endpoint
+1418,Compliance-Audit,vpn-0e3e760,2026-06,938.64,0.0,0.0,237.94799999999998,VPN Gateway,Client VPN endpoint
+1419,Compliance-Audit,i-039d669,2026-06,657.4799999999999,0.0,0.0,949.632,EC2,c5.xlarge compute worker
+1420,QA-Testing,ebs-03ec526,2026-06,0.0,1419.36,0.0,177.42,EBS,gp3 volumes production
+1421,Production-Main,sns-101d656,2026-06,0.0,0.0,8938297.2,4.464,SNS,Alert notifications
+1422,Compliance-Audit,ses-0b1f287,2026-06,0.0,0.0,2298279.6,2.76,SES,Transactional email
+1423,Production-Main,lam-0d54228,2026-06,0.0,0.0,6204801.6,43.440000000000005,Lambda,Notification dispatcher
+1424,Compliance-Audit,rds-0397974,2026-06,421.8,117.11999999999999,0.0,497.93999999999994,RDS,db.t3.medium MySQL staging
+1425,Edge-Network,ebs-0461141,2026-06,0.0,161.88,0.0,20.244,EBS,gp3 volumes staging
+1426,Production-Secondary,elb-0e5b461,2026-06,685.8,0.0,47622096.0,297.16799999999995,ELB,Network load balancer
+1427,Production-Main,i-10f4869,2026-06,503.87999999999994,0.0,0.0,1461.1560000000002,EC2,c5.2xlarge HPC node
+1428,Internal-Tools,lam-03ef109,2026-06,0.0,0.0,1595809.2,11.976,Lambda,Cron job runner
+1429,Mobile-Backend,ebs-0d37236,2026-06,0.0,5186.52,0.0,233.41199999999998,EBS,st1 volumes archive
+1430,Internal-Tools,s3-09d0481,2026-06,0.0,7760.279999999999,485013.6,194.004,S3,Log archive bucket
+1431,Partner-Integration,rs-04b3252,2026-06,0.0,0.0,6099974.399999999,305.00399999999996,Redshift,Spectrum queries
+1432,Data-Science,rds-0bc7339,2026-06,1053.6,731.52,0.0,2707.128,RDS,db.r5.xlarge PostgreSQL primary
+1433,Compliance-Audit,rds-0d85584,2026-06,377.4,104.75999999999999,0.0,445.428,RDS,db.t3.medium MySQL staging
+1434,Edge-Network,sns-1054312,2026-06,0.0,0.0,14950059.6,7.476,SNS,Alert notifications
+1435,Production-Main,r53-0886456,2026-06,0.0,0.0,16770355.2,25.163999999999998,Route 53,Health checks
+1436,Security-Ops,ebs-0436210,2026-06,0.0,871.1999999999999,0.0,544.512,EBS,io2 volumes database
+1437,Partner-Integration,cf-0b62712,2026-06,0.0,0.0,51321822.0,256.608,CloudFront,CDN API distribution
+1438,Security-Ops,nat-017e771,2026-06,792.4799999999999,0.0,0.0,180.76799999999997,NAT Gateway,Staging VPC NAT
+1439,Edge-Network,sns-0f3e442,2026-06,0.0,0.0,12208525.2,6.108,SNS,Alert notifications
+1440,Data-Science,i-0137554,2026-06,901.32,0.0,0.0,781.764,EC2,t3.large application server
+1441,QA-Testing,ebs-0df8926,2026-06,0.0,1515.7199999999998,0.0,189.468,EBS,gp3 volumes production
+1442,Compliance-Audit,s3-08f5280,2026-06,0.0,861.3599999999999,1722908.4,75.372,S3,Artifact storage
+1443,Marketing-Platform,i-0c1b224,2026-06,705.9599999999999,0.0,0.0,612.396,EC2,t3.large application server
+1444,Production-Secondary,elb-04bd339,2026-06,644.88,0.0,44782256.4,279.444,ELB,Network load balancer
+1445,Edge-Network,s3-04f7382,2026-06,0.0,1305.12,2610387.6,114.192,S3,Artifact storage
+1446,Internal-Tools,cf-02b2509,2026-06,0.0,0.0,169089166.79999998,845.448,CloudFront,CDN media distribution
+1447,Customer-Portal,cf-028c709,2026-06,0.0,0.0,54225871.199999996,271.128,CloudFront,CDN API distribution
+1448,Customer-Portal,i-0e71663,2026-06,679.92,0.0,0.0,2356.98,EC2,r5.2xlarge database server
+1449,QA-Testing,lam-043c899,2026-06,0.0,0.0,42788090.4,297.38399999999996,Lambda,API gateway handler
+1450,Compliance-Audit,i-0e5a884,2026-06,576.96,0.0,0.0,833.34,EC2,c5.xlarge compute worker
+1451,Partner-Integration,rs-0e5c348,2026-06,1023.9599999999999,2844.48,0.0,5191.272,Redshift,Data warehouse cluster
+1452,Compliance-Audit,s3-07f4252,2026-06,0.0,895.56,1791292.8,78.36,S3,Artifact storage
+1453,ML-Training,r53-09f2874,2026-06,0.0,0.0,14103112.799999999,21.156,Route 53,Health checks
+1454,Security-Ops,ecs-0a3b167,2026-06,183.83999999999997,0.0,0.0,335.59200000000004,ECS,Fargate batch cluster
+1455,Data-Science,rds-04e4902,2026-06,683.7599999999999,190.08,0.0,617.4,RDS,db.t3.large development DB
+1456,Internal-Tools,ec-0d42588,2026-06,654.84,0.0,0.0,471.52799999999996,ElastiCache,Redis production cluster
+1457,Production-Secondary,r53-10a6788,2026-06,0.0,0.0,11620111.2,17.424,Route 53,Health checks
+1458,Partner-Integration,rds-05a0419,2026-06,493.0799999999999,136.92,0.0,581.9879999999999,RDS,db.t3.medium MySQL staging
+1459,Internal-Tools,vpn-0557720,2026-06,1288.32,0.0,0.0,653.1,VPN Gateway,Site-to-site VPN
+1460,Internal-Tools,s3-02c0211,2026-06,0.0,5640.96,9025483.2,411.79200000000003,S3,Media content bucket
+1461,Compliance-Audit,rs-0e67494,2026-06,792.72,2201.88,0.0,4018.404,Redshift,Data warehouse cluster
+1462,Partner-Integration,rs-08ef216,2026-06,930.3599999999999,2584.3199999999997,0.0,4716.491999999999,Redshift,Data warehouse cluster
+1463,Customer-Portal,i-0291352,2026-06,783.4799999999999,0.0,0.0,1131.648,EC2,c5.xlarge compute worker
+1464,Edge-Network,i-0435944,2026-06,900.3599999999999,0.0,0.0,1560.6,EC2,r5.xlarge cache server
+1465,Production-Secondary,r53-0754776,2026-06,0.0,0.0,11411088.0,17.112,Route 53,Health checks
+1466,Edge-Network,elb-0c8a626,2026-06,886.44,0.0,12310735.2,179.244,ELB,Classic load balancer
+1467,Compliance-Audit,s3-0722468,2026-06,0.0,793.8,1587682.8,69.456,S3,Artifact storage
+1468,ML-Training,r53-0581711,2026-06,0.0,0.0,15451231.2,23.171999999999997,Route 53,Health checks
+1469,Internal-Tools,elb-0aed112,2026-06,1303.0800000000002,0.0,18098872.8,263.532,ELB,Classic load balancer
+1470,Compliance-Audit,rds-0d18388,2026-06,371.4,103.08,0.0,438.444,RDS,db.t3.medium MySQL staging
+1471,Data-Science,i-05bc939,2026-06,822.4799999999999,0.0,0.0,712.824,EC2,m5.large monitoring server
+1472,Marketing-Platform,i-1182333,2026-06,642.6,0.0,0.0,1863.6119999999999,EC2,c5.2xlarge HPC node
+1473,Production-Secondary,ecs-0074667,2026-06,342.12,0.0,0.0,624.432,ECS,Fargate batch cluster
+1474,Security-Ops,sqs-0194667,2026-06,0.0,0.0,78712911.6,39.35999999999999,SQS,Order processing queue
+1475,ML-Training,rs-0543817,2026-06,0.0,0.0,4727443.2,236.37599999999998,Redshift,Spectrum queries
+1476,Partner-Integration,eks-0912980,2026-06,488.87999999999994,0.0,0.0,1466.652,EKS,Staging K8s cluster
+1477,ML-Training,lam-0374425,2026-06,0.0,0.0,59576919.6,417.03599999999994,Lambda,Auth token validator
+1478,Internal-Tools,lam-0ab4217,2026-06,0.0,0.0,24334933.2,170.33999999999997,Lambda,Data transformer
+1479,Internal-Tools,s3-0e9b779,2026-06,0.0,4561.44,7298266.8,332.988,S3,Media content bucket
+1480,Mobile-Backend,kin-092c972,2026-06,1025.3999999999999,0.0,28484432.4,415.872,Kinesis,Firehose delivery
+1481,Compliance-Audit,rds-075f423,2026-06,406.92,112.91999999999999,0.0,480.31199999999995,RDS,db.t3.medium MySQL staging
+1482,ML-Training,i-0da2988,2026-06,893.0400000000001,0.0,0.0,774.552,EC2,t3.large application server
+1483,Edge-Network,lam-0ff8208,2026-06,0.0,0.0,30461041.2,213.23999999999998,Lambda,Data transformer
+1484,QA-Testing,lam-058e428,2026-06,0.0,0.0,4845955.2,34.152,Lambda,Image resizer
+1485,Partner-Integration,elb-0be8163,2026-06,822.9599999999999,0.0,11430373.2,166.416,ELB,Classic load balancer
+1486,Compliance-Audit,s3-064c941,2026-06,0.0,16029.599999999999,3205909.1999999997,561.024,S3,Data lake raw zone
+1487,Data-Science,i-100c822,2026-06,631.68,0.0,0.0,1094.844,EC2,r5.xlarge cache server
+1488,Finance-Systems,s3-0e8b782,2026-06,0.0,14802.599999999999,2960516.4,518.088,S3,Data lake raw zone
+1489,Production-Secondary,sqs-09a9219,2026-06,0.0,0.0,34200392.4,17.099999999999998,SQS,Event notification queue
+1490,Internal-Tools,ec-05c5519,2026-06,544.8,0.0,0.0,392.20799999999997,ElastiCache,Redis production cluster
+1491,Partner-Integration,sqs-03d1971,2026-06,0.0,0.0,543500.4,0.276,SQS,Dead letter queue
+1492,Marketing-Platform,rds-01e1409,2026-06,993.0,1379.1599999999999,0.0,4413.4439999999995,RDS,db.r5.2xlarge Aurora cluster
+1493,Marketing-Platform,rds-0fcf531,2026-06,955.8,663.84,0.0,2456.004,RDS,db.r5.xlarge PostgreSQL primary
+1494,Edge-Network,s3-0935976,2026-06,0.0,1308.84,2617894.8,114.516,S3,Artifact storage
+1495,Production-Main,cf-0a48593,2026-06,0.0,0.0,37146668.4,185.72400000000002,CloudFront,CDN static assets
+1496,Compliance-Audit,s3-0cb2590,2026-06,0.0,54.6,27344102.4,177.732,S3,Static website hosting
+1497,Edge-Network,vpn-0d69869,2026-06,625.1999999999999,0.0,0.0,158.472,VPN Gateway,Client VPN endpoint
+1498,Shared-Services,nat-09a0830,2026-06,779.64,0.0,0.0,355.716,NAT Gateway,Production VPC NAT
+1499,Data-Science,i-10ab373,2026-06,564.8399999999999,0.0,0.0,979.068,EC2,r5.xlarge cache server
+1500,Partner-Integration,ddb-090c493,2026-06,773.7599999999999,10.799999999999999,5372977.2,94.032,DynamoDB,Config store table
+1501,DevOps-Central,ebs-0d66422,2026-06,0.0,489.12,0.0,305.652,EBS,io2 volumes database
+1502,ML-Training,ebs-08f8987,2026-06,0.0,677.88,0.0,423.66,EBS,io2 volumes database
+1503,Shared-Services,rds-0aa6904,2026-06,776.88,1078.92,0.0,3452.484,RDS,db.r5.2xlarge Aurora cluster
+1504,Customer-Portal,vpn-06f0884,2026-06,1318.0800000000002,0.0,0.0,334.104,VPN Gateway,Client VPN endpoint
+1505,Compliance-Audit,s3-038a496,2026-06,0.0,11033.4,689583.6,275.832,S3,Log archive bucket
+1506,Compliance-Audit,rds-0ed7512,2026-06,365.28,101.39999999999999,0.0,431.088,RDS,db.t3.medium MySQL staging
+1507,QA-Testing,lam-03e2943,2026-06,0.0,0.0,980296.7999999999,7.356,Lambda,Cron job runner
+1508,Shared-Services,rds-019e148,2026-06,786.9599999999999,218.64,0.0,710.424,RDS,db.t3.large development DB
+1509,Internal-Tools,lam-0f01981,2026-06,0.0,0.0,28334626.8,198.33599999999998,Lambda,Data transformer
+1510,ML-Training,rs-0d61874,2026-06,645.9599999999999,1794.48,0.0,3275.112,Redshift,Data warehouse cluster
+1511,Compliance-Audit,ses-1028890,2026-06,0.0,0.0,1876042.8,2.256,SES,Transactional email
+1512,Customer-Portal,vpn-0e79543,2026-06,1284.9599999999998,0.0,0.0,325.716,VPN Gateway,Client VPN endpoint
+1513,Customer-Portal,cf-0469288,2026-06,0.0,0.0,88645321.2,443.22,CloudFront,CDN web distribution
+1514,Customer-Portal,s3-0bb8451,2026-06,0.0,22248.719999999998,4449760.8,778.704,S3,Data lake raw zone
+1515,Marketing-Platform,ec-0b95778,2026-06,881.7599999999999,0.0,0.0,634.824,ElastiCache,Redis production cluster
+1516,Production-Secondary,sqs-047b744,2026-06,0.0,0.0,28049809.2,14.027999999999999,SQS,Event notification queue
+1517,Finance-Systems,s3-0a35431,2026-06,0.0,10770.96,673190.4,269.268,S3,Log archive bucket
+1518,Finance-Systems,rds-06bf447,2026-06,754.56,1048.08,0.0,3353.7,RDS,db.r5.2xlarge Aurora cluster
+1519,Partner-Integration,elb-06eb646,2026-06,952.56,0.0,13229583.6,192.612,ELB,Classic load balancer
+1520,ML-Training,ec-0b39148,2026-06,1150.92,0.0,0.0,828.6840000000001,ElastiCache,Redis production cluster
+1521,Marketing-Platform,rds-0d63346,2026-06,556.8,154.79999999999998,0.0,657.312,RDS,db.t3.medium MySQL staging
+1522,Production-Secondary,ecs-0d99511,2026-06,317.87999999999994,0.0,0.0,579.9839999999999,ECS,Fargate batch cluster
+1523,Data-Science,i-0de8277,2026-06,483.84,0.0,0.0,1403.304,EC2,c5.2xlarge HPC node
+1524,QA-Testing,ses-03dc848,2026-06,0.0,0.0,2576754.0,3.096,SES,Transactional email
+1525,QA-Testing,elb-0f2f994,2026-06,1033.44,0.0,43062924.0,313.5,ELB,Application load balancer
+1526,Marketing-Platform,r53-09a7690,2026-06,0.0,0.0,65316583.199999996,97.968,Route 53,DNS hosting
+1527,Production-Main,ecs-0bb5632,2026-06,402.23999999999995,0.0,0.0,734.052,ECS,Fargate worker cluster
+1528,Shared-Services,s3-085d679,2026-06,0.0,17633.04,3526617.6,617.16,S3,Data lake raw zone
+1529,Marketing-Platform,rds-07cb642,2026-06,813.9599999999999,226.08,0.0,734.8439999999999,RDS,db.t3.large development DB
+1530,Partner-Integration,cf-0cb6427,2026-06,0.0,0.0,50060446.8,250.296,CloudFront,CDN API distribution
+1531,Internal-Tools,cf-02b1760,2026-06,0.0,0.0,52524201.6,262.62,CloudFront,CDN API distribution
+1532,ML-Training,sqs-095c104,2026-06,0.0,0.0,636313.2,0.324,SQS,Dead letter queue
+1533,Security-Ops,lam-0776812,2026-06,0.0,0.0,5143040.399999999,36.263999999999996,Lambda,Image resizer
+1534,Marketing-Platform,lam-01ce578,2026-06,0.0,0.0,1320712.8,9.9,Lambda,Cron job runner
+1535,Internal-Tools,ec-0e42669,2026-06,617.4,0.0,0.0,444.504,ElastiCache,Redis production cluster
+1536,Production-Secondary,ecs-0e91146,2026-06,368.4,0.0,0.0,672.1919999999999,ECS,Fargate batch cluster
+1537,Edge-Network,ecs-0c11707,2026-06,368.4,0.0,0.0,672.276,ECS,Fargate worker cluster
+1538,Internal-Tools,lam-10f5761,2026-06,0.0,0.0,23369508.0,163.58399999999997,Lambda,Data transformer
+1539,DevOps-Central,ddb-09c2548,2026-06,704.52,97.91999999999999,146765686.79999998,1100.7359999999999,DynamoDB,Cache table
+1540,Partner-Integration,elb-0a0e128,2026-06,671.64,0.0,9327826.799999999,135.804,ELB,Classic load balancer
+1541,Shared-Services,nat-01a4526,2026-06,750.24,0.0,0.0,342.32399999999996,NAT Gateway,Production VPC NAT
+1542,Marketing-Platform,nat-01e0885,2026-06,998.64,0.0,0.0,227.808,NAT Gateway,Dev VPC NAT
+1543,Production-Main,i-053d315,2026-06,892.68,0.0,0.0,65.16,EC2,t3.micro bastion host
+1544,Marketing-Platform,sm-0ed6873,2026-06,0.0,0.0,1092577.2,4.368,Secrets Manager,Application secrets
+1545,Finance-Systems,s3-0247530,2026-06,0.0,11060.279999999999,691269.6,276.50399999999996,S3,Log archive bucket
+1546,Internal-Tools,ec-066c806,2026-06,655.92,0.0,0.0,472.23599999999993,ElastiCache,Redis production cluster
+1547,Finance-Systems,rds-023f159,2026-06,881.0400000000001,978.9599999999999,0.0,2055.84,RDS,db.m5.xlarge analytics DB
+1548,Data-Science,rs-046b649,2026-06,844.1999999999999,2344.7999999999997,0.0,4279.4039999999995,Redshift,Data warehouse cluster
+1549,Edge-Network,sns-059b224,2026-06,0.0,0.0,16127692.799999999,8.064,SNS,Alert notifications
+1550,Edge-Network,s3-0318881,2026-06,0.0,19989.12,3997821.5999999996,699.6239999999999,S3,Data lake raw zone
+1551,Customer-Portal,i-028d484,2026-06,615.0,0.0,0.0,2131.98,EC2,m5.2xlarge batch processor
+1552,Production-Main,lam-0642919,2026-06,0.0,0.0,37987401.6,265.91999999999996,Lambda,Data transformer
+1553,QA-Testing,lam-03e1413,2026-06,0.0,0.0,3788407.1999999997,26.52,Lambda,Webhook processor
+1554,Security-Ops,ecs-0f75161,2026-06,683.88,0.0,0.0,1248.012,ECS,Fargate API cluster
+1555,Finance-Systems,s3-0c3b952,2026-06,0.0,12218.759999999998,2443746.0,427.656,S3,Data lake raw zone
+1556,Customer-Portal,i-0290733,2026-06,656.64,0.0,0.0,47.928,EC2,t3.micro bastion host
+1557,Compliance-Audit,sns-0f94109,2026-06,0.0,0.0,17941238.4,8.963999999999999,SNS,Event fanout topic
+1558,Finance-Systems,elb-024c328,2026-06,1044.9599999999998,0.0,72570040.8,452.832,ELB,Network load balancer
+1559,Finance-Systems,rds-023e525,2026-06,684.6,950.8799999999999,0.0,3042.672,RDS,db.r5.2xlarge Aurora cluster
+1560,Internal-Tools,eks-0690150,2026-06,661.56,0.0,0.0,1984.968,EKS,Staging K8s cluster
+1561,QA-Testing,elb-0980148,2026-06,934.92,0.0,38954481.6,283.584,ELB,Application load balancer
+1562,Internal-Tools,rds-0ec4795,2026-06,860.28,597.4799999999999,0.0,2210.316,RDS,db.r5.xlarge PostgreSQL primary
+1563,Compliance-Audit,i-0f6d336,2026-06,933.72,0.0,0.0,809.196,EC2,m5.large monitoring server
+1564,Data-Science,nat-0132859,2026-06,636.4799999999999,0.0,0.0,145.2,NAT Gateway,Staging VPC NAT
+1565,Production-Main,cf-0001263,2026-06,0.0,0.0,59095927.199999996,295.476,CloudFront,CDN API distribution
+1566,Data-Science,rds-04cc470,2026-06,793.56,220.56,0.0,716.484,RDS,db.t3.large development DB
+1567,Data-Science,ses-077c383,2026-06,0.0,0.0,502548.0,0.6,SES,Marketing email
+1568,Marketing-Platform,i-079f164,2026-06,811.0799999999999,0.0,0.0,1405.8239999999998,EC2,r5.xlarge cache server
+1569,QA-Testing,ec-06bd918,2026-06,985.44,0.0,0.0,709.476,ElastiCache,Redis production cluster
+1570,Data-Science,i-0859781,2026-06,410.64,0.0,0.0,1191.144,EC2,c5.2xlarge HPC node
+1571,Edge-Network,ec-063c794,2026-06,909.72,0.0,0.0,654.996,ElastiCache,Redis production cluster
+1572,Internal-Tools,cf-0dbb199,2026-06,0.0,0.0,197273635.2,986.352,CloudFront,CDN media distribution
+1573,Edge-Network,ecs-09c1206,2026-06,363.59999999999997,0.0,0.0,663.432,ECS,Fargate worker cluster
+1574,Compliance-Audit,s3-08a7782,2026-06,0.0,13911.48,2782296.0,486.888,S3,Data lake raw zone
+1575,Compliance-Audit,s3-0c04431,2026-06,0.0,14093.159999999998,2818621.1999999997,493.248,S3,Data lake raw zone
+1576,Internal-Tools,ses-0dbe321,2026-06,0.0,0.0,3106999.1999999997,3.7319999999999998,SES,Transactional email
+1577,Data-Science,i-0a28926,2026-06,539.64,0.0,0.0,1870.656,EC2,m5.2xlarge batch processor
+1578,Internal-Tools,eks-02a6314,2026-06,587.52,0.0,0.0,1762.6680000000001,EKS,Staging K8s cluster
+1579,Shared-Services,cf-019a583,2026-06,0.0,0.0,193273533.6,966.3719999999998,CloudFront,CDN media distribution
+1580,Edge-Network,i-087e912,2026-06,868.56,0.0,0.0,1505.436,EC2,r5.xlarge cache server
+1581,Data-Science,i-0866884,2026-06,647.16,0.0,0.0,1121.82,EC2,r5.xlarge cache server
+1582,Internal-Tools,ebs-0868993,2026-06,0.0,1694.1599999999999,0.0,211.76399999999998,EBS,gp3 volumes production
+1583,Mobile-Backend,kin-032d614,2026-06,830.28,0.0,34594765.199999996,505.0799999999999,Kinesis,Data stream ingestion
+1584,Partner-Integration,ecs-0c6a269,2026-06,613.56,0.0,0.0,1119.852,ECS,Fargate API cluster
+1585,Compliance-Audit,s3-038c556,2026-06,0.0,57.48,28757434.8,186.924,S3,Static website hosting
+1586,Finance-Systems,s3-0244518,2026-06,0.0,12999.84,2599971.6,454.992,S3,Data lake raw zone
+1587,Edge-Network,ecs-031e824,2026-06,451.32,0.0,0.0,823.7280000000001,ECS,Fargate API cluster
+1588,Finance-Systems,s3-0f0f949,2026-06,0.0,6815.52,10904977.2,497.544,S3,Media content bucket
+1589,Customer-Portal,ses-0ddf126,2026-06,0.0,0.0,599958.0,0.72,SES,Marketing email
+1590,Compliance-Audit,i-08da194,2026-06,682.0799999999999,0.0,0.0,985.1159999999999,EC2,c5.xlarge compute worker
+1591,Marketing-Platform,lam-073d564,2026-06,0.0,0.0,19760976.0,138.32399999999998,Lambda,Data transformer
+1592,QA-Testing,lam-04bb141,2026-06,0.0,0.0,5936104.8,41.843999999999994,Lambda,Image resizer
+1593,Marketing-Platform,nat-08ce373,2026-06,690.3599999999999,0.0,0.0,157.51199999999997,NAT Gateway,Staging VPC NAT
+1594,Marketing-Platform,i-01ec560,2026-06,678.9599999999999,0.0,0.0,588.384,EC2,m5.large monitoring server
+1595,Security-Ops,s3-0183786,2026-06,0.0,918.4799999999999,1837000.8,80.36399999999999,S3,Artifact storage
+1596,Production-Main,lam-06d3145,2026-06,0.0,0.0,67228663.2,467.23199999999997,Lambda,API gateway handler
+1597,Shared-Services,ec-0c82412,2026-06,930.72,0.0,0.0,335.05199999999996,ElastiCache,Redis staging cluster
+1598,Security-Ops,ecs-0f85647,2026-06,583.32,0.0,0.0,1064.7,ECS,Fargate worker cluster
+1599,Shared-Services,rds-084e637,2026-06,775.44,1077.0,0.0,3446.3759999999997,RDS,db.r5.2xlarge Aurora cluster
+1600,Partner-Integration,elb-057a924,2026-06,803.88,0.0,11163970.799999999,162.54,ELB,Classic load balancer
+1601,Security-Ops,ecs-018b473,2026-06,210.36,0.0,0.0,384.0,ECS,Fargate batch cluster
+1602,Production-Main,lam-1011255,2026-06,0.0,0.0,35312548.8,247.2,Lambda,Data transformer
+1603,Data-Science,rds-074d478,2026-06,920.0400000000001,1022.28,0.0,2146.908,RDS,db.m5.xlarge analytics DB
+1604,Shared-Services,r53-08c8350,2026-06,0.0,0.0,71769886.8,107.65199999999999,Route 53,DNS hosting
+1605,Production-Main,i-0df3860,2026-06,938.52,0.0,0.0,68.508,EC2,t3.micro bastion host
+1606,Production-Secondary,i-0574661,2026-06,1410.9599999999998,0.0,0.0,1223.76,EC2,t3.large application server
+1607,Shared-Services,nat-0e47148,2026-06,644.28,0.0,0.0,293.988,NAT Gateway,Production VPC NAT
+1608,Shared-Services,rds-0f7b881,2026-06,681.0,189.11999999999998,0.0,614.688,RDS,db.t3.large development DB
+1609,Mobile-Backend,sqs-0ec8187,2026-06,0.0,0.0,398080.8,0.20400000000000001,SQS,Dead letter queue
+1610,Marketing-Platform,i-0c4b661,2026-06,693.12,0.0,0.0,2009.952,EC2,c5.2xlarge HPC node
+1611,Production-Main,i-0a7c855,2026-06,1062.6,0.0,0.0,77.568,EC2,t3.micro bastion host
+1612,Security-Ops,ec-0478184,2026-06,660.3599999999999,0.0,0.0,237.76799999999997,ElastiCache,Redis staging cluster
+1613,DevOps-Central,ddb-0beb915,2026-06,1200.48,16.56,8336622.0,145.884,DynamoDB,Config store table
+1614,Marketing-Platform,rds-01e2924,2026-06,896.88,249.11999999999998,0.0,809.688,RDS,db.t3.large development DB
+1615,Marketing-Platform,sm-08bb419,2026-06,0.0,0.0,1178979.5999999999,4.716,Secrets Manager,Application secrets
+1616,Security-Ops,eks-0434972,2026-06,543.8399999999999,0.0,0.0,1631.532,EKS,Staging K8s cluster
+1617,ML-Training,eks-036f728,2026-06,1024.32,0.0,0.0,3072.792,EKS,Production K8s cluster
+1618,Compliance-Audit,i-0fb9329,2026-06,671.88,0.0,0.0,582.3359999999999,EC2,m5.large monitoring server
+1619,Finance-Systems,s3-0d12329,2026-06,0.0,11054.640000000001,2210919.6,386.904,S3,Data lake raw zone
+1620,Compliance-Audit,i-0de9629,2026-06,705.0,0.0,0.0,305.808,EC2,t3.medium API server
+1621,Finance-Systems,vpn-0a0f703,2026-06,742.68,0.0,0.0,376.5,VPN Gateway,Site-to-site VPN
+1622,Partner-Integration,sqs-0580884,2026-06,0.0,0.0,510826.8,0.264,SQS,Dead letter queue
+1623,Production-Main,i-0db9952,2026-06,1142.76,0.0,0.0,495.576,EC2,t3.medium API server
+1624,DevOps-Central,ebs-07bd747,2026-06,0.0,566.28,0.0,353.87999999999994,EBS,io2 volumes database
+1625,Internal-Tools,s3-0529282,2026-06,0.0,3787.56,1893742.7999999998,142.03199999999998,S3,Analytics export bucket
+1626,Finance-Systems,eks-0659376,2026-06,1165.8,0.0,0.0,3497.328,EKS,Production K8s cluster
+1627,Partner-Integration,nat-03ce770,2026-06,1148.8799999999999,0.0,0.0,262.092,NAT Gateway,Dev VPC NAT
+1628,Finance-Systems,vpn-0249799,2026-06,831.9599999999999,0.0,0.0,421.776,VPN Gateway,Site-to-site VPN
+1629,Edge-Network,nat-032a145,2026-06,912.4799999999999,0.0,0.0,208.176,NAT Gateway,Dev VPC NAT
+1630,Production-Secondary,i-0cb5459,2026-06,587.28,0.0,0.0,1018.02,EC2,r5.xlarge cache server
+1631,Production-Secondary,r53-0629377,2026-06,0.0,0.0,11825574.0,17.735999999999997,Route 53,Health checks
+1632,Production-Main,lam-0e7f833,2026-06,0.0,0.0,39641110.8,277.488,Lambda,Data transformer
+1633,ML-Training,lam-0bf7821,2026-06,0.0,0.0,13186327.2,92.316,Lambda,Notification dispatcher
+1634,Internal-Tools,rds-0bc8856,2026-06,764.4,530.88,0.0,1964.0639999999999,RDS,db.r5.xlarge PostgreSQL primary
+1635,Data-Science,i-0945672,2026-06,548.88,0.0,0.0,1902.492,EC2,m5.2xlarge batch processor
+1636,Production-Main,s3-05ff747,2026-06,0.0,18291.24,3658254.0,640.188,S3,Data lake raw zone
+1637,Security-Ops,s3-0fee392,2026-06,0.0,7960.92,12737392.799999999,581.136,S3,Media content bucket
+1638,Internal-Tools,ec-0444818,2026-06,627.9599999999999,0.0,0.0,452.09999999999997,ElastiCache,Redis production cluster
+1639,Production-Secondary,r53-093c580,2026-06,0.0,0.0,9992935.2,14.988,Route 53,Health checks
+1640,Compliance-Audit,s3-0973601,2026-06,0.0,16935.359999999997,3387040.8,592.728,S3,Data lake raw zone
+1641,Edge-Network,eks-10ea823,2026-06,802.1999999999999,0.0,0.0,2406.6479999999997,EKS,Production K8s cluster
+1642,Production-Main,i-106d831,2026-06,491.28,0.0,0.0,1424.568,EC2,c5.2xlarge HPC node
+1643,Internal-Tools,s3-0542610,2026-06,0.0,8422.439999999999,84222.0,193.70399999999998,S3,Backup storage bucket
+1644,Edge-Network,lam-0fd2997,2026-06,0.0,0.0,29520774.0,206.65200000000002,Lambda,Data transformer
+1645,Compliance-Audit,i-039e433,2026-06,845.16,0.0,0.0,1464.876,EC2,r5.xlarge cache server
+1646,Production-Secondary,ec-09d7888,2026-06,1061.3999999999999,0.0,0.0,382.116,ElastiCache,Redis staging cluster
+1647,ML-Training,ebs-0e30384,2026-06,0.0,790.1999999999999,0.0,98.75999999999999,EBS,gp3 volumes production
+1648,Edge-Network,s3-0484514,2026-06,0.0,1359.9599999999998,2720023.1999999997,118.99199999999999,S3,Artifact storage
+1649,Customer-Portal,ses-0676835,2026-06,0.0,0.0,937228.7999999999,1.128,SES,Marketing email
+1650,Security-Ops,s3-0184470,2026-06,0.0,59.75999999999999,29891533.2,194.292,S3,Static website hosting
+1651,Production-Secondary,i-1026374,2026-06,825.72,0.0,0.0,715.644,EC2,m5.large monitoring server
+1652,Compliance-Audit,i-039b844,2026-06,798.24,0.0,0.0,2767.044,EC2,r5.2xlarge database server
+1653,Finance-Systems,vpn-0248486,2026-06,1130.76,0.0,0.0,286.608,VPN Gateway,Client VPN endpoint
+1654,Marketing-Platform,nat-083c511,2026-06,616.1999999999999,0.0,0.0,140.58,NAT Gateway,Staging VPC NAT
+1655,Compliance-Audit,sm-0382839,2026-06,0.0,0.0,1425644.4,5.7,Secrets Manager,Application secrets
+1656,Edge-Network,r53-0323539,2026-06,0.0,0.0,56070462.0,84.108,Route 53,DNS hosting
+1657,Internal-Tools,eks-0923427,2026-06,719.64,0.0,0.0,2159.232,EKS,Staging K8s cluster
+1658,Security-Ops,ec-018a285,2026-06,698.0400000000001,0.0,0.0,251.316,ElastiCache,Redis staging cluster
+1659,Compliance-Audit,rds-0b76559,2026-06,407.16,113.04,0.0,480.768,RDS,db.t3.medium MySQL staging
+1660,Production-Main,s3-0ab1484,2026-06,0.0,12603.12,787690.7999999999,315.072,S3,Log archive bucket
+1661,Edge-Network,r53-0f4f980,2026-06,0.0,0.0,56645506.8,84.972,Route 53,DNS hosting
+1662,Partner-Integration,rds-08a3964,2026-06,996.72,692.16,0.0,1972.656,RDS,db.r5.large PostgreSQL replica
+1663,Partner-Integration,cf-052a323,2026-06,0.0,0.0,42994789.199999996,214.98,CloudFront,CDN API distribution
+1664,Edge-Network,ebs-041c946,2026-06,0.0,182.76000000000002,0.0,22.848,EBS,gp3 volumes staging
+1665,Compliance-Audit,rds-1110124,2026-06,1006.92,1118.8799999999999,0.0,2349.7079999999996,RDS,db.m5.xlarge analytics DB
+1666,Production-Secondary,i-0783728,2026-06,961.56,0.0,0.0,833.4119999999999,EC2,m5.large monitoring server
+1667,Security-Ops,ecs-079e707,2026-06,180.36,0.0,0.0,329.328,ECS,Fargate batch cluster
+1668,Edge-Network,sns-102d146,2026-06,0.0,0.0,14932899.6,7.4639999999999995,SNS,Alert notifications
+1669,Production-Main,cf-0002448,2026-06,0.0,0.0,42793112.4,213.96,CloudFront,CDN static assets
+1670,Shared-Services,nat-0cf3375,2026-06,693.72,0.0,0.0,158.256,NAT Gateway,Staging VPC NAT
+1671,Production-Main,ebs-0db5569,2026-06,0.0,703.56,0.0,439.704,EBS,io2 volumes database
+1672,Partner-Integration,ddb-118f465,2026-06,1194.24,165.96,248780490.0,1865.8439999999998,DynamoDB,Cache table
+1673,Marketing-Platform,vpn-06a4632,2026-06,998.8799999999999,0.0,0.0,253.176,VPN Gateway,Client VPN endpoint
+1674,Data-Science,nat-0f38347,2026-06,643.0799999999999,0.0,0.0,146.7,NAT Gateway,Staging VPC NAT
+1675,Production-Main,i-10a7273,2026-06,900.6,0.0,0.0,3121.632,EC2,m5.2xlarge batch processor
+1676,Finance-Systems,eks-0d6f989,2026-06,1014.9599999999999,0.0,0.0,3044.892,EKS,Production K8s cluster
+1677,Customer-Portal,s3-10a8780,2026-06,0.0,22357.8,4471573.2,782.52,S3,Data lake raw zone
+1678,ML-Training,ebs-0720778,2026-06,0.0,760.8,0.0,475.43999999999994,EBS,io2 volumes database
+1679,Production-Secondary,i-007a915,2026-06,594.0,0.0,0.0,1722.564,EC2,c5.2xlarge HPC node
+1680,Security-Ops,lam-017c772,2026-06,0.0,0.0,65157132.0,452.844,Lambda,API gateway handler
+1681,QA-Testing,ec-049e465,2026-06,933.4799999999999,0.0,0.0,672.0719999999999,ElastiCache,Redis production cluster
+1682,Security-Ops,ecs-0a46735,2026-06,206.04,0.0,0.0,376.02000000000004,ECS,Fargate batch cluster
+1683,Shared-Services,ecs-09cb472,2026-06,285.48,0.0,0.0,520.9799999999999,ECS,Fargate worker cluster
+1684,Security-Ops,ecs-0feb605,2026-06,621.72,0.0,0.0,1134.456,ECS,Fargate API cluster
+1685,Data-Science,rds-0532882,2026-06,924.0,641.64,0.0,2374.14,RDS,db.r5.xlarge PostgreSQL primary
+1686,Compliance-Audit,rs-0380544,2026-06,704.64,1957.1999999999998,0.0,3571.884,Redshift,Data warehouse cluster
+1687,Data-Science,rs-0bae486,2026-06,812.28,2256.24,0.0,4117.668,Redshift,Data warehouse cluster
+1688,Finance-Systems,s3-04d8321,2026-06,0.0,14744.159999999998,2948824.8,516.036,S3,Data lake raw zone
+1689,Compliance-Audit,rs-0584267,2026-06,0.0,0.0,5821746.0,291.084,Redshift,Spectrum queries
+1690,Data-Science,i-013f540,2026-06,910.56,0.0,0.0,66.468,EC2,t3.micro bastion host
+1691,Security-Ops,ebs-0f08503,2026-06,0.0,4887.599999999999,0.0,219.936,EBS,st1 volumes archive
+1692,QA-Testing,lam-04fb414,2026-06,0.0,0.0,4857620.399999999,34.236,Lambda,Image resizer
+1693,Internal-Tools,ses-0480175,2026-06,0.0,0.0,658052.4,0.78,SES,Marketing email
+1694,Internal-Tools,rds-0a58813,2026-06,950.7599999999999,1320.6,0.0,4225.692,RDS,db.r5.2xlarge Aurora cluster
+1695,Production-Secondary,elb-0081586,2026-06,752.88,0.0,31370031.599999998,228.37199999999999,ELB,Application load balancer
+1696,Production-Main,lam-0f15914,2026-06,0.0,0.0,47052843.6,329.37600000000003,Lambda,Data transformer
+1697,Production-Secondary,sqs-0c78882,2026-06,0.0,0.0,35212232.4,17.616,SQS,Event notification queue
+1698,Internal-Tools,cf-02b3439,2026-06,0.0,0.0,140430314.4,702.156,CloudFront,CDN web distribution
+1699,Marketing-Platform,ddb-099f108,2026-06,723.72,50.279999999999994,80415860.39999999,565.428,DynamoDB,Session store table
+1700,Security-Ops,ebs-0b88756,2026-06,0.0,749.52,0.0,468.46799999999996,EBS,io2 volumes database
+1701,Compliance-Audit,ec-1085586,2026-06,692.16,0.0,0.0,498.348,ElastiCache,Redis production cluster
+1702,Compliance-Audit,rds-0395341,2026-06,951.12,660.6,0.0,2444.004,RDS,db.r5.xlarge PostgreSQL primary
+1703,DevOps-Central,kin-1047535,2026-06,1240.56,0.0,34459516.8,503.12399999999997,Kinesis,Firehose delivery
+1704,Production-Main,i-10be601,2026-06,739.68,0.0,0.0,53.988,EC2,t3.micro bastion host
+1705,ML-Training,rds-06bb423,2026-06,821.64,912.9599999999999,0.0,1917.1439999999998,RDS,db.m5.xlarge analytics DB
+1706,Edge-Network,s3-061c989,2026-06,0.0,1472.1599999999999,2944566.0,128.808,S3,Artifact storage
+1707,Partner-Integration,r53-03d9599,2026-06,0.0,0.0,14943105.6,22.416,Route 53,Health checks
+1708,Partner-Integration,ddb-06b5916,2026-06,939.9599999999999,13.08,6527509.2,114.24,DynamoDB,Config store table
+1709,QA-Testing,ec-03e4601,2026-06,812.0400000000001,0.0,0.0,292.356,ElastiCache,Redis staging cluster
+1710,Compliance-Audit,s3-1036303,2026-06,0.0,796.68,1593555.5999999999,69.72,S3,Artifact storage
+1711,Security-Ops,ses-059a356,2026-06,0.0,0.0,3123481.1999999997,3.7439999999999998,SES,Transactional email
+1712,Edge-Network,i-0694281,2026-06,780.6,0.0,0.0,2706.096,EC2,m5.2xlarge batch processor
+1713,Shared-Services,rds-065b167,2026-06,807.0,1120.6799999999998,0.0,3586.356,RDS,db.r5.2xlarge Aurora cluster
+1714,Customer-Portal,i-0e08975,2026-06,767.64,0.0,0.0,56.028,EC2,t3.micro bastion host
+1715,Security-Ops,kin-0193241,2026-06,1089.36,0.0,45391731.6,662.7239999999999,Kinesis,Data stream ingestion
+1716,Marketing-Platform,sm-1101565,2026-06,0.0,0.0,1220070.0,4.896,Secrets Manager,Application secrets
+1717,Compliance-Audit,i-0e34427,2026-06,830.52,0.0,0.0,719.808,EC2,m5.large monitoring server
+1718,DevOps-Central,ddb-00d0172,2026-06,1124.64,78.11999999999999,124965571.19999999,878.664,DynamoDB,Session store table
+1719,Data-Science,rds-03f0203,2026-06,893.52,620.4,0.0,2295.7439999999997,RDS,db.r5.xlarge PostgreSQL primary
+1720,Production-Main,i-0e11185,2026-06,795.84,0.0,0.0,58.09199999999999,EC2,t3.micro bastion host
+1721,Compliance-Audit,ecs-0b5e734,2026-06,624.6,0.0,0.0,1139.916,ECS,Fargate worker cluster
+1722,Production-Secondary,ec-08ac154,2026-06,950.28,0.0,0.0,342.10799999999995,ElastiCache,Redis staging cluster
+1723,Marketing-Platform,rs-09b1953,2026-06,0.0,0.0,8498262.0,424.90799999999996,Redshift,Spectrum queries
+1724,Shared-Services,s3-0674192,2026-06,0.0,21754.44,4350909.6,761.4119999999999,S3,Data lake raw zone
+1725,Finance-Systems,s3-06ae169,2026-06,0.0,8133.48,81334.8,187.06799999999998,S3,Backup storage bucket
+1726,ML-Training,i-1111465,2026-06,822.6,0.0,0.0,2851.608,EC2,r5.2xlarge database server
+1727,Data-Science,ddb-0143420,2026-06,793.8,110.28,165381091.2,1240.356,DynamoDB,Cache table
+1728,Internal-Tools,s3-09df817,2026-06,0.0,5273.76,8437834.799999999,384.972,S3,Media content bucket
+1729,Internal-Tools,sqs-060b238,2026-06,0.0,0.0,57832477.199999996,28.907999999999998,SQS,Order processing queue
+1730,Security-Ops,s3-0669507,2026-06,0.0,56.04,28018941.599999998,182.124,S3,Static website hosting
+1731,Security-Ops,sqs-10d7510,2026-06,0.0,0.0,54751287.6,27.384,SQS,Event notification queue
+1732,Compliance-Audit,s3-0a50616,2026-06,0.0,3367.08,20202500.4,841.776,S3,Production asset storage
+1733,Data-Science,rds-0c7a236,2026-06,840.9599999999999,233.64,0.0,759.2280000000001,RDS,db.t3.large development DB
+1734,Marketing-Platform,vpn-0dd6580,2026-06,971.52,0.0,0.0,492.504,VPN Gateway,Site-to-site VPN
+1735,Marketing-Platform,rds-0e87973,2026-06,582.8399999999999,161.88,0.0,688.092,RDS,db.t3.medium MySQL staging
+1736,Edge-Network,sns-0adf491,2026-06,0.0,0.0,14346420.0,7.176,SNS,Alert notifications
+1737,Internal-Tools,s3-04de710,2026-06,0.0,9986.04,624128.4,249.66,S3,Log archive bucket
+1738,Security-Ops,sqs-0efd772,2026-06,0.0,0.0,53492836.8,26.747999999999998,SQS,Event notification queue
+1739,Internal-Tools,lam-02ce460,2026-06,0.0,0.0,4679774.399999999,32.988,Lambda,Image resizer
+1740,Security-Ops,ecs-106e357,2026-06,225.0,0.0,0.0,410.556,ECS,Fargate batch cluster
+1741,Production-Main,ebs-0510188,2026-06,0.0,823.56,0.0,514.728,EBS,io2 volumes database
+1742,Compliance-Audit,eks-0398875,2026-06,677.52,0.0,0.0,2032.6439999999998,EKS,Production K8s cluster
+1743,Security-Ops,lam-0a77629,2026-06,0.0,0.0,31102986.0,217.716,Lambda,Data transformer
+1744,Internal-Tools,sqs-0dfd225,2026-06,0.0,0.0,71498539.2,35.736,SQS,Order processing queue
+1745,Production-Secondary,ses-0084349,2026-06,0.0,0.0,627638.4,0.756,SES,Marketing email
+1746,QA-Testing,cf-1064548,2026-06,0.0,0.0,176736921.6,883.68,CloudFront,CDN media distribution
+1747,Marketing-Platform,i-01ed199,2026-06,754.8,0.0,0.0,1090.176,EC2,c5.xlarge compute worker
+1748,Security-Ops,ses-0189997,2026-06,0.0,0.0,2792040.0,3.348,SES,Transactional email
+1749,Partner-Integration,sqs-03d0699,2026-06,0.0,0.0,34566397.199999996,17.28,SQS,Event notification queue
+1750,Customer-Portal,i-082b392,2026-06,1101.9599999999998,0.0,0.0,955.008,EC2,m5.large monitoring server
+1751,Security-Ops,lam-0b97493,2026-06,0.0,0.0,4796058.0,33.815999999999995,Lambda,Image resizer
+1752,Edge-Network,i-0ebe182,2026-06,862.0799999999999,0.0,0.0,2988.828,EC2,r5.2xlarge database server
+1753,DevOps-Central,ebs-0a47271,2026-06,0.0,509.52,0.0,318.46799999999996,EBS,io2 volumes database
+1754,ML-Training,r53-05e4431,2026-06,0.0,0.0,15571180.799999999,23.352,Route 53,Health checks
+1755,Internal-Tools,lam-06df377,2026-06,0.0,0.0,10988350.799999999,76.91999999999999,Lambda,Notification dispatcher
+1756,ML-Training,ebs-047e173,2026-06,0.0,783.6,0.0,489.72,EBS,io2 volumes database
+1757,Compliance-Audit,i-0a7d533,2026-06,1323.7199999999998,0.0,0.0,96.636,EC2,t3.micro bastion host
+1758,Production-Main,lam-0e06405,2026-06,0.0,0.0,37566446.4,262.96799999999996,Lambda,Data transformer
+1759,Internal-Tools,vpn-02d0237,2026-06,656.0400000000001,0.0,0.0,166.29600000000002,VPN Gateway,Client VPN endpoint
+1760,Data-Science,ses-04d0520,2026-06,0.0,0.0,2807468.4,3.372,SES,Transactional email
+1761,QA-Testing,lam-0d3d329,2026-06,0.0,0.0,3459652.8,24.215999999999998,Lambda,Webhook processor
+1762,Internal-Tools,lam-0a62935,2026-06,0.0,0.0,25707433.2,179.952,Lambda,Data transformer
+1763,Compliance-Audit,s3-038d550,2026-06,0.0,4387.44,7019824.8,320.28,S3,Media content bucket
+1764,Marketing-Platform,rds-01e5261,2026-06,510.59999999999997,141.84,0.0,602.832,RDS,db.t3.medium MySQL staging
+1765,Security-Ops,s3-0c00456,2026-06,0.0,22436.16,4487222.399999999,785.256,S3,Data lake raw zone
+1766,Security-Ops,lam-0f95467,2026-06,0.0,0.0,4428676.8,31.223999999999997,Lambda,Image resizer
+1767,Security-Ops,lam-0178762,2026-06,0.0,0.0,1502949.5999999999,11.268,Lambda,Cron job runner
+1768,ML-Training,i-036b203,2026-06,633.0,0.0,0.0,2194.548,EC2,m5.2xlarge batch processor
+1769,Mobile-Backend,ebs-1018746,2026-06,0.0,4631.639999999999,0.0,208.428,EBS,st1 volumes archive
+1770,Compliance-Audit,s3-1162957,2026-06,0.0,13427.640000000001,134276.4,308.832,S3,Backup storage bucket
+1771,ML-Training,r53-0c3c716,2026-06,0.0,0.0,16129728.0,24.192,Route 53,Health checks
+1772,Production-Main,ecs-0a4c265,2026-06,475.92,0.0,0.0,868.644,ECS,Fargate worker cluster
+1773,Internal-Tools,ebs-0bf3427,2026-06,0.0,1612.0800000000002,0.0,201.492,EBS,gp3 volumes production
+1774,Production-Secondary,sqs-06ac317,2026-06,0.0,0.0,30625147.2,15.312,SQS,Event notification queue
+1775,Compliance-Audit,s3-08c6538,2026-06,0.0,3975.0,1987482.0,149.052,S3,Analytics export bucket
+1776,Customer-Portal,vpn-047a741,2026-06,1154.64,0.0,0.0,292.68,VPN Gateway,Client VPN endpoint
+1777,Partner-Integration,sqs-0cee896,2026-06,0.0,0.0,44972218.8,22.476,SQS,Event notification queue
+1778,Internal-Tools,rds-0d59420,2026-06,596.28,662.4,0.0,1391.2199999999998,RDS,db.m5.xlarge analytics DB
+1779,Production-Main,lam-0e64419,2026-06,0.0,0.0,8456653.2,59.208,Lambda,Notification dispatcher
+1780,Internal-Tools,ebs-0a17241,2026-06,0.0,478.32,0.0,298.944,EBS,io2 volumes database
+1781,Marketing-Platform,sm-0b53746,2026-06,0.0,0.0,1088238.0,4.356,Secrets Manager,Application secrets
+1782,Finance-Systems,s3-09cc225,2026-06,0.0,1554.7199999999998,3109336.8,136.044,S3,Artifact storage
+1783,Data-Science,i-04a3473,2026-06,441.36,0.0,0.0,1279.896,EC2,c5.2xlarge HPC node
+1784,Compliance-Audit,rds-0bdd884,2026-06,1275.36,354.36,0.0,1151.364,RDS,db.t3.large development DB
+1785,Shared-Services,rds-09b7314,2026-06,704.16,195.6,0.0,635.652,RDS,db.t3.large development DB
+1786,Security-Ops,lam-0f1a552,2026-06,0.0,0.0,35665448.4,249.64799999999997,Lambda,Data transformer
+1787,Internal-Tools,s3-0751248,2026-06,0.0,10049.759999999998,100495.2,231.132,S3,Backup storage bucket
+1788,Marketing-Platform,sm-089e505,2026-06,0.0,0.0,1266180.0,5.063999999999999,Secrets Manager,Application secrets
+1789,Security-Ops,ec-0f29845,2026-06,903.9599999999999,0.0,0.0,325.45199999999994,ElastiCache,Redis staging cluster
+1790,Production-Main,cf-1086153,2026-06,0.0,0.0,40525135.199999996,202.61999999999998,CloudFront,CDN static assets
+1791,Customer-Portal,ses-0a5c461,2026-06,0.0,0.0,873320.4,1.044,SES,Marketing email
+1792,Production-Secondary,ecs-06ba406,2026-06,501.59999999999997,0.0,0.0,915.372,ECS,Fargate worker cluster
+1793,ML-Training,ebs-037a362,2026-06,0.0,897.0,0.0,112.116,EBS,gp3 volumes production
+1794,Marketing-Platform,ddb-0631674,2026-06,814.0799999999999,56.64,90460186.8,636.0479999999999,DynamoDB,Session store table
+1795,Marketing-Platform,rs-1184112,2026-06,0.0,0.0,7601770.8,380.088,Redshift,Spectrum queries
+1796,Finance-Systems,s3-0af5560,2026-06,0.0,7424.879999999999,74247.59999999999,170.772,S3,Backup storage bucket
+1797,Mobile-Backend,sqs-09bf888,2026-06,0.0,0.0,431418.0,0.216,SQS,Dead letter queue
+1798,Security-Ops,s3-05b8656,2026-06,0.0,60.959999999999994,30489678.0,198.18,S3,Static website hosting
+1799,Production-Secondary,elb-0fdd444,2026-06,752.64,0.0,52261186.8,326.11199999999997,ELB,Network load balancer
+1800,Marketing-Platform,rds-0a36947,2026-06,493.32,137.16,0.0,582.3359999999999,RDS,db.t3.medium MySQL staging
+1801,Security-Ops,lam-0e14664,2026-06,0.0,0.0,1434663.5999999999,10.752,Lambda,Cron job runner
+1802,Internal-Tools,lam-1019595,2026-06,0.0,0.0,1466532.0,11.004,Lambda,Cron job runner
+1803,Security-Ops,ec-0aea108,2026-06,845.64,0.0,0.0,304.452,ElastiCache,Redis staging cluster
+1804,Marketing-Platform,ec-07f7887,2026-06,797.16,0.0,0.0,573.96,ElastiCache,Redis production cluster
+1805,Compliance-Audit,rds-0914885,2026-06,793.44,551.04,0.0,2038.9199999999998,RDS,db.r5.xlarge PostgreSQL primary
+1806,Compliance-Audit,s3-1074650,2026-06,0.0,19590.6,3918079.1999999997,685.656,S3,Data lake raw zone
+1807,Partner-Integration,sqs-0a84952,2026-06,0.0,0.0,39324142.8,19.656,SQS,Event notification queue
+1808,QA-Testing,lam-0d07109,2026-06,0.0,0.0,4393242.0,30.971999999999998,Lambda,Image resizer
+1809,Production-Main,cf-0004444,2026-06,0.0,0.0,139745012.4,698.7239999999999,CloudFront,CDN web distribution
+1810,Compliance-Audit,s3-0391199,2026-06,0.0,3562.56,21375532.8,890.652,S3,Production asset storage
+1811,Edge-Network,sns-0dc0114,2026-06,0.0,0.0,14677117.2,7.343999999999999,SNS,Alert notifications
+1812,Marketing-Platform,sm-0999408,2026-06,0.0,0.0,1148772.0,4.596,Secrets Manager,Application secrets
+1813,Compliance-Audit,r53-0f97693,2026-06,0.0,0.0,8333728.8,12.504,Route 53,Health checks
+1814,Finance-Systems,s3-06e1275,2026-06,0.0,13288.8,2657755.1999999997,465.10799999999995,S3,Data lake raw zone
+1815,Customer-Portal,i-115b995,2026-06,765.6,0.0,0.0,55.884,EC2,t3.micro bastion host
+1816,Mobile-Backend,sm-0332348,2026-06,0.0,0.0,1461243.5999999999,5.844,Secrets Manager,Application secrets
+1817,Internal-Tools,ebs-02ab559,2026-06,0.0,5783.4,0.0,260.256,EBS,st1 volumes archive
+1818,Production-Secondary,s3-0e24718,2026-06,0.0,1249.2,2498278.8,109.29599999999999,S3,Artifact storage
+1819,Security-Ops,lam-0649249,2026-06,0.0,0.0,31792731.599999998,222.54,Lambda,Data transformer
+1820,Shared-Services,rds-01a2711,2026-06,1152.24,1280.28,0.0,2688.5399999999995,RDS,db.m5.xlarge analytics DB
+1821,Marketing-Platform,vpn-112e330,2026-06,871.32,0.0,0.0,220.87199999999999,VPN Gateway,Client VPN endpoint
+1822,Edge-Network,i-0325468,2026-06,880.0799999999999,0.0,0.0,3051.024,EC2,r5.2xlarge database server
+1823,Finance-Systems,elb-0edb765,2026-06,784.44,0.0,10894606.799999999,158.616,ELB,Classic load balancer
+1824,Internal-Tools,ebs-09b0400,2026-06,0.0,537.4799999999999,0.0,335.95199999999994,EBS,io2 volumes database
+1825,Finance-Systems,eks-10b8855,2026-06,1097.8799999999999,0.0,0.0,3293.6639999999998,EKS,Production K8s cluster
+1826,Internal-Tools,rds-0614124,2026-06,969.9599999999999,673.56,0.0,1919.724,RDS,db.r5.large PostgreSQL replica
+1827,Marketing-Platform,ddb-08e1627,2026-06,584.04,40.68,64906268.4,456.372,DynamoDB,Session store table
+1828,Data-Science,r53-0149781,2026-06,0.0,0.0,11370223.2,17.052,Route 53,Health checks
+1829,Customer-Portal,ses-074e901,2026-06,0.0,0.0,845960.4,1.02,SES,Marketing email
+1830,Edge-Network,vpn-05d8638,2026-06,780.84,0.0,0.0,197.90399999999997,VPN Gateway,Client VPN endpoint
+1831,Customer-Portal,cf-028a177,2026-06,0.0,0.0,87975081.6,439.872,CloudFront,CDN web distribution
+1832,Mobile-Backend,sqs-1135610,2026-06,0.0,0.0,440398.8,0.22799999999999998,SQS,Dead letter queue
+1833,Edge-Network,elb-0329218,2026-06,1012.56,0.0,14062611.6,204.756,ELB,Classic load balancer
+1834,Compliance-Audit,rds-0cc0641,2026-06,1076.8799999999999,747.84,0.0,2131.212,RDS,db.r5.large PostgreSQL replica

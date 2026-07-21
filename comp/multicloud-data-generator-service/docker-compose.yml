@@ -7,7 +7,7 @@ services:
       image: localstack/localstack:3.0.0
       container_name: azeem-corp-aws
       ports:
-        - "4568:4568"
+        - "4568:4566"
       environment:
         - SERVICES=s3,sqs
         - DEFAULT_REGION=us-east-1

@@ -6,6 +6,8 @@ from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import ResourceExistsError
 from botocore.exceptions import ClientError
 import boto3
+import io
+from concurrent.futures import ThreadPoolExecutor
 
 AZURITE_ACCOUNT_NAME = "devstoreaccount1"
 AZURITE_ACCOUNT_KEY = (
@@ -31,7 +33,7 @@ class MultiCloudStorageManager:
         if self.environment == "local":
             self.s3_client = boto3.client(
                 "s3",
-                endpoint_url="http://localhost:4566",
+                endpoint_url="http://localhost:4568",
                 aws_access_key_id="mock_key",
                 aws_secret_access_key="mock_secret",
                 region_name="us-east-1"
@@ -134,3 +136,52 @@ class MultiCloudStorageManager:
             download_stream = blob_client.download_blob()
             file.write(download_stream.readall())
         print(f"Downloaded '{blob_name}' from Azure to {local_dest_path}")
+
+    # Easy interface for managing all of the buckets
+    def create_buckets(self, bucket_name: str):
+        self.create_bucket_aws(bucket_name)
+        self.create_bucket_azure(bucket_name)
+        self.create_bucket_gcp(bucket_name)
+
+    def upload(self,
+               aws_local_path: str,
+               gcp_local_path: str,
+               azure_local_path: str,
+               bucket_name: str,
+               period: str):
+        
+        self.upload_to_aws(aws_local_path, bucket_name, period)
+        self.upload_to_gcp(gcp_local_path, bucket_name, period)
+        self.upload_to_azure(azure_local_path, bucket_name, period)
+
+    def upload_csv_bytes(self, csv_data: bytes, bucket_name: str, object_name: str):
+        """Uploads raw CSV bytes to AWS, GCP, and Azure concurrently without writing to disk."""
+        
+        def _aws_upload():
+            # boto3 put_object accepts raw bytes/file-like buffers directly
+            self.s3_client.put_object(
+                Bucket=bucket_name,
+                Key=object_name,
+                Body=csv_data
+            )
+
+        def _gcp_upload():
+            bucket = self.gcp_client.bucket(bucket_name)
+            blob = bucket.blob(object_name)
+            blob.upload_from_string(csv_data, content_type="text/csv")
+
+        def _azure_upload():
+            blob_client = self.azure_client.get_blob_client(container=bucket_name, blob=object_name)
+            blob_client.upload_blob(csv_data, overwrite=True)
+
+        # Execute all three cloud writes concurrently to avoid blocking
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            f1 = executor.submit(_aws_upload)
+            f2 = executor.submit(_gcp_upload)
+            f3 = executor.submit(_azure_upload)
+            # Wait for all uploads to complete
+            f1.result()
+            f2.result()
+            f3.result()
+
+        print(f"Uploaded updated CSV in-memory to all clouds for '{bucket_name}/{object_name}'")
