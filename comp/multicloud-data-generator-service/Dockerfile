@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -6,9 +6,8 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Do fix
-COPY app.py .
+COPY . .
 
-EXPOSE 5000
+EXPOSE 5008
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "5008"]
+CMD ["python", "main.py"]

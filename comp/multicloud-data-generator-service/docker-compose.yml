@@ -3,6 +3,21 @@
 # This implementation is easily swappable with real cloud BLOB storages
 
 services:
+  data-generator:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: multicloud-data-generator
+      ports:
+        - "5008:5008"
+      environment:
+        - STORAGE_EMULATOR_HOST=http://fake-gcs-server:4443
+        - AZURITE_BLOB_ENDPOINT=http://azurite:10000/devstoreaccount1
+        - AWS_ENDPOINT_URL=http://localstack:4568
+      depends_on:
+        - azeem-corp-aws-storage
+        - azeem-corp-azure-storage
+        - azeem-corp-gcp-storage
   azeem-corp-aws-storage:
       image: localstack/localstack:3.0.0
       container_name: azeem-corp-aws
