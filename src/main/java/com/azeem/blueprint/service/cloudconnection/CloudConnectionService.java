@@ -109,11 +109,7 @@ public class CloudConnectionService {
     // TODO: call the Python ingestion service for each connection
     return active.size();
   }
-
-  // TODO: Architecture for polling based on saved value? What do we use to automatically poll?
-  //  This seems wrong. We should always filer by user, unless we are focusing on polling, which
-  //   doesn't seem to be the case here? Or maybe we constantly just check active connections and
-  //    cache them across all users and check if they need to be polled?
+  
   public List<ActiveCloudConnection> getActiveConnections() {
     return connectionRepository
         .findByStatus(CloudConnectionStatus.ACTIVE.name())
