@@ -17,4 +17,5 @@
     <include file="db/changelog/010-transform-alarms-to-cloud.xml"/>
     <include file="db/changelog/011-create-org-context-documents.xml"/>
     <include file="db/changelog/012-create-alarm-threshold-preferences.xml"/>
+    <include file="db/changelog/013-create-cloud-connections.xml"/>
 </databaseChangeLog>

@@ -29,6 +29,13 @@ import org.springframework.stereotype.Component;
  * Class used for loading demo data for demonstration purposes. Used by those who may not have a
  * properly formatted CSV file to run analytics on
  */
+// TODO: Update to use S3 bucket as a source of truth for storage (just as real users would).
+//  Avoid loading from classpath.
+//  Would it make sense to take care of scheduling of ingestion in the Java monolith?
+//  Simply calling the Python service when need be. That way, a user in CloudConnection
+//  can also do poll frequency on the frontend easily? The Cloud ingestion service
+//  knows very little, just connects to the buckets using what the Java gives it and
+//  returns formatted file by putting it in teh proper s3 key for the user?
 @Component
 public class DemoDatasetLoader {
   Logger log = LoggerFactory.getLogger(DemoDatasetLoader.class);

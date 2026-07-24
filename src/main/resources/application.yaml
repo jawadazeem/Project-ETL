@@ -118,6 +118,8 @@ prediction:
 audit:
   service:
     url: ${AUDIT_SERVICE_URL:http://audit-service:5001}
+cloud-connection:
+  encryption-key: ${CLOUD_CONNECTION_ENCRYPTION_KEY:dGVzdC1rZXktMzItYnl0ZXMtbG9uZy1mb3ItYWVzMjU2}
 
 # Database config
 database-config:

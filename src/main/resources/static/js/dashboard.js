@@ -1482,6 +1482,238 @@ function changePageTopRecords(step) {
     renderTopRecordsPage();
 }
 
+// ── Cloud connections modal ─────────────────────────────────────────────
+
+function openConnectionsModal() {
+    document.getElementById("connections-overlay").style.display = "flex";
+    loadConnections();
+}
+
+function closeConnectionsModal() {
+    document.getElementById("connections-overlay").style.display = "none";
+    hideAddConnectionForm();
+}
+
+function showAddConnectionForm() {
+    document.getElementById("connections-add-form").style.display = "block";
+    document.getElementById("connections-show-add-btn").style.display = "none";
+    updateCredentialFields();
+}
+
+function hideAddConnectionForm() {
+    document.getElementById("connections-add-form").style.display = "none";
+    document.getElementById("connections-show-add-btn").style.display = "";
+}
+
+function updateCredentialFields() {
+    const provider = document.getElementById("conn-provider").value;
+    document.getElementById("conn-creds-aws").style.display = provider === "AWS" ? "" : "none";
+    document.getElementById("conn-creds-azure").style.display = provider === "AZURE" ? "" : "none";
+    document.getElementById("conn-creds-gcp").style.display = provider === "GCP" ? "" : "none";
+}
+
+function gatherCredentials() {
+    const provider = document.getElementById("conn-provider").value;
+    if (provider === "AWS") {
+        return {
+            roleArn: document.getElementById("conn-aws-role-arn").value.trim(),
+            externalId: document.getElementById("conn-aws-external-id").value.trim()
+        };
+    }
+    if (provider === "AZURE") {
+        return {
+            tenantId: document.getElementById("conn-azure-tenant-id").value.trim(),
+            clientId: document.getElementById("conn-azure-client-id").value.trim(),
+            clientSecret: document.getElementById("conn-azure-client-secret").value.trim(),
+            storageAccount: document.getElementById("conn-azure-storage-account").value.trim(),
+            containerName: document.getElementById("conn-azure-container").value.trim()
+        };
+    }
+    return {
+        projectId: document.getElementById("conn-gcp-project-id").value.trim(),
+        credentialsJson: document.getElementById("conn-gcp-creds-json").value.trim()
+    };
+}
+
+function clearAddConnectionForm() {
+    document.getElementById("conn-display-name").value = "";
+    document.getElementById("conn-bucket").value = "";
+    document.getElementById("conn-region").value = "";
+    document.getElementById("conn-provider").value = "AWS";
+    document.getElementById("conn-poll-frequency").value = "DAILY";
+    document.getElementById("conn-aws-role-arn").value = "";
+    document.getElementById("conn-aws-external-id").value = "";
+    document.getElementById("conn-azure-tenant-id").value = "";
+    document.getElementById("conn-azure-client-id").value = "";
+    document.getElementById("conn-azure-client-secret").value = "";
+    document.getElementById("conn-azure-storage-account").value = "";
+    document.getElementById("conn-azure-container").value = "";
+    document.getElementById("conn-gcp-project-id").value = "";
+    document.getElementById("conn-gcp-creds-json").value = "";
+    updateCredentialFields();
+}
+
+async function saveConnection() {
+    const displayName = document.getElementById("conn-display-name").value.trim();
+    const bucketName = document.getElementById("conn-bucket").value.trim();
+
+    if (!displayName || !bucketName) {
+        showToast("Display name and bucket name are required.", "error");
+        return;
+    }
+
+    const btn = document.getElementById("conn-save-btn");
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+
+    try {
+        const body = {
+            provider: document.getElementById("conn-provider").value,
+            displayName,
+            bucketName,
+            region: document.getElementById("conn-region").value.trim() || null,
+            pollFrequency: document.getElementById("conn-poll-frequency").value,
+            credentials: gatherCredentials()
+        };
+
+        const res = await fetch("/cloud-connections", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-User-Id": GUEST_USER_ID
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) {
+            throw new Error(await readApiErrorMessage(res, "Failed to save connection."));
+        }
+
+        showToast("Connection added.", "success");
+        clearAddConnectionForm();
+        hideAddConnectionForm();
+        await loadConnections();
+    } catch (e) {
+        console.error("Save connection failed", e);
+        showToast(e.message || "Could not save connection.");
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Save Connection";
+    }
+}
+
+async function loadConnections() {
+    const list = document.getElementById("connections-list");
+    list.innerHTML = '<li class="text-muted">Loading connections...</li>';
+
+    try {
+        const res = await fetch("/cloud-connections", {
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) throw new Error("Failed to load connections");
+
+        const connections = await res.json();
+        renderConnections(connections);
+    } catch (e) {
+        console.error("Failed to load connections", e);
+        list.innerHTML = '<li class="text-muted">Could not load connections.</li>';
+    }
+}
+
+function renderConnections(connections) {
+    const list = document.getElementById("connections-list");
+
+    if (!connections.length) {
+        list.innerHTML = '<li class="text-muted">No cloud connections configured. Click + Add to connect a billing bucket.</li>';
+        return;
+    }
+
+    list.innerHTML = connections.map(conn => {
+        const providerClass = conn.provider.toLowerCase();
+        const statusClass = conn.status.toLowerCase();
+        const lastPolled = conn.lastPolledAt
+            ? new Date(conn.lastPolledAt).toLocaleString()
+            : "Never";
+        const frequency = conn.pollFrequency.charAt(0) + conn.pollFrequency.slice(1).toLowerCase();
+
+        return `
+            <li class="connection-item">
+                <div class="connection-info">
+                    <div class="connection-title">
+                        <span class="connection-status-dot ${statusClass}" title="${conn.status}"></span>
+                        ${escapeForHtml(conn.displayName)}
+                    </div>
+                    <div class="connection-meta">
+                        ${escapeForHtml(conn.bucketName)}${conn.region ? " · " + escapeForHtml(conn.region) : ""}
+                        · ${frequency} · Last polled: ${lastPolled}
+                    </div>
+                </div>
+                <div class="connection-actions">
+                    <span class="connection-provider-badge ${providerClass}">${conn.provider}</span>
+                    <button class="btn btn-sm btn-outline-danger conn-delete-btn" type="button" data-conn-id="${conn.id}">Delete</button>
+                </div>
+            </li>
+        `;
+    }).join("");
+}
+
+async function deleteConnection(connectionId) {
+    if (!connectionId) return;
+    if (!confirm("Delete this cloud connection? This cannot be undone.")) return;
+
+    try {
+        const res = await fetch(`/cloud-connections/${connectionId}`, {
+            method: "DELETE",
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) throw new Error("Delete failed");
+
+        showToast("Connection deleted.", "success");
+        await loadConnections();
+    } catch (e) {
+        console.error("Delete connection failed", e);
+        showToast("Could not delete connection.");
+    }
+}
+
+// ── Sync cloud data ─────────────────────────────────────────────────────
+
+async function onSyncDataClick() {
+    const btn = document.getElementById("sync-data-btn");
+    btn.disabled = true;
+    btn.textContent = "Syncing...";
+
+    try {
+        const res = await fetch("/cloud-connections/sync", {
+            method: "POST",
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+
+        if (!res.ok) {
+            const msg = await readApiErrorMessage(res, "Sync failed.");
+            showToast(msg);
+            return;
+        }
+
+        const data = await res.json();
+        const count = data.connectionsQueued || 0;
+
+        if (count === 0) {
+            showToast("No active cloud connections to sync. Add a connection first.", "info");
+        } else {
+            showToast(`Sync triggered for ${count} connection${count === 1 ? "" : "s"}.`, "success");
+        }
+    } catch (e) {
+        console.error("Sync failed", e);
+        showToast("Could not sync cloud data. Check the connection.");
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Sync Now";
+    }
+}
+
 // ── PDF Report ──────────────────────────────────────────────────────────
 
 async function onGeneratePdfClick() {
@@ -1736,6 +1968,8 @@ function toggleArchivedView() {
 
     document.getElementById("delete-dataset-btn").style.display = viewingArchived ? "none" : "";
     document.getElementById("archive-dataset-btn").style.display = viewingArchived ? "none" : "";
+    document.getElementById("sync-data-btn").style.display = viewingArchived ? "none" : "";
+    document.getElementById("connections-btn").style.display = viewingArchived ? "none" : "";
     document.getElementById("generate-pdf-btn").style.display = viewingArchived ? "none" : "";
     document.getElementById("restore-dataset-btn").style.display = viewingArchived ? "" : "none";
 
@@ -1851,6 +2085,7 @@ function wireDashboardEvents() {
     document.getElementById("exportDataTabBtn")?.addEventListener("click", exportActiveDataTabCsv);
     document.getElementById("exportAlarmsBtn")?.addEventListener("click", exportAlarmsCsv);
     document.getElementById("infoBtn")?.addEventListener("click", openInfo);
+    document.getElementById("sync-data-btn")?.addEventListener("click", onSyncDataClick);
     document.getElementById("generate-pdf-btn")?.addEventListener("click", onGeneratePdfClick);
     document.getElementById("corporate-info-close")?.addEventListener("click", closeCorporateInfoModal);
     document.getElementById("corpCancelBtn")?.addEventListener("click", closeCorporateInfoModal);
@@ -1862,6 +2097,17 @@ function wireDashboardEvents() {
     document.getElementById("notifications-close")?.addEventListener("click", closeNotificationsModal);
     document.getElementById("toggle-archived-btn")?.addEventListener("click", toggleArchivedView);
     document.getElementById("restore-dataset-btn")?.addEventListener("click", onRestoreDatasetClick);
+    document.getElementById("connections-btn")?.addEventListener("click", openConnectionsModal);
+    document.getElementById("connections-close")?.addEventListener("click", closeConnectionsModal);
+    document.getElementById("connections-show-add-btn")?.addEventListener("click", showAddConnectionForm);
+    document.getElementById("conn-cancel-btn")?.addEventListener("click", hideAddConnectionForm);
+    document.getElementById("conn-save-btn")?.addEventListener("click", saveConnection);
+    document.getElementById("conn-provider")?.addEventListener("change", updateCredentialFields);
+    document.getElementById("connections-list")?.addEventListener("click", event => {
+        const btn = event.target.closest(".conn-delete-btn");
+        if (!btn) return;
+        deleteConnection(btn.dataset.connectionId);
+    });
 
     document.querySelectorAll(".data-tab").forEach(button => {
         button.addEventListener("click", () => setActiveDataTab(button.dataset.tab));

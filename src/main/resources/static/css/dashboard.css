@@ -897,6 +897,115 @@
     }
 }
 
+/* ── Connections modal ──────────────────────────────────────────────────── */
+
+.connections-modal {
+    max-width: 720px;
+}
+
+.connections-form-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.connections-list {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.connections-list li.text-muted {
+    padding: 24px;
+    text-align: center;
+}
+
+.connection-item {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    padding: 14px 16px;
+    transition: border-color 0.15s ease;
+}
+
+.connection-item:hover {
+    border-color: #c7d2fe;
+}
+
+.connection-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.connection-title {
+    font-size: 14px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.connection-meta {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.connection-actions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.connection-provider-badge {
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 4px 8px;
+}
+
+.connection-provider-badge.aws {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.connection-provider-badge.azure {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.connection-provider-badge.gcp {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.connection-status-dot {
+    border-radius: 50%;
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+}
+
+.connection-status-dot.active {
+    background: var(--success);
+}
+
+.connection-status-dot.inactive {
+    background: var(--muted);
+}
+
+.connection-status-dot.error {
+    background: var(--error);
+}
+
 /* ── Charts ──────────────────────────────────────────────────────────────── */
 
 .chart-box {

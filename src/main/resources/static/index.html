@@ -52,6 +52,7 @@
             <span id="sessionBadge" class="session-badge"></span>
             <button id="logoutBtn" class="btn-modern" type="button">Sign Out</button>
 
+            <button class="btn-modern" id="sync-data-btn" type="button">Sync Now</button>
             <button class="btn-modern" id="generate-pdf-btn" type="button">Generate PDF</button>
             <button class="btn-modern btn-modern-danger" id="delete-dataset-btn" type="button">Delete Dataset</button>
             <button class="btn-modern" id="archive-dataset-btn" type="button">Archive Dataset</button>
@@ -60,6 +61,7 @@
             <button class="btn-modern alarms" id="alarms-btn" type="button">
                 Alarms (0)
             </button>
+            <button class="btn-modern" id="connections-btn" type="button">Connections</button>
 
             <div id="datasetSwitcherContainer" class="d-none d-flex align-items-center gap-2">
                 <label class="small text-muted mb-0 text-nowrap">Dataset:</label>
@@ -272,6 +274,115 @@
                 <button class="btn btn-primary" id="corpSaveBtn" type="button">Save &amp; Generate PDF</button>
                 <button class="btn btn-outline-secondary" id="corpCancelBtn" type="button">Cancel</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="connections-overlay">
+    <div class="alarm-modal connections-modal">
+        <div class="modal-header">
+            <h3>Cloud Connections</h3>
+            <button class="modal-close" id="connections-close" type="button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <p class="text-muted mb-0">Manage connections to your cloud billing buckets.</p>
+                <button class="btn btn-sm btn-primary" id="connections-show-add-btn" type="button">+ Add</button>
+            </div>
+
+            <div id="connections-add-form" style="display: none;">
+                <div class="connections-form-card mb-3">
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Provider *</label>
+                            <select id="conn-provider" class="form-select form-select-sm">
+                                <option value="AWS">AWS</option>
+                                <option value="AZURE">Azure</option>
+                                <option value="GCP">GCP</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Display Name *</label>
+                            <input id="conn-display-name" class="form-control form-control-sm" placeholder="e.g. Production AWS" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Poll Frequency *</label>
+                            <select id="conn-poll-frequency" class="form-select form-select-sm">
+                                <option value="DAILY">Daily</option>
+                                <option value="HOURLY">Hourly</option>
+                                <option value="WEEKLY">Weekly</option>
+                                <option value="MANUAL">Manual Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Bucket Name *</label>
+                            <input id="conn-bucket" class="form-control form-control-sm" placeholder="e.g. my-billing-bucket" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Region</label>
+                            <input id="conn-region" class="form-control form-control-sm" placeholder="e.g. us-east-1" />
+                        </div>
+                    </div>
+
+                    <hr class="my-2" />
+                    <label class="form-label small fw-bold">Credentials</label>
+
+                    <div id="conn-creds-aws">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <input id="conn-aws-role-arn" class="form-control form-control-sm" placeholder="Role ARN" />
+                            </div>
+                            <div class="col-md-6">
+                                <input id="conn-aws-external-id" class="form-control form-control-sm" placeholder="External ID" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="conn-creds-azure" style="display: none;">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-4">
+                                <input id="conn-azure-tenant-id" class="form-control form-control-sm" placeholder="Tenant ID" />
+                            </div>
+                            <div class="col-md-4">
+                                <input id="conn-azure-client-id" class="form-control form-control-sm" placeholder="Client ID" />
+                            </div>
+                            <div class="col-md-4">
+                                <input id="conn-azure-client-secret" class="form-control form-control-sm" placeholder="Client Secret" type="password" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <input id="conn-azure-storage-account" class="form-control form-control-sm" placeholder="Storage Account" />
+                            </div>
+                            <div class="col-md-6">
+                                <input id="conn-azure-container" class="form-control form-control-sm" placeholder="Container Name" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="conn-creds-gcp" style="display: none;">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <input id="conn-gcp-project-id" class="form-control form-control-sm" placeholder="Project ID" />
+                            </div>
+                            <div class="col-md-6">
+                                <input id="conn-gcp-creds-json" class="form-control form-control-sm" placeholder="Credentials JSON (path or inline)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-2">
+                        <button class="btn btn-sm btn-primary" id="conn-save-btn" type="button">Save Connection</button>
+                        <button class="btn btn-sm btn-outline-secondary" id="conn-cancel-btn" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="connections-list" id="connections-list">
+                <li class="text-muted">Loading connections...</li>
+            </ul>
         </div>
     </div>
 </div>

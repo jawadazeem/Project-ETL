@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="013-create-cloud-connections" author="jawad">
+        <createTable tableName="cloud_connections">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="provider" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="display_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bucket_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="varchar(50)"/>
+            <column name="encrypted_credentials" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="poll_frequency" type="varchar(20)" defaultValue="DAILY">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_polled_at" type="timestamptz"/>
+            <column name="created_at" type="timestamptz">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamptz"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+            baseTableName="cloud_connections"
+            baseColumnNames="owner_user_id"
+            constraintName="fk_cloud_connections_owner_user"
+            referencedTableName="app_users"
+            referencedColumnNames="id"
+            onDelete="CASCADE"/>
+
+        <createIndex tableName="cloud_connections"
+                     indexName="idx_cloud_connections_owner_user">
+            <column name="owner_user_id"/>
+        </createIndex>
+
+        <createIndex tableName="cloud_connections"
+                     indexName="idx_cloud_connections_status">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
