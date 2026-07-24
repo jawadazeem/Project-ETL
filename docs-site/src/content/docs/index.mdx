@@ -1,0 +1,55 @@
+---
+title: Blueprint
+description: AI-Powered Multi-Cloud FinOps Platform
+template: splash
+hero:
+  tagline: Turn raw multi-cloud billing data into actionable insights with autonomous AI agents, ML forecasting, and automated anomaly detection.
+  actions:
+    - text: Get Started
+      link: /infrastructure/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: Architecture
+      link: /architecture/overview/
+      icon: open-book
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## What Blueprint Does
+
+<CardGrid>
+  <Card title="Multi-Cloud ETL" icon="document">
+    Ingest CSV/TSV billing data from AWS, GCP, and Azure into a normalized PostgreSQL schema.
+  </Card>
+  <Card title="Trace AI Agent" icon="magnifier">
+    Ask natural-language questions about your billing data. Trace generates validated SQL, executes it, and returns plain-English answers.
+  </Card>
+  <Card title="Alarm Detection" icon="warning">
+    Threshold-based anomaly detection across provider totals, individual resources, and account-level grand totals with multi-channel notifications.
+  </Card>
+  <Card title="Predictive Forecasting" icon="graph">
+    scikit-learn linear regression trained on historical billing periods to project future cloud spend.
+  </Card>
+  <Card title="PDF Reports" icon="document">
+    Generate branded PDF billing reports with corporate branding, stored in S3.
+  </Card>
+  <Card title="Cloud Connections" icon="cloud">
+    Connect AWS, Azure, and GCP accounts with encrypted credentials for automated data polling.
+  </Card>
+</CardGrid>
+
+## Service Architecture
+
+| Service | Stack | Purpose |
+|---------|-------|---------|
+| **Monolith** | Java 25, Spring Boot 3.5, PostgreSQL | ETL pipeline, REST API, Trace AI Agent |
+| **Prediction** | Python, FastAPI, scikit-learn | Linear regression cost forecasting |
+| **Audit** | Python, FastAPI, Pydantic | Duplicate charge and anomaly detection |
+| **Notification** | TypeScript, Express, MongoDB | Alarm delivery via SES and Slack |
+
+## Target Users
+
+- Internal finance or operations teams reviewing multi-cloud spend.
+- Technical reviewers evaluating ETL, event-driven ingestion, and AI analytics patterns.
+- Demo users who can load bundled sample data without needing their own CSV.
