@@ -207,6 +207,24 @@
     margin-bottom: 30px;
 }
 
+.dashboard-brand-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.dashboard-logo {
+    width: 48px;
+    height: 48px;
+}
+
+.welcome-logo {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 12px;
+    display: block;
+}
+
 .dashboard-title h1 {
     font-size: 48px;
     line-height: 1;

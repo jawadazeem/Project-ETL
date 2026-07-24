@@ -116,6 +116,16 @@ services:
       aws --endpoint-url=http://localstack:4566 s3api put-bucket-notification-configuration --bucket cloud-billing --notification-configuration '{"QueueConfigurations":[{"QueueArn":"arn:aws:sqs:us-east-::billing-event-queue","Events":["s:ObjectCreated:*"]}]}'
       echo 'Infrastructure configuration complete.'
 
+  docs:
+    build: docs-site
+    container_name: blueprint-docs
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - default
+      - proxy-net
+
   prediction-service:
     build: comp/prediction-service
     container_name: prediction-service

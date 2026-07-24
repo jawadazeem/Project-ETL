@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to AI coding agents (specifically Codex, but also Codex and others) working in this repository.
+This file provides guidance to AI coding agents (specifically Codex, but also Claude Code and others) working in this repository.
 
 ---
 
@@ -83,7 +83,10 @@ blueprint/
 ├── prediction-service/       # Python prediction microservice (Flask/scikit-learn)
 │   ├── app.py                # Flask app with /predict endpoint
 │   └── Dockerfile
-├── docs/                     # Product and system documentation
+├── docs/                     # Product and system documentation (Markdown)
+├── docs-site/                # Astro/Starlight documentation site (renders docs/ into a browsable website)
+│   ├── src/content/docs/     # Structured doc pages (architecture, features, api, data-model, infrastructure)
+│   └── astro.config.mjs      # Starlight config (sidebar, logo, Mermaid rendering)
 ├── scripts/                  # Docker and JAR run scripts
 ├── images/                   # Architecture diagrams
 └── src/main/java/com/azeem/blueprint/
@@ -99,12 +102,13 @@ blueprint/
     ├── model/           # Domain model records/classes (not persisted directly)
     ├── repository/      # Spring Data JPA repositories
     ├── service/         # Business logic, organised by domain
-    │   ├── alarm/       # Alarm detection and persistence
-    │   ├── billing/     # Ingestion, S3 handling, querying
-    │   ├── dataset/     # Dataset management, archiving, demo loading
-    │   ├── trace/      # AI agent: SQL generation, validation, execution
-    │   ├── prediction/  # Client for Python prediction microservice
-    │   └── report/      # PDF generation, corporate info, storage
+    │   ├── alarm/            # Alarm detection and persistence
+    │   ├── billing/          # Ingestion, S3 handling, querying
+    │   ├── cloudconnection/  # Cloud account connections, credential encryption, polling
+    │   ├── dataset/          # Dataset management, archiving, demo loading
+    │   ├── trace/            # AI agent: SQL generation, validation, execution
+    │   ├── prediction/       # Client for Python prediction microservice
+    │   └── report/           # PDF generation, corporate info, storage
     ├── util/            # Shared utilities
     └── validation/      # Custom Jakarta Bean Validation annotations and validators
 ```
@@ -133,6 +137,11 @@ provides download endpoints.
 
 **Predictions** — proxies billing data to the Python prediction microservice for trend forecasting
 using linear regression.
+
+**Cloud Connections** — users register their cloud accounts (AWS, Azure, GCP) with encrypted
+credentials (AES-256-GCM). The monolith schedules polling based on a configurable frequency,
+calls a Python ingestion service with decrypted credentials, and the ingested CSV flows through
+the existing S3→SQS pipeline.
 
 **Notifications** — the TypeScript microservice receives alarm payloads from the monolith, delivers
 them via email (SES) and Slack webhooks, and maintains a MongoDB delivery log.
@@ -171,6 +180,7 @@ These areas are generally safe to work in without special caution:
 - `src/main/java/.../service/` — business logic, but verify callers when changing method signatures
 - `src/main/java/.../controller/` — REST layer, but don't change URL paths without checking clients
 - `docs/` — documentation only
+- `docs-site/` — Starlight documentation site (independent of the Java backend)
 - `src/main/resources/static/` — frontend HTML/CSS/JS (no build step)
 
 ---
