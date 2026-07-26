@@ -50,7 +50,9 @@ public class DemoDatasetLoader {
           UUID.fromString("00000000-0000-0000-0000-000000000001"),
           "2026-05",
           UUID.fromString("00000000-0000-0000-0000-000000000002"),
-          "2026-06");
+          "2026-06",
+          UUID.fromString("00000000-0000-0000-0000-000000000003"),
+          "2026-07");
   private static final UUID GUEST_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
   public DemoDatasetLoader(
@@ -77,7 +79,8 @@ public class DemoDatasetLoader {
         List.of(
             new ClassPathResource("2026-04.csv"),
             new ClassPathResource("2026-05.csv"),
-            new ClassPathResource("2026-06.csv"));
+            new ClassPathResource("2026-06.csv"),
+            new ClassPathResource("2026-07.csv"));
     resources.forEach(
         r -> {
           String filename = r.getFilename();

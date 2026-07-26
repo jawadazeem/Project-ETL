@@ -15,6 +15,7 @@ import com.azeem.blueprint.repository.dataset.DatasetBillingPeriodProjection;
 import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
+import java.util.Comparator;
 import java.time.Instant;
 import java.time.YearMonth;
 import java.util.List;
@@ -204,5 +205,12 @@ public class DatasetService {
     String currentCycle = YearMonth.now().toString();
 
     return datasets.stream().filter(d -> d.billingPeriod().equals(currentCycle)).findFirst();
+  }
+
+  @Transactional(readOnly = true)
+  public Optional<Dataset> getLatestDataset(UUID userId) {
+    return datasetRepository.findByOwnerUserId(userId).stream()
+        .max(Comparator.comparing(DatasetEntity::getBillingPeriod))
+        .map(datasetMapper::mapToDomain);
   }
 }

@@ -2152,7 +2152,12 @@ async function tryLoadExistingDatasets() {
         if (!res.ok) return false;
 
         const datasets = await res.json();
-        const ready = datasets.find(d => d.status === "READY");
+        if (!datasets.length) return false;
+
+        const latestRes = await fetch("/datasets/latest", {
+            headers: { "X-User-Id": GUEST_USER_ID }
+        });
+        const ready = latestRes.ok ? await latestRes.json() : datasets.find(d => d.status === "READY");
         if (!ready) return false;
 
         currentDatasetId = ready.id;

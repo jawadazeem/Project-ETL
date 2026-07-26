@@ -88,4 +88,14 @@ public class DatasetController {
     log.info("GET /datasets/archived called by user: {}", userId);
     return ResponseEntity.ok(datasetService.listArchivedDatasets(userId));
   }
+
+  @Operation(summary = "Get the latest dataset for a user")
+  @GetMapping("/latest")
+  public ResponseEntity<Dataset> getLatestDataset(@RequestHeader("X-User-Id") UUID userId) {
+    log.info("GET /datasets/latest called by user: {}", userId);
+    return datasetService
+        .getLatestDataset(userId)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
 }
