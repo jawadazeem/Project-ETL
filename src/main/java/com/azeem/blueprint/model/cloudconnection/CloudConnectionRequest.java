@@ -7,7 +7,6 @@ package com.azeem.blueprint.model.cloudconnection;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 public record CloudConnectionRequest(
@@ -15,5 +14,4 @@ public record CloudConnectionRequest(
     @NotBlank String displayName,
     @NotBlank String bucketName,
     String region,
-    @NotNull PollFrequency pollFrequency,
     @NotEmpty Map<String, String> credentials) {}

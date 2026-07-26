@@ -5,6 +5,7 @@
 
 package com.azeem.blueprint.service.billing;
 
+import com.azeem.blueprint.config.S3Config;
 import com.azeem.blueprint.exception.core.BillingDataNotFoundException;
 import com.azeem.blueprint.model.dataset.Dataset;
 import io.awspring.cloud.s3.S3Operations;
@@ -14,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,12 @@ public class BillingS3Service {
   private static final Logger log = LoggerFactory.getLogger(BillingS3Service.class);
   private final S3Template s3Template;
   private final S3Operations s3Operations;
+  private final S3Config s3Config;
 
-  public BillingS3Service(S3Template s3Template, S3Operations s3Operations) {
+  public BillingS3Service(S3Template s3Template, S3Operations s3Operations, S3Config s3Config) {
     this.s3Template = s3Template;
     this.s3Operations = s3Operations;
+    this.s3Config = s3Config;
   }
 
   public InputStream getBillingDataStream(String bucketName, String key) {
@@ -75,6 +79,13 @@ public class BillingS3Service {
       log.error("Failed to stream upload to S3", e);
       throw new RuntimeException("S3 Upload Failed");
     }
+  }
+
+  /**
+   * @return The full directory (key) a dataset resides in, including the bucket name
+   */
+  public String getDatasetDir(UUID userId, Dataset dataset) {
+    return String.format("%s/%s/%s", s3Config.billingBucketName(), userId.toString(), dataset.id());
   }
 
   private String buildS3KeyForFile(Dataset dataset, MultipartFile file) {

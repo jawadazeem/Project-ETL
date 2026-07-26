@@ -7,6 +7,7 @@ package com.azeem.blueprint.controller;
 
 import com.azeem.blueprint.model.cloudconnection.*;
 import com.azeem.blueprint.service.cloudconnection.CloudConnectionService;
+import com.azeem.blueprint.service.cloudconnection.CloudPollService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,16 +27,18 @@ public class CloudConnectionController {
   private static final Logger log = LoggerFactory.getLogger(CloudConnectionController.class);
 
   private final CloudConnectionService connectionService;
+  private final CloudPollService cloudPollService;
 
-  public CloudConnectionController(CloudConnectionService connectionService) {
+  public CloudConnectionController(
+      CloudConnectionService connectionService, CloudPollService cloudPollService) {
     this.connectionService = connectionService;
+    this.cloudPollService = cloudPollService;
   }
 
   @Operation(summary = "Create a new cloud connection")
   @PostMapping
   public ResponseEntity<CloudConnection> createConnection(
-      @RequestHeader("X-User-Id") UUID userId,
-      @Valid @RequestBody CloudConnectionRequest request) {
+      @RequestHeader("X-User-Id") UUID userId, @Valid @RequestBody CloudConnectionRequest request) {
     log.info("POST /cloud-connections called by user: {}", userId);
     return ResponseEntity.ok(connectionService.createConnection(userId, request));
   }
@@ -81,22 +84,9 @@ public class CloudConnectionController {
   public ResponseEntity<Map<String, Object>> syncConnections(
       @RequestHeader("X-User-Id") UUID userId) {
     log.info("POST /cloud-connections/sync called by user: {}", userId);
-    int queued = connectionService.triggerSync(userId);
+    int queued = cloudPollService.triggerSync(userId);
     Map<String, Object> response = new LinkedHashMap<>();
     response.put("connectionsQueued", queued);
     return ResponseEntity.ok(response);
-  }
-
-  @Operation(summary = "Update connection poll frequency")
-  @PatchMapping("/{connectionId}/poll-frequency")
-  public ResponseEntity<CloudConnection> updatePollFrequency(
-      @RequestHeader("X-User-Id") UUID userId,
-      @PathVariable UUID connectionId,
-      @RequestBody Map<String, String> body) {
-    log.info(
-        "PATCH /cloud-connections/{}/poll-frequency called by user: {}", connectionId, userId);
-    PollFrequency frequency = PollFrequency.valueOf(body.get("pollFrequency").toUpperCase());
-    return ResponseEntity.ok(
-        connectionService.updatePollFrequency(connectionId, userId, frequency));
   }
 }

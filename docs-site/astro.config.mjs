@@ -2,9 +2,11 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
 export default defineConfig({
+  base: '/docs',
   integrations: [
     starlight({
       title: "Blueprint",
+      routeMiddleware: "./src/routeData.ts",
       description:
         "AI-Powered Multi-Cloud FinOps Platform — Product & System Documentation",
       logo: {

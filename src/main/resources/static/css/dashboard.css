@@ -150,43 +150,57 @@
     background-color: #f5f6fa;
 }
 
-.page-switcher {
+.dashboard-topbar,
+.dashboard-controlbar {
     align-items: center;
     background: #ffffff;
     border: 1px solid var(--border);
     border-radius: 10px;
     box-shadow: var(--shadow-sm);
     display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    padding: 8px;
-    width: 100%;
+    gap: 16px;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 12px 14px;
+}
+
+.dashboard-topbar {
+    min-height: 76px;
+}
+
+.dashboard-controlbar {
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.page-switcher {
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex: 0 1 380px;
+    gap: 4px;
+    margin: 0;
+    padding: 4px;
 }
 
 .page-switch-btn {
-    background: #f1f5f9;
+    background: transparent;
     border: 0;
-    border-radius: 8px;
+    border-radius: 6px;
     color: #475569;
     cursor: pointer;
-    font-size: 15px;
+    flex: 1 1 0;
+    font-size: 13px;
     font-weight: 700;
-    min-height: 44px;
-    padding: 10px 18px;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.page-switch-btn:first-child {
-    flex: 0 1 50%;
-}
-
-.page-switch-btn:last-child {
-    flex: 1 1 auto;
+    min-height: 36px;
+    padding: 8px 14px;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .page-switch-btn:hover {
     background: #e2e8f0;
-    transform: translateY(-1px);
 }
 
 .page-switch-btn.active {
@@ -213,9 +227,13 @@
     gap: 14px;
 }
 
+.dashboard-brand-main {
+    flex: 0 0 auto;
+}
+
 .dashboard-logo {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
 }
 
 .welcome-logo {
@@ -225,41 +243,43 @@
     display: block;
 }
 
-.dashboard-title h1 {
-    font-size: 48px;
-    line-height: 1;
-    margin: 0 0 6px 0;
+.dashboard-brand-main h1 {
+    font-size: 24px;
+    line-height: 1.05;
+    margin: 0 0 3px 0;
     font-weight: 700;
 }
 
-.dashboard-title .subtitle {
-    font-size: 18px;
+.dashboard-brand-main .subtitle {
+    font-size: 12px;
     font-weight: 400;
-    color: #555;
+    color: #64748b;
     margin: 0;
 }
 
-.dashboard-navbar {
-    border-radius: 10px;
-}
-
-.dashboard-navbar-inner {
+.dashboard-utility {
     align-items: center;
     display: flex;
-    gap: 12px;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
     min-width: 0;
 }
 
-.dashboard-brand {
-    font-weight: 600;
+.dataset-control-group {
+    align-items: center;
+    display: flex;
+    flex: 1 1 420px;
+    flex-wrap: wrap;
     gap: 8px;
-    min-width: max-content;
+    min-width: 0;
 }
 
 .dashboard-toolbar {
     align-items: center;
     display: flex;
-    flex: 1 1 auto;
+    flex: 1 1 520px;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: flex-end;
@@ -267,7 +287,7 @@
 }
 
 .session-badge {
-    color: #555;
+    color: #64748b;
     font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
@@ -360,13 +380,13 @@
 
 @media (max-width: 640px) {
     .page-switcher {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .page-switch-btn:first-child,
     .page-switch-btn:last-child {
-        flex: 1 1 auto;
-        width: 100%;
+        flex: 1 1 0;
+        width: auto;
     }
 
     .workflow-card-label {
@@ -380,52 +400,96 @@
 }
 
 .btn-modern {
-    background: rgba(0, 0, 0, 0.05);
-    border: none;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
     padding: 8px 16px;
     border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 700;
     white-space: nowrap;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-modern:hover {
-    background: rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+    background: #eef2ff;
+    border-color: #c7d2fe;
+    color: var(--accent);
+    transform: translateY(-1px);
 }
 
 .btn-modern.alarms {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
     font-weight: 700;
-    background: rgba(255, 0, 0, 0.85);
-    color: white;
 }
 
 .btn-modern.alarms:hover {
-    background: rgba(200, 0, 0, 0.95);
+    background: #ffedd5;
+    border-color: #fdba74;
+    color: #9a3412;
 }
 
 .btn-modern-primary {
     background: var(--accent);
+    border-color: var(--accent);
     color: #fff;
 }
 
 .btn-modern-primary:hover {
-    background: #0b5ed7;
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
     color: #fff;
-    transform: translateY(-2px);
+}
+
+.btn-modern-quiet {
+    background: transparent;
+    border-color: transparent;
+    color: #475569;
+}
+
+.btn-modern-quiet:hover {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.btn-modern-compact {
+    font-size: 12px;
+    padding: 6px 10px;
 }
 
 .btn-modern-danger {
-    background: rgba(239, 68, 68, 0.1);
-    color: #dc2626;
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
 }
 
 .btn-modern-danger:hover {
-    background: rgba(239, 68, 68, 0.2);
-    color: #dc2626;
-    transform: translateY(-2px);
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #991b1b;
+}
+
+.period-select {
+    flex: 0 1 140px;
+    min-width: 120px;
+}
+
+.dataset-actions-menu .dropdown-menu {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    padding: 6px;
+}
+
+.dataset-actions-menu .dropdown-item {
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 10px;
 }
 
 .table-container {
@@ -619,12 +683,15 @@
 }
 
 @media (max-width: 992px) {
-    .dashboard-navbar-inner {
+    .dashboard-topbar,
+    .dashboard-controlbar {
         align-items: stretch;
         flex-direction: column;
     }
 
-    .dashboard-brand,
+    .dashboard-brand-main,
+    .dashboard-utility,
+    .dataset-control-group,
     .dashboard-toolbar {
         justify-content: flex-start;
         width: 100%;
@@ -635,7 +702,7 @@
     }
 
     #datasetSwitcherContainer {
-        flex: 1 1 320px;
+        flex: 1 1 100%;
         min-width: 0;
     }
 
@@ -673,30 +740,28 @@
         padding: 18px;
     }
 
-    .dashboard-title h1 {
-        font-size: 38px;
+    .dashboard-brand-main h1 {
+        font-size: 22px;
     }
 
-    .dashboard-title .subtitle {
-        font-size: 15px;
-    }
-
-    .dashboard-brand {
-        align-items: stretch !important;
-        flex-direction: column;
-        gap: 8px;
-        min-width: 0;
-    }
-
-    .dashboard-brand .btn-modern {
-        margin-left: 0 !important;
+    .page-switcher,
+    .dashboard-utility,
+    .dataset-control-group,
+    .dashboard-toolbar {
         width: 100%;
     }
 
+    .page-switcher {
+        flex: 1 1 auto;
+    }
+
+    .dashboard-utility > .btn-modern,
     .dashboard-toolbar > .btn-modern,
-    .dashboard-toolbar > select,
+    .dataset-actions-menu,
+    .dataset-actions-menu > .btn-modern,
+    .period-select,
     #datasetSwitcherContainer,
-    #restore-dataset-btn {
+    #periodSelect {
         width: 100%;
     }
 

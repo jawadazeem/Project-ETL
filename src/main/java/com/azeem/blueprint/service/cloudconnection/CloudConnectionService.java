@@ -12,6 +12,8 @@ import com.azeem.blueprint.mapper.CloudConnectionMapper;
 import com.azeem.blueprint.model.cloudconnection.*;
 import com.azeem.blueprint.repository.cloudconnection.CloudConnectionRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
+import com.azeem.blueprint.service.billing.BillingS3Service;
+import com.azeem.blueprint.service.dataset.DatasetService;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +35,9 @@ public class CloudConnectionService {
       CloudConnectionRepository connectionRepository,
       CloudConnectionMapper connectionMapper,
       CredentialEncryptionService encryptionService,
-      AppUserService appUserService) {
+      AppUserService appUserService,
+      BillingS3Service billingS3Service,
+      DatasetService datasetService) {
     this.connectionRepository = connectionRepository;
     this.connectionMapper = connectionMapper;
     this.encryptionService = encryptionService;
@@ -44,8 +48,7 @@ public class CloudConnectionService {
     log.info("Creating cloud connection for user: {}", userId);
     AppUserEntity owner = appUserService.findOrCreateGuest(userId);
     String encrypted = encryptionService.encrypt(request.credentials());
-    CloudConnectionEntity entity =
-        connectionMapper.mapToEntity(owner.getId(), request, encrypted);
+    CloudConnectionEntity entity = connectionMapper.mapToEntity(owner.getId(), request, encrypted);
     CloudConnectionEntity saved = connectionRepository.save(entity);
     return connectionMapper.mapToDomain(saved);
   }
@@ -85,37 +88,6 @@ public class CloudConnectionService {
     entity.setStatus(newStatus.name());
     entity.setUpdatedAt(Instant.now());
     return connectionMapper.mapToDomain(connectionRepository.save(entity));
-  }
-
-  @Transactional
-  public CloudConnection updatePollFrequency(
-      UUID connectionId, UUID userId, PollFrequency frequency) {
-    log.info("Updating poll frequency of connection {} to {}", connectionId, frequency);
-    CloudConnectionEntity entity =
-        connectionRepository
-            .findByIdAndOwnerUserId(connectionId, userId)
-            .orElseThrow(() -> new CloudConnectionNotFoundException(connectionId));
-    entity.setPollFrequency(frequency.name());
-    entity.setUpdatedAt(Instant.now());
-    return connectionMapper.mapToDomain(connectionRepository.save(entity));
-  }
-
-  public int triggerSync(UUID userId) {
-    List<CloudConnectionEntity> active =
-        connectionRepository.findByOwnerUserId(userId).stream()
-            .filter(c -> CloudConnectionStatus.ACTIVE.name().equals(c.getStatus()))
-            .toList();
-    log.info("Triggering sync for {} active connections for user: {}", active.size(), userId);
-    // TODO: call the Python ingestion service for each connection
-    return active.size();
-  }
-  
-  public List<ActiveCloudConnection> getActiveConnections() {
-    return connectionRepository
-        .findByStatus(CloudConnectionStatus.ACTIVE.name())
-        .stream()
-        .map(connectionMapper::mapToActiveConnection)
-        .toList();
   }
 
   @Transactional

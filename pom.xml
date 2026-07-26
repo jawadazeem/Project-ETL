@@ -181,6 +181,11 @@
             <artifactId>spring-cloud-aws-starter-sqs</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>eventbridge</artifactId>
+        </dependency>
+
         <!-- Jakarta Bean Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -279,5 +284,4 @@
             </plugin>
 		</plugins>
 	</build>
-
 </project>

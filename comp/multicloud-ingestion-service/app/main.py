@@ -32,7 +32,7 @@ def run_ingestion_pipeline(tenant_id: str, customer_config: dict):
     target_key = f"ingested-billing/{tenant_id}/latest.csv"
     
     app_s3_client.put_object(
-        Bucket="cloud-billing", # The bucket your Java app watches via SQS!
+        Bucket="billing-s3-mock", # The bucket Java app watches via SQS
         Key=target_key,
         Body=unified_csv_bytes,
         ContentType="text/csv"

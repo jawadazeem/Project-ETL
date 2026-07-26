@@ -58,7 +58,9 @@ __pycache__/
 venv/
 .cache/
 
-# Infrastructure
-azeem_corp_localstack_data/
+# Demo Infrastructure
 azeem_corp_localstack_data/
 azeem_corp_gcp_blob_data/
+azeem_corp_azure_blob_data
+
+# Infrastructure

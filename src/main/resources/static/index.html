@@ -32,49 +32,55 @@
     </div>
 </div>
 
-<nav class="page-switcher" aria-label="Primary pages">
-    <button class="page-switch-btn active" id="analyzePageBtn" type="button" data-page="analyze" aria-current="page">Analyze</button>
-    <button class="page-switch-btn" id="agenticWorkflowPageBtn" type="button" data-page="agentic">Agentic Workflow</button>
-</nav>
-
-<header class="dashboard-title mb-3" role="banner">
-    <div class="dashboard-brand-row">
+<header class="dashboard-topbar mb-3" role="banner">
+    <div class="dashboard-brand-row dashboard-brand-main">
         <img src="/assets/icons/logo.svg" alt="Blueprint logo" class="dashboard-logo" />
-        <h1>Blueprint</h1>
+        <div>
+            <h1>Blueprint</h1>
+            <p class="subtitle">Multi-Cloud FinOps Platform</p>
+        </div>
     </div>
-    <p class="subtitle">Multi-Cloud FinOps Platform</p>
+
+    <nav class="page-switcher" aria-label="Primary pages">
+        <button class="page-switch-btn active" id="analyzePageBtn" type="button" data-page="analyze" aria-current="page">Analyze</button>
+        <button class="page-switch-btn" id="agenticWorkflowPageBtn" type="button" data-page="agentic">Agentic Workflow</button>
+    </nav>
+
+    <div class="dashboard-utility">
+        <span id="sessionBadge" class="session-badge"></span>
+        <button id="helpBtn" type="button" class="btn-modern btn-modern-quiet">Help</button>
+        <button id="learnMoreBtn" type="button" class="btn-modern btn-modern-quiet">Learn More</button>
+        <button id="logoutBtn" class="btn-modern btn-modern-quiet" type="button">Sign Out</button>
+    </div>
 </header>
 
-<nav class="navbar navbar-light bg-white shadow-sm mb-4 dashboard-navbar">
-    <div class="container-fluid dashboard-navbar-inner">
-        <span class="navbar-brand mb-0 h1 d-flex align-items-center dashboard-brand" aria-label="Application">
-            <button id="helpBtn" type="button" class="btn-modern ms-2">Help</button>
-            <button id="learnMoreBtn" type="button" class="btn-modern ms-2">Learn More</button>
-        </span>
+<nav class="dashboard-controlbar mb-4" aria-label="Dataset and dashboard actions">
+    <div class="dataset-control-group">
+        <div id="datasetSwitcherContainer" class="d-none d-flex align-items-center gap-2">
+            <label class="small text-muted mb-0 text-nowrap">Dataset</label>
+            <select id="datasetSelect" class="form-select form-select-sm dataset-select"></select>
+            <button class="btn-modern btn-modern-quiet btn-modern-compact" id="toggle-archived-btn" type="button">Show Archived</button>
+        </div>
+        <label class="small text-muted mb-0 text-nowrap" for="periodSelect">Period</label>
+        <select id="periodSelect" class="form-select form-select-sm period-select"></select>
+    </div>
 
-        <div class="dashboard-toolbar">
-            <span id="sessionBadge" class="session-badge"></span>
-            <button id="logoutBtn" class="btn-modern" type="button">Sign Out</button>
+    <div class="dashboard-toolbar">
+        <button class="btn-modern" id="connections-btn" type="button">Connections</button>
+        <button class="btn-modern btn-modern-primary" id="sync-data-btn" type="button">Sync Now</button>
+        <button class="btn-modern" id="generate-pdf-btn" type="button">Generate PDF</button>
+        <button class="btn-modern" id="notifications-btn" type="button">Notifications</button>
+        <button class="btn-modern alarms" id="alarms-btn" type="button">Alarms (0)</button>
 
-            <button class="btn-modern" id="sync-data-btn" type="button">Sync Now</button>
-            <button class="btn-modern" id="generate-pdf-btn" type="button">Generate PDF</button>
-            <button class="btn-modern btn-modern-danger" id="delete-dataset-btn" type="button">Delete Dataset</button>
-            <button class="btn-modern" id="archive-dataset-btn" type="button">Archive Dataset</button>
-            <button class="btn-modern" id="notifications-btn" type="button">Notifications</button>
-
-            <button class="btn-modern alarms" id="alarms-btn" type="button">
-                Alarms (0)
+        <div class="dropdown dataset-actions-menu">
+            <button class="btn-modern btn-modern-quiet dropdown-toggle" id="dataset-actions-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dataset Actions
             </button>
-            <button class="btn-modern" id="connections-btn" type="button">Connections</button>
-
-            <div id="datasetSwitcherContainer" class="d-none d-flex align-items-center gap-2">
-                <label class="small text-muted mb-0 text-nowrap">Dataset:</label>
-                <select id="datasetSelect" class="form-select form-select-sm dataset-select"></select>
-                <button class="btn-modern" id="toggle-archived-btn" type="button" style="font-size: 12px; padding: 4px 10px;">Show Archived</button>
+            <div class="dropdown-menu dropdown-menu-end">
+                <button class="dropdown-item" id="archive-dataset-btn" type="button">Archive Dataset</button>
+                <button class="dropdown-item" id="restore-dataset-btn" type="button" style="display: none;">Restore Dataset</button>
+                <button class="dropdown-item text-danger" id="delete-dataset-btn" type="button">Delete Dataset</button>
             </div>
-            <button class="btn-modern" id="restore-dataset-btn" type="button" style="display: none;">Restore Dataset</button>
-
-            <select id="periodSelect" class="form-select w-auto"></select>
         </div>
     </div>
 </nav>

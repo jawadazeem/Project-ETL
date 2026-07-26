@@ -16,8 +16,10 @@ import com.azeem.blueprint.repository.dataset.DatasetRepository;
 import com.azeem.blueprint.service.appuser.AppUserService;
 import com.azeem.blueprint.service.billing.BillingS3Service;
 import java.time.Instant;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -180,11 +182,23 @@ public class DatasetService {
    * BillingRecord does not have knowledge of the associated user in the same way that a Dataset
    * does.
    */
+  @Transactional(readOnly = true)
   public Map<UUID, String> getBillingPeriods(UUID userId) {
     return datasetRepository.findBillingPeriodsByOwnerUserId(userId).stream()
         .collect(
             Collectors.toMap(
                 DatasetBillingPeriodProjection::getId,
                 DatasetBillingPeriodProjection::getBillingPeriod));
+  }
+
+  @Transactional(readOnly = true)
+  public Optional<Dataset> getCurrentCycleDataset(UUID userId) {
+    List<Dataset> datasets =
+        datasetRepository.findByOwnerUserId(userId).stream()
+            .map(datasetMapper::mapToDomain)
+            .toList();
+    String currentCycle = YearMonth.now().toString();
+
+    return datasets.stream().filter(d -> d.billingPeriod().equals(currentCycle)).findFirst();
   }
 }

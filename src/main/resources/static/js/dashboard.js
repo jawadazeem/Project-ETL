@@ -2106,7 +2106,7 @@ function wireDashboardEvents() {
     document.getElementById("connections-list")?.addEventListener("click", event => {
         const btn = event.target.closest(".conn-delete-btn");
         if (!btn) return;
-        deleteConnection(btn.dataset.connectionId);
+        deleteConnection(btn.dataset.connId);
     });
 
     document.querySelectorAll(".data-tab").forEach(button => {

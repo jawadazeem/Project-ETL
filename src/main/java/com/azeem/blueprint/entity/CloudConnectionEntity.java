@@ -35,9 +35,6 @@ public class CloudConnectionEntity {
 
   private String status;
 
-  @Column(name = "poll_frequency")
-  private String pollFrequency;
-
   @Column(name = "last_polled_at")
   private Instant lastPolledAt;
 
@@ -109,14 +106,6 @@ public class CloudConnectionEntity {
 
   public void setStatus(String status) {
     this.status = status;
-  }
-
-  public String getPollFrequency() {
-    return pollFrequency;
-  }
-
-  public void setPollFrequency(String pollFrequency) {
-    this.pollFrequency = pollFrequency;
   }
 
   public Instant getLastPolledAt() {

@@ -57,7 +57,6 @@ Credentials are encrypted using **AES-256-GCM** with a 32-byte key from the `CLO
 | `CloudConnection` | Public response — all fields except credentials (never exposed) |
 | `ActiveCloudConnection` | Internal model with decrypted credentials, used by scheduler/ingestion |
 | `CloudConnectionStatus` | Enum: `ACTIVE`, `INACTIVE`, `ERROR` |
-| `PollFrequency` | Enum: `HOURLY`, `DAILY`, `WEEKLY`, `MANUAL` |
 
 ## Frontend
 

@@ -12,8 +12,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U billing_app -d billingdb" ]
       interval: 10s
@@ -24,8 +22,6 @@ services:
   pgvector:
     image: pgvector/pgvector:pg17
     container_name: blueprint-org-context
-    ports:
-      - "5431:5432"
     environment:
       - POSTGRES_DB=blueprint_org-context
       - POSTGRES_USER=blueprint
@@ -34,13 +30,12 @@ services:
       - pgvector-data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  # This represents the WHOLE AWS stack (S3, EventBridge, SQS, etc.)
   localstack:
     image: localstack/localstack:3.0.0
     container_name: billing-s3-mock
-    ports:
-      - "4566:4566"
     environment:
-      - SERVICES=s3,sqs
+      - SERVICES=s3,sqs,eventbridge
       - DEFAULT_REGION=us-east-1
     volumes:
       - "./localstack_data:/var/lib/localstack"
@@ -82,6 +77,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  # Ephemeral: Only for setup in DEV environment
   aws-cli-setup:
     image: amazon/aws-cli
     container_name: infra-setup
@@ -118,6 +114,20 @@ services:
       
       # Link Knowledge
       aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket trace-knowledge --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:knowledge-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
+      
+      echo 'Configuring EventBridge Direct-To-Lambda Infrastructure...'
+
+      LAMBDA_ARN="arn:aws:lambda:us-east-1:000000000000:function:storage-poll-lambda"
+
+      # Rule for polling traffic
+      aws --endpoint-url=http://billing-s3-mock:4566 events put-rule \
+          --name client-storage-poll-rule \
+          --event-pattern "{\"source\":[\"com.azeem.blueprint\"],\"detail-type\":[\"PollStorageTrigger\"]}"
+
+      # Route directly to the Lambda
+      aws --endpoint-url=http://billing-s3-mock:4566 events put-targets \
+          --rule client-storage-poll-rule \
+          --targets "Id"="1","Arn"="$LAMBDA_ARN"
       
       echo 'Infrastructure configuration complete.'
       "

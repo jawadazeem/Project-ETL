@@ -5,6 +5,8 @@
 
 package com.azeem.blueprint.service.cloudconnection;
 
+import com.azeem.blueprint.exception.core.CloudConnectionDecryptionException;
+import com.azeem.blueprint.exception.core.CloudConnectionEncryptionException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.SecureRandom;
@@ -50,7 +52,7 @@ public class CredentialEncryptionService {
 
       return Base64.getEncoder().encodeToString(combined);
     } catch (Exception e) {
-      throw new RuntimeException("Failed to encrypt credentials", e);
+      throw new CloudConnectionEncryptionException("Failed to encrypt credentials", e);
     }
   }
 
@@ -69,7 +71,7 @@ public class CredentialEncryptionService {
 
       return objectMapper.readValue(plaintext, new TypeReference<>() {});
     } catch (Exception e) {
-      throw new RuntimeException("Failed to decrypt credentials", e);
+      throw new CloudConnectionDecryptionException("Failed to decrypt credentials", e);
     }
   }
 }

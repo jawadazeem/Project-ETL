@@ -16,7 +16,6 @@ public record CloudConnection(
     String bucketName,
     String region,
     CloudConnectionStatus status,
-    PollFrequency pollFrequency,
     Instant lastPolledAt,
     Instant createdAt,
     Instant updatedAt) {}

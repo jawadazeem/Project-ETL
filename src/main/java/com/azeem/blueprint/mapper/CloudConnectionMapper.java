@@ -5,7 +5,6 @@
 
 package com.azeem.blueprint.mapper;
 
-import com.azeem.blueprint.entity.AppUserEntity;
 import com.azeem.blueprint.entity.CloudConnectionEntity;
 import com.azeem.blueprint.model.cloudconnection.*;
 import com.azeem.blueprint.repository.AppUserRepository;
@@ -35,15 +34,13 @@ public class CloudConnectionMapper {
         entity.getBucketName(),
         entity.getRegion(),
         CloudConnectionStatus.valueOf(entity.getStatus()),
-        PollFrequency.valueOf(entity.getPollFrequency()),
         entity.getLastPolledAt(),
         entity.getCreatedAt(),
         entity.getUpdatedAt());
   }
 
   public ActiveCloudConnection mapToActiveConnection(CloudConnectionEntity entity) {
-    Map<String, String> credentials =
-        encryptionService.decrypt(entity.getEncryptedCredentials());
+    Map<String, String> credentials = encryptionService.decrypt(entity.getEncryptedCredentials());
     return new ActiveCloudConnection(
         entity.getId(),
         entity.getOwnerUser().getId(),
@@ -63,7 +60,6 @@ public class CloudConnectionMapper {
     entity.setRegion(request.region());
     entity.setEncryptedCredentials(encryptedCredentials);
     entity.setStatus(CloudConnectionStatus.ACTIVE.name());
-    entity.setPollFrequency(request.pollFrequency().name());
     entity.setCreatedAt(Instant.now());
     return entity;
   }
