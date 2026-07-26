@@ -1052,28 +1052,6 @@ async function runCostOptimizationAnalysis() {
     }
 }
 
-function showBackendPlaceholder(featureName) {
-    showToast(`${featureName} is a frontend placeholder until the backend workflow is implemented.`, "info");
-}
-
-function setPatternExample(pattern) {
-    const input = document.getElementById("patternSearchInput");
-    if (!input) return;
-
-    input.value = pattern;
-    input.focus();
-}
-
-function runPatternSearchPlaceholder() {
-    const pattern = document.getElementById("patternSearchInput")?.value.trim();
-    if (!pattern) {
-        showToast("Enter a Ptern pattern first.", "info");
-        return;
-    }
-
-    showBackendPlaceholder("Advanced Ptern pattern search");
-}
-
 async function sendChat() {
     if (!currentDatasetId) return;
     const input = document.getElementById("chatInput");
@@ -2069,7 +2047,6 @@ function wireDashboardEvents() {
         if (!btn) return;
         deleteOrgContextDocument(btn.dataset.documentId);
     });
-    document.getElementById("patternSearchBtn")?.addEventListener("click", runPatternSearchPlaceholder);
     document.getElementById("runOptimizationBtn")?.addEventListener("click", runCostOptimizationAnalysis);
     document.getElementById("prevBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(-1));
     document.getElementById("nextBtnAllRecords")?.addEventListener("click", () => changePageAllRecords(1));

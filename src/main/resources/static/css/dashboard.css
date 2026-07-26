@@ -730,9 +730,6 @@
         position: static;
     }
 
-    .pattern-search-layout {
-        grid-template-columns: 1fr;
-    }
 }
 
 @media (max-width: 576px) {
@@ -1288,45 +1285,6 @@
     margin-top: 60px;
     padding-top: 15px;
 }
-
-/* ── Advanced pattern search ────────────────────────────────────────────── */
-
-.pattern-search-module {
-    border-radius: var(--radius);
-}
-
-.pattern-status {
-    background: #ecfdf5;
-    border-radius: 999px;
-    color: #047857;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 6px 10px;
-}
-
-.pattern-search-layout {
-    align-items: end;
-    display: grid;
-    gap: 12px;
-    grid-template-columns: 220px minmax(0, 1fr) 220px;
-}
-
-.pattern-input-block textarea {
-    font-family: "Courier New", monospace;
-    min-height: 112px;
-    resize: vertical;
-}
-
-.pattern-actions {
-    display: grid;
-    gap: 8px;
-}
-
-.pattern-example-btn {
-    font-size: 13px;
-    text-align: left;
-}
-
 
 /* ── Predictions Section (Premium UI) ─────────────────────────────────────── */
 
