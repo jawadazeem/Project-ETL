@@ -148,6 +148,11 @@ public class AlarmService {
     evictAlarmCaches();
   }
 
+  @Transactional
+  public void deleteAlarms(UUID datasetId) {
+    alarmRepository.deleteByDatasetId(datasetId);
+  }
+
   private void recomputeResourceAlarms(
       UUID datasetId,
       String billingPeriod,

@@ -31,6 +31,9 @@ public class PdfController {
     this.pdfReportService = pdfReportService;
   }
 
+  // TODO: Add REST endpoints for filling in information (so an LLM Agent can dynamically fill it
+  // out)
+  //  Use MCP or simple REST?
   @Operation(summary = "Generate a PDF billing report")
   @PostMapping("/pdf")
   public ResponseEntity<PdfReport> generatePdf(

@@ -9,8 +9,6 @@ import com.azeem.blueprint.entity.CloudConnectionEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.azeem.blueprint.model.cloudconnection.CloudConnectionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CloudConnectionRepository extends JpaRepository<CloudConnectionEntity, UUID> {

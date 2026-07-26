@@ -12,7 +12,9 @@ import com.azeem.blueprint.etl.JdbcBillingBatchWriter;
 import com.azeem.blueprint.exception.infra.S3SqsPipelineIngestionException;
 import com.azeem.blueprint.model.billing.BillingRecord;
 import com.azeem.blueprint.model.billing.IngestionResult;
+import com.azeem.blueprint.repository.BillingRecordRepository;
 import com.azeem.blueprint.service.alarm.AlarmService;
+import com.azeem.blueprint.service.dataset.DatasetService;
 import jakarta.validation.constraints.NotNull;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -45,29 +47,45 @@ public class BillingIngestionService {
   private static final Logger log = LoggerFactory.getLogger(BillingIngestionService.class);
   private final BillingRecordAssembler billingRecordAssembler;
   private final JdbcBillingBatchWriter batchWriter;
+  private final BillingRecordRepository billingRecordRepository;
   private final BillingReaderConfig billingReaderConfig;
   private final AlarmService alarmService;
+  private final DatasetService datasetService;
 
   public BillingIngestionService(
       BillingRecordAssembler billingRecordAssembler,
       JdbcBillingBatchWriter batchWriter,
+      BillingRecordRepository billingRecordRepository,
       BillingReaderConfig billingReaderConfig,
-      AlarmService alarmService) {
+      AlarmService alarmService,
+      DatasetService datasetService) {
     this.billingRecordAssembler = billingRecordAssembler;
     this.batchWriter = batchWriter;
+    this.billingRecordRepository = billingRecordRepository;
     this.billingReaderConfig = billingReaderConfig;
     this.alarmService = alarmService;
+    this.datasetService = datasetService;
+  }
+
+  @Transactional
+  @CacheEvict(
+      value = {"billingSummaries", "billingPeriods", "providers", "alarms"},
+      allEntries = true)
+  public IngestionResult ingestData(@NotNull UUID datasetId, @NotNull InputStream inputStream) {
+    if (datasetService.exists(datasetId)) {
+      alarmService.deleteAlarms(datasetId);
+      String period = datasetService.getDataset(datasetId).billingPeriod();
+      billingRecordRepository.deleteByDatasetIdAndBillingPeriod(datasetId, period);
+    }
+
+    return ingestBulk(datasetId, inputStream);
   }
 
   /**
    * This is for data ingestion in bulk. This typically only happens the first time a dataset is
    * ingested at the start of the period or while ingesting the user's older data from past periods.
    */
-  @Transactional
-  @CacheEvict(
-      value = {"billingSummaries", "billingPeriods", "providers", "alarms"},
-      allEntries = true)
-  public IngestionResult ingestData(@NotNull UUID datasetId, @NotNull InputStream inputStream) {
+  public IngestionResult ingestBulk(UUID datasetId, InputStream inputStream) {
     int successCount = 0;
     int failureCount = 0;
     StringBuilder errorBuffer = new StringBuilder();
@@ -133,13 +151,4 @@ public class BillingIngestionService {
     return new IngestionResult(
         datasetId, billingPeriod, successCount, failureCount, errorBuffer.toString());
   }
-
-  /**
-   * This method is called much more often. This should only be inserting a few more billing records
-   * and updating the majority of them.
-   */
-  //  public IngestionResult ingestIncrementalData(@NotNull UUID datasetId, @NotNull InputStream
-  // inputStream) {
-  //    // TODO: Implement
-  //  }
 }

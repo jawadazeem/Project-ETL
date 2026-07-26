@@ -1540,7 +1540,6 @@ function clearAddConnectionForm() {
     document.getElementById("conn-bucket").value = "";
     document.getElementById("conn-region").value = "";
     document.getElementById("conn-provider").value = "AWS";
-    document.getElementById("conn-poll-frequency").value = "DAILY";
     document.getElementById("conn-aws-role-arn").value = "";
     document.getElementById("conn-aws-external-id").value = "";
     document.getElementById("conn-azure-tenant-id").value = "";
@@ -1572,7 +1571,6 @@ async function saveConnection() {
             displayName,
             bucketName,
             region: document.getElementById("conn-region").value.trim() || null,
-            pollFrequency: document.getElementById("conn-poll-frequency").value,
             credentials: gatherCredentials()
         };
 
@@ -1635,7 +1633,6 @@ function renderConnections(connections) {
         const lastPolled = conn.lastPolledAt
             ? new Date(conn.lastPolledAt).toLocaleString()
             : "Never";
-        const frequency = conn.pollFrequency.charAt(0) + conn.pollFrequency.slice(1).toLowerCase();
 
         return `
             <li class="connection-item">
@@ -1646,7 +1643,7 @@ function renderConnections(connections) {
                     </div>
                     <div class="connection-meta">
                         ${escapeForHtml(conn.bucketName)}${conn.region ? " · " + escapeForHtml(conn.region) : ""}
-                        · ${frequency} · Last polled: ${lastPolled}
+                        · Last polled: ${lastPolled}
                     </div>
                 </div>
                 <div class="connection-actions">

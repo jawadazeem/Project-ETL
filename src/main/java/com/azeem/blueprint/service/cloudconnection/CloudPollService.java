@@ -9,7 +9,6 @@ import com.azeem.blueprint.entity.CloudConnectionEntity;
 import com.azeem.blueprint.exception.core.CannotSyncExpiredDatasetException;
 import com.azeem.blueprint.exception.core.CloudPollRequestException;
 import com.azeem.blueprint.mapper.CloudConnectionMapper;
-import com.azeem.blueprint.model.cloudconnection.ActiveCloudConnection;
 import com.azeem.blueprint.model.cloudconnection.CloudConnection;
 import com.azeem.blueprint.model.cloudconnection.CloudConnectionPollRequest;
 import com.azeem.blueprint.model.cloudconnection.CloudConnectionStatus;
@@ -67,7 +66,8 @@ public class CloudPollService {
 
   @Scheduled(cron = "0 0 */3 * * ?") // Fires every 3 hours
   public void triggerGlobalPoll() {
-    List<UUID> userIds = connectionRepository.findDistinctOwnerUserIdsByStatus(CloudConnectionStatus.ACTIVE.name());
+    List<UUID> userIds =
+        connectionRepository.findDistinctOwnerUserIdsByStatus(CloudConnectionStatus.ACTIVE.name());
     log.info("Triggering global sync for {} active users via cron", userIds.size());
 
     // 2. Loop safely so one corrupt configuration doesn't break the entire system run
@@ -84,7 +84,8 @@ public class CloudPollService {
 
   public int triggerSync(UUID userId) {
     List<CloudConnectionEntity> active =
-        connectionRepository.findByOwnerUserIdAndStatus(userId, CloudConnectionStatus.ACTIVE.name());
+        connectionRepository.findByOwnerUserIdAndStatus(
+            userId, CloudConnectionStatus.ACTIVE.name());
     Dataset dataset =
         datasetService
             .getCurrentCycleDataset(userId)
@@ -115,7 +116,7 @@ public class CloudPollService {
     }
 
     try {
-      String jsonPayload = objectMapper.writeValueAsString(requests);
+      String jsonPayload = objectMapper.writeValueAsString(Map.of("requests", requests));
 
       PutEventsRequestEntry entry =
           PutEventsRequestEntry.builder()

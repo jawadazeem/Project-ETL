@@ -109,6 +109,10 @@ public class DatasetService {
     return datasetMapper.mapToDomain(entity);
   }
 
+  public boolean exists(UUID datasetId) {
+    return datasetRepository.findById(datasetId).isPresent();
+  }
+
   @Transactional
   public void deleteDataset(UUID datasetId, UUID ownerUserId) {
     log.info("Deleting dataset: {} for user: {}", datasetId, ownerUserId);

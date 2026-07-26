@@ -51,6 +51,9 @@ public interface AlarmRepository extends JpaRepository<AlarmEntity, UUID> {
       String resourceId,
       AlarmSeverity alarmSeverity);
 
+  @Modifying
+  int deleteByDatasetId(UUID datasetId);
+
   boolean existsByDatasetIdAndBillingPeriodAndBusinessKey(
       UUID datasetId, String billingPeriod, UUID businessKey);
 }

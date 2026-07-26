@@ -82,10 +82,10 @@ public class BillingS3Service {
   }
 
   /**
-   * @return The full directory (key) a dataset resides in, including the bucket name
+   * @return The object-key prefix a dataset resides in inside the billing bucket.
    */
   public String getDatasetDir(UUID userId, Dataset dataset) {
-    return String.format("%s/%s/%s", s3Config.billingBucketName(), userId.toString(), dataset.id());
+    return String.format("%s/%s", userId, dataset.id());
   }
 
   private String buildS3KeyForFile(Dataset dataset, MultipartFile file) {

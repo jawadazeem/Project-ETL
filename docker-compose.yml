@@ -30,15 +30,18 @@ services:
       - pgvector-data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  # This represents the WHOLE AWS stack (S3, EventBridge, SQS, etc.)
+  # This represents the WHOLE AWS stack (S3, EventBridge, SQS, Lambda, etc.)
   localstack:
     image: localstack/localstack:3.0.0
     container_name: billing-s3-mock
     environment:
-      - SERVICES=s3,sqs,eventbridge
+      - SERVICES=s3,sqs,events,lambda,iam
       - DEFAULT_REGION=us-east-1
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_DOCKER_NETWORK=blueprint_default
     volumes:
       - "./localstack_data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:4566/_localstack/health" ]
       interval: 10s
@@ -87,11 +90,20 @@ services:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
       - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - "./comp/multicloud-ingestion-lambda:/workspace"
     entrypoint: [ "/bin/sh", "-c" ]
-    command: >
+    command: |
       "
+      set -e;
+
       echo 'Waiting for Localstack S3...';
       until aws --endpoint-url=http://billing-s3-mock:4566 s3 ls > /dev/null 2>&1; do
+        sleep 2;
+      done;
+
+      echo 'Waiting for Lambda...';
+      until aws --endpoint-url=http://billing-s3-mock:4566 lambda list-functions > /dev/null 2>&1; do
         sleep 2;
       done;
 
@@ -105,8 +117,8 @@ services:
       aws --endpoint-url=http://billing-s3-mock:4566 sqs create-queue --queue-name knowledge-event-queue;
       
       echo 'Configuring S3 Buckets...';
-      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://cloud-billing;
-      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://trace-knowledge;
+      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://cloud-billing || true;
+      aws --endpoint-url=http://billing-s3-mock:4566 s3 mb s3://trace-knowledge || true;
       
       echo 'Linking S3 to SQS...';
       # Link Billing
@@ -115,20 +127,30 @@ services:
       # Link Knowledge
       aws --endpoint-url=http://billing-s3-mock:4566 s3api put-bucket-notification-configuration --bucket trace-knowledge --notification-configuration '{\"QueueConfigurations\":[{\"QueueArn\":\"arn:aws:sqs:us-east-1:000000000000:knowledge-event-queue\",\"Events\":[\"s3:ObjectCreated:*\"]}]}';
       
-      echo 'Configuring EventBridge Direct-To-Lambda Infrastructure...'
+      echo 'Configuring Lambda execution role...';
+      printf '%s' '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}' > /tmp/lambda-trust-policy.json;
+      aws --endpoint-url=http://billing-s3-mock:4566 iam create-role --role-name lambda-role --assume-role-policy-document file:///tmp/lambda-trust-policy.json > /dev/null 2>&1 || true;
 
-      LAMBDA_ARN="arn:aws:lambda:us-east-1:000000000000:function:storage-poll-lambda"
+      echo 'Packaging multicloud-ingestion-lambda...';
+      cd /workspace;
+      rm -f lambda_deploy.zip;
+      python3 -m zipfile -c lambda_deploy.zip handler.py app;
 
-      # Rule for polling traffic
-      aws --endpoint-url=http://billing-s3-mock:4566 events put-rule \
-          --name client-storage-poll-rule \
-          --event-pattern "{\"source\":[\"com.azeem.blueprint\"],\"detail-type\":[\"PollStorageTrigger\"]}"
+      echo 'Deploying multicloud-ingestion-lambda to LocalStack...';
+      if aws --endpoint-url=http://billing-s3-mock:4566 lambda get-function --function-name multicloud-ingestion-lambda > /dev/null 2>&1; then
+        aws --endpoint-url=http://billing-s3-mock:4566 lambda update-function-code --function-name multicloud-ingestion-lambda --zip-file fileb://lambda_deploy.zip > /dev/null;
+        aws --endpoint-url=http://billing-s3-mock:4566 lambda update-function-configuration --function-name multicloud-ingestion-lambda --handler handler.handler --runtime python3.10 --environment Variables='{BILLING_BUCKET=cloud-billing,AWS_ENDPOINT_URL=http://billing-s3-mock:4566}' > /dev/null;
+      else
+        aws --endpoint-url=http://billing-s3-mock:4566 lambda create-function --function-name multicloud-ingestion-lambda --runtime python3.10 --role arn:aws:iam::000000000000:role/lambda-role --handler handler.handler --zip-file fileb://lambda_deploy.zip --environment Variables='{BILLING_BUCKET=cloud-billing,AWS_ENDPOINT_URL=http://billing-s3-mock:4566}' > /dev/null;
+      fi;
 
-      # Route directly to the Lambda
-      aws --endpoint-url=http://billing-s3-mock:4566 events put-targets \
-          --rule client-storage-poll-rule \
-          --targets "Id"="1","Arn"="$LAMBDA_ARN"
-      
+      echo 'Linking EventBridge to multicloud-ingestion-lambda...';
+      aws --endpoint-url=http://billing-s3-mock:4566 events put-rule --name client-storage-poll-rule --event-pattern '{\"source\":[\"com.azeem.blueprint\"],\"detail-type\":[\"PollStorageTrigger\"]}' > /dev/null;
+
+      aws --endpoint-url=http://billing-s3-mock:4566 lambda add-permission --function-name multicloud-ingestion-lambda --statement-id eventbridge-client-storage-poll --action lambda:InvokeFunction --principal events.amazonaws.com --source-arn arn:aws:events:us-east-1:000000000000:rule/client-storage-poll-rule > /dev/null 2>&1 || true;
+
+      aws --endpoint-url=http://billing-s3-mock:4566 events put-targets --rule client-storage-poll-rule --targets Id=multicloud-ingestion,Arn=arn:aws:lambda:us-east-1:000000000000:function:multicloud-ingestion-lambda > /dev/null;
+
       echo 'Infrastructure configuration complete.'
       "
 
