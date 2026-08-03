@@ -4,6 +4,5 @@
 - Before forwarding it to the Java based monolith, it will adapt the data to the custom, vendor-agnostic format, similar to the FOCUS format.
 
 ## Infrastructure:
-- Runs in a separate container.
-- Instead of polling BLOB storages directly, it uses each of their respective messaging queues, operating using an event driven architecture.
-- Forwards this data to the Java based monolith via AMQP. Payload is serialized in Protocol Buffers.
+- This is a Lambda function that polls BLOB storages when hit with an EventBridge event sent from the main Java application.
+- Stores the normalized data in the application's S3 bucket. The main Java application consumes this data via S3 event notifications.

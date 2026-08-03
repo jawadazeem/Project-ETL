@@ -2,10 +2,13 @@ import csv
 import io
 import json
 import os
+import logging
 from datetime import datetime, timezone
 
 import boto3
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 BILLING_BUCKET = os.getenv("BILLING_BUCKET", "cloud-billing")
 AWS_ENDPOINT_URL = os.getenv("AWS_ENDPOINT_URL")

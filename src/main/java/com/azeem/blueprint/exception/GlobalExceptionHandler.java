@@ -134,6 +134,17 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(CannotSyncExpiredDatasetException.class)
+  public ResponseEntity<ErrorResponse> handleCannotSyncExpiredDatasetException(
+      CannotSyncExpiredDatasetException ex) {
+    logger.error("Dataset sync failed: can only sync the current period's dataset", ex);
+    ErrorResponse response =
+        new ErrorResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "Dataset sync failed! You can only sync the current period's dataset");
+    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
   @ExceptionHandler(BillingException.class)
   public ResponseEntity<ErrorResponse> handleGenericException(BillingException ex) {
     logger.error("Unhandled billing exception", ex);
