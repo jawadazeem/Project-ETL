@@ -134,14 +134,15 @@ services:
       echo 'Packaging multicloud-ingestion-lambda...';
       cd /workspace;
       rm -f lambda_deploy.zip;
-      python3 -m zipfile -c lambda_deploy.zip handler.py app;
+      python3 -m zipfile -c lambda_deploy.zip handler.py;
 
       echo 'Deploying multicloud-ingestion-lambda to LocalStack...';
+      LAMBDA_ENVIRONMENT='Variables={BILLING_BUCKET=cloud-billing,AWS_ENDPOINT_URL=http://billing-s3-mock:4566,DEMO_AWS_ENDPOINT_URL=http://azeem-corp-aws-storage:4566,DEMO_AZURE_BLOB_ENDPOINT=http://azeem-corp-azure-storage:10000/devstoreaccount1,DEMO_GCP_STORAGE_ENDPOINT=http://azeem-corp-gcp-storage:4443,DEMO_SOURCE_BUCKET=billingreports,DEMO_SOURCE_OBJECT_KEY=2026-06.csv,AWS_REGION=us-east-1,AWS_ACCESS_KEY_ID=test,AWS_SECRET_ACCESS_KEY=test}';
       if aws --endpoint-url=http://billing-s3-mock:4566 lambda get-function --function-name multicloud-ingestion-lambda > /dev/null 2>&1; then
         aws --endpoint-url=http://billing-s3-mock:4566 lambda update-function-code --function-name multicloud-ingestion-lambda --zip-file fileb://lambda_deploy.zip > /dev/null;
-        aws --endpoint-url=http://billing-s3-mock:4566 lambda update-function-configuration --function-name multicloud-ingestion-lambda --handler handler.handler --runtime python3.10 --environment Variables='{BILLING_BUCKET=cloud-billing,AWS_ENDPOINT_URL=http://billing-s3-mock:4566}' > /dev/null;
+        aws --endpoint-url=http://billing-s3-mock:4566 lambda update-function-configuration --function-name multicloud-ingestion-lambda --handler handler.handler --runtime python3.10 --environment \"$${LAMBDA_ENVIRONMENT}\" > /dev/null;
       else
-        aws --endpoint-url=http://billing-s3-mock:4566 lambda create-function --function-name multicloud-ingestion-lambda --runtime python3.10 --role arn:aws:iam::000000000000:role/lambda-role --handler handler.handler --zip-file fileb://lambda_deploy.zip --environment Variables='{BILLING_BUCKET=cloud-billing,AWS_ENDPOINT_URL=http://billing-s3-mock:4566}' > /dev/null;
+        aws --endpoint-url=http://billing-s3-mock:4566 lambda create-function --function-name multicloud-ingestion-lambda --runtime python3.10 --role arn:aws:iam::000000000000:role/lambda-role --handler handler.handler --zip-file fileb://lambda_deploy.zip --environment \"$${LAMBDA_ENVIRONMENT}\" > /dev/null;
       fi;
 
       echo 'Linking EventBridge to multicloud-ingestion-lambda...';

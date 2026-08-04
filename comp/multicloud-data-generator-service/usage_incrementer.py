@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import pandas as pd
 
@@ -8,7 +10,7 @@ class UsageIncrementer:
         if url.startswith("s3://"):
             storage_options = {
                 "client_kwargs": {
-                    "endpoint_url": "http://localhost:4568"
+                    "endpoint_url": os.getenv("AWS_ENDPOINT_URL", "http://localhost:4568")
                 },
                 "key": "test",
                 "secret": "test"
@@ -20,7 +22,7 @@ class UsageIncrementer:
                 "DefaultEndpointsProtocol=http;"
                 "AccountName=devstoreaccount1;"
                 "AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;"
-                "BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
+                f"BlobEndpoint={os.getenv('AZURITE_BLOB_ENDPOINT', 'http://127.0.0.1:10000/devstoreaccount1')};"
             )
             storage_options = {
                 "connection_string": azurite_conn_str
@@ -30,7 +32,7 @@ class UsageIncrementer:
         elif url.startswith("gs://"):
             storage_options = {
                 "client_kwargs": {
-                    "endpoint_url": "http://127.0.0.1:4443"  # Points gcsfs to fake-gcs-server
+                    "endpoint_url": os.getenv("STORAGE_EMULATOR_HOST", "http://127.0.0.1:4443")
                 },
                 "token": "anon"
             }

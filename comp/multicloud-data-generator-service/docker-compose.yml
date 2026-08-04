@@ -11,9 +11,9 @@ services:
       ports:
         - "5008:5008"
       environment:
-        - STORAGE_EMULATOR_HOST=http://fake-gcs-server:4443
-        - AZURITE_BLOB_ENDPOINT=http://azurite:10000/devstoreaccount1
-        - AWS_ENDPOINT_URL=http://localstack:4568
+        - STORAGE_EMULATOR_HOST=http://azeem-corp-gcp-storage:4443
+        - AZURITE_BLOB_ENDPOINT=http://azeem-corp-azure-storage:10000/devstoreaccount1
+        - AWS_ENDPOINT_URL=http://azeem-corp-aws-storage:4566
       depends_on:
         - azeem-corp-aws-storage
         - azeem-corp-azure-storage
@@ -29,7 +29,7 @@ services:
       volumes:
         - "./azeem_corp_localstack_data:/var/lib/localstack"
       healthcheck:
-        test: [ "CMD", "curl", "-f", "http://localhost:4568/_localstack/health" ]
+        test: [ "CMD", "curl", "-f", "http://localhost:4566/_localstack/health" ]
         interval: 10s
         timeout: 5s
         retries: 5

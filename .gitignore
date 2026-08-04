@@ -57,6 +57,7 @@ __pycache__/
 .venv/
 venv/
 .cache/
+comp/multicloud-ingestion-lambda/lambda_deploy.zip
 
 # Demo Infrastructure
 azeem_corp_localstack_data/

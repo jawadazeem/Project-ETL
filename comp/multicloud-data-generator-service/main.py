@@ -26,9 +26,6 @@ def main():
     manager = MultiCloudStorageManager()
     incrementer = UsageIncrementer()
 
-    container_client = manager.azure_client.get_container_client("billingreports")
-    container_client.set_container_access_policy({}, public_access="blob")
-
     bucket_name = "billingreports"
     period = "2026-06.csv"
     manager.create_buckets(bucket_name)

@@ -33,7 +33,7 @@ class MultiCloudStorageManager:
         if self.environment == "local":
             self.s3_client = boto3.client(
                 "s3",
-                endpoint_url="http://localhost:4568",
+                endpoint_url=os.getenv("AWS_ENDPOINT_URL", "http://localhost:4568"),
                 aws_access_key_id="mock_key",
                 aws_secret_access_key="mock_secret",
                 region_name="us-east-1"
@@ -45,7 +45,10 @@ class MultiCloudStorageManager:
         """Initializes GCP Storage Client targeting fake-gcs-server if local."""
         if self.environment == "local":
             # fake-gcs-server routes via STORAGE_EMULATOR_HOST environment variable
-            os.environ.setdefault("STORAGE_EMULATOR_HOST", "http://127.0.0.1:4443")
+            os.environ.setdefault(
+                "STORAGE_EMULATOR_HOST",
+                os.getenv("STORAGE_EMULATOR_HOST", "http://127.0.0.1:4443"),
+            )
             self.gcp_client = gcp_storage.Client(
                 credentials=AnonymousCredentials(),
                 project="mock-project"
